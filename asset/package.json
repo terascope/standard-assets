@@ -1,0 +1,11 @@
+{
+  "name": "standard-assets",
+  "version": "0.0.1",
+  "description": "Teraslice standard processor asset bundle",
+  "dependencies": {
+    "@terascope/job-components": "^0.15.1",
+    "collections": "^5.1.8",
+    "lodash": "^4.17.11",
+    "timsort": "^0.3.0"
+  }
+}

@@ -1,0 +1,115 @@
+'use strict';
+
+const { BatchProcessor, DataEntity } = require('@terascope/job-components');
+const _ = require('lodash');
+const Timsort = require('timsort');
+
+const { sortFunction } = require('../__lib/utils');
+
+/**
+ * This processor accumulates a set of sorted buckets. The buckets are derived from the
+ * key of a record. Once the accumulator starts to empty the results will be flattened
+ * but all results for a bucket will be returned before results for the next bucket
+ * are retured.
+ */
+class SortedBucketAccumulator extends BatchProcessor {
+    constructor(...args) {
+        super(...args);
+
+        this.buckets = {};
+
+        this.emptySliceCount = 0;
+        this.offset = 0;
+        this.bucketEmptying = undefined;
+
+        this.sort = sortFunction(this.opConfig.sort_field, this.opConfig.order);
+    }
+
+    _readyToEmpty() {
+        return this.emptySliceCount >= this.opConfig.empty_after;
+    }
+
+    _emptyNextBucket() {
+        if (this.bucketEmptying) {
+            this.offset = 0;
+            delete this.buckets[this.bucketEmptying];
+        }
+
+        this.bucketEmptying = _.keys(this.buckets).pop();
+
+        if (this.bucketEmptying) Timsort.sort(this.buckets[this.bucketEmptying], this.sort);
+    }
+
+    //  TODO need to test multiple keys and returns across slices
+    //  TODO add a mechanism to not flatten the output so the buckets can be
+    //  preserved.
+    //  TODO: setup a generic accumulator as a base
+    _batchOfData() {
+        let results = [];
+        // Get the first key to process. This will persist across
+        // slices until it is fully consumed. When only sort the arrays
+        // we're processing.
+        if (!this.bucketEmptying) {
+            this._emptyNextBucket();
+        }
+
+        // Attempt to fill out the batch
+        while (results.length < this.opConfig.batch_size && this.bucketEmptying) {
+            // The number of records available in the current slice.
+            const remaining = this.opConfig.batch_size - results.length;
+
+            // On large arrays this gets progressively slower as you get deeper in the array.
+            const chunk = this.buckets[this.bucketEmptying].slice(this.offset,
+                this.offset + remaining);
+            this.offset += chunk.length;
+
+            // Reset once we've read the entire content of a key.
+            if (this.offset === this.buckets[this.bucketEmptying].length) {
+                this._emptyNextBucket();
+            }
+
+            results = results.concat(chunk);
+        }
+
+        return results;
+    }
+
+    _accumulate(dataArray) {
+        dataArray.forEach((doc) => {
+            const key = DataEntity.getMetadata(doc, '_key');
+            if (!this.buckets[key]) {
+                this.buckets[key] = [];
+            }
+
+            this.buckets[key].push(doc);
+        });
+    }
+
+    _sortAllBuckets() {
+        const keys = _.keys(this.buckets);
+        keys.forEach((key) => {
+            Timsort.sort(this.buckets[key], this.sort);
+        });
+    }
+
+    onBatch(dataArray) {
+        if (dataArray.length === 0) this.emptySliceCount++;
+        else this._accumulate(dataArray);
+
+        if (this._readyToEmpty()) {
+            if (this.opConfig.keyed_batch) {
+                // this is probably a little problematic as it's returning
+                // a reference to internal state for this object.
+                // It also requires everything to be sorted in advance.
+                this._sortAllBuckets();
+                return [this.buckets];
+            }
+
+            return this._batchOfData();
+        }
+
+        return [];
+    }
+}
+
+module.exports = SortedBucketAccumulator;
