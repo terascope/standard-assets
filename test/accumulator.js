@@ -68,22 +68,22 @@ describe('accumulator should', () => {
         }
     });
 
-    it('generate sorted results by id descending after 3 empty slices', async () => {
+    it('accumulate all results into a single result slice', async () => {
         // Push 3 sets of data. No data should be return during accumulation
         let results = await testHarness.run(localData);
-        expect(results.length === 0);
+        expect(results.length).toBe(0);
 
         results = await testHarness.run(localData);
-        expect(results.length === 0);
+        expect(results.length).toBe(0);
 
         results = await testHarness.run(localData);
-        expect(results.length === 0);
+        expect(results.length).toBe(0);
 
         const results2 = await testHarness.run([]);
-        expect(results2.length === 0);
+        expect(results2.length).toBe(0);
 
         const results3 = await testHarness.run([]);
-        expect(results3.length === 0);
+        expect(results3.length).toBe(0);
 
         // After the 3rd empty slice we should see results.
         // batch_size is 50 so we expect all 300 records back

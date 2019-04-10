@@ -100,13 +100,13 @@ describe('sorted_bucket_accumulator should', () => {
     it('generate sorted results by id descending after 3 empty slices - single key', async () => {
         // Should get no results after the first 3 slices.
         const results = await testHarness.run(testData);
-        expect(results.length === 0);
+        expect(results.length).toBe(0);
 
         const results2 = await testHarness.run([]);
-        expect(results2.length === 0);
+        expect(results2.length).toBe(0);
 
         const results3 = await testHarness.run([]);
-        expect(results3.length === 0);
+        expect(results3.length).toBe(0);
 
         // After the 3rd empty slice we should see results.
         // batch_size is 1 so we expect 1 record per slice
@@ -155,13 +155,13 @@ describe('sorted_bucket_accumulator should', () => {
     it('generate sorted results by id after 3 empty slices - many keys', async () => {
         // Should get no results after the first 3 slices.
         const results = await testHarness.run(localData);
-        expect(results.length === 0);
+        expect(results.length).toBe(0);
 
         const results2 = await testHarness.run([]);
-        expect(results2.length === 0);
+        expect(results2.length).toBe(0);
 
         const results3 = await testHarness.run([]);
-        expect(results3.length === 0);
+        expect(results3.length).toBe(0);
 
         // After the 3rd empty slice we should see results.
         // batch_size is 100 so we expect 100 records per slice
@@ -243,13 +243,13 @@ describe('sorted_bucket_accumulator should', () => {
     it('generate sorted results by id after 3 empty slices - many keys, spanning slices', async () => {
         // Should get no results after the first 3 slices.
         const results = await testHarness.run(localData);
-        expect(results.length === 0);
+        expect(results.length).toBe(0);
 
         const results2 = await testHarness.run([]);
-        expect(results2.length === 0);
+        expect(results2.length).toBe(0);
 
         const results3 = await testHarness.run([]);
-        expect(results3.length === 0);
+        expect(results3.length).toBe(0);
 
         // We should get 3 slices of data.
         // First slice should have 75 records for one key then
@@ -329,7 +329,7 @@ describe('sorted_bucket_accumulator should', () => {
             opConfig: {
                 _op: 'sorted_bucket_accumulator',
                 sort_field: 'id',
-                empty_after: 0,
+                empty_after: 3,
                 keyed_batch: true
             }
         });
@@ -348,13 +348,13 @@ describe('sorted_bucket_accumulator should', () => {
     it('return a properly sorted keyed batch', async () => {
         // Should get no results after the first 3 slices.
         const results = await testHarness.run(localData);
-        expect(results.length === 0);
+        expect(results.length).toBe(0);
 
         const results2 = await testHarness.run([]);
-        expect(results2.length === 0);
+        expect(results2.length).toBe(0);
 
         const results3 = await testHarness.run([]);
-        expect(results3.length === 0);
+        expect(results3.length).toBe(0);
 
         // We should get an array with one object which has 3 keys
         // and each key should have 100 results
@@ -375,5 +375,9 @@ describe('sorted_bucket_accumulator should', () => {
                 priorID = record.id;
             });
         });
+
+        // Next result should be empty again.
+        const results5 = await testHarness.run([]);
+        expect(results5.length).toBe(0);
     });
 });

@@ -92,13 +92,13 @@ describe('sorted_accumulator should', () => {
     it('generate sorted results by id descending after 3 empty slices', async () => {
         // Should get no results after the first 3 slices.
         const results = await testHarness.run(testData);
-        expect(results.length === 0);
+        expect(results.length).toBe(0);
 
         const results2 = await testHarness.run([]);
-        expect(results2.length === 0);
+        expect(results2.length).toBe(0);
 
         const results3 = await testHarness.run([]);
-        expect(results3.length === 0);
+        expect(results3.length).toBe(0);
 
         // After the 3rd empty slice we should see results.
         // batch_size is 1 so we expect 1 record per slice
