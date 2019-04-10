@@ -26,7 +26,8 @@ class SortedBucketAccumulator extends BatchProcessor {
     }
 
     _readyToEmpty() {
-        return this.emptySliceCount >= this.opConfig.empty_after;
+        return (this.emptySliceCount >= this.opConfig.empty_after)
+            && _.keys(this.buckets).length > 0;
     }
 
     _emptyNextBucket() {
@@ -98,11 +99,12 @@ class SortedBucketAccumulator extends BatchProcessor {
 
         if (this._readyToEmpty()) {
             if (this.opConfig.keyed_batch) {
-                // this is probably a little problematic as it's returning
-                // a reference to internal state for this object.
-                // It also requires everything to be sorted in advance.
+                // This requires everything to be sorted in advance.
                 this._sortAllBuckets();
-                return [this.buckets];
+
+                const result = this.buckets;
+                this.buckets = {};
+                return [result];
             }
 
             return this._batchOfData();
