@@ -29,6 +29,11 @@ class Schema extends ConvictSchema {
                 doc: 'Returns an array containing a single object where each key contains the sorted data for that key.',
                 default: false,
                 format: 'Boolean'
+            },
+            sort_using: {
+                doc: 'Which sorting algorithm to use. Default is node.js built in array sort, but `timsort` is also an option.',
+                default: 'node',
+                format: ['node', 'timsort']
             }
         };
     }

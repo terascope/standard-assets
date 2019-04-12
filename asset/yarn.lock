@@ -33,13 +33,6 @@ camelcase@^5.0.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-5.3.1.tgz#e3c9b31569e106811df242f715725a1f4c494320"
   integrity sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==
 
-collections@^5.1.8:
-  version "5.1.8"
-  resolved "http://npm.terascope.io:4873/collections/-/collections-5.1.8.tgz#7480ec54c54dd68e7f448edd788107e6264e9f2d"
-  integrity sha512-2Vvizv30fKnBlso7kVtZTsuZDVvA6JvLotsSnGKiAiIM4Z+EW1/9yRgXqJJ0WFzj36yZNTUsI+/Yu2Ogoo0H0w==
-  dependencies:
-    weak-map "~1.0.x"
-
 convict@^4.4.1:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/convict/-/convict-4.4.1.tgz#87f93c2a4f51bfc961e2873864442d0349a1b0d0"
@@ -144,11 +137,6 @@ validator@10.8.0:
   version "10.8.0"
   resolved "https://registry.yarnpkg.com/validator/-/validator-10.8.0.tgz#8acb15a5c39411cbc8ef2be0c98c2514da4410a7"
   integrity sha512-mXqMxfCh5NLsVgYVKl9WvnHNDPCcbNppHSPPowu0VjtSsGWVY+z8hJF44edLR1nbLNzi3jYoYsIl8KZpioIk6g==
-
-weak-map@~1.0.x:
-  version "1.0.5"
-  resolved "http://npm.terascope.io:4873/weak-map/-/weak-map-1.0.5.tgz#79691584d98607f5070bd3b70a40e6bb22e401eb"
-  integrity sha1-eWkVhNmGB/UHC9O3CkDmuyLkAes=
 
 yargs-parser@11.0.0:
   version "11.0.0"

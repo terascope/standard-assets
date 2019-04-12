@@ -330,7 +330,8 @@ describe('sorted_bucket_accumulator should', () => {
                 _op: 'sorted_bucket_accumulator',
                 sort_field: 'id',
                 empty_after: 3,
-                keyed_batch: true
+                keyed_batch: true,
+                sort_using: 'node'
             }
         });
 
@@ -345,7 +346,70 @@ describe('sorted_bucket_accumulator should', () => {
         }
     });
 
-    it('return a properly sorted keyed batch', async () => {
+    it('return a properly sorted keyed batch using node.js array sort', async () => {
+        // Should get no results after the first 3 slices.
+        const results = await testHarness.run(localData);
+        expect(results.length).toBe(0);
+
+        const results2 = await testHarness.run([]);
+        expect(results2.length).toBe(0);
+
+        const results3 = await testHarness.run([]);
+        expect(results3.length).toBe(0);
+
+        // We should get an array with one object which has 3 keys
+        // and each key should have 100 results
+        const results4 = await testHarness.run([]);
+        expect(results4.length).toBe(1);
+
+        const records = results4[0];
+        const keys = _.keys(results4[0]);
+        expect(keys.length).toBe(3);
+
+        keys.forEach((key) => {
+            const data = records[key];
+            expect(data.length).toBe(100);
+
+            let priorID = 0;
+            data.forEach((record) => {
+                expect(record.id).not.toBeLessThan(priorID);
+                priorID = record.id;
+            });
+        });
+
+        // Next result should be empty again.
+        const results5 = await testHarness.run([]);
+        expect(results5.length).toBe(0);
+    });
+});
+
+describe('sorted_bucket_accumulator should', () => {
+    const testHarness = new OpTestHarness({ Processor, Schema });
+    const localData = [];
+
+    beforeAll(async () => {
+        await testHarness.initialize({
+            opConfig: {
+                _op: 'sorted_bucket_accumulator',
+                sort_field: 'id',
+                empty_after: 3,
+                keyed_batch: true,
+                sort_using: 'timsort'
+            }
+        });
+
+        // This generates 300 records for 3 different keys so each
+        // should end up with 100 records.
+        for (let i = 0; i < 300; i++) {
+            localData.push(DataEntity.make({
+                id: Math.floor(Math.random() * 1000)
+            }, {
+                _key: i % 3
+            }));
+        }
+    });
+
+    it('return a properly sorted keyed batch using timsort', async () => {
         // Should get no results after the first 3 slices.
         const results = await testHarness.run(localData);
         expect(results.length).toBe(0);
