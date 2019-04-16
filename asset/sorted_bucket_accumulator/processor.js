@@ -38,13 +38,9 @@ class SortedBucketAccumulator extends BatchProcessor {
 
         this.bucketEmptying = _.keys(this.buckets).pop();
 
-        if (this.bucketEmptying) Timsort.sort(this.buckets[this.bucketEmptying], this.sort);
+        if (this.bucketEmptying) this._sortBucket(this.bucketEmptying);
     }
 
-    //  TODO need to test multiple keys and returns across slices
-    //  TODO add a mechanism to not flatten the output so the buckets can be
-    //  preserved.
-    //  TODO: setup a generic accumulator as a base
     _batchOfData() {
         let results = [];
         // Get the first key to process. This will persist across
@@ -86,11 +82,18 @@ class SortedBucketAccumulator extends BatchProcessor {
         });
     }
 
+    _sortBucket(key) {
+        if (this.opConfig.sort_using === 'timsort') {
+            Timsort.sort(this.buckets[key], this.sort);
+        }
+        else {
+            this.buckets[key].sort(this.sort);
+        }
+    }
+
     _sortAllBuckets() {
         const keys = _.keys(this.buckets);
-        keys.forEach((key) => {
-            Timsort.sort(this.buckets[key], this.sort);
-        });
+        keys.forEach(key => this._sortBucket(key));
     }
 
     onBatch(dataArray) {
