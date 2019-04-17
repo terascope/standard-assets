@@ -34,6 +34,11 @@ class Schema extends ConvictSchema {
                 doc: 'Which sorting algorithm to use. Default is node.js built in array sort, but `timsort` is also an option.',
                 default: 'node',
                 format: ['node', 'timsort']
+            },
+            strip_metadata: {
+                doc: 'Whether or not to strip the DataEntity and associated metadata when accumulating.',
+                default: false,
+                format: 'Boolean'
             }
         };
     }

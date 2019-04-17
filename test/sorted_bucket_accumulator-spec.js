@@ -444,3 +444,47 @@ describe('sorted_bucket_accumulator should', () => {
         expect(results5.length).toBe(0);
     });
 });
+
+describe('sorted_bucket_accumulator should', () => {
+    const testHarness = new OpTestHarness({ Processor, Schema });
+    const localData = [];
+
+    beforeAll(async () => {
+        await testHarness.initialize({
+            opConfig: {
+                _op: 'sorted_bucket_accumulator',
+                sort_field: 'id',
+                empty_after: 0,
+                sort_using: 'node',
+                strip_metadata: true
+            }
+        });
+
+        // This generates 300 records for 3 different keys so each
+        // should end up with 100 records.
+        for (let i = 0; i < 30; i++) {
+            localData.push(DataEntity.make({
+                id: Math.floor(Math.random() * 1000)
+            }, {
+                _key: i % 3
+            }));
+        }
+    });
+
+    it('properly restore keys when metadata is stripped', async () => {
+        // Should get no results after the first 3 slices.
+        const results = await testHarness.run(localData);
+        expect(results.length).toBe(30);
+
+        let currentKey = DataEntity.getMetadata(results[0], '_key');
+        let i = 0;
+        results.forEach((record) => {
+            if (i % 10 === 0) {
+                currentKey = DataEntity.getMetadata(record, '_key');
+            }
+
+            expect(DataEntity.getMetadata(record, '_key')).toBe(currentKey);
+            i++;
+        });
+    });
+});

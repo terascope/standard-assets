@@ -79,6 +79,15 @@ class SortedBucketAccumulator extends BatchProcessor {
                 this.offset + remaining);
             this.offset += chunk.length;
 
+            if (this.opConfig.strip_metadata) {
+                // Since we stripped the metadata when accumulating we need to re-add the key.
+                chunk.forEach((record) => {
+                    DataEntity.make(record, {
+                        _key: this.bucketEmptying
+                    });
+                });
+            }
+
             // Reset once we've read the entire content of a key.
             if (this.offset === this.buckets[this.bucketEmptying].length) {
                 this._emptyNextBucket();
@@ -100,7 +109,12 @@ class SortedBucketAccumulator extends BatchProcessor {
                 this.buckets[key] = [];
             }
 
-            this.buckets[key].push(doc);
+            if (this.opConfig.strip_metadata) {
+                this.buckets[key].push(Object.assign({}, doc));
+            } else {
+                this.buckets[key].push(doc);
+            }
+
             this.hasData = true;
         });
     }
