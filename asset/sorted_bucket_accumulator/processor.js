@@ -21,24 +21,42 @@ class SortedBucketAccumulator extends BatchProcessor {
         this.emptySliceCount = 0;
         this.offset = 0;
         this.bucketEmptying = undefined;
+        this.hasData = false;
+        this.keysToClean = [];
+        this.keys = [];
 
         this.sort = sortFunction(this.opConfig.sort_field, this.opConfig.order);
     }
 
     _readyToEmpty() {
         return (this.emptySliceCount >= this.opConfig.empty_after)
-            && _.keys(this.buckets).length > 0;
+            && this.hasData;
+    }
+
+    _cleanCompletedBuckets() {
+        this.keysToClean.forEach((key) => {
+            delete this.buckets[key];
+        });
+
+        this.keysToClean = [];
     }
 
     _emptyNextBucket() {
+        // We're done with the prior bucket so cleanup.
         if (this.bucketEmptying) {
             this.offset = 0;
-            delete this.buckets[this.bucketEmptying];
+            this.keysToClean.push(this.bucketEmptying);
         }
 
-        this.bucketEmptying = _.keys(this.buckets).pop();
+        // Get the next bucket to empty.
+        this.bucketEmptying = this.keys.pop();
 
-        if (this.bucketEmptying) this._sortBucket(this.bucketEmptying);
+        // If there's another key sort it, otherwise we're out of data.
+        if (this.bucketEmptying) {
+            this._sortBucket(this.bucketEmptying);
+        } else {
+            this.hasData = false;
+        }
     }
 
     _batchOfData() {
@@ -47,6 +65,7 @@ class SortedBucketAccumulator extends BatchProcessor {
         // slices until it is fully consumed. When only sort the arrays
         // we're processing.
         if (!this.bucketEmptying) {
+            this.keys = _.keys(this.buckets);
             this._emptyNextBucket();
         }
 
@@ -68,6 +87,9 @@ class SortedBucketAccumulator extends BatchProcessor {
             results = results.concat(chunk);
         }
 
+        // Slice result is prepared so we can cleanup.
+        this._cleanCompletedBuckets();
+
         return results;
     }
 
@@ -79,15 +101,18 @@ class SortedBucketAccumulator extends BatchProcessor {
             }
 
             this.buckets[key].push(doc);
+            this.hasData = true;
         });
     }
 
     _sortBucket(key) {
-        if (this.opConfig.sort_using === 'timsort') {
-            Timsort.sort(this.buckets[key], this.sort);
-        }
-        else {
-            this.buckets[key].sort(this.sort);
+        // No point sorting a single element array
+        if (this.buckets[key].length > 1) {
+            if (this.opConfig.sort_using === 'timsort') {
+                Timsort.sort(this.buckets[key], this.sort);
+            } else {
+                this.buckets[key].sort(this.sort);
+            }
         }
     }
 
@@ -107,6 +132,7 @@ class SortedBucketAccumulator extends BatchProcessor {
 
                 const result = this.buckets;
                 this.buckets = {};
+                this.hasData = false;
                 return [result];
             }
 
