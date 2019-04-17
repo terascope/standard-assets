@@ -210,7 +210,6 @@ describe('sorted_bucket_accumulator should', () => {
             expect(record.id).not.toBeLessThan(priorID);
             priorID = record.id;
         });
-
     });
 });
 
@@ -264,12 +263,10 @@ describe('sorted_bucket_accumulator should', () => {
         results4.forEach((record) => {
             if (count < 75) {
                 expect(DataEntity.getMetadata(record, '_key')).toBe(phase1Key);
-            }
-            else if (count === 75)  {
+            } else if (count === 75)  {
                 phase2Key = DataEntity.getMetadata(results4[count], '_key');
                 priorID = 0;
-            }
-            else {
+            } else {
                 expect(DataEntity.getMetadata(record, '_key')).not.toBe(phase1Key);
                 expect(DataEntity.getMetadata(record, '_key')).toBe(phase2Key);
             }
@@ -290,12 +287,10 @@ describe('sorted_bucket_accumulator should', () => {
             if (count < 50) {
                 expect(DataEntity.getMetadata(record, '_key')).not.toBe(phase1Key);
                 expect(DataEntity.getMetadata(record, '_key')).toBe(phase2Key);
-            }
-            else if (count === 50) {
+            } else if (count === 50) {
                 phase3Key = DataEntity.getMetadata(results5[count], '_key');
                 priorID = 0;
-            }
-            else {
+            } else {
                 expect(DataEntity.getMetadata(record, '_key')).not.toBe(phase2Key);
                 expect(DataEntity.getMetadata(record, '_key')).toBe(phase3Key);
             }
@@ -317,6 +312,10 @@ describe('sorted_bucket_accumulator should', () => {
             expect(record.id).not.toBeLessThan(priorID);
             priorID = record.id;
         });
+
+        // We've read all the data so the next result should be empty again.
+        const results7 = await testHarness.run([]);
+        expect(results7.length).toBe(0);
     });
 });
 
