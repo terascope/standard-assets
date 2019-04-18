@@ -42,7 +42,7 @@ describe('sorted_accumulator should', () => {
     let testHarness;
 
     beforeEach(async () => {
-        testHarness = new OpTestHarness({ Processor, Schema })
+        testHarness = new OpTestHarness({ Processor, Schema });
         await testHarness.initialize({ opConfig: opConfigAscending });
     });
 

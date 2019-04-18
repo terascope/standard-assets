@@ -1,10 +1,12 @@
 'use strict';
 
 const { BatchProcessor, DataEntity } = require('@terascope/job-components');
-const _ = require('lodash');
 const Timsort = require('timsort');
-
+const { promisify } = require('util');
 const { sortFunction } = require('../__lib/utils');
+
+const immediate = promisify(setImmediate);
+
 
 /**
  * This processor accumulates a set of sorted buckets. The buckets are derived from the
@@ -41,7 +43,7 @@ class SortedBucketAccumulator extends BatchProcessor {
         this.keysToClean = [];
     }
 
-    _emptyNextBucket() {
+    async _emptyNextBucket() {
         // We're done with the prior bucket so cleanup.
         if (this.bucketEmptying) {
             this.offset = 0;
@@ -53,20 +55,20 @@ class SortedBucketAccumulator extends BatchProcessor {
 
         // If there's another key sort it, otherwise we're out of data.
         if (this.bucketEmptying) {
-            this._sortBucket(this.bucketEmptying);
+            await this._sortBucket(this.bucketEmptying);
         } else {
             this.hasData = false;
         }
     }
 
-    _batchOfData() {
+    async _batchOfData() {
         let results = [];
         // Get the first key to process. This will persist across
         // slices until it is fully consumed. When only sort the arrays
         // we're processing.
         if (!this.bucketEmptying) {
-            this.keys = _.keys(this.buckets);
-            this._emptyNextBucket();
+            this.keys = Object.keys(this.buckets);
+            await this._emptyNextBucket();
         }
 
         // Attempt to fill out the batch
@@ -90,7 +92,7 @@ class SortedBucketAccumulator extends BatchProcessor {
 
             // Reset once we've read the entire content of a key.
             if (this.offset === this.buckets[this.bucketEmptying].length) {
-                this._emptyNextBucket();
+                await this._emptyNextBucket();
             }
 
             results = results.concat(chunk);
@@ -119,7 +121,7 @@ class SortedBucketAccumulator extends BatchProcessor {
         });
     }
 
-    _sortBucket(key) {
+    async _sortBucket(key) {
         // No point sorting a single element array
         if (this.buckets[key].length > 1) {
             if (this.opConfig.sort_using === 'timsort') {
@@ -127,22 +129,24 @@ class SortedBucketAccumulator extends BatchProcessor {
             } else {
                 this.buckets[key].sort(this.sort);
             }
+            await immediate();
         }
     }
 
-    _sortAllBuckets() {
-        const keys = _.keys(this.buckets);
-        keys.forEach(key => this._sortBucket(key));
+    async _sortAllBuckets() {
+        for (const key of Object.keys(this.buckets)) {
+            await this._sortBucket(key);
+        }
     }
 
-    onBatch(dataArray) {
+    async onBatch(dataArray) {
         if (dataArray.length === 0) this.emptySliceCount++;
         else this._accumulate(dataArray);
 
         if (this._readyToEmpty()) {
             if (this.opConfig.keyed_batch) {
                 // This requires everything to be sorted in advance.
-                this._sortAllBuckets();
+                await this._sortAllBuckets();
 
                 const result = this.buckets;
                 this.buckets = {};
@@ -150,6 +154,7 @@ class SortedBucketAccumulator extends BatchProcessor {
                 return [result];
             }
 
+            await immediate();
             return this._batchOfData();
         }
 
