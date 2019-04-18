@@ -263,7 +263,7 @@ describe('sorted_bucket_accumulator should', () => {
         results4.forEach((record) => {
             if (count < 75) {
                 expect(DataEntity.getMetadata(record, '_key')).toBe(phase1Key);
-            } else if (count === 75)  {
+            } else if (count === 75) {
                 phase2Key = DataEntity.getMetadata(results4[count], '_key');
                 priorID = 0;
             } else {

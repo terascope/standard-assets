@@ -3,12 +3,12 @@
 
 
 "@terascope/job-components@^0.15.1":
-  version "0.15.1"
-  resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.15.1.tgz#0a34523fbf64c12db57903b3d0cdf7171bae2466"
-  integrity sha512-XWVc4Pg7g977LIfNKm76nvJa+FyYtzyE6mHy+1B++UhE4S1YnOBJxCPKvgdH9xjQxsq9zlrEX8Ri0DVBYbuFDw==
+  version "0.15.2"
+  resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.15.2.tgz#e1b0af361460e130bd9a1201340e73affd32c2d1"
+  integrity sha512-kqBbPWi3Xz2LcpB2/OMURFX6xLgLl9eAxu75Xa8c67um+ilZjL5h6MfImXh2SzfgW00MhZav9pe3+awzM+Vz4A==
   dependencies:
     "@terascope/queue" "^1.1.6"
-    "@terascope/utils" "^0.7.0"
+    "@terascope/utils" "^0.8.1"
     convict "^4.4.1"
     datemath-parser "^1.0.6"
     uuid "^3.3.2"
@@ -18,10 +18,10 @@
   resolved "https://registry.yarnpkg.com/@terascope/queue/-/queue-1.1.6.tgz#763d035cf31d2e1fd819ae827274f50874016708"
   integrity sha512-TmLOLh49UVdksjwAUzOO6lqOQMwJIW0pHsXKibcdfzAcUgwXL3JH6BjO2l1u5njQeHjoj1SOyBk6aU1/fHd0PQ==
 
-"@terascope/utils@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.7.0.tgz#5be95deae853dd8558f9e8ebc6409cb4ff2c4e4f"
-  integrity sha512-5G9vPQ0pqaiGkV3YlASzYhC94fJAUAuc3uxh5dH7N0FNVFZ6mS7ZwCbTVoU5iXK6DeJVqZmNVUB8h0ghbdol2g==
+"@terascope/utils@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.8.1.tgz#60ea10e7b7cd9235f9dfe668275e013f8ad1ca8b"
+  integrity sha512-K6Q1IO6FO3K7BFxMMzbzY8X9hIiuEaYsPH/zPHI5pzF18HY1latRaa53+hw41czT+yeN1RDv0b1pXb3MqFBwMQ==
   dependencies:
     debug "^4.1.1"
     is-plain-object "^2.0.4"
@@ -100,7 +100,7 @@ lodash.clonedeep@4.5.0, lodash.clonedeep@^4.5.0:
 
 lodash@^4.17.11:
   version "4.17.11"
-  resolved "http://npm.terascope.io:4873/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
 
 minimist@^1.2.0:
@@ -125,7 +125,7 @@ ms@^2.1.1:
 
 timsort@^0.3.0:
   version "0.3.0"
-  resolved "http://npm.terascope.io:4873/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
+  resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
 
 uuid@^3.3.2:
