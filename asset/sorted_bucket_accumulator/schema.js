@@ -39,6 +39,11 @@ class Schema extends ConvictSchema {
                 doc: 'Whether or not to strip the DataEntity and associated metadata when accumulating.',
                 default: false,
                 format: 'Boolean'
+            },
+            clean_buckets: {
+                doc: 'Whether buckets should be cleaned as the job proceeds.',
+                default: true,
+                format: 'Boolean'
             }
         };
     }

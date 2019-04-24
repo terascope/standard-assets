@@ -36,9 +36,11 @@ class SortedBucketAccumulator extends BatchProcessor {
     }
 
     _cleanCompletedBuckets() {
-        this.keysToClean.forEach((key) => {
-            delete this.buckets[key];
-        });
+        if (this.opConfig.clean_buckets) {
+            this.keysToClean.forEach((key) => {
+                delete this.buckets[key];
+            });
+        }
 
         this.keysToClean = [];
     }
