@@ -9,6 +9,11 @@ class Schema extends ConvictSchema {
                 doc: 'How many 0 record slices to require before starting to return the accumulated data',
                 default: 10,
                 format: 'Number'
+            },
+            use_data_window: {
+                doc: 'Option to return results as a data window',
+                default: false,
+                format: 'Boolean'
             }
         };
     }

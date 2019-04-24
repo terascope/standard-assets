@@ -36,12 +36,9 @@ describe('accumulate should', () => {
     });
 
     it('generate unsorted results', async () => {
-        let results = await testHarness.run(testData);
-        expect(results.length).toBe(1);
-        expect(results[0].asArray().length).toBe(3);
+        const results = await testHarness.run(testData);
 
-        // Unwrap the DataWindow
-        results = results[0].asArray();
+        expect(results.length).toBe(3);
         expect(results[0]).toBe(testData[0]);
         expect(results[1]).toBe(testData[1]);
         expect(results[2]).toBe(testData[2]);
@@ -91,8 +88,7 @@ describe('accumulate should', () => {
         // batch_size is 50 so we expect all 300 records back
         // in one chunk
         results = await testHarness.run([]);
-        expect(results.length).toBe(1);
-        expect(results[0].asArray().length).toBe(300);
+        expect(results.length).toBe(300);
 
         // Next slice should be back to 0
         results = await testHarness.run([]);
@@ -118,8 +114,7 @@ describe('accumulate should', () => {
         // Until the third empty slice when we get a chunk of
         // data again.
         results = await testHarness.run([]);
-        expect(results.length).toBe(1);
-        expect(results[0].asArray().length).toBe(300);
+        expect(results.length).toBe(300);
 
         // Next slice should be back to 0
         results = await testHarness.run([]);

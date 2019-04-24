@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 
-const { BatchProcessor, DataEntity } = require('@terascope/job-components');
+const { BatchProcessor } = require('@terascope/job-components');
 
 const DataWindow = require('../__lib/data-window');
 
@@ -32,19 +32,16 @@ class AccumulateByKey extends BatchProcessor {
         return result;
     }
 
-    _createWindow(key) {
-        const window = new DataWindow();
-        window.setMetadata('_key', key);
-        return window;
-    }
-
     _accumulate(dataArray) {
         this.emptySliceCount = 0;
 
         dataArray.forEach((doc) => {
-            const key = DataEntity.getMetadata(doc, '_key');
+            const key = this.opConfig.key_field === '_key' ? doc.getMetadata('_key') : doc[this.opConfig.key_field];
+
+            if (key === undefined) return;
+
             if (!this.buckets[key]) {
-                this.buckets[key] = this._createWindow(key);
+                this.buckets[key] = DataWindow.make(key);
             }
 
             this.buckets[key].set(doc);
