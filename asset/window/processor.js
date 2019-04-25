@@ -1,5 +1,6 @@
 'use strict';
 
+const _ = require('lodash');
 const { BatchProcessor } = require('@terascope/job-components');
 const DataWindow = require('../__lib/data-window');
 
@@ -14,7 +15,7 @@ class Window extends BatchProcessor {
         super(...args);
         this.events = this.context.apis.foundation.getSystemEvents();
         this.shuttingDown = false;
-        this.window = new DataWindow();
+        this.windows = new Map();
     }
 
     _millisecondTime(time) {
@@ -22,22 +23,29 @@ class Window extends BatchProcessor {
     }
 
     _assigner(doc) {
-        // check if this is a new window
-        if (this.window.start_time === undefined) {
-            if (this.opConfig.time_type === 'clock') this.window.start_time = new Date().getTime();
-            else this.window.start_time = this._millisecondTime(doc[this.opConfig.time_field]);
+        const eventTime = this._millisecondTime(doc[this.opConfig.time_field]);
+
+        if (this.windows.size === 0) {
+            let startTime = eventTime;
+            if (this.opConfig.time_type === 'clock') startTime = new Date().getTime();
+
+            this.windows.set(startTime, DataWindow.make(startTime));
         }
 
-        if (this.opConfig.time_type === 'event') {
-            this.window.latest_time = this._millisecondTime(doc[this.opConfig.time_field]);
+        if (this.opConfig.window_type === 'sliding') {
+            if ((eventTime - _.max(Array.from(this.windows.keys()))
+                > this.opConfig.sliding_window_interval)) {
+                this.windows.set(eventTime, DataWindow.make(eventTime));
+            }
         }
 
-        this.window.set(doc);
-    }
+        for (const window of this.windows.values()) {
+            window.set(doc);
 
-    _trigger() {
-        const endTime = this.opConfig.time_type === 'clock' ? new Date().getTime() : this.window.latest_time;
-        return (endTime - this.window.start_time) > this.opConfig.window_size;
+            if (this.opConfig.time_type === 'event') {
+                window.latest_time = eventTime;
+            }
+        }
     }
 
     onBatch(dataArray) {
@@ -50,9 +58,14 @@ class Window extends BatchProcessor {
             this._assigner(doc);
         });
 
-        if (this._trigger()) {
-            results.push(this.window);
-            this.window = new DataWindow();
+        for (const key of this.windows.keys()) {
+            const endTime = this.opConfig.time_type === 'clock' ? new Date().getTime() : this.windows.get(key).latest_time;
+            if ((endTime - key) > this.opConfig.window_size) {
+                // if window is expired then remove from windows and add to results
+                results.push(this.windows.get(key));
+
+                this.windows.delete(key);
+            }
         }
 
         return results;

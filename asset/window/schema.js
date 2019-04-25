@@ -29,7 +29,7 @@ class Schema extends ConvictSchema {
                 default: 'tumbling',
                 format: ['tumbling', 'sliding']
             },
-            sliding_time: {
+            sliding_window_interval: {
                 doc: 'Determines when to start a new window',
                 default: 15000,
                 format: (value) => {

@@ -153,3 +153,42 @@ describe('window should', () => {
         }, 1000);
     });
 });
+
+describe('window should', () => {
+    const testHarness = new OpTestHarness({ Processor, Schema });
+    let opConfig;
+
+    beforeEach(() => {
+        opConfig = {
+            _op: 'window',
+            window_size: 6000,
+            window_type: 'sliding',
+            sliding_window_interval: 3000,
+            time_field: 'time',
+            time_type: 'event'
+        };
+    });
+
+    fit('use sliding windows and assign docs to correct windows ', async () => {
+        const data = [];
+        let time = new Date();
+
+        for (let i = 0; i < 10; i++) {
+            time = new Date(Date.parse(time) + 1000).toISOString();
+            const doc = {
+                time
+            };
+            data.push(doc);
+        }
+
+        await testHarness.initialize({ opConfig });
+
+        let results = await testHarness.run(data);
+
+        // should return one window
+        expect(results.length).toBe(1);
+
+        results = await testHarness.run([{ time: new Date(Date.parse(time) + 10000) }]);
+        expect(results.length).toBe(1);
+    });
+});
