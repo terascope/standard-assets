@@ -1,7 +1,5 @@
 'use strict';
 
-const _ = require('lodash');
-
 const { BatchProcessor } = require('@terascope/job-components');
 
 const DataWindow = require('../__lib/data-window');
@@ -10,7 +8,7 @@ class AccumulateByKey extends BatchProcessor {
     constructor(...args) {
         super(...args);
 
-        this.buckets = {};
+        this.buckets = new Map();
         this.emptySliceCount = 0;
         this.events = this.context.apis.foundation.getSystemEvents();
         this.shuttingDown = false;
@@ -18,17 +16,26 @@ class AccumulateByKey extends BatchProcessor {
 
     _readyToEmpty() {
         return (this.emptySliceCount >= this.opConfig.empty_after)
-            && _.keys(this.buckets).length > 0;
+            && this.buckets.size > 0;
     }
 
     _batchData() {
-        // The return value from this is an array of keyed DataWindows.
         const result = [];
-        _.keys(this.buckets).forEach((key) => {
-            result.push(this.buckets[key]);
-        });
 
-        this.buckets = {};
+        if (this.opConfig.batch_return === true || this.buckets.size > this.opConfig.batch_size) {
+            const dataWindows = this.buckets.keys();
+
+            while (result.length < this.opConfig.batch_size) {
+                const key = dataWindows.next().value;
+                result.push(this.buckets.get(key));
+                this.buckets.delete(key);
+            }
+        } else {
+            for (const dataWindow of this.buckets.values()) {
+                result.push(dataWindow);
+            }
+            this.buckets.clear();
+        }
 
         return result;
     }
@@ -41,11 +48,11 @@ class AccumulateByKey extends BatchProcessor {
 
             if (key === undefined) return;
 
-            if (!this.buckets[key]) {
-                this.buckets[key] = DataWindow.make(key);
+            if (!this.buckets.has(key)) {
+                this.buckets.set(key, DataWindow.make(key));
             }
 
-            this.buckets[key].set(doc);
+            this.buckets.get(key).set(doc);
         });
     }
 

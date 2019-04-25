@@ -14,6 +14,20 @@ class Schema extends ConvictSchema {
                 doc: 'Field to key docs by',
                 default: '_key',
                 format: 'required_String'
+            },
+            batch_return: {
+                doc: 'If true will return arrays of specified batch_size',
+                default: false,
+                format: 'Boolean'
+            },
+            batch_size: {
+                doc: 'Size of batches to return',
+                default: 1000,
+                format: (value) => {
+                    if (!Number.isInteger(value) || value < 1) {
+                        throw new Error('batch size must be an integer greater then 0');
+                    }
+                }
             }
         };
     }

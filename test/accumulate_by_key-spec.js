@@ -94,12 +94,15 @@ describe('accumulate_by_key should', () => {
         results = await testHarness.run([]);
         expect(results.length).toBe(0);
 
-        // After the 3rd empty slice we should see results.
-        // batch_size is 50 so we expect all 300 records back
-        // in one chunk
+        // After the 3rd empty slice we should see results in one chunk
         results = await testHarness.run([]);
         expect(results.length).toBe(4);
-        expect(results[0].asArray().length).toBe(75);
+
+        // check each window result and key value
+        results.forEach((result, i) => {
+            expect(result.asArray().length).toBe(75);
+            expect(result.getMetadata('_key')).toBe(i);
+        });
 
         // Next slice should be back to 0
         results = await testHarness.run([]);
@@ -125,8 +128,14 @@ describe('accumulate_by_key should', () => {
         // Until the third empty slice when we get a chunk of
         // data again.
         results = await testHarness.run([]);
+
+        // verify each data window size and key
         expect(results.length).toBe(4);
-        expect(results[0].asArray().length).toBe(75);
+        results.forEach((result, i) => {
+            expect(result.asArray().length).toBe(75);
+            expect(result.getMetadata('_key')).toBe(i);
+        });
+
 
         // Next slice should be back to 0
         results = await testHarness.run([]);
@@ -146,7 +155,9 @@ describe('accumulate_by_key should', () => {
             opConfig: {
                 _op: 'accumulate_by_key',
                 empty_after: 3,
-                key_field: 'name'
+                key_field: 'name',
+                batch_return: true,
+                batch_size: 2
             }
         });
 
@@ -161,7 +172,7 @@ describe('accumulate_by_key should', () => {
         }
     });
 
-    it('accumulate all results into a single result slice by key field', async () => {
+    it('return the accumulated data in batches if the batch_data is true', async () => {
         // Push 3 sets of data. No data should be returned during accumulation
         let results = await testHarness.run(localData);
         expect(results.length).toBe(0);
@@ -178,15 +189,27 @@ describe('accumulate_by_key should', () => {
         results = await testHarness.run([]);
         expect(results.length).toBe(0);
 
-        // After the 3rd empty slice we should see results.
-        // batch_size is 50 so we expect all 300 records back
-        // in one chunk
+        // After the 3rd empty slice we should see results in 2 chunks
         results = await testHarness.run([]);
-        expect(results.length).toBe(4);
-        expect(results[0].asArray().length).toBe(75);
-        expect(results[0].getMetadata('_key')).toBe('joe');
-        expect(results[1].getMetadata('_key')).toBe('moe');
-        expect(results[2].getMetadata('_key')).toBe('poe');
-        expect(results[3].getMetadata('_key')).toBe('randy');
+        expect(results.length).toBe(2);
+
+        // check each window result and key value
+        results.forEach((result, i) => {
+            expect(result.asArray().length).toBe(75);
+            expect(result.getMetadata('_key')).toBe(names[i]);
+        });
+
+        results = await testHarness.run([]);
+        expect(results.length).toBe(2);
+
+        // check each window result and key value
+        results.forEach((result, i) => {
+            expect(result.asArray().length).toBe(75);
+            expect(result.getMetadata('_key')).toBe(names[i + 2]);
+        });
+
+        // Next slice should be back to 0
+        results = await testHarness.run([]);
+        expect(results.length).toBe(0);
     });
 });
