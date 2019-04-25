@@ -11,8 +11,9 @@ class AccumulateByKey extends BatchProcessor {
         super(...args);
 
         this.buckets = {};
-
         this.emptySliceCount = 0;
+        this.events = this.context.apis.foundation.getSystemEvents();
+        this.shuttingDown = false;
     }
 
     _readyToEmpty() {
@@ -49,10 +50,15 @@ class AccumulateByKey extends BatchProcessor {
     }
 
     onBatch(dataArray) {
+        // on shutdown event return accumulated data
+        this.events.on('worker:shutdown', () => {
+            this.shuttingDown = true;
+        });
+
         if (dataArray.length === 0) this.emptySliceCount++;
         else this._accumulate(dataArray);
 
-        if (this._readyToEmpty()) return this._batchData();
+        if (this._readyToEmpty() || this.shuttingDown === true) return this._batchData();
 
         return [];
     }

@@ -9,6 +9,8 @@ class Accumulate extends BatchProcessor {
 
         this.records = [];
         this.emptySliceCount = 0;
+        this.events = this.context.apis.foundation.getSystemEvents();
+        this.shuttingDown = false;
     }
 
     _readyToEmpty() {
@@ -23,16 +25,20 @@ class Accumulate extends BatchProcessor {
     }
 
     onBatch(dataArray) {
+        // on shutdown event return accumulated data
+        this.events.on('worker:shutdown', () => {
+            this.shuttingDown = true;
+        });
+
         if (dataArray.length === 0) this.emptySliceCount++;
         else this._accumulate(dataArray);
 
-        if (this._readyToEmpty()) {
+        if (this._readyToEmpty() || this.shuttingDown === true) {
             const results = this.records;
             this.records = [];
 
-            if (this.use_data_window === true) {
-                // TODO: the key should be configurable, but is it a key from a doc?  A specific value?
-                return DataWindow.make('key', results);
+            if (this.opConfig.data_window === true && results.length > 0) {
+                return DataWindow.make(this.opConfig.data_window_key, results);
             }
 
             return results;

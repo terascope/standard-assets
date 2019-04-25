@@ -10,10 +10,15 @@ class Schema extends ConvictSchema {
                 default: 10,
                 format: 'Number'
             },
-            use_data_window: {
+            data_window: {
                 doc: 'Option to return results as a data window',
                 default: false,
                 format: 'Boolean'
+            },
+            data_window_key: {
+                doc: 'Data window key',
+                default: undefined,
+                format: '*'
             }
         };
     }
