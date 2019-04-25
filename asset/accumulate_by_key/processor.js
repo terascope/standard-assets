@@ -22,7 +22,7 @@ class AccumulateByKey extends BatchProcessor {
     _batchData() {
         const result = [];
 
-        if (this.opConfig.batch_return === true || this.buckets.size > this.opConfig.batch_size) {
+        if (this.opConfig.batch_return === true && this.buckets.size > this.opConfig.batch_size) {
             const dataWindows = this.buckets.keys();
 
             while (result.length < this.opConfig.batch_size) {
