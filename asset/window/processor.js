@@ -3,12 +3,6 @@
 const { BatchProcessor } = require('@terascope/job-components');
 const DataWindow = require('../__lib/data-window');
 
-/*
-    accumulates data during window period
-    once window expires data is returned
-*/
-
-
 class Window extends BatchProcessor {
     constructor(...args) {
         super(...args);
@@ -23,7 +17,7 @@ class Window extends BatchProcessor {
     }
 
     _setTime(doc) {
-        if (this.opConfig.time_type === 'clock') {
+        if (this.opConfig.window_timer_setting === 'clock') {
             this.time = new Date().getTime();
         } else {
             this.time = this._millisecondTime(doc[this.opConfig.time_field]);
@@ -32,7 +26,7 @@ class Window extends BatchProcessor {
 
     _closeExpiredWindows() {
         for (const key of this.windows.keys()) {
-            if ((this.time - key) > this.opConfig.window_size) {
+            if ((this.time - key) > this.opConfig.window_length) {
                 this.results.push(this.windows.get(key));
                 this.windows.delete(key);
             }
@@ -59,6 +53,7 @@ class Window extends BatchProcessor {
 
     onBatch(dataArray) {
         this.results = [];
+
         this.events.on('workers:shutdown', () => {
             this.shuttingDown = true;
         });
@@ -66,7 +61,7 @@ class Window extends BatchProcessor {
         dataArray.forEach((doc) => {
             if (doc[this.opConfig.time_field] === undefined) return;
 
-            // based on clock or event time
+            // clock or event time
             this._setTime(doc);
 
             this._closeExpiredWindows();
@@ -81,11 +76,11 @@ class Window extends BatchProcessor {
 
         if (this.shuttingDown === true
             // clock timed windows are checked after every slice
-            || (this.opConfig.time_type === 'clock'
-            && (new Date().getTime() - this.last_window) > this.opConfig.window_size)
+            || (this.opConfig.window_timer_setting === 'clock'
+            && (new Date().getTime() - this.last_window) > this.opConfig.window_length)
 
             // event based windows can expire and are returned if no more events are forthcoming
-            || (dataArray.length === 0 && this.opConfig.event_window_expiration > 0 && this.opConfig.time_type === 'event'
+            || (dataArray.length === 0 && this.opConfig.event_window_expiration > 0 && this.opConfig.window_timer_setting === 'event'
             && (new Date().getTime() - this.last_window) > this.opConfig.event_window_expiration)
         ) {
             this._dumpWindows();
