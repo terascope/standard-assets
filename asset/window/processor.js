@@ -16,59 +16,82 @@ class Window extends BatchProcessor {
         this.events = this.context.apis.foundation.getSystemEvents();
         this.shuttingDown = false;
         this.windows = new Map();
+        this.results = [];
     }
 
     _millisecondTime(time) {
         return isNaN(time) ? Date.parse(time) : +time;
     }
 
-    _assigner(doc) {
-        const eventTime = this._millisecondTime(doc[this.opConfig.time_field]);
-
-        if (this.windows.size === 0) {
-            let startTime = eventTime;
-            if (this.opConfig.time_type === 'clock') startTime = new Date().getTime();
-
-            this.windows.set(startTime, DataWindow.make(startTime));
+    _setTime(doc) {
+        if (this.opConfig.time_type === 'clock') {
+            this.time = new Date().getTime();
+        } else {
+            this.time = this._millisecondTime(doc[this.opConfig.time_field]);
         }
+    }
 
-        if (this.opConfig.window_type === 'sliding') {
-            if ((eventTime - _.max(Array.from(this.windows.keys()))
-                > this.opConfig.sliding_window_interval)) {
-                this.windows.set(eventTime, DataWindow.make(eventTime));
-            }
-        }
-
-        for (const window of this.windows.values()) {
-            window.set(doc);
-
-            if (this.opConfig.time_type === 'event') {
-                window.latest_time = eventTime;
+    _closeExpiredWindows() {
+        for (const key of this.windows.keys()) {
+            if ((this.time - key) > this.opConfig.window_size) {
+                this.results.push(this.windows.get(key));
+                this.windows.delete(key);
             }
         }
     }
 
+    _ensureOpenWindow() {
+        if (this.windows.size === 0
+        || (this.opConfig.window_type === 'sliding' && (this.time - this.last_window)
+        >= this.opConfig.sliding_window_interval)) {
+            this.windows.set(this.time, DataWindow.make());
+        }
+    }
+
+    _dumpWindows() {
+        for (const window of this.windows.values()) {
+            this.results.push(window);
+        }
+    }
+
+    _assignWindow(doc) {
+        // add the doc to the correct window(s)
+        for (const window of this.windows.values()) window.set(doc);
+    }
+
     onBatch(dataArray) {
+        this.results = [];
         this.events.on('workers:shutdown', () => {
             this.shuttingDown = true;
         });
 
-        const results = [];
         dataArray.forEach((doc) => {
-            this._assigner(doc);
+            if (doc[this.opConfig.time_field] === undefined) return;
+
+            // based on clock or event time
+            this._setTime(doc);
+
+            this._closeExpiredWindows();
+
+            this._ensureOpenWindow();
+
+            this._assignWindow(doc);
+
+            this.last_window = _.max(Array.from(this.windows.keys()));
         });
 
-        for (const key of this.windows.keys()) {
-            const endTime = this.opConfig.time_type === 'clock' ? new Date().getTime() : this.windows.get(key).latest_time;
-            if ((endTime - key) > this.opConfig.window_size) {
-                // if window is expired then remove from windows and add to results
-                results.push(this.windows.get(key));
-
-                this.windows.delete(key);
-            }
+        if (this.shuttingDown === true
+            // clock timed windows are checked after every slice
+            || (this.opConfig.time_type === 'clock'
+            && (new Date().getTime() - this.last_window) > this.opConfig.window_size)
+            // if event based then a limit on how long to hold the docs makes sense
+            || (dataArray.length === 0 && this.opConfig.event_window_expiration > 0 && this.opConfig.time_type === 'event'
+            && (new Date().getTime() - this.last_window) > this.opConfig.event_window_expiration)
+        ) {
+            this._dumpWindows();
         }
 
-        return results;
+        return this.results;
     }
 }
 

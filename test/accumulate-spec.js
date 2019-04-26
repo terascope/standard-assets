@@ -19,10 +19,11 @@ const testData = [
 ];
 
 describe('accumulate should', () => {
-    const testHarness = new OpTestHarness({ Processor, Schema });
+    let testHarness;
 
     let opConfig;
     beforeEach(async () => {
+        testHarness = new OpTestHarness({ Processor, Schema });
         opConfig = {
             _op: 'accumulate',
             empty_after: 0
@@ -61,24 +62,27 @@ describe('accumulate should', () => {
 });
 
 describe('accumulate should', () => {
-    const testHarness = new OpTestHarness({ Processor, Schema });
+    let testHarness;
 
     const localData = [];
-    beforeAll(async () => {
+
+    for (let i = 0; i < 100; i++) {
+        localData.push(DataEntity.make({
+            id: Math.floor(Math.random() * 1000)
+        }, {
+            _key: i % 3
+        }));
+    }
+
+    beforeEach(async () => {
+        testHarness = new OpTestHarness({ Processor, Schema });
+
         await testHarness.initialize({
             opConfig: {
                 _op: 'accumulate',
                 empty_after: 3
             }
         });
-
-        for (let i = 0; i < 100; i++) {
-            localData.push(DataEntity.make({
-                id: Math.floor(Math.random() * 1000)
-            }, {
-                _key: i % 3
-            }));
-        }
     });
 
     it('accumulate all results into a single result slice', async () => {
@@ -137,10 +141,21 @@ describe('accumulate should', () => {
 });
 
 describe('accumulate should', () => {
-    const testHarness = new OpTestHarness({ Processor, Schema });
+    let testHarness;
 
     const localData = [];
-    beforeAll(async () => {
+
+    for (let i = 0; i < 100; i++) {
+        localData.push(DataEntity.make({
+            id: Math.floor(Math.random() * 1000)
+        }, {
+            _key: i % 3
+        }));
+    }
+
+    beforeEach(async () => {
+        testHarness = new OpTestHarness({ Processor, Schema });
+
         await testHarness.initialize({
             opConfig: {
                 _op: 'accumulate',
@@ -148,14 +163,6 @@ describe('accumulate should', () => {
                 data_window: true
             }
         });
-
-        for (let i = 0; i < 100; i++) {
-            localData.push(DataEntity.make({
-                id: Math.floor(Math.random() * 1000)
-            }, {
-                _key: i % 3
-            }));
-        }
     });
 
     it('accumulate all results into a data window result slice', async () => {
