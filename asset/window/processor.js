@@ -75,7 +75,7 @@ class Window extends BatchProcessor {
         });
 
         if (this.shuttingDown === true
-            // clock timed windows are checked after every slice
+            // clock based windows are checked after every slice
             || (this.opConfig.window_time_setting === 'clock'
             && (new Date().getTime() - this.last_window) > this.opConfig.window_length)
 
