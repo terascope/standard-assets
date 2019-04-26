@@ -1,6 +1,5 @@
 'use strict';
 
-const _ = require('lodash');
 const { BatchProcessor } = require('@terascope/job-components');
 const DataWindow = require('../__lib/data-window');
 
@@ -55,7 +54,6 @@ class Window extends BatchProcessor {
     }
 
     _assignWindow(doc) {
-        // add the doc to the correct window(s)
         for (const window of this.windows.values()) window.set(doc);
     }
 
@@ -77,14 +75,16 @@ class Window extends BatchProcessor {
 
             this._assignWindow(doc);
 
-            this.last_window = _.max(Array.from(this.windows.keys()));
+            // last_window is used in sliding window calc and post slice window expiration
+            this.last_window = Math.max(...Array.from(this.windows.keys()));
         });
 
         if (this.shuttingDown === true
             // clock timed windows are checked after every slice
             || (this.opConfig.time_type === 'clock'
             && (new Date().getTime() - this.last_window) > this.opConfig.window_size)
-            // if event based then a limit on how long to hold the docs makes sense
+
+            // event based windows can expire and are returned if no more events are forthcoming
             || (dataArray.length === 0 && this.opConfig.event_window_expiration > 0 && this.opConfig.time_type === 'event'
             && (new Date().getTime() - this.last_window) > this.opConfig.event_window_expiration)
         ) {
