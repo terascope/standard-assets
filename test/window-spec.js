@@ -30,7 +30,7 @@ describe('window should', () => {
     beforeEach(() => {
         opConfig = {
             _op: 'window',
-            window_size: 1000,
+            window_length: 1000,
             time_field: 'time'
         };
     });
@@ -53,8 +53,9 @@ describe('window should', () => {
     });
 
     it('not return any data if window is not expired', async () => {
-        opConfig.window_size = 30000;
+        opConfig.window_length = 30000;
         await testHarness.initialize({ opConfig });
+
         let results = await testHarness.run(testData);
         expect(results.length).toBe(0);
 
@@ -63,7 +64,7 @@ describe('window should', () => {
     });
 
     it('return data as windows expire', async () => {
-        opConfig.window_size = 7000;
+        opConfig.window_length = 7000;
 
         const data = [];
         let time = new Date();
@@ -110,9 +111,9 @@ describe('window should', () => {
     beforeEach(() => {
         opConfig = {
             _op: 'window',
-            window_size: 100,
+            window_length: 100,
             time_field: 'time',
-            time_type: 'clock',
+            window_time_setting: 'clock',
         };
     });
 
@@ -174,11 +175,11 @@ describe('window should', () => {
     beforeEach(() => {
         opConfig = {
             _op: 'window',
-            window_size: 3000,
+            window_length: 3000,
             window_type: 'sliding',
             sliding_window_interval: 2000,
             time_field: 'time',
-            time_type: 'event'
+            window_time_setting: 'event'
         };
     });
 

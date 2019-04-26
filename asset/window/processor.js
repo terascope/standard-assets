@@ -17,7 +17,7 @@ class Window extends BatchProcessor {
     }
 
     _setTime(doc) {
-        if (this.opConfig.window_timer_setting === 'clock') {
+        if (this.opConfig.window_time_setting === 'clock') {
             this.time = new Date().getTime();
         } else {
             this.time = this._millisecondTime(doc[this.opConfig.time_field]);
@@ -76,11 +76,11 @@ class Window extends BatchProcessor {
 
         if (this.shuttingDown === true
             // clock timed windows are checked after every slice
-            || (this.opConfig.window_timer_setting === 'clock'
+            || (this.opConfig.window_time_setting === 'clock'
             && (new Date().getTime() - this.last_window) > this.opConfig.window_length)
 
             // event based windows can expire and are returned if no more events are forthcoming
-            || (dataArray.length === 0 && this.opConfig.event_window_expiration > 0 && this.opConfig.window_timer_setting === 'event'
+            || (dataArray.length === 0 && this.opConfig.event_window_expiration > 0 && this.opConfig.window_time_setting === 'event'
             && (new Date().getTime() - this.last_window) > this.opConfig.event_window_expiration)
         ) {
             this._dumpWindows();

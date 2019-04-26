@@ -10,7 +10,7 @@ class Schema extends ConvictSchema {
                 default: '@timestamp',
                 format: 'required_String'
             },
-            window_timer_setting: {
+            window_time_setting: {
                 doc: 'Sets window timer to clock time or event time',
                 default: 'event',
                 format: ['event', 'clock']
@@ -33,7 +33,7 @@ class Schema extends ConvictSchema {
                 doc: 'Determines when to start a new sliding window, in milliseconds',
                 default: 0,
                 format: (value) => {
-                    if (!Number.isInteger(value) || value <= 0) {
+                    if (!Number.isInteger(value) || value < 0) {
                         throw new Error('window_size must be an integer greater than 0');
                     }
                 }
