@@ -179,7 +179,8 @@ describe('window should', () => {
             window_type: 'sliding',
             sliding_window_interval: 2000,
             time_field: 'time',
-            window_time_setting: 'event'
+            window_time_setting: 'event',
+            event_window_expiration: 2
         };
     });
 
@@ -198,7 +199,6 @@ describe('window should', () => {
         await testHarness.initialize({ opConfig });
         let results = await testHarness.run(data.slice(0, 10));
 
-        // 10 records with
         expect(results.length).toBe(3);
         results.forEach(window => expect(window.asArray().length).toBe(4));
 
@@ -208,5 +208,20 @@ describe('window should', () => {
         results = await testHarness.run(data.slice(10,));
         expect(results.length).toBe(5);
         results.forEach(window => expect(window.asArray().length).toBe(4));
+
+        results = await testHarness.run([]);
+        expect(results.length).toBe(0);
+
+        results = await testHarness.run([]);
+        expect(results.length).toBe(0);
+
+        // event windows expire here and data should be returned
+        results = await testHarness.run([]);
+        expect(results.length).toBe(2);
+        expect(results[0].asArray().length).toBe(4);
+        expect(results[1].asArray().length).toBe(2);
+
+        results = await testHarness.run([]);
+        expect(results.length).toBe(0);
     });
 });

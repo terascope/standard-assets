@@ -10,6 +10,7 @@ class Window extends BatchProcessor {
         this.shuttingDown = false;
         this.windows = new Map();
         this.results = [];
+        this.empty_slice_count = 0;
     }
 
     _millisecondTime(time) {
@@ -35,7 +36,9 @@ class Window extends BatchProcessor {
 
     _ensureOpenWindow() {
         if (this.windows.size === 0
-        || (this.opConfig.window_type === 'sliding' && (this.time - this.last_window)
+        || (this.opConfig.window_type === 'sliding'
+        // current time - most recent window start time > interval time
+        && (this.time - Math.max(...Array.from(this.windows.keys())))
         >= this.opConfig.sliding_window_interval)) {
             this.windows.set(this.time, DataWindow.make());
         }
@@ -53,8 +56,17 @@ class Window extends BatchProcessor {
         for (const window of this.windows.values()) window.set(doc);
     }
 
+    _eventWindowsExpired() {
+        return this.opConfig.window_time_setting === 'event' && this.opConfig.event_window_expiration !== 0
+        && this.empty_slice_count > this.opConfig.event_window_expiration;
+    }
+
     onBatch(dataArray) {
         this.results = [];
+
+        // need to track empty slices for event window expiration
+        if (dataArray.length === 0) this.empty_slice_count += 1;
+        else this.empty_slice_count = 0;
 
         this.events.on('workers:shutdown', () => {
             this.shuttingDown = true;
@@ -70,9 +82,6 @@ class Window extends BatchProcessor {
             this._ensureOpenWindow();
 
             this._assignWindow(doc);
-
-            // last_window is used in sliding window calc and event window expiration
-            this.last_window = Math.max(...Array.from(this.windows.keys()));
         });
 
         if (this.opConfig.window_time_setting === 'clock') {
@@ -80,11 +89,7 @@ class Window extends BatchProcessor {
             this._closeExpiredWindows();
         }
 
-        if (this.shuttingDown === true
-            // check if event windows are expired
-            || (dataArray.length === 0 && this.opConfig.event_window_expiration > 0 && this.opConfig.window_time_setting === 'event'
-            && (new Date().getTime() - this.last_window) > this.opConfig.event_window_expiration)
-        ) {
+        if (this.shuttingDown === true || this._eventWindowsExpired()) {
             this._dumpWindows();
         }
 
