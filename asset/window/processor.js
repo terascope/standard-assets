@@ -63,7 +63,6 @@ class Window extends BatchProcessor {
         dataArray.forEach((doc) => {
             if (doc[this.opConfig.time_field] === undefined) return;
 
-            // clock or event time
             this._setTime(doc);
 
             this._closeExpiredWindows();
@@ -72,18 +71,17 @@ class Window extends BatchProcessor {
 
             this._assignWindow(doc);
 
-            // last_window is used in sliding window calc and post slice window expiration
+            // last_window is used in sliding window calc and event window expiration
             this.last_window = Math.max(...Array.from(this.windows.keys()));
         });
 
-        // clock time based windows are also checked after every slice
         if (this.opConfig.window_time_setting === 'clock') {
             this._setTime();
             this._closeExpiredWindows();
         }
 
         if (this.shuttingDown === true
-            // can return event based windows if no incoming data over a period of time
+            // check if event windows are expired
             || (dataArray.length === 0 && this.opConfig.event_window_expiration > 0 && this.opConfig.window_time_setting === 'event'
             && (new Date().getTime() - this.last_window) > this.opConfig.event_window_expiration)
         ) {
