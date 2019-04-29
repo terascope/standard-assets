@@ -38,7 +38,7 @@ class Window extends BatchProcessor {
         if (this.windows.size === 0
         || (this.opConfig.window_type === 'sliding'
         // current time - most recent window start time > interval time
-        && (this.time - Math.max(...Array.from(this.windows.keys())))
+        && (this.time - Math.max([...this.windows.keys()]))
         >= this.opConfig.sliding_window_interval)) {
             this.windows.set(this.time, DataWindow.make());
         }
@@ -53,7 +53,9 @@ class Window extends BatchProcessor {
     }
 
     _assignWindow(doc) {
-        for (const window of this.windows.values()) window.set(doc);
+        for (const window of this.windows.values()) {
+            window.set(doc);
+        }
     }
 
     _eventWindowsExpired() {

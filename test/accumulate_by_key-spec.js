@@ -23,7 +23,7 @@ for (let i = 0; i < data.length; i++) {
 describe('accumulate_by_key should', () => {
     const testHarness = new OpTestHarness({ Processor, Schema });
 
-    beforeAll(async () => {
+    beforeEach(async () => {
         await testHarness.initialize({ opConfig });
     });
 
@@ -60,21 +60,22 @@ describe('accumulate_by_key should', () => {
     const testHarness = new OpTestHarness({ Processor, Schema });
 
     const localData = [];
-    beforeAll(async () => {
+
+    for (let i = 0; i < 100; i++) {
+        localData.push(DataEntity.make({
+            id: Math.floor(Math.random() * 1000)
+        }, {
+            _key: i % 4
+        }));
+    }
+
+    beforeEach(async () => {
         await testHarness.initialize({
             opConfig: {
                 _op: 'accumulate_by_key',
                 empty_after: 3
             }
         });
-
-        for (let i = 0; i < 100; i++) {
-            localData.push(DataEntity.make({
-                id: Math.floor(Math.random() * 1000)
-            }, {
-                _key: i % 4
-            }));
-        }
     });
 
     it('accumulate all results into a single result slice', async () => {
