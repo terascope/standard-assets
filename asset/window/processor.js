@@ -45,6 +45,8 @@ class Window extends BatchProcessor {
         for (const window of this.windows.values()) {
             this.results.push(window);
         }
+
+        this.windows.clear();
     }
 
     _assignWindow(doc) {
@@ -74,12 +76,14 @@ class Window extends BatchProcessor {
             this.last_window = Math.max(...Array.from(this.windows.keys()));
         });
 
-        if (this.shuttingDown === true
-            // clock based windows are checked after every slice
-            || (this.opConfig.window_time_setting === 'clock'
-            && (new Date().getTime() - this.last_window) > this.opConfig.window_length)
+        // clock time based windows are also checked after every slice
+        if (this.opConfig.window_time_setting === 'clock') {
+            this._setTime();
+            this._closeExpiredWindows();
+        }
 
-            // event based windows can expire and are returned if no more events are forthcoming
+        if (this.shuttingDown === true
+            // can return event based windows if no incoming data over a period of time
             || (dataArray.length === 0 && this.opConfig.event_window_expiration > 0 && this.opConfig.window_time_setting === 'event'
             && (new Date().getTime() - this.last_window) > this.opConfig.event_window_expiration)
         ) {
