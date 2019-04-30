@@ -20,7 +20,7 @@ class DataWindow extends DataEntity {
 
         if (docs !== undefined) {
             if (_.isArray(docs)) {
-                newWindow.dataArray = DataEntity.makeArray(docs);
+                newWindow.dataArray = docs;
             } else {
                 newWindow.set(docs);
             }
@@ -30,9 +30,7 @@ class DataWindow extends DataEntity {
     }
 
     set(item) {
-        if (DataEntity.isDataEntity(item)) {
-            this.dataArray.push(item);
-        }
+        this.dataArray.push(DataEntity.make(item));
     }
 
     get(item) {
