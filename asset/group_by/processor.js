@@ -23,8 +23,6 @@ class GroupBy extends BatchProcessor {
     }
 
     onBatch(dataArray) {
-        this.groups.clear();
-
         dataArray.forEach((doc) => {
             if (doc instanceof DataWindow) {
                 doc.asArray().forEach(item => this._group(item));
@@ -33,8 +31,14 @@ class GroupBy extends BatchProcessor {
             }
         });
 
-        return [...this.groups]
-            .reduce((results, [key, value]) => [...results, DataWindow.make(key, value)], []);
+        const results = [];
+
+        for (const [key, value] of this.groups.entries()) {
+            results.push(DataWindow.make(key, value));
+        }
+
+        this.groups.clear();
+        return results;
     }
 }
 
