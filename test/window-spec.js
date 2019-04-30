@@ -1,6 +1,7 @@
 'use strict';
 
 
+const _ = require('lodash');
 const util = require('util');
 const { OpTestHarness } = require('teraslice-test-harness');
 const Processor = require('../asset/window/processor.js');
@@ -102,6 +103,70 @@ describe('window should', () => {
         results = await testHarness.run(data.slice(18,));
         expect(results.length).toBe(0);
     });
+
+    it('handle data with same times', async () => {
+        opConfig.window_length = 1000;
+        opConfig.event_window_expiration = 2;
+
+        const data = [];
+        const time = new Date();
+        for (let i = 0; i < 5; i++) {
+            const doc = {
+                time: time.toISOString(),
+                id: i
+            };
+            data.push(doc);
+        }
+
+        await testHarness.initialize({ opConfig });
+        let results = await testHarness.run(data);
+        expect(results.length).toBe(0);
+
+        results = await testHarness.run([]);
+        expect(results.length).toBe(0);
+
+        results = await testHarness.run([]);
+        expect(results.length).toBe(0);
+
+        results = await testHarness.run([]);
+        expect(results.length).toBe(1);
+        expect(results[0].asArray().length).toBe(5);
+    });
+
+    fit('handle out of order data', async () => {
+        opConfig.window_length = 5000;
+        opConfig.event_window_expiration = 1;
+
+        const time = new Date();
+
+        const data = [
+            {
+                id: 1,
+                time: time.getTime()
+            },
+            {
+                id: 2,
+                time: time.getTime() - 1000
+            },
+            {
+                id: 5,
+                time: time.getTime() + 6000
+            }
+        ];
+
+
+        await testHarness.initialize({ opConfig });
+        let results = await testHarness.run(data);
+        expect(results.length).toBe(1);
+        expect(results[0].asArray().length).toBe(2);
+
+        results = await testHarness.run([]);
+        expect(results.length).toBe(0);
+
+        results = await testHarness.run([]);
+        expect(results.length).toBe(1);
+        expect(results[0].asArray().length).toBe(1);
+    });
 });
 
 describe('window should', () => {
@@ -117,7 +182,7 @@ describe('window should', () => {
         };
     });
 
-    it('window data based on clock time', async () => {
+    it('assign window data based on clock time', async () => {
         const data = [];
 
         for (let i = 0; i < 3000; i++) {
