@@ -133,7 +133,7 @@ describe('window should', () => {
         expect(results[0].asArray().length).toBe(5);
     });
 
-    fit('handle out of order data', async () => {
+    it('handle out of order data', async () => {
         opConfig.window_length = 5000;
         opConfig.event_window_expiration = 1;
 
