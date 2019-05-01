@@ -14,7 +14,8 @@ class GroupBy extends BatchProcessor {
     }
 
     _group(doc) {
-        const groupByValue = doc[this.opConfig.field_name];
+        const groupByValue = this.opConfig.field === undefined ? doc.getMetadata('_key') : doc[this.opConfig.field];
+
         if (!this.groups.has(groupByValue)) {
             this.groups.set(groupByValue, []);
         }

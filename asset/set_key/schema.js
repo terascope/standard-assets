@@ -6,9 +6,9 @@ class Schema extends ConvictSchema {
     build() {
         return {
             field: {
-                doc: 'Name of field to group each record by',
-                default: undefined,
-                format: '*',
+                doc: 'Field name of value used to set key',
+                default: '_id',
+                format: 'required_String',
             }
         };
     }

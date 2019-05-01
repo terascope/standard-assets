@@ -1,14 +1,10 @@
 'use strict';
 
+const { DataEntity } = require('@terascope/job-components');
 const { OpTestHarness } = require('teraslice-test-harness');
 const Processor = require('../asset/group_by/processor.js');
 const Schema = require('../asset/group_by/schema.js');
 const DataWindow = require('../asset/__lib/data-window');
-
-const opConfig = {
-    _op: 'group_by',
-    field_name: 'id'
-};
 
 const testData = [
     {
@@ -32,6 +28,11 @@ const testData = [
 ];
 
 describe('group_by should', () => {
+    const opConfig = {
+        _op: 'group_by',
+        field: 'id'
+    };
+
     const testHarness = new OpTestHarness({ Processor, Schema });
 
     beforeAll(async () => {
@@ -77,5 +78,35 @@ describe('group_by should', () => {
 
         expect(results[2].asArray().length).toBe(3);
         expect(results[2].getMetadata('_key')).toBe(3);
+    });
+});
+
+describe('group_by should', () => {
+    const opConfig = {
+        _op: 'group_by'
+    };
+
+    const testHarness = new OpTestHarness({ Processor, Schema });
+
+    beforeAll(async () => {
+        await testHarness.initialize({ opConfig });
+    });
+
+    it('should group by metadata key if no field name is given', async () => {
+        const keyedTestData = [{ id: 1 }, { id: 2 }, { id: 2 }, { id: 2 }, { id: 3 }, { id: 3 }]
+            .map(doc => DataEntity.make(doc, { _key: doc.id }));
+
+        const results = await testHarness.run(keyedTestData);
+
+        expect(results.length).toBe(3);
+
+        expect(results[0].getMetadata('_key')).toBe(1);
+        expect(results[0].asArray().length).toBe(1);
+
+        expect(results[1].getMetadata('_key')).toBe(2);
+        expect(results[1].asArray().length).toBe(3);
+
+        expect(results[2].getMetadata('_key')).toBe(3);
+        expect(results[2].asArray().length).toBe(2);
     });
 });
