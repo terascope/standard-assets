@@ -8,7 +8,7 @@ class Schema extends ConvictSchema {
             field: {
                 doc: 'Name of field to group each record by',
                 default: undefined,
-                format: '*',
+                format: 'String',
             }
         };
     }
