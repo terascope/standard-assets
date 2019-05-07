@@ -1,7 +1,6 @@
 'use strict';
 
 
-const _ = require('lodash');
 const util = require('util');
 const { OpTestHarness } = require('teraslice-test-harness');
 const Processor = require('../asset/window/processor.js');
@@ -32,7 +31,8 @@ describe('window should', () => {
         opConfig = {
             _op: 'window',
             window_length: 1000,
-            time_field: 'time'
+            time_field: 'time',
+            event_window_expiration: 1
         };
     });
 
@@ -54,6 +54,7 @@ describe('window should', () => {
     });
 
     it('not return any data if window is not expired', async () => {
+        opConfig.event_window_expiration = 30000;
         opConfig.window_length = 30000;
         await testHarness.initialize({ opConfig });
 
@@ -66,9 +67,11 @@ describe('window should', () => {
 
     it('return data as windows expire', async () => {
         opConfig.window_length = 7000;
+        opConfig.event_window_expiration = 100;
 
         const data = [];
         let time = new Date();
+
         for (let i = 0; i < 20; i++) {
             time = new Date(Date.parse(time) + 1000).toISOString();
             const doc = {
@@ -102,6 +105,17 @@ describe('window should', () => {
 
         results = await testHarness.run(data.slice(18,));
         expect(results.length).toBe(0);
+
+        // all event windows should be expired by now
+        await setTimeoutPromise(250)
+            .then(() => testHarness.run([]))
+            .then((window) => {
+                expect(window.length).toBe(1);
+                expect(window[0].asArray().length).toBe(4);
+            });
+
+        results = await testHarness.run([]);
+        expect(results.length).toBe(0);
     });
 
     it('handle data with same times', async () => {
@@ -122,20 +136,21 @@ describe('window should', () => {
         let results = await testHarness.run(data);
         expect(results.length).toBe(0);
 
-        results = await testHarness.run([]);
-        expect(results.length).toBe(0);
+        // all event windows should be expired by now
+        await setTimeoutPromise(250)
+            .then(() => testHarness.run([]))
+            .then((window) => {
+                expect(window.length).toBe(1);
+                expect(window[0].asArray().length).toBe(5);
+            });
 
         results = await testHarness.run([]);
         expect(results.length).toBe(0);
-
-        results = await testHarness.run([]);
-        expect(results.length).toBe(1);
-        expect(results[0].asArray().length).toBe(5);
     });
 
     it('handle out of order data', async () => {
         opConfig.window_length = 5000;
-        opConfig.event_window_expiration = 1;
+        opConfig.event_window_expiration = 100;
 
         const time = new Date();
 
@@ -160,12 +175,16 @@ describe('window should', () => {
         expect(results.length).toBe(1);
         expect(results[0].asArray().length).toBe(2);
 
-        results = await testHarness.run([]);
-        expect(results.length).toBe(0);
+        // all event windows should be expired by now
+        await setTimeoutPromise(250)
+            .then(() => testHarness.run([]))
+            .then((window) => {
+                expect(window.length).toBe(1);
+                expect(window[0].asArray().length).toBe(1);
+            });
 
         results = await testHarness.run([]);
-        expect(results.length).toBe(1);
-        expect(results[0].asArray().length).toBe(1);
+        expect(results.length).toBe(0);
     });
 });
 
@@ -245,7 +264,7 @@ describe('window should', () => {
             sliding_window_interval: 2000,
             time_field: 'time',
             window_time_setting: 'event',
-            event_window_expiration: 2
+            event_window_expiration: 100
         };
     });
 
@@ -274,17 +293,14 @@ describe('window should', () => {
         expect(results.length).toBe(5);
         results.forEach(window => expect(window.asArray().length).toBe(4));
 
-        results = await testHarness.run([]);
-        expect(results.length).toBe(0);
-
-        results = await testHarness.run([]);
-        expect(results.length).toBe(0);
-
-        // event windows expire here and data should be returned
-        results = await testHarness.run([]);
-        expect(results.length).toBe(2);
-        expect(results[0].asArray().length).toBe(4);
-        expect(results[1].asArray().length).toBe(2);
+        // all event windows should be expired by now
+        await setTimeoutPromise(250)
+            .then(() => testHarness.run([]))
+            .then((window) => {
+                expect(window.length).toBe(2);
+                expect(window[0].asArray().length).toBe(4);
+                expect(window[1].asArray().length).toBe(2);
+            });
 
         results = await testHarness.run([]);
         expect(results.length).toBe(0);

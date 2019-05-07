@@ -10,7 +10,6 @@ class Window extends BatchProcessor {
         this.shuttingDown = false;
         this.windows = new Map();
         this.results = [];
-        this.empty_slice_count = 0;
     }
 
     _millisecondTime(time) {
@@ -27,7 +26,7 @@ class Window extends BatchProcessor {
 
     _closeExpiredWindows() {
         for (const key of this.windows.keys()) {
-            if ((this.time - key) > this.opConfig.window_length) {
+            if (this.time - key > this.opConfig.window_length) {
                 this.results.push(this.windows.get(key));
                 this.windows.delete(key);
             }
@@ -58,17 +57,8 @@ class Window extends BatchProcessor {
         }
     }
 
-    _eventWindowsExpired() {
-        return this.opConfig.window_time_setting === 'event' && this.opConfig.event_window_expiration !== 0
-        && this.empty_slice_count > this.opConfig.event_window_expiration;
-    }
-
     onBatch(dataArray) {
         this.results = [];
-
-        // need to track empty slices for event window expiration
-        if (dataArray.length === 0) this.empty_slice_count += 1;
-        else this.empty_slice_count = 0;
 
         this.events.on('workers:shutdown', () => {
             this.shuttingDown = true;
@@ -91,7 +81,18 @@ class Window extends BatchProcessor {
             this._closeExpiredWindows();
         }
 
-        if (this.shuttingDown === true || this._eventWindowsExpired()) {
+        // used for event based windows expiration
+        if (dataArray.length === 0 && this.opConfig.window_time_setting === 'event') {
+            this.time = new Date().getTime();
+            for (const [key, value] of this.windows.entries()) {
+                if (this.time - value.getMetadata('createdAt') > this.opConfig.event_window_expiration) {
+                    this.results.push(this.windows.get(key));
+                    this.windows.delete(key);
+                }
+            }
+        }
+
+        if (this.shuttingDown === true) {
             this._dumpWindows();
         }
 
