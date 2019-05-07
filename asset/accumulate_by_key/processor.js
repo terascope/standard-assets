@@ -21,13 +21,15 @@ class AccumulateByKey extends BatchProcessor {
 
     _batchData() {
         const result = [];
+        let resultSize = 0;
 
-        if (this.opConfig.batch_return === true && this.buckets.size > this.opConfig.batch_size) {
-            const dataWindows = this.buckets.keys();
+        if (this.opConfig.batch_return === true) {
+            const dataWindowKeys = this.buckets.keys();
 
-            while (result.length < this.opConfig.batch_size) {
-                const key = dataWindows.next().value;
+            while (resultSize < this.opConfig.batch_size && this.buckets.size !== 0) {
+                const key = dataWindowKeys.next().value;
                 result.push(this.buckets.get(key));
+                resultSize += this.buckets.get(key).asArray().length;
                 this.buckets.delete(key);
             }
         } else {
@@ -44,9 +46,16 @@ class AccumulateByKey extends BatchProcessor {
         this.emptySliceCount = 0;
 
         dataArray.forEach((doc) => {
-            const key = this.opConfig.key_field === '_key' ? doc.getMetadata('_key') : doc[this.opConfig.key_field];
+            let key;
+
+            if (this.opConfig.key_field === '_key') key = doc.getMetadata('_key');
+            else key = doc[this.opConfig.key_field];
 
             if (key === undefined) return;
+
+            if (Buffer.isBuffer(key)) {
+                key = key.toString('utf8');
+            }
 
             if (!this.buckets.has(key)) {
                 this.buckets.set(key, DataWindow.make(key));

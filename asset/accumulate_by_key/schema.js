@@ -28,6 +28,16 @@ class Schema extends ConvictSchema {
                         throw new Error('batch size must be an integer greater then 0');
                     }
                 }
+            },
+            uniq_values: {
+                doc: 'Only return uniq values',
+                default: false,
+                format: 'Boolean'
+            },
+            dedup_field: {
+                doc: 'Field to dedup on',
+                default: '_id',
+                format: 'String'
             }
         };
     }

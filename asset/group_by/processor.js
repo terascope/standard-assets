@@ -14,7 +14,14 @@ class GroupBy extends BatchProcessor {
     }
 
     _group(doc) {
-        const groupByValue = this.opConfig.field === undefined ? doc.getMetadata('_key') : doc[this.opConfig.field];
+        let groupByValue;
+
+        if (this.opConfig.field === 'metadata_key') groupByValue = DataWindow.getMetadata(doc, '_key');
+        else groupByValue = doc[this.opConfig.field];
+
+        if (Buffer.isBuffer(groupByValue)) {
+            groupByValue.toString('utf8');
+        }
 
         if (!this.groups.has(groupByValue)) {
             this.groups.set(groupByValue, []);
@@ -35,7 +42,9 @@ class GroupBy extends BatchProcessor {
         const results = [];
 
         for (const [key, value] of this.groups.entries()) {
-            results.push(DataWindow.make(key, value));
+            const newDataWindow = DataWindow.make(key, value);
+            newDataWindow.key_no_location = key;
+            results.push(newDataWindow);
         }
 
         this.groups.clear();

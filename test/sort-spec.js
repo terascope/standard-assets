@@ -11,11 +11,10 @@ const testData = [
         id: 1
     },
     {
-        id: 2,
-        type: 'string'
+        id: 3
     },
     {
-        id: 3
+        id: 2
     }
 ];
 
@@ -118,6 +117,51 @@ describe('sort should', () => {
         const dataEntities = DataEntity.makeArray(testData);
         const results = await testHarness.run(dataEntities);
         expect(results.length).toBe(3);
+
+        let next = 1;
+        results.forEach((doc) => {
+            expect(doc.id).toBe(next);
+            next += 1;
+        });
+    });
+});
+
+describe('sort should', () => {
+    const testHarness = new OpTestHarness({ Processor, Schema });
+
+    beforeAll(async () => {
+        await testHarness.initialize({
+            opConfig: {
+                _op: 'sort',
+                sort_field: 'date'
+            }
+        });
+    });
+
+    const dateData = [
+        {
+            id: 3,
+            date: '2019-05-03T20:02:00.000Z'
+        },
+        {
+            id: 1,
+            date: '2019-05-03T20:01:00.000Z'
+        },
+        {
+            id: 2,
+            date: '2019-05-03T20:01:00.000Z'
+        },
+        {
+            id: 4,
+            date: '2019-05-03T20:03:00.000Z'
+        }
+    ];
+
+    it('sort dates correctly', async () => {
+        const dataEntities = DataEntity.makeArray(dateData);
+        const results = await testHarness.run(dataEntities);
+
+        expect(results.length).toBe(4);
 
         let next = 1;
         results.forEach((doc) => {

@@ -147,7 +147,7 @@ describe('accumulate_by_key should', () => {
 describe('accumulate_by_key should', () => {
     const testHarness = new OpTestHarness({ Processor, Schema });
 
-    const names = ['joe', 'moe', 'poe', 'randy'];
+    const names = ['joe', 'moe', 'poe', 'randy', 'fin'];
 
     const localData = [];
     beforeAll(async () => {
@@ -157,12 +157,12 @@ describe('accumulate_by_key should', () => {
                 empty_after: 3,
                 key_field: 'name',
                 batch_return: true,
-                batch_size: 2
+                batch_size: 150
             }
         });
 
-        for (let i = 0; i < 100; i++) {
-            const mod = i % 4;
+        for (let i = 0; i < 125; i++) {
+            const mod = i % 5;
             localData.push(DataEntity.make({
                 id: Math.floor(Math.random() * 1000),
                 name: names[mod]
@@ -189,7 +189,8 @@ describe('accumulate_by_key should', () => {
         results = await testHarness.run([]);
         expect(results.length).toBe(0);
 
-        // After the 3rd empty slice we should see results in 2 chunks
+        // After the 3rd empty slice we should see results
+        // each window has 75 results
         results = await testHarness.run([]);
         expect(results.length).toBe(2);
 
@@ -208,7 +209,14 @@ describe('accumulate_by_key should', () => {
             expect(result.getMetadata('_key')).toBe(names[i + 2]);
         });
 
-        // Next slice should be back to 0
+        // Next slice should return data
+        results = await testHarness.run([]);
+        expect(results.length).toBe(1);
+        results.forEach((result) => {
+            expect(result.asArray().length).toBe(75);
+            expect(result.getMetadata('_key')).toBe('fin');
+        });
+
         results = await testHarness.run([]);
         expect(results.length).toBe(0);
     });
