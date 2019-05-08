@@ -62,7 +62,7 @@ describe('dedup_by', () => {
     const opConfig = {
         _op: 'dedup',
         dedup_field: 'name',
-        adjust_times: true
+        adjust_time: true
     };
 
     const testHarness = new OpTestHarness({ Processor, Schema });

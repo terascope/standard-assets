@@ -10,7 +10,7 @@ class Schema extends ConvictSchema {
                 default: '_id',
                 format: 'String',
             },
-            adjust_times: {
+            adjust_time: {
                 doc: 'Adjust first and last seen',
                 default: false,
                 format: 'Boolean'

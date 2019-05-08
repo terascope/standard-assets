@@ -18,14 +18,13 @@ class Accumulate extends BatchProcessor {
     }
 
     _accumulate(dataArray) {
-        // Empty slices need to be together
+        // reset empty slice count if break in incoming data
         this.emptySliceCount = 0;
 
         dataArray.forEach(doc => this.records.push(doc));
     }
 
     onBatch(dataArray) {
-        // on shutdown event return accumulated data
         this.events.on('worker:shutdown', () => {
             this.shuttingDown = true;
         });

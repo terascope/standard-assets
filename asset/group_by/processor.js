@@ -43,7 +43,6 @@ class GroupBy extends BatchProcessor {
 
         for (const [key, value] of this.groups.entries()) {
             const newDataWindow = DataWindow.make(key, value);
-            newDataWindow.key_no_location = key;
             results.push(newDataWindow);
         }
 
