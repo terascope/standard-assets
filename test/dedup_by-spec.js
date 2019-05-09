@@ -10,7 +10,7 @@ const Schema = require('../asset/dedup_by/schema.js');
 describe('dedup should', () => {
     const opConfig = {
         _op: 'dedup',
-        dedup_field: 'name'
+        field: 'name'
     };
 
     const testHarness = new OpTestHarness({ Processor, Schema });
@@ -61,7 +61,7 @@ describe('dedup should', () => {
 describe('dedup_by', () => {
     const opConfig = {
         _op: 'dedup',
-        dedup_field: 'name',
+        field: 'name',
         adjust_time: true
     };
 

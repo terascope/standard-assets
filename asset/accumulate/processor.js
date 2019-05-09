@@ -32,13 +32,9 @@ class Accumulate extends BatchProcessor {
         if (dataArray.length === 0) this.emptySliceCount++;
         else this._accumulate(dataArray);
 
-        if (this._readyToEmpty() || this.shuttingDown === true) {
-            const results = this.records;
+        if ((this._readyToEmpty() || this.shuttingDown === true) && this.records.length > 0) {
+            const results = DataWindow.make(this.opConfig.data_window_key, this.records);
             this.records = [];
-
-            if (this.opConfig.data_window === true && results.length > 0) {
-                return DataWindow.make(this.opConfig.data_window_key, results);
-            }
 
             return results;
         }

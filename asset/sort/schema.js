@@ -5,7 +5,7 @@ const { ConvictSchema } = require('@terascope/job-components');
 class Schema extends ConvictSchema {
     build() {
         return {
-            sort_field: {
+            field: {
                 doc: 'The field in the input records to use for sorting',
                 default: '',
                 format: 'String',

@@ -5,7 +5,7 @@ const { ConvictSchema } = require('@terascope/job-components');
 class Schema extends ConvictSchema {
     build() {
         return {
-            dedup_field: {
+            field: {
                 doc: 'field to dedup records on',
                 default: '_id',
                 format: 'String',

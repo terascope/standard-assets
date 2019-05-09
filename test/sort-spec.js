@@ -25,7 +25,7 @@ describe('sort should', () => {
         await testHarness.initialize({
             opConfig: {
                 _op: 'sort',
-                sort_field: 'id'
+                field: 'id'
             }
         });
     });
@@ -54,7 +54,7 @@ describe('sort should', () => {
     beforeEach(async () => {
         opConfig = {
             _op: 'sort',
-            sort_field: 'id'
+            field: 'id'
         };
     });
 
@@ -107,7 +107,7 @@ describe('sort should', () => {
         await testHarness.initialize({
             opConfig: {
                 _op: 'sort',
-                sort_field: 'id'
+                field: 'id'
             }
         });
     });
@@ -133,7 +133,7 @@ describe('sort should', () => {
         await testHarness.initialize({
             opConfig: {
                 _op: 'sort',
-                sort_field: 'date'
+                field: 'date'
             }
         });
     });
