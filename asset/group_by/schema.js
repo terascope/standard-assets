@@ -7,7 +7,7 @@ class Schema extends ConvictSchema {
         return {
             field: {
                 doc: 'Name of field to group each record by',
-                default: 'metadata_key',
+                default: '',
                 format: 'String',
             }
         };

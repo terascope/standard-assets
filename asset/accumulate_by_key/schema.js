@@ -12,8 +12,8 @@ class Schema extends ConvictSchema {
             },
             key_field: {
                 doc: 'Field to key docs by',
-                default: '_key',
-                format: 'required_String'
+                default: '',
+                format: 'String'
             },
             batch_return: {
                 doc: 'If true will return arrays of specified batch_size',

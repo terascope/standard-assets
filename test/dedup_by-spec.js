@@ -1,6 +1,7 @@
 'use strict';
 
 const { OpTestHarness } = require('teraslice-test-harness');
+const { DataEntity } = require('@terascope/job-components');
 const DataWindow = require('../asset/__lib/data-window');
 const Processor = require('../asset/dedup_by/processor.js');
 const Schema = require('../asset/dedup_by/schema.js');
@@ -15,11 +16,8 @@ describe('dedup should', () => {
 
     const testHarness = new OpTestHarness({ Processor, Schema });
 
-    beforeAll(async () => {
-        await testHarness.initialize({ opConfig });
-    });
-
     it('generate an empty result if no input data', async () => {
+        await testHarness.initialize({ opConfig });
         const results = await testHarness.run([]);
         expect(results.length).toBe(0);
     });
@@ -31,9 +29,43 @@ describe('dedup should', () => {
             { id: 3, name: 'bob' }, { id: 3, name: 'mel' }
         ];
 
+        await testHarness.initialize({ opConfig });
         const results = await testHarness.run(keyedTestData);
         expect(results.length).toBe(3);
         expect(results).toEqual([{ id: 1, name: 'roy' }, { id: 2, name: 'bob' }, { id: 3, name: 'mel' }]);
+    });
+
+    it('dedup data windows using the metadata key', async () => {
+        const keyedTestData = [
+            DataWindow.make(1, [DataEntity.make({ id: 1, name: 'roy' }, { _key: 'roy' })]),
+            DataWindow.make(2, [
+                DataEntity.make({ id: 2, name: 'roy' }, { _key: 'roy' }),
+                DataEntity.make({ id: 2, name: 'bob' }, { _key: 'bob' }),
+                DataEntity.make({ id: 2, name: 'roy' }, { _key: 'roy' })]),
+            DataWindow.make(3, [
+                DataEntity.make({ id: 3, name: 'bob' }, { _key: 'bob' }),
+                DataEntity.make({ id: 3, name: 'mel' }, { _key: 'mel' })
+            ])
+        ];
+
+        const nOpConfig = {
+            _op: 'dedup'
+        };
+
+        await testHarness.initialize({ opConfig: nOpConfig });
+
+        const results = await testHarness.run(keyedTestData);
+
+        expect(results.length).toBe(3);
+
+        expect(results[0].getMetadata('_key')).toBe(1);
+        expect(results[0].asArray()).toEqual([{ id: 1, name: 'roy' }]);
+
+        expect(results[1].getMetadata('_key')).toBe(2);
+        expect(results[1].asArray()).toEqual([{ id: 2, name: 'roy' }, { id: 2, name: 'bob' }]);
+
+        expect(results[2].getMetadata('_key')).toBe(3);
+        expect(results[2].asArray()).toEqual([{ id: 3, name: 'bob' }, { id: 3, name: 'mel' }]);
     });
 
     it('dedup data windows', async () => {
@@ -42,6 +74,8 @@ describe('dedup should', () => {
             DataWindow.make(2, [{ id: 2, name: 'roy' }, { id: 2, name: 'bob' }, { id: 2, name: 'roy' }]),
             DataWindow.make(3, [{ id: 3, name: 'bob' }, { id: 3, name: 'mel' }])
         ];
+
+        await testHarness.initialize({ opConfig });
 
         const results = await testHarness.run(keyedTestData);
 

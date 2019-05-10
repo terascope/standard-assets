@@ -22,7 +22,11 @@ class Dedup extends BatchProcessor {
         const uniqDocs = new Map();
 
         dataArray.forEach((doc) => {
-            const key = doc[this.opConfig.field];
+            let key;
+
+            if (this.opConfig.field) key = doc[this.opConfig.field];
+            else key = DataWindow.getMetadata(doc, '_key');
+
             if (uniqDocs.has(key)) {
                 // need to adjust first and last seen
                 if (this.opConfig.adjust_time === true) {

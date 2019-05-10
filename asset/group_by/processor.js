@@ -14,20 +14,20 @@ class GroupBy extends BatchProcessor {
     }
 
     _group(doc) {
-        let groupByValue;
+        let key;
 
-        if (this.opConfig.field === 'metadata_key') groupByValue = DataWindow.getMetadata(doc, '_key');
-        else groupByValue = doc[this.opConfig.field];
+        if (this.opConfig.field) key = doc[this.opConfig.field];
+        else key = DataWindow.getMetadata(doc, '_key');
 
-        if (Buffer.isBuffer(groupByValue)) {
-            groupByValue.toString('utf8');
+        if (Buffer.isBuffer(key)) {
+            key.toString('utf8');
         }
 
-        if (!this.groups.has(groupByValue)) {
-            this.groups.set(groupByValue, []);
+        if (!this.groups.has(key)) {
+            this.groups.set(key, []);
         }
 
-        this.groups.get(groupByValue).push(doc);
+        this.groups.get(key).push(doc);
     }
 
     onBatch(dataArray) {

@@ -7,7 +7,7 @@ class Schema extends ConvictSchema {
         return {
             field: {
                 doc: 'field to dedup records on',
-                default: '_id',
+                default: '',
                 format: 'String',
             },
             adjust_time: {

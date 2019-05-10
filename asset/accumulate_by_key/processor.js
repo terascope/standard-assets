@@ -52,8 +52,8 @@ class AccumulateByKey extends BatchProcessor {
         dataArray.forEach((doc) => {
             let key;
 
-            if (this.opConfig.key_field === '_key') key = doc.getMetadata('_key');
-            else key = doc[this.opConfig.key_field];
+            if (this.opConfig.key_field) key = doc[this.opConfig.key_field];
+            else key = doc.getMetadata('_key');
 
             if (key === undefined) return;
 
