@@ -16,9 +16,9 @@ class DataWindow extends DataEntity {
     static make(key, docs) {
         const newWindow = new DataWindow();
 
-        if (key !== undefined) newWindow.setMetadata('_key', key);
+        if (key != null) newWindow.setMetadata('_key', key);
 
-        if (docs !== undefined) {
+        if (docs != null) {
             if (_.isArray(docs)) {
                 newWindow.dataArray = docs;
             } else {

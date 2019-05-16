@@ -12,7 +12,7 @@ class Schema extends ConvictSchema {
             },
             key_field: {
                 doc: 'Field to key docs by',
-                default: '',
+                default: undefined,
                 format: 'String'
             },
             batch_return: {
