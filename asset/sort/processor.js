@@ -11,7 +11,7 @@ class Sort extends BatchProcessor {
     constructor(...args) {
         super(...args);
 
-        this.sort = sortFunction(this.opConfig.sort_field, this.opConfig.order);
+        this.sort = sortFunction(this.opConfig.field, this.opConfig.order);
     }
 
     onBatch(dataArray) {

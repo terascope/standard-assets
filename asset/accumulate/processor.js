@@ -18,14 +18,13 @@ class Accumulate extends BatchProcessor {
     }
 
     _accumulate(dataArray) {
-        // Empty slices need to be together
+        // reset empty slice count if break in incoming data
         this.emptySliceCount = 0;
 
         dataArray.forEach(doc => this.records.push(doc));
     }
 
     onBatch(dataArray) {
-        // on shutdown event return accumulated data
         this.events.on('worker:shutdown', () => {
             this.shuttingDown = true;
         });
@@ -33,13 +32,9 @@ class Accumulate extends BatchProcessor {
         if (dataArray.length === 0) this.emptySliceCount++;
         else this._accumulate(dataArray);
 
-        if (this._readyToEmpty() || this.shuttingDown === true) {
-            const results = this.records;
+        if ((this._readyToEmpty() || this.shuttingDown === true) && this.records.length > 0) {
+            const results = DataWindow.make(this.opConfig.data_window_key, this.records);
             this.records = [];
-
-            if (this.opConfig.data_window === true && results.length > 0) {
-                return DataWindow.make(this.opConfig.data_window_key, results);
-            }
 
             return results;
         }

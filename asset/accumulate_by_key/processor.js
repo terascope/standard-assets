@@ -1,7 +1,7 @@
 'use strict';
 
 const { BatchProcessor } = require('@terascope/job-components');
-
+const { sortFunction } = require('../__lib/utils');
 const DataWindow = require('../__lib/data-window');
 
 class AccumulateByKey extends BatchProcessor {
@@ -12,6 +12,7 @@ class AccumulateByKey extends BatchProcessor {
         this.emptySliceCount = 0;
         this.events = this.context.apis.foundation.getSystemEvents();
         this.shuttingDown = false;
+        this.sort = sortFunction(this.opConfig.sort_field, this.opConfig.order);
     }
 
     _readyToEmpty() {
@@ -19,15 +20,20 @@ class AccumulateByKey extends BatchProcessor {
             && this.buckets.size > 0;
     }
 
+
     _batchData() {
         const result = [];
+        let resultSize = 0;
 
-        if (this.opConfig.batch_return === true && this.buckets.size > this.opConfig.batch_size) {
-            const dataWindows = this.buckets.keys();
+        if (this.opConfig.uniq_values === true) this._dedup();
 
-            while (result.length < this.opConfig.batch_size) {
-                const key = dataWindows.next().value;
+        if (this.opConfig.batch_return === true) {
+            const dataWindowKeys = this.buckets.keys();
+
+            while (resultSize < this.opConfig.batch_size && this.buckets.size !== 0) {
+                const key = dataWindowKeys.next().value;
                 result.push(this.buckets.get(key));
+                resultSize += this.buckets.get(key).asArray().length;
                 this.buckets.delete(key);
             }
         } else {
@@ -44,9 +50,16 @@ class AccumulateByKey extends BatchProcessor {
         this.emptySliceCount = 0;
 
         dataArray.forEach((doc) => {
-            const key = this.opConfig.key_field === '_key' ? doc.getMetadata('_key') : doc[this.opConfig.key_field];
+            let key;
+
+            if (this.opConfig.key_field) key = doc[this.opConfig.key_field];
+            else key = doc.getMetadata('_key');
 
             if (key === undefined) return;
+
+            if (Buffer.isBuffer(key)) {
+                key = key.toString('utf8');
+            }
 
             if (!this.buckets.has(key)) {
                 this.buckets.set(key, DataWindow.make(key));

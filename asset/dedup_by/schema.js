@@ -6,14 +6,14 @@ class Schema extends ConvictSchema {
     build() {
         return {
             field: {
-                doc: 'The field in the input records to use for sorting',
-                default: '',
+                doc: 'field to dedup records on',
+                default: undefined,
                 format: 'String',
             },
-            order: {
-                doc: 'The field in the input records to use for sorting',
-                default: 'asc',
-                format: ['asc', 'desc']
+            adjust_time: {
+                doc: 'Adjust first and last seen',
+                default: false,
+                format: 'Boolean'
             }
         };
     }
