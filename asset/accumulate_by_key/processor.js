@@ -1,17 +1,15 @@
 'use strict';
 
-const { BatchProcessor } = require('@terascope/job-components');
+// const { BatchProcessor } = require('@terascope/job-components');
+const Accumulate = require('../accumulate/processor');
 const { sortFunction } = require('../__lib/utils');
 const DataWindow = require('../__lib/data-window');
 
-class AccumulateByKey extends BatchProcessor {
+class AccumulateByKey extends Accumulate {
     constructor(...args) {
         super(...args);
 
         this.buckets = new Map();
-        this.emptySliceCount = 0;
-        this.events = this.context.apis.foundation.getSystemEvents();
-        this.shuttingDown = false;
         this.sort = sortFunction(this.opConfig.sort_field, this.opConfig.order);
     }
 
@@ -78,7 +76,7 @@ class AccumulateByKey extends BatchProcessor {
         if (dataArray.length === 0) this.emptySliceCount++;
         else this._accumulate(dataArray);
 
-        if (this._readyToEmpty() || this.shuttingDown === true) return this._batchData();
+        if (this._readyToEmpty() || this.flushData === true) return this._batchData();
 
         return [];
     }

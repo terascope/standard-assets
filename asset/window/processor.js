@@ -6,10 +6,21 @@ const DataWindow = require('../__lib/data-window');
 class Window extends BatchProcessor {
     constructor(...args) {
         super(...args);
-        this.events = this.context.apis.foundation.getSystemEvents();
-        this.shuttingDown = false;
+        this.flushWindows = false;
         this.windows = new Map();
         this.results = [];
+    }
+
+    shutdown() {
+        this.flushWindows = true;
+    }
+
+    onFlushStart() {
+        this.flushWindows = true;
+    }
+
+    onFlushEnd() {
+        this.flushWindows = false;
     }
 
     _millisecondTime(time) {
@@ -35,8 +46,8 @@ class Window extends BatchProcessor {
 
     _ensureOpenWindow() {
         if (this.windows.size === 0
+        // calculate new sliding window (current time - newest window) > sliding interval
         || (this.opConfig.window_type === 'sliding'
-        // current time - most recent window start time > interval time
         && (this.time - Math.max([...this.windows.keys()]))
         >= this.opConfig.sliding_window_interval)) {
             this.windows.set(this.time, DataWindow.make());
@@ -59,10 +70,6 @@ class Window extends BatchProcessor {
 
     onBatch(dataArray) {
         this.results = [];
-
-        this.events.on('workers:shutdown', () => {
-            this.shuttingDown = true;
-        });
 
         dataArray.forEach((doc) => {
             if (doc[this.opConfig.time_field] === undefined) return;
@@ -91,9 +98,7 @@ class Window extends BatchProcessor {
             }
         }
 
-        if (this.shuttingDown === true) {
-            this._dumpWindows();
-        }
+        if (this.flushWindows === true) this._dumpWindows();
 
         return this.results;
     }

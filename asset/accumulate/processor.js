@@ -9,8 +9,20 @@ class Accumulate extends BatchProcessor {
 
         this.records = [];
         this.emptySliceCount = 0;
-        this.events = this.context.apis.foundation.getSystemEvents();
+        this.flushData = false;
         this.shuttingDown = false;
+    }
+
+    shutdown() {
+        if (this.opConfig.flush_data_on_shutdown) this.flushData = true;
+    }
+
+    onFlushStart() {
+        if (this.opConfig.flush_data_on_shutdown) this.flushData = true;
+    }
+
+    onFlushEnd() {
+        this.flushData = false;
     }
 
     _readyToEmpty() {
@@ -25,14 +37,10 @@ class Accumulate extends BatchProcessor {
     }
 
     onBatch(dataArray) {
-        this.events.on('worker:shutdown', () => {
-            this.shuttingDown = true;
-        });
-
         if (dataArray.length === 0) this.emptySliceCount++;
         else this._accumulate(dataArray);
 
-        if ((this._readyToEmpty() || this.shuttingDown === true) && this.records.length > 0) {
+        if ((this._readyToEmpty() || this.flushData === true) && this.records.length > 0) {
             const results = DataWindow.make(this.opConfig.data_window_key, this.records);
             this.records = [];
 
