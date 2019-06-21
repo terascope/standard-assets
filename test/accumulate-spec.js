@@ -1,7 +1,13 @@
 'use strict';
 
+const path = require('path');
 const { DataEntity } = require('@terascope/job-components');
-const { OpTestHarness } = require('teraslice-test-harness');
+const {
+    OpTestHarness,
+    WorkerTestHarness,
+    newTestJobConfig,
+    newTestSlice
+} = require('teraslice-test-harness');
 const Processor = require('../asset/accumulate/processor.js');
 const Schema = require('../asset/accumulate/schema.js');
 
@@ -120,6 +126,73 @@ describe('accumulate should', () => {
 
         // Next slice should be back to 0
         results = await testHarness.run([]);
+        expect(results.length).toBe(0);
+    });
+});
+
+describe('accumulate should', () => {
+    const job = newTestJobConfig();
+
+    job.operations = [
+        {
+            _op: 'test-reader',
+            fetcher_data_file_path: path.join(__dirname, 'fixtures', 'data.json')
+        },
+        {
+            _op: 'accumulate',
+            empty_after: 10,
+            flush_data_on_shutdown: true
+        }
+    ];
+
+    const testSlice = newTestSlice();
+    const harness = new WorkerTestHarness(job);
+
+    beforeAll(() => harness.initialize());
+    afterAll(() => harness.shutdown());
+
+    it('return no data after first slice', async () => {
+        const results = await harness.runSlice(testSlice);
+        expect(results.length).toBe(0);
+    });
+
+    it('return data after flush event', async () => {
+        const results = await harness.flush();
+        await harness.shutdown();
+
+        expect(results[0].asArray().length).toBe(3);
+    });
+});
+
+
+describe('accumulate should', () => {
+    const job = newTestJobConfig();
+
+    job.operations = [
+        {
+            _op: 'test-reader',
+            fetcher_data_file_path: path.join(__dirname, 'fixtures', 'data.json')
+        },
+        {
+            _op: 'accumulate',
+            empty_after: 10,
+            flush_data_on_shutdown: false
+        }
+    ];
+
+    const testSlice = newTestSlice();
+    const harness = new WorkerTestHarness(job);
+
+    beforeAll(() => harness.initialize());
+    afterAll(() => harness.shutdown());
+
+    it('return no data after first slice', async () => {
+        const results = await harness.runSlice(testSlice);
+        expect(results.length).toBe(0);
+    });
+
+    it('return nothing on flush event when flush_data_on_shutdown is false', async () => {
+        const results = await harness.flush();
         expect(results.length).toBe(0);
     });
 });

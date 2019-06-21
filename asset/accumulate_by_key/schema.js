@@ -28,6 +28,11 @@ class Schema extends ConvictSchema {
                         throw new Error('batch size must be an integer greater then 0');
                     }
                 }
+            },
+            flush_data_on_shutdown: {
+                doc: 'Option to flush partial data accumulation on unexpected shutdown',
+                default: false,
+                format: 'Boolean'
             }
         };
     }

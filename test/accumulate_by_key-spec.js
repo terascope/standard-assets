@@ -1,8 +1,14 @@
 'use strict';
 
+const path = require('path');
 const _ = require('lodash');
 const { DataEntity } = require('@terascope/job-components');
-const { OpTestHarness } = require('teraslice-test-harness');
+const {
+    OpTestHarness,
+    WorkerTestHarness,
+    newTestJobConfig,
+    newTestSlice
+} = require('teraslice-test-harness');
 const Processor = require('../asset/accumulate_by_key/processor.js');
 const Schema = require('../asset/accumulate_by_key/schema.js');
 
@@ -219,5 +225,39 @@ describe('accumulate_by_key should', () => {
 
         results = await testHarness.run([]);
         expect(results.length).toBe(0);
+    });
+});
+
+describe('accumulate should', () => {
+    const job = newTestJobConfig();
+
+    job.operations = [
+        {
+            _op: 'test-reader',
+            fetcher_data_file_path: path.join(__dirname, 'fixtures', 'data.json')
+        },
+        {
+            _op: 'accumulate_by_key',
+            key_field: 'id',
+            empty_after: 10,
+            flush_data_on_shutdown: true
+        }
+    ];
+
+    const testSlice = newTestSlice();
+    const harness = new WorkerTestHarness(job);
+
+    beforeAll(() => harness.initialize());
+    afterAll(() => harness.shutdown());
+
+
+    it('return nothing on first slice', async () => {
+        const results = await harness.runSlice(testSlice);
+        expect(results.length).toBe(0);
+    });
+
+    it('return data on flush event', async () => {
+        const results = await harness.flush();
+        expect(results.length).toBe(3);
     });
 });

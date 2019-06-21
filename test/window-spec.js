@@ -1,8 +1,13 @@
 'use strict';
 
-
+const path = require('path');
 const util = require('util');
-const { OpTestHarness } = require('teraslice-test-harness');
+const {
+    OpTestHarness,
+    WorkerTestHarness,
+    newTestJobConfig,
+    newTestSlice
+} = require('teraslice-test-harness');
 const Processor = require('../asset/window/processor.js');
 const Schema = require('../asset/window/schema.js');
 
@@ -304,5 +309,38 @@ describe('window should', () => {
 
         results = await testHarness.run([]);
         expect(results.length).toBe(0);
+    });
+});
+
+describe('window should', () => {
+    const job = newTestJobConfig();
+
+    job.operations = [
+        {
+            _op: 'test-reader',
+            fetcher_data_file_path: path.join(__dirname, 'fixtures', 'data.json')
+        },
+        {
+            _op: 'window',
+            time_field: 'time',
+            window_time_setting: 'event',
+            window_length: 10,
+        }
+    ];
+
+    const testSlice = newTestSlice();
+    const harness = new WorkerTestHarness(job, { assetDir: path.join(__dirname, '..', 'asset') });
+
+    beforeAll(() => harness.initialize());
+    afterAll(() => harness.shutdown());
+
+    it('return 2 windows on first slice', async () => {
+        const results = await harness.runSlice(testSlice);
+        expect(results.length).toBe(2);
+    });
+
+    it('return remaing data windows on flush', async () => {
+        const results = await harness.flush();
+        expect(results.length).toBe(1);
     });
 });
