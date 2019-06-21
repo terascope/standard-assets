@@ -1,6 +1,5 @@
 'use strict';
 
-// const { BatchProcessor } = require('@terascope/job-components');
 const Accumulate = require('../accumulate/processor');
 const { sortFunction } = require('../__lib/utils');
 const DataWindow = require('../__lib/data-window');
