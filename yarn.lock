@@ -296,6 +296,17 @@
     datemath-parser "^1.0.6"
     uuid "^3.3.2"
 
+"@terascope/job-components@^0.19.0":
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.19.0.tgz#280f9348e9e30ba709e500fb01b1bc15245b5a9a"
+  integrity sha512-CuxdFeoyu1OcIYUIH64xwvTD13+dL9rTM+t7/36aTZZ5pK3sQ/wE4b9kPAaYcANX7LJPfuaVdToD8Cs6vpKm0Q==
+  dependencies:
+    "@terascope/queue" "^1.1.6"
+    "@terascope/utils" "^0.11.0"
+    convict "^4.4.1"
+    datemath-parser "^1.0.6"
+    uuid "^3.3.2"
+
 "@terascope/queue@^1.1.6":
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/@terascope/queue/-/queue-1.1.6.tgz#763d035cf31d2e1fd819ae827274f50874016708"
@@ -314,6 +325,18 @@
   version "0.10.2"
   resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.10.2.tgz#fcaba3ade6c5546f3fa2f755dec7969095b826d3"
   integrity sha512-HQ9ML+Q3w3PSMS9O3Or82QDGYjkyRRTFRO/vfWdlGCI/xK/b2nEX9eVnuhKvHSY7OOJiTHjS+o/epIuP1pj6og==
+  dependencies:
+    debug "^4.1.1"
+    is-plain-object "^3.0.0"
+    kind-of "^6.0.2"
+    lodash.clonedeep "^4.5.0"
+    lodash.get "^4.4.2"
+    lodash.set "^4.3.2"
+
+"@terascope/utils@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.11.0.tgz#e5be6538246d4e75fc06306ee803344b6c247c6b"
+  integrity sha512-tBANMw4wnUL2HM+izoLAnkzB1GCRiW21P70R+oBEQZHGy0NnJtrXZyI5nzCNojVZhHwj8HxKZHSNk98YgNJNcQ==
   dependencies:
     debug "^4.1.1"
     is-plain-object "^3.0.0"
@@ -4168,12 +4191,12 @@ tar@^4:
     safe-buffer "^5.1.2"
     yallist "^3.0.3"
 
-teraslice-test-harness@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/teraslice-test-harness/-/teraslice-test-harness-0.6.0.tgz#8f356184c62ead8eff508fb001239ff974635fa5"
-  integrity sha512-L2Me8YgEfnBaE/EFW/1tkHqnyCHyzW1lRV2o362SySp9gYdwsDHvGcIVbLCvNrYTajDRKj6cEhaDeVbwAGsbhA==
+teraslice-test-harness@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/teraslice-test-harness/-/teraslice-test-harness-0.7.0.tgz#78716e18808659f1ab1ec834bb0afec9e3d10745"
+  integrity sha512-6yjXe7n/DJLgZHM1e/zEcKtDnPiYdaJWYiqgknUl6beyT5pYgLsLeWl+Or/2K0e709pL+pDi3FfHTkyVzYdiLg==
   dependencies:
-    "@terascope/job-components" "^0.17.0"
+    "@terascope/job-components" "^0.19.0"
     "@terascope/teraslice-op-test-harness" "^1.6.0"
     lodash "^4.17.11"
 
