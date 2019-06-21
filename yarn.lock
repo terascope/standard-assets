@@ -4193,7 +4193,7 @@ tar@^4:
 
 teraslice-test-harness@^0.7.0:
   version "0.7.0"
-  resolved "http://npm.terascope.io:4873/teraslice-test-harness/-/teraslice-test-harness-0.7.0.tgz#78716e18808659f1ab1ec834bb0afec9e3d10745"
+  resolved "https://registry.yarnpkg.com/teraslice-test-harness/-/teraslice-test-harness-0.7.0.tgz#78716e18808659f1ab1ec834bb0afec9e3d10745"
   integrity sha512-6yjXe7n/DJLgZHM1e/zEcKtDnPiYdaJWYiqgknUl6beyT5pYgLsLeWl+Or/2K0e709pL+pDi3FfHTkyVzYdiLg==
   dependencies:
     "@terascope/job-components" "^0.19.0"
