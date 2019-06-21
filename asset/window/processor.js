@@ -11,10 +11,6 @@ class Window extends BatchProcessor {
         this.results = [];
     }
 
-    shutdown() {
-        this.flushWindows = true;
-    }
-
     onFlushStart() {
         this.flushWindows = true;
     }

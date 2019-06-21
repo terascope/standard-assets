@@ -145,35 +145,54 @@ describe('accumulate should', () => {
         }
     ];
 
-    it('return accumulated data on flush event', async () => {
-        const testSlice = newTestSlice();
+    const testSlice = newTestSlice();
+    const harness = new WorkerTestHarness(job);
 
-        const harness = new WorkerTestHarness(job, { assetDir: path.join(__dirname, '..', 'asset') });
-        await harness.initialize();
+    beforeAll(() => harness.initialize());
+    afterAll(() => harness.shutdown());
 
-        let results = await harness.runSlice(testSlice);
+    it('return no data after first slice', async () => {
+        const results = await harness.runSlice(testSlice);
         expect(results.length).toBe(0);
+    });
 
-        results = await harness.flush();
+    it('return data after flush event', async () => {
+        const results = await harness.flush();
         await harness.shutdown();
 
         expect(results[0].asArray().length).toBe(3);
     });
+});
 
-    it('return nothing on flush event', async () => {
-        const testSlice = newTestSlice();
 
-        job.operations[1].flush_data_on_shutdown = false;
+describe('accumulate should', () => {
+    const job = newTestJobConfig();
 
-        const harness = new WorkerTestHarness(job, { assetDir: path.join(__dirname, '..', 'asset') });
-        await harness.initialize();
+    job.operations = [
+        {
+            _op: 'test-reader',
+            fetcher_data_file_path: path.join(__dirname, 'fixtures', 'data.json')
+        },
+        {
+            _op: 'accumulate',
+            empty_after: 10,
+            flush_data_on_shutdown: false
+        }
+    ];
 
-        let results = await harness.runSlice(testSlice);
+    const testSlice = newTestSlice();
+    const harness = new WorkerTestHarness(job);
+
+    beforeAll(() => harness.initialize());
+    afterAll(() => harness.shutdown());
+
+    it('return no data after first slice', async () => {
+        const results = await harness.runSlice(testSlice);
         expect(results.length).toBe(0);
+    });
 
-        results = await harness.flush();
-        await harness.shutdown();
-
+    it('return nothing on flush event when flush_data_on_shutdown is false', async () => {
+        const results = await harness.flush();
         expect(results.length).toBe(0);
     });
 });

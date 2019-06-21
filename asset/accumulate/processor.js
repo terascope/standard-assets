@@ -13,10 +13,6 @@ class Accumulate extends BatchProcessor {
         this.shuttingDown = false;
     }
 
-    shutdown() {
-        if (this.opConfig.flush_data_on_shutdown) this.flushData = true;
-    }
-
     onFlushStart() {
         if (this.opConfig.flush_data_on_shutdown) this.flushData = true;
     }

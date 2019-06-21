@@ -328,18 +328,19 @@ describe('window should', () => {
         }
     ];
 
-    it('expunge all windows on flush event', async () => {
-        const testSlice = newTestSlice();
+    const testSlice = newTestSlice();
+    const harness = new WorkerTestHarness(job, { assetDir: path.join(__dirname, '..', 'asset') });
 
-        const harness = new WorkerTestHarness(job, { assetDir: path.join(__dirname, '..', 'asset') });
-        await harness.initialize();
+    beforeAll(() => harness.initialize());
+    afterAll(() => harness.shutdown());
 
-        let results = await harness.runSlice(testSlice);
+    it('return 2 windows on first slice', async () => {
+        const results = await harness.runSlice(testSlice);
         expect(results.length).toBe(2);
+    });
 
-        results = await harness.flush();
-        await harness.shutdown();
-
+    it('return remaing data windows on flush', async () => {
+        const results = await harness.flush();
         expect(results.length).toBe(1);
     });
 });

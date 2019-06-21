@@ -244,35 +244,20 @@ describe('accumulate should', () => {
         }
     ];
 
-    it('return accumulated data on flush event', async () => {
-        const testSlice = newTestSlice();
+    const testSlice = newTestSlice();
+    const harness = new WorkerTestHarness(job);
 
-        const harness = new WorkerTestHarness(job, { assetDir: path.join(__dirname, '..', 'asset') });
-        await harness.initialize();
+    beforeAll(() => harness.initialize());
+    afterAll(() => harness.shutdown());
 
-        let results = await harness.runSlice(testSlice);
+
+    it('return nothing on first slice', async () => {
+        const results = await harness.runSlice(testSlice);
         expect(results.length).toBe(0);
-
-        results = await harness.flush();
-        await harness.shutdown();
-
-        expect(results.length).toBe(3);
     });
 
-    it('return nothing on flush event', async () => {
-        const testSlice = newTestSlice();
-
-        job.operations[1].flush_data_on_shutdown = false;
-
-        const harness = new WorkerTestHarness(job, { assetDir: path.join(__dirname, '..', 'asset') });
-        await harness.initialize();
-
-        let results = await harness.runSlice(testSlice);
-        expect(results.length).toBe(0);
-
-        results = await harness.flush();
-        await harness.shutdown();
-
-        expect(results.length).toBe(0);
+    it('return data on flush event', async () => {
+        const results = await harness.flush();
+        expect(results.length).toBe(3);
     });
 });
