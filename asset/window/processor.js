@@ -87,7 +87,9 @@ class Window extends BatchProcessor {
         // remove expired event based windows
         if (dataArray.length === 0 && this.opConfig.window_time_setting === 'event') {
             for (const [key, value] of this.windows.entries()) {
-                if (Date.now() - value.getMetadata('_createTime') > this.opConfig.event_window_expiration) {
+                const createTime = value.getMetadata('_createTime') || value.getMetadata('createdAt');
+                const elapsed = (Date.now() - createTime);
+                if (elapsed > this.opConfig.event_window_expiration) {
                     this.results.push(this.windows.get(key));
                     this.windows.delete(key);
                 }
