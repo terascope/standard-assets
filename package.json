@@ -1,6 +1,6 @@
 {
     "name": "standard-assets-bundle",
-    "version": "0.0.8",
+    "version": "0.1.0",
     "description": "Teraslice standard processor asset bundle",
     "main": "index.js",
     "scripts": {
