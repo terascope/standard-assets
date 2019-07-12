@@ -22,15 +22,16 @@ describe('data_window_to_array should', () => {
     beforeAll(async () => {
         await testHarness.initialize({ opConfig });
     });
+    afterAll(() => testHarness.shutdown());
 
     it('generate an empty result if no input data', async () => {
         const results = await testHarness.run([]);
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
     });
 
     it('add type to all the docs', async () => {
         const results = await testHarness.run(testData);
-        expect(results.length).toBe(9);
+        expect(results).toBeArrayOfSize(9);
         expect(results[0].id).toBe(1);
         expect(results[8].id).toBe(9);
     });

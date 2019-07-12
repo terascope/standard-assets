@@ -1,6 +1,5 @@
 'use strict';
 
-const _ = require('lodash');
 const { DataEntity } = require('@terascope/utils');
 
 /*
@@ -19,7 +18,7 @@ class DataWindow extends DataEntity {
         if (key != null) newWindow.setMetadata('_key', key);
 
         if (docs != null) {
-            if (_.isArray(docs)) {
+            if (Array.isArray(docs)) {
                 newWindow.dataArray = docs;
             } else {
                 newWindow.set(docs);

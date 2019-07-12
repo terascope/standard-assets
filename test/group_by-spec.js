@@ -38,22 +38,23 @@ describe('group_by should', () => {
     beforeAll(async () => {
         await testHarness.initialize({ opConfig });
     });
+    afterAll(() => testHarness.shutdown());
 
     it('generate an empty result if no input data', async () => {
         const results = await testHarness.run([]);
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
     });
 
     it('group by id field if input data is an array of objects', async () => {
         const results = await testHarness.run(testData);
-        expect(results.length).toBe(3);
-        expect(results[0].asArray().length).toBe(1);
+        expect(results).toBeArrayOfSize(3);
+        expect(results[0].asArray()).toBeArrayOfSize(1);
         expect(results[0].getMetadata('_key')).toBe(1);
 
-        expect(results[1].asArray().length).toBe(3);
+        expect(results[1].asArray()).toBeArrayOfSize(3);
         expect(results[1].getMetadata('_key')).toBe(2);
 
-        expect(results[2].asArray().length).toBe(2);
+        expect(results[2].asArray()).toBeArrayOfSize(2);
         expect(results[2].getMetadata('_key')).toBe(3);
     });
 
@@ -68,15 +69,15 @@ describe('group_by should', () => {
 
         const results = await testHarness.run([dw1, dw2, dw3]);
 
-        expect(results.length).toBe(3);
+        expect(results).toBeArrayOfSize(3);
 
-        expect(results[0].asArray().length).toBe(1);
+        expect(results[0].asArray()).toBeArrayOfSize(1);
         expect(results[0].getMetadata('_key')).toBe(1);
 
-        expect(results[1].asArray().length).toBe(6);
+        expect(results[1].asArray()).toBeArrayOfSize(6);
         expect(results[1].getMetadata('_key')).toBe(2);
 
-        expect(results[2].asArray().length).toBe(3);
+        expect(results[2].asArray()).toBeArrayOfSize(3);
         expect(results[2].getMetadata('_key')).toBe(3);
     });
 });
@@ -98,15 +99,15 @@ describe('group_by should', () => {
 
         const results = await testHarness.run(keyedTestData);
 
-        expect(results.length).toBe(3);
+        expect(results).toBeArrayOfSize(3);
 
         expect(results[0].getMetadata('_key')).toBe(1);
-        expect(results[0].asArray().length).toBe(1);
+        expect(results[0].asArray()).toBeArrayOfSize(1);
 
         expect(results[1].getMetadata('_key')).toBe(2);
-        expect(results[1].asArray().length).toBe(3);
+        expect(results[1].asArray()).toBeArrayOfSize(3);
 
         expect(results[2].getMetadata('_key')).toBe(3);
-        expect(results[2].asArray().length).toBe(2);
+        expect(results[2].asArray()).toBeArrayOfSize(2);
     });
 });

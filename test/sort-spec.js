@@ -30,14 +30,16 @@ describe('sort should', () => {
         });
     });
 
+    afterAll(() => testHarness.shutdown());
+
     it('generate an empty result if no input data', async () => {
         const results = await testHarness.run([]);
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
     });
 
     it('sort input correctly', async () => {
         const results = await testHarness.run(testData);
-        expect(results.length).toBe(3);
+        expect(results).toBeArrayOfSize(3);
 
         let next = 1;
         results.forEach((doc) => {
@@ -58,6 +60,8 @@ describe('sort should', () => {
         };
     });
 
+    afterEach(() => testHarness.shutdown());
+
     // array of 3 windows, 10 unordered items in each window
     const dataWindows = [];
     for (let i = 0; i < 3; i++) {
@@ -73,7 +77,7 @@ describe('sort should', () => {
         const results = await testHarness.run(dataWindows);
 
         // all items should be returned
-        expect(results.length).toBe(3);
+        expect(results).toBeArrayOfSize(3);
 
         // all items should be in asc order, can be equal to
         results.forEach((window) => {
@@ -89,7 +93,7 @@ describe('sort should', () => {
         const results = await testHarness.run(dataWindows);
 
         // all items should be returned
-        expect(results.length).toBe(3);
+        expect(results).toBeArrayOfSize(3);
 
         // all items should be in asc order, can be equal to
         results.forEach((window) => {
@@ -112,11 +116,12 @@ describe('sort should', () => {
         });
     });
 
+    afterAll(() => testHarness.shutdown());
 
     it('not treat data entities like data windows', async () => {
         const dataEntities = DataEntity.makeArray(testData);
         const results = await testHarness.run(dataEntities);
-        expect(results.length).toBe(3);
+        expect(results).toBeArrayOfSize(3);
 
         let next = 1;
         results.forEach((doc) => {
@@ -137,6 +142,8 @@ describe('sort should', () => {
             }
         });
     });
+
+    afterAll(() => testHarness.shutdown());
 
     const dateData = [
         {
@@ -161,7 +168,7 @@ describe('sort should', () => {
         const dataEntities = DataEntity.makeArray(dateData);
         const results = await testHarness.run(dataEntities);
 
-        expect(results.length).toBe(4);
+        expect(results).toBeArrayOfSize(4);
 
         let next = 1;
         results.forEach((doc) => {

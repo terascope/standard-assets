@@ -34,10 +34,11 @@ describe('set_key should', () => {
     beforeAll(async () => {
         await testHarness.initialize({ opConfig });
     });
+    afterAll(() => testHarness.shutdown());
 
     it('generate an empty result if no input data', async () => {
         const results = await testHarness.run([]);
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
     });
 
     it('return docs as data entities with no field as the key', async () => {

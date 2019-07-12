@@ -15,11 +15,12 @@ describe('dedup should', () => {
     };
 
     const testHarness = new OpTestHarness({ Processor, Schema });
+    afterEach(() => testHarness.shutdown());
 
     it('generate an empty result if no input data', async () => {
         await testHarness.initialize({ opConfig });
         const results = await testHarness.run([]);
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
     });
 
     it('dedup array of data', async () => {
@@ -31,7 +32,7 @@ describe('dedup should', () => {
 
         await testHarness.initialize({ opConfig });
         const results = await testHarness.run(keyedTestData);
-        expect(results.length).toBe(3);
+        expect(results).toBeArrayOfSize(3);
         expect(results).toEqual([{ id: 1, name: 'roy' }, { id: 2, name: 'bob' }, { id: 3, name: 'mel' }]);
     });
 
@@ -56,7 +57,7 @@ describe('dedup should', () => {
 
         const results = await testHarness.run(keyedTestData);
 
-        expect(results.length).toBe(3);
+        expect(results).toBeArrayOfSize(3);
 
         expect(results[0].getMetadata('_key')).toBe(1);
         expect(results[0].asArray()).toEqual([{ id: 1, name: 'roy' }]);
@@ -79,7 +80,7 @@ describe('dedup should', () => {
 
         const results = await testHarness.run(keyedTestData);
 
-        expect(results.length).toBe(3);
+        expect(results).toBeArrayOfSize(3);
 
         expect(results[0].getMetadata('_key')).toBe(1);
         expect(results[0].asArray()).toEqual([{ id: 1, name: 'roy' }]);
@@ -105,6 +106,8 @@ describe('dedup_by', () => {
         await testHarness.initialize({ opConfig });
     });
 
+    afterAll(() => testHarness.shutdown());
+
     it('should adjust first and last seen for an array of docs', async () => {
         const keyedTestData = [
             { id: 1, name: 'roy', first_seen: '2019-05-07T20:01:00.000Z', last_seen: '2019-05-07T20:01:00.000Z' },
@@ -122,7 +125,7 @@ describe('dedup_by', () => {
 
         const results = await testHarness.run(keyedTestData);
 
-        expect(results.length).toBe(3);
+        expect(results).toBeArrayOfSize(3);
         expect(results[0]).toEqual({ id: 1, name: 'roy', first_seen: '2019-05-07T19:02:00.000Z', last_seen: '2019-05-07T20:10:00.000Z' });
         expect(results[1]).toEqual({ id: 2, name: 'bob', first_seen: '2019-05-07T20:02:00.000Z', last_seen: '2019-05-07T20:08:00.000Z' });
         expect(results[2]).toEqual({ id: 3, name: 'mel', first_seen: '2019-05-07T20:01:00.000Z', last_seen: '2019-05-07T20:04:00.000Z' });
@@ -162,7 +165,7 @@ describe('dedup_by', () => {
 
         const results = await testHarness.run(keyedTestData);
 
-        expect(results.length).toBe(3);
+        expect(results).toBeArrayOfSize(3);
         expect(results[0].asArray()).toEqual([
             { id: 1, name: 'roy', first_seen: '2019-05-07T20:01:00.000Z', last_seen: '2019-05-07T20:10:00.000Z' },
             { id: 2, name: 'bob', first_seen: '2019-05-07T19:02:00.000Z', last_seen: '2019-05-07T20:10:00.000Z' },

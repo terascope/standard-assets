@@ -25,7 +25,7 @@ class Window extends BatchProcessor {
 
     _setTime(doc) {
         if (this.opConfig.window_time_setting === 'clock') {
-            this.time = new Date().getTime();
+            this.time = Date.now();
         } else {
             this.time = this._millisecondTime(doc[this.opConfig.time_field]);
         }
@@ -68,7 +68,7 @@ class Window extends BatchProcessor {
         this.results = [];
 
         dataArray.forEach((doc) => {
-            if (doc[this.opConfig.time_field] === undefined) return;
+            if (!doc[this.opConfig.time_field]) return;
 
             this._setTime(doc);
 
@@ -87,7 +87,7 @@ class Window extends BatchProcessor {
         // remove expired event based windows
         if (dataArray.length === 0 && this.opConfig.window_time_setting === 'event') {
             for (const [key, value] of this.windows.entries()) {
-                if (new Date().getTime() - value.getMetadata('createdAt') > this.opConfig.event_window_expiration) {
+                if (Date.now() - value.getMetadata('_createTime') > this.opConfig.event_window_expiration) {
                     this.results.push(this.windows.get(key));
                     this.windows.delete(key);
                 }
