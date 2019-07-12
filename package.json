@@ -7,6 +7,7 @@
         "lint": "eslint asset/**/*.js test/**/*.js",
         "lint:fix": "eslint --fix asset/**/*.js test/**/*.js",
         "test": "jest",
+        "test:watch": "jest --coverage=false --notify --watch --onlyChanged",
         "test:debug": "env DEBUG=\"${DEBUG:-*teraslice*}\" jest --detectOpenHandles --coverage=false --runInBand",
         "postinstall": "yarn --cwd ./asset --prod --no-progress"
     },

@@ -35,9 +35,11 @@ describe('set_key should', () => {
         await testHarness.initialize({ opConfig });
     });
 
+    afterAll(() => testHarness.shutdown());
+
     it('generate an empty result if no input data', async () => {
         const results = await testHarness.run([]);
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
     });
 
     it('return docs as data entities with name field as the key', async () => {
@@ -65,6 +67,7 @@ describe('set_key should', () => {
     beforeAll(async () => {
         await testHarness.initialize({ opConfig });
     });
+    afterAll(() => testHarness.shutdown());
 
     it('return data window with data entities metadata _key field as the key', async () => {
         const testWindow = [

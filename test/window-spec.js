@@ -41,21 +41,23 @@ describe('window should', () => {
         };
     });
 
+    afterEach(() => testHarness.shutdown());
+
     it('generate an empty result if no input data', async () => {
         await testHarness.initialize({ opConfig });
         const results = await testHarness.run([]);
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
     });
 
     it('return the docs in the window frame', async () => {
         await testHarness.initialize({ opConfig });
         let results = await testHarness.run(testData);
-        expect(results.length).toBe(1);
-        expect(results[0].asArray().length).toBe(2);
+        expect(results).toBeArrayOfSize(1);
+        expect(results[0].asArray()).toBeArrayOfSize(2);
 
         results = await testHarness.run([{ id: 4, time: '2019-04-25T18:12:04.000Z' }]);
-        expect(results.length).toBe(1);
-        expect(results[0].asArray().length).toBe(1);
+        expect(results).toBeArrayOfSize(1);
+        expect(results[0].asArray()).toBeArrayOfSize(1);
     });
 
     it('not return any data if window is not expired', async () => {
@@ -64,10 +66,10 @@ describe('window should', () => {
         await testHarness.initialize({ opConfig });
 
         let results = await testHarness.run(testData);
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
 
         results = await testHarness.run([]);
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
     });
 
     it('return data as windows expire', async () => {
@@ -87,40 +89,40 @@ describe('window should', () => {
 
         await testHarness.initialize({ opConfig });
         let results = await testHarness.run(data.slice(0, 3));
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
 
         results = await testHarness.run(data.slice(3, 6));
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
 
         // window expires
         results = await testHarness.run(data.slice(6, 9));
-        expect(results.length).toBe(1);
-        expect(results[0].asArray().length).toBe(8);
+        expect(results).toBeArrayOfSize(1);
+        expect(results[0].asArray()).toBeArrayOfSize(8);
 
         results = await testHarness.run(data.slice(9, 12));
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
 
         results = await testHarness.run(data.slice(12, 15));
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
 
         // window expires
         results = await testHarness.run(data.slice(15, 18));
-        expect(results.length).toBe(1);
-        expect(results[0].asArray().length).toBe(8);
+        expect(results).toBeArrayOfSize(1);
+        expect(results[0].asArray()).toBeArrayOfSize(8);
 
-        results = await testHarness.run(data.slice(18,));
-        expect(results.length).toBe(0);
+        results = await testHarness.run(data.slice(18));
+        expect(results).toBeArrayOfSize(0);
 
         // all event windows should be expired by now
         await setTimeoutPromise(250)
             .then(() => testHarness.run([]))
             .then((window) => {
-                expect(window.length).toBe(1);
-                expect(window[0].asArray().length).toBe(4);
+                expect(window).toBeArrayOfSize(1);
+                expect(window[0].asArray()).toBeArrayOfSize(4);
             });
 
         results = await testHarness.run([]);
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
     });
 
     it('handle data with same times', async () => {
@@ -139,18 +141,18 @@ describe('window should', () => {
 
         await testHarness.initialize({ opConfig });
         let results = await testHarness.run(data);
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
 
         // all event windows should be expired by now
         await setTimeoutPromise(250)
             .then(() => testHarness.run([]))
             .then((window) => {
-                expect(window.length).toBe(1);
-                expect(window[0].asArray().length).toBe(5);
+                expect(window).toBeArrayOfSize(1);
+                expect(window[0].asArray()).toBeArrayOfSize(5);
             });
 
         results = await testHarness.run([]);
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
     });
 
     it('handle out of order data', async () => {
@@ -177,19 +179,19 @@ describe('window should', () => {
 
         await testHarness.initialize({ opConfig });
         let results = await testHarness.run(data);
-        expect(results.length).toBe(1);
-        expect(results[0].asArray().length).toBe(2);
+        expect(results).toBeArrayOfSize(1);
+        expect(results[0].asArray()).toBeArrayOfSize(2);
 
         // all event windows should be expired by now
         await setTimeoutPromise(250)
             .then(() => testHarness.run([]))
             .then((window) => {
-                expect(window.length).toBe(1);
-                expect(window[0].asArray().length).toBe(1);
+                expect(window).toBeArrayOfSize(1);
+                expect(window[0].asArray()).toBeArrayOfSize(1);
             });
 
         results = await testHarness.run([]);
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
     });
 });
 
@@ -206,6 +208,8 @@ describe('window should', () => {
         };
     });
 
+    afterEach(() => testHarness.shutdown());
+
     it('assign window data based on clock time', async () => {
         const data = [];
 
@@ -221,15 +225,15 @@ describe('window should', () => {
 
         // first slice processed before window expires
         const results = await testHarness.run(data.slice(0, 1000));
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
 
         // need to wait for window to expire
         await setTimeoutPromise(250)
             .then(() => testHarness.run(data.slice(1000, 2000)))
             .then((window) => {
                 // records from previous chunk should be returned
-                expect(window.length).toBe(1);
-                expect(window[0].asArray().length).toBe(1000);
+                expect(window).toBeArrayOfSize(1);
+                expect(window[0].asArray()).toBeArrayOfSize(1000);
                 expect(window[0].get(0).id).toBe(0);
                 expect(window[0].get(999).id).toBe(999);
             });
@@ -239,8 +243,8 @@ describe('window should', () => {
             .then(() => testHarness.run(data.slice(2000, 3000)))
             .then((window) => {
                 // records from previous chunk should be returned
-                expect(window.length).toBe(1);
-                expect(window[0].asArray().length).toBe(1000);
+                expect(window).toBeArrayOfSize(1);
+                expect(window[0].asArray()).toBeArrayOfSize(1000);
                 expect(window[0].get(0).id).toBe(1000);
             });
 
@@ -249,8 +253,8 @@ describe('window should', () => {
             .then(() => testHarness.run([]))
             .then((window) => {
                 // records from previous chunk should be returned
-                expect(window.length).toBe(1);
-                expect(window[0].asArray().length).toBe(1000);
+                expect(window).toBeArrayOfSize(1);
+                expect(window[0].asArray()).toBeArrayOfSize(1000);
                 expect(window[0].get(0).id).toBe(2000);
                 expect(window[0].get(999).id).toBe(2999);
             });
@@ -288,27 +292,27 @@ describe('window should', () => {
         await testHarness.initialize({ opConfig });
         let results = await testHarness.run(data.slice(0, 10));
 
-        expect(results.length).toBe(3);
-        results.forEach(window => expect(window.asArray().length).toBe(4));
+        expect(results).toBeArrayOfSize(3);
+        results.forEach(window => expect(window.asArray()).toBeArrayOfSize(4));
 
         results = await testHarness.run([]);
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
 
         results = await testHarness.run(data.slice(10,));
-        expect(results.length).toBe(5);
-        results.forEach(window => expect(window.asArray().length).toBe(4));
+        expect(results).toBeArrayOfSize(5);
+        results.forEach(window => expect(window.asArray()).toBeArrayOfSize(4));
 
         // all event windows should be expired by now
         await setTimeoutPromise(250)
             .then(() => testHarness.run([]))
             .then((window) => {
-                expect(window.length).toBe(2);
-                expect(window[0].asArray().length).toBe(4);
-                expect(window[1].asArray().length).toBe(2);
+                expect(window).toBeArrayOfSize(2);
+                expect(window[0].asArray()).toBeArrayOfSize(4);
+                expect(window[1].asArray()).toBeArrayOfSize(2);
             });
 
         results = await testHarness.run([]);
-        expect(results.length).toBe(0);
+        expect(results).toBeArrayOfSize(0);
     });
 });
 
@@ -336,11 +340,11 @@ describe('window should', () => {
 
     it('return 2 windows on first slice', async () => {
         const results = await harness.runSlice(testSlice);
-        expect(results.length).toBe(2);
+        expect(results).toBeArrayOfSize(2);
     });
 
     it('return remaing data windows on flush', async () => {
         const results = await harness.flush();
-        expect(results.length).toBe(1);
+        expect(results).toBeArrayOfSize(1);
     });
 });
