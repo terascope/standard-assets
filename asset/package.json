@@ -1,6 +1,6 @@
 {
     "name": "standard",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Teraslice standard processor asset bundle",
     "dependencies": {
         "@terascope/job-components": "^0.20.4",
