@@ -22,7 +22,7 @@
         "ts-jest": "^24.0.0"
     },
     "dependencies": {
-        "lodash": "^4.17.14",
+        "lodash": "^4.17.15",
         "timsort": "^0.3.0"
     }
 }
