@@ -3,7 +3,7 @@
     "version": "0.1.1",
     "description": "Teraslice standard processor asset bundle",
     "dependencies": {
-        "@terascope/job-components": "^0.20.7",
+        "@terascope/job-components": "^0.20.8",
         "lodash": "^4.17.15",
         "timsort": "^0.3.0"
     }
