@@ -2,6 +2,7 @@
     "name": "standard",
     "version": "0.1.1",
     "description": "Teraslice standard processor asset bundle",
+    "license": "MIT",
     "dependencies": {
         "@terascope/job-components": "^0.20.8",
         "lodash": "^4.17.15",
