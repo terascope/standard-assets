@@ -18,7 +18,7 @@ const opConfig = {
 };
 
 const data = [{ id: 1 }, { id: 2 }, { id: 3 }];
-const singleKeyData = data.map(doc => DataEntity.make(doc, { _key: 1 }));
+const singleKeyData = data.map((doc) => DataEntity.make(doc, { _key: 1 }));
 
 const multiKeyData = _.cloneDeep(data);
 for (let i = 0; i < data.length; i++) {

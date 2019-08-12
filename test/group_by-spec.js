@@ -95,7 +95,7 @@ describe('group_by should', () => {
 
     it('should group by metadata key if no field name is given', async () => {
         const keyedTestData = [{ id: 1 }, { id: 2 }, { id: 2 }, { id: 2 }, { id: 3 }, { id: 3 }]
-            .map(doc => DataEntity.make(doc, { _key: doc.id }));
+            .map((doc) => DataEntity.make(doc, { _key: doc.id }));
 
         const results = await testHarness.run(keyedTestData);
 

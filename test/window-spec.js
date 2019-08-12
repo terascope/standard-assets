@@ -293,14 +293,14 @@ describe('window should', () => {
         let results = await testHarness.run(data.slice(0, 10));
 
         expect(results).toBeArrayOfSize(3);
-        results.forEach(window => expect(window.asArray()).toBeArrayOfSize(4));
+        results.forEach((window) => expect(window.asArray()).toBeArrayOfSize(4));
 
         results = await testHarness.run([]);
         expect(results).toBeArrayOfSize(0);
 
         results = await testHarness.run(data.slice(10,));
         expect(results).toBeArrayOfSize(5);
-        results.forEach(window => expect(window.asArray()).toBeArrayOfSize(4));
+        results.forEach((window) => expect(window.asArray()).toBeArrayOfSize(4));
 
         // all event windows should be expired by now
         await setTimeoutPromise(250)
