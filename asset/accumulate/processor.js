@@ -29,7 +29,7 @@ class Accumulate extends BatchProcessor {
         // reset empty slice count if break in incoming data
         this.emptySliceCount = 0;
 
-        dataArray.forEach(doc => this.records.push(doc));
+        dataArray.forEach((doc) => this.records.push(doc));
     }
 
     onBatch(dataArray) {

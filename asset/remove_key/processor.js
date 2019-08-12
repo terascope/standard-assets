@@ -15,7 +15,7 @@ class SetKey extends MapProcessor {
 
     map(doc) {
         if (doc instanceof DataWindow) {
-            doc.dataArray = doc.asArray().map(item => this._setKey(item));
+            doc.dataArray = doc.asArray().map((item) => this._setKey(item));
             return doc;
         }
 

@@ -33,7 +33,7 @@ class GroupBy extends BatchProcessor {
     onBatch(dataArray) {
         dataArray.forEach((doc) => {
             if (doc instanceof DataWindow) {
-                doc.asArray().forEach(item => this._group(item));
+                doc.asArray().forEach((item) => this._group(item));
             } else {
                 this._group(doc);
             }

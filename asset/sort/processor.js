@@ -16,7 +16,7 @@ class Sort extends BatchProcessor {
 
     onBatch(dataArray) {
         if (dataArray.length > 0 && dataArray[0] instanceof DataWindow) {
-            dataArray.forEach(dataWindow => Timsort.sort(dataWindow.asArray(), this.sort));
+            dataArray.forEach((dataWindow) => Timsort.sort(dataWindow.asArray(), this.sort));
         } else {
             Timsort.sort(dataArray, this.sort);
         }
