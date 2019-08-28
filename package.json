@@ -16,7 +16,7 @@
         "jest": "^24.9.0",
         "jest-extended": "^0.11.2",
         "lodash": "^4.17.15",
-        "teraslice-test-harness": "^0.8.4",
+        "teraslice-test-harness": "^0.8.5",
         "typescript": "^3.6.2"
     },
     "dependencies": {}
