@@ -46,9 +46,9 @@ describe('accumulate should', () => {
         const results = await testHarness.run(testData);
 
         expect(results).toBeArrayOfSize(1);
-        expect(results[0].asArray()[0]).toBe(testData[0]);
-        expect(results[0].asArray()[1]).toBe(testData[1]);
-        expect(results[0].asArray()[2]).toBe(testData[2]);
+        expect(results[0].asArray()[0]).toEqual(testData[0]);
+        expect(results[0].asArray()[1]).toEqual(testData[1]);
+        expect(results[0].asArray()[2]).toEqual(testData[2]);
         expect(results[1]).toBeUndefined();
     });
 });
