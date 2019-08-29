@@ -1,7 +1,6 @@
 'use strict';
 
 const path = require('path');
-const _ = require('lodash');
 const { DataEntity } = require('@terascope/job-components');
 const {
     OpTestHarness,
@@ -19,12 +18,7 @@ const opConfig = {
 
 const data = [{ id: 1 }, { id: 2 }, { id: 3 }];
 const singleKeyData = data.map((doc) => DataEntity.make(doc, { _key: 1 }));
-
-const multiKeyData = _.cloneDeep(data);
-for (let i = 0; i < data.length; i++) {
-    DataEntity.make(multiKeyData[i], { _key: i });
-}
-
+const multiKeyData = data.map((doc, i) => DataEntity.make(doc, { _key: i }));
 
 describe('accumulate_by_key should', () => {
     const testHarness = new OpTestHarness({ Processor, Schema });
