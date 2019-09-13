@@ -81,7 +81,7 @@ describe('sort should', () => {
 
         // all items should be in asc order, can be equal to
         results.forEach((window) => {
-            window.asArray().slice(1,).forEach((item, i) => {
+            window.asArray().slice(1).forEach((item, i) => {
                 expect(item.id >= window.get(i).id).toBe(true);
             });
         });

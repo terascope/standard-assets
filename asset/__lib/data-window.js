@@ -7,8 +7,14 @@ const { DataEntity } = require('@terascope/utils');
 */
 
 class DataWindow extends DataEntity {
+    static [Symbol.hasInstance](instance) {
+        if (instance == null) return false;
+        return instance.__isDataWindow === true;
+    }
+
     constructor(...args) {
         super(...args);
+        this.__isDataWindow = true;
         this.dataArray = [];
     }
 
@@ -19,7 +25,7 @@ class DataWindow extends DataEntity {
 
         if (docs != null) {
             if (Array.isArray(docs)) {
-                newWindow.dataArray = docs;
+                newWindow.dataArray = DataEntity.makeArray(docs);
             } else {
                 newWindow.set(docs);
             }
