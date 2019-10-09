@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const job_components_1 = require("@terascope/job-components");
-const interfaces_1 = require("./interfaces");
+const utils_1 = require("../helpers/utils");
 class Schema extends job_components_1.ConvictSchema {
     build() {
         return {
@@ -12,8 +12,8 @@ class Schema extends job_components_1.ConvictSchema {
             },
             order: {
                 doc: 'The field in the input records to use for sorting',
-                default: interfaces_1.Order.asc,
-                format: Object.values(interfaces_1.Order)
+                default: utils_1.Order.asc,
+                format: Object.values(utils_1.Order)
             }
         };
     }

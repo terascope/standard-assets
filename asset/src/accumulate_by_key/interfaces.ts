@@ -7,4 +7,5 @@ export interface AccumulateByKeyConfig extends OpConfig {
     batch_return: boolean;
     batch_size: number;
     flush_data_on_shutdown: boolean;
+    order: string;
 }

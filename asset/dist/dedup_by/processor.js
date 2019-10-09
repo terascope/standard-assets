@@ -5,19 +5,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const job_components_1 = require("@terascope/job-components");
 const data_window_1 = __importDefault(require("../helpers/data-window"));
+const utils_1 = require("../helpers/utils");
+function adjustTimes(original, doc) {
+    const origFirstSeen = utils_1.getTime(original.first_seen);
+    const origLastSeen = utils_1.getTime(original.last_seen);
+    const docFirstSeen = utils_1.getTime(doc.first_seen);
+    const docLastSeen = utils_1.getTime(doc.last_seen);
+    if (docFirstSeen && origFirstSeen && docFirstSeen < origFirstSeen) {
+        original.first_seen = doc.first_seen;
+    }
+    if (docLastSeen && origLastSeen && docLastSeen > origLastSeen) {
+        original.last_seen = doc.last_seen;
+    }
+}
 class Dedup extends job_components_1.BatchProcessor {
-    // TODO: review this
-    _millisecondTime(time) {
-        return isNaN(time) ? Date.parse(time) : +time;
-    }
-    _adjustTimes(original, doc) {
-        if (this._millisecondTime(doc.first_seen) < this._millisecondTime(original.first_seen)) {
-            original.first_seen = doc.first_seen;
-        }
-        if (this._millisecondTime(doc.last_seen) > this._millisecondTime(original.last_seen)) {
-            original.last_seen = doc.last_seen;
-        }
-    }
     _dedup(dataArray) {
         const uniqDocs = new Map();
         dataArray.forEach((doc) => {
@@ -29,7 +30,7 @@ class Dedup extends job_components_1.BatchProcessor {
             if (uniqDocs.has(key)) {
                 // need to adjust first and last seen
                 if (this.opConfig.adjust_time === true) {
-                    this._adjustTimes(uniqDocs.get(key), doc);
+                    adjustTimes(uniqDocs.get(key), doc);
                 }
                 return;
             }

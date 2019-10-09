@@ -6,7 +6,7 @@ class Accumulator {
         this.records = [];
         this.emptyAfter = emptyAfter;
     }
-    accumulate(dataArray) {
+    add(dataArray) {
         // reset empty slice count if break in incoming data
         this.emptySliceCount = 0;
         dataArray.forEach((doc) => this.records.push(doc));
@@ -14,8 +14,16 @@ class Accumulator {
     emptySlice() {
         this.emptySliceCount++;
     }
+    flush() {
+        const results = this.records;
+        this.records = [];
+        return results;
+    }
     readyToEmpty() {
         return this.emptySliceCount >= this.emptyAfter;
+    }
+    get size() {
+        return this.records.length;
     }
 }
 exports.default = Accumulator;

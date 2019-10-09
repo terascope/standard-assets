@@ -2,23 +2,25 @@
 import { BatchProcessor, DataEntity } from '@terascope/job-components';
 import DataWindow from '../helpers/data-window';
 import { DedupConfig } from './interfaces';
+import { getTime } from '../helpers/utils';
+
+function adjustTimes(original: DataEntity, doc: DataEntity) {
+    const origFirstSeen = getTime(original.first_seen);
+    const origLastSeen = getTime(original.last_seen);
+
+    const docFirstSeen = getTime(doc.first_seen);
+    const docLastSeen = getTime(doc.last_seen);
+
+    if (docFirstSeen && origFirstSeen && docFirstSeen < origFirstSeen) {
+        original.first_seen = doc.first_seen;
+    }
+
+    if (docLastSeen && origLastSeen && docLastSeen > origLastSeen) {
+        original.last_seen = doc.last_seen;
+    }
+}
 
 export default class Dedup extends BatchProcessor<DedupConfig> {
-    // TODO: review this
-    _millisecondTime(time: any) {
-        return isNaN(time) ? Date.parse(time) : +time;
-    }
-
-    _adjustTimes(original: DataEntity, doc: DataEntity) {
-        if (this._millisecondTime(doc.first_seen) < this._millisecondTime(original.first_seen)) {
-            original.first_seen = doc.first_seen;
-        }
-
-        if (this._millisecondTime(doc.last_seen) > this._millisecondTime(original.last_seen)) {
-            original.last_seen = doc.last_seen;
-        }
-    }
-
     _dedup(dataArray: DataEntity[]) {
         const uniqDocs = new Map();
 
@@ -31,7 +33,7 @@ export default class Dedup extends BatchProcessor<DedupConfig> {
             if (uniqDocs.has(key)) {
                 // need to adjust first and last seen
                 if (this.opConfig.adjust_time === true) {
-                    this._adjustTimes(uniqDocs.get(key), doc);
+                    adjustTimes(uniqDocs.get(key), doc);
                 }
 
                 return;

@@ -4,7 +4,7 @@ const utils_1 = require("@terascope/utils");
 /*
     An array of DataEntities inside a DataEntity
 */
-// TODO: remove ts-ignore
+// TODO: we cam remove ts-ignore and this class when DataWindow is native to DataEntity
 // @ts-ignore
 class DataWindow extends utils_1.DataEntity {
     static [Symbol.hasInstance](instance) {
@@ -13,7 +13,7 @@ class DataWindow extends utils_1.DataEntity {
         return instance.__isDataWindow === true;
     }
     constructor(...args) {
-        // @ts-ignore FIXME:
+        // @ts-ignore
         super(...args);
         this.__isDataWindow = true;
         this.dataArray = [];

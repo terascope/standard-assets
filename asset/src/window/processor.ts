@@ -2,6 +2,7 @@
 import { BatchProcessor } from '@terascope/job-components';
 import DataWindow from '../helpers/data-window';
 import { WindowConfig } from './interfaces';
+import { getTime } from '../helpers/utils';
 
 export default class Window extends BatchProcessor<WindowConfig> {
     flushWindows = false;
@@ -17,15 +18,17 @@ export default class Window extends BatchProcessor<WindowConfig> {
         this.flushWindows = false;
     }
 
-    _millisecondTime(time: any) {
-        return isNaN(time) ? Date.parse(time) : +time;
-    }
-    // TODO: review this
     _setTime(doc?: any) {
         if (this.opConfig.window_time_setting === 'clock') {
             this.time = Date.now();
         } else {
-            this.time = this._millisecondTime(doc[this.opConfig.time_field]);
+            const value = doc[this.opConfig.time_field];
+            const newTime = getTime(value);
+            if (newTime) {
+                this.time = newTime;
+            } else {
+                this.logger.warn(`could not create a window time from value: "${value}"`);
+            }
         }
     }
 
@@ -43,8 +46,7 @@ export default class Window extends BatchProcessor<WindowConfig> {
         if (this.windows.size === 0
         // calculate new sliding window (current time - newest window) > sliding interval
         || (this.opConfig.window_type === 'sliding'
-        // @ts-ignore FIXME:
-        && (this.time - Math.max([...this.windows.keys()]))
+        && (this.time - Math.max(...this.windows.keys()))
         >= this.opConfig.sliding_window_interval)) {
             this.windows.set(this.time, DataWindow.make());
         }

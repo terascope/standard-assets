@@ -2,21 +2,32 @@
 import { DataEntity } from '@terascope/job-components';
 import Accumulator from './accumulator';
 import DataWindow from './data-window';
+import { AccumulateByKeyConfig } from '../accumulate_by_key/interfaces';
 
 export default class AccumulatorByKey extends Accumulator {
     buckets = new Map();
     keyField: string;
+    batchReturn: boolean;
+    batchSize: number;
 
-    constructor(emptyAfter: number, keyField: string) {
+    constructor(emptyAfter: number, config: AccumulateByKeyConfig) {
         super(emptyAfter);
+        const {
+            batch_size: batchSize,
+            key_field: keyField,
+            batch_return: batchReturn
+        } = config;
+
         this.keyField = keyField;
+        this.batchReturn = batchReturn;
+        this.batchSize = batchSize;
     }
 
     readyToEmpty() {
         return super.readyToEmpty() && this.buckets.size > 0;
     }
 
-    accumulate(dataArray: DataEntity[]) {
+    add(dataArray: DataEntity[]) {
         this.emptySliceCount = 0;
 
         dataArray.forEach((doc) => {
@@ -37,5 +48,26 @@ export default class AccumulatorByKey extends Accumulator {
 
             this.buckets.get(key).set(doc);
         });
+    }
+
+    flush() {
+        const result = [];
+        let resultSize = 0;
+        if (this.batchReturn === true) {
+            const dataWindowKeys = this.buckets.keys();
+            while (resultSize < this.batchSize && this.buckets.size !== 0) {
+                const key = dataWindowKeys.next().value;
+                result.push(this.buckets.get(key));
+                resultSize += this.buckets.get(key).asArray().length;
+                this.buckets.delete(key);
+            }
+        } else {
+            for (const dataWindow of this.buckets.values()) {
+                result.push(dataWindow);
+            }
+            this.buckets.clear();
+        }
+
+        return result;
     }
 }

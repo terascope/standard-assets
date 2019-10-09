@@ -5,7 +5,7 @@ import { DataEntity } from '@terascope/utils';
     An array of DataEntities inside a DataEntity
 */
 
-// TODO: remove ts-ignore
+// TODO: we cam remove ts-ignore and this class when DataWindow is native to DataEntity
 // @ts-ignore
 export default class DataWindow extends DataEntity {
     static [Symbol.hasInstance](instance: any) {
@@ -14,7 +14,7 @@ export default class DataWindow extends DataEntity {
     }
 
     constructor(...args: any[]) {
-        // @ts-ignore FIXME:
+        // @ts-ignore
         super(...args);
         this.__isDataWindow = true;
         this.dataArray = [];

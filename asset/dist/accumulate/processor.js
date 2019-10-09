@@ -11,7 +11,7 @@ class Accumulate extends job_components_1.BatchProcessor {
         super(context, opConfig, exConfig);
         this.flushData = false;
         this.shuttingDown = false;
-        this.accumulator = new accumulator_1.default(this.opConfig.empty_after);
+        this.accum = new accumulator_1.default(this.opConfig.empty_after);
     }
     onFlushStart() {
         if (this.opConfig.flush_data_on_shutdown)
@@ -23,16 +23,13 @@ class Accumulate extends job_components_1.BatchProcessor {
     // @ts-ignore
     onBatch(dataArray) {
         if (dataArray.length === 0)
-            this.accumulator.emptySlice();
+            this.accum.emptySlice();
         else
-            this.accumulator.accumulate(dataArray);
+            this.accum.add(dataArray);
         let results = [];
-        // FIXME:
-        // eslint-disable-next-line max-len
-        if ((this.accumulator.readyToEmpty() || this.flushData) && this.accumulator.records.length > 0) {
-            // @ts-ignore FIXME:
-            results = data_window_1.default.make(this.opConfig.data_window_key, this.accumulator.records);
-            this.accumulator.records = [];
+        if ((this.accum.readyToEmpty() || this.flushData) && this.accum.size > 0) {
+            // @ts-ignore TODO: we are ignorinng util DataWindow is native to DataEntity
+            results = data_window_1.default.make(this.opConfig.data_window_key, this.accum.flush());
         }
         return results;
     }

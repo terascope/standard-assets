@@ -9,11 +9,11 @@ import Accumulator from '../helpers/accumulator';
 export default class Accumulate extends BatchProcessor<AccumulateConfig> {
     flushData = false;
     shuttingDown = false;
-    accumulator: Accumulator;
+    accum: Accumulator;
 
     constructor(context: WorkerContext, opConfig: AccumulateConfig, exConfig: ExecutionConfig) {
         super(context, opConfig, exConfig);
-        this.accumulator = new Accumulator(this.opConfig.empty_after);
+        this.accum = new Accumulator(this.opConfig.empty_after);
     }
 
     onFlushStart() {
@@ -26,15 +26,12 @@ export default class Accumulate extends BatchProcessor<AccumulateConfig> {
 
     // @ts-ignore
     onBatch(dataArray: DataEntity[]) {
-        if (dataArray.length === 0) this.accumulator.emptySlice();
-        else this.accumulator.accumulate(dataArray);
+        if (dataArray.length === 0) this.accum.emptySlice();
+        else this.accum.add(dataArray);
         let results: DataEntity[] = [];
-        // FIXME:
-        // eslint-disable-next-line max-len
-        if ((this.accumulator.readyToEmpty() || this.flushData) && this.accumulator.records.length > 0) {
-            // @ts-ignore FIXME:
-            results = DataWindow.make(this.opConfig.data_window_key, this.accumulator.records);
-            this.accumulator.records = [];
+        if ((this.accum.readyToEmpty() || this.flushData) && this.accum.size > 0) {
+            // @ts-ignore TODO: we are ignorinng util DataWindow is native to DataEntity
+            results = DataWindow.make(this.opConfig.data_window_key, this.accum.flush());
         }
 
         return results;

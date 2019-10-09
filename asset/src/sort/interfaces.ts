@@ -1,10 +1,6 @@
 
 import { OpConfig } from '@terascope/job-components';
-
-export enum Order {
-    asc = 'asc',
-    desc = 'desc'
-}
+import { Order } from '../helpers/utils';
 
 export interface SortConfig extends OpConfig {
     field: string;

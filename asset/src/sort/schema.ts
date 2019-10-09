@@ -1,6 +1,7 @@
 
 import { ConvictSchema } from '@terascope/job-components';
-import { SortConfig, Order } from './interfaces';
+import { SortConfig } from './interfaces';
+import { Order } from '../helpers/utils';
 
 export default class Schema extends ConvictSchema<SortConfig> {
     build() {

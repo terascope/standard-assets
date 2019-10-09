@@ -6,15 +6,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const accumulator_1 = __importDefault(require("./accumulator"));
 const data_window_1 = __importDefault(require("./data-window"));
 class AccumulatorByKey extends accumulator_1.default {
-    constructor(emptyAfter, keyField) {
+    constructor(emptyAfter, config) {
         super(emptyAfter);
         this.buckets = new Map();
+        const { batch_size: batchSize, key_field: keyField, batch_return: batchReturn } = config;
         this.keyField = keyField;
+        this.batchReturn = batchReturn;
+        this.batchSize = batchSize;
     }
     readyToEmpty() {
         return super.readyToEmpty() && this.buckets.size > 0;
     }
-    accumulate(dataArray) {
+    add(dataArray) {
         this.emptySliceCount = 0;
         dataArray.forEach((doc) => {
             let key;
@@ -32,6 +35,26 @@ class AccumulatorByKey extends accumulator_1.default {
             }
             this.buckets.get(key).set(doc);
         });
+    }
+    flush() {
+        const result = [];
+        let resultSize = 0;
+        if (this.batchReturn === true) {
+            const dataWindowKeys = this.buckets.keys();
+            while (resultSize < this.batchSize && this.buckets.size !== 0) {
+                const key = dataWindowKeys.next().value;
+                result.push(this.buckets.get(key));
+                resultSize += this.buckets.get(key).asArray().length;
+                this.buckets.delete(key);
+            }
+        }
+        else {
+            for (const dataWindow of this.buckets.values()) {
+                result.push(dataWindow);
+            }
+            this.buckets.clear();
+        }
+        return result;
     }
 }
 exports.default = AccumulatorByKey;
