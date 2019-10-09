@@ -1,9 +1,9 @@
 
 import 'jest-extended';
-import { OpTestHarness } from 'teraslice-test-harness';
 import DataWindow from '../asset/src/helpers/data-window';
 import Processor from '../asset/src/data_window_to_array/processor';
 import Schema from '../asset/src/data_window_to_array/schema';
+import { makeTest } from './helpers';
 
 const opConfig = {
     _op: 'data_window_to_array',
@@ -17,11 +17,10 @@ const testData = [
 ];
 
 describe('data_window_to_array should', () => {
-    const testHarness = new OpTestHarness({ Processor, Schema });
+    const testHarness = makeTest(Processor, Schema);
 
     beforeAll(async () => {
-        // @ts-ignore FIXME:
-        await testHarness.initialize({ opConfig });
+        await testHarness.initialize({ opConfig, type: 'processor' });
     });
     afterAll(() => testHarness.shutdown());
 

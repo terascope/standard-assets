@@ -6,7 +6,7 @@ import DataWindow from '../helpers/data-window';
 import { SortConfig } from './interfaces';
 
 export default class Sort extends BatchProcessor<SortConfig> {
-    sort: (a: DataWindow, b: DataWindow) => number;
+    sort: (a: any, b: any) => number;
 
     constructor(context: WorkerContext, opConfig: SortConfig, executionConfig: ExecutionConfig) {
         super(context, opConfig, executionConfig);

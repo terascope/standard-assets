@@ -3,14 +3,13 @@ import 'jest-extended';
 import path from 'path';
 import { DataEntity, OpConfig } from '@terascope/job-components';
 import {
-    OpTestHarness,
     WorkerTestHarness,
     newTestJobConfig,
     newTestSlice
 } from 'teraslice-test-harness';
-import Processor from '../asset/src/accumulate_by_key/processor';
-import Schema from '../asset/src/accumulate_by_key/schema';
+import { Processor, Schema } from '../asset/src/accumulate_by_key';
 import DataWindow from '../asset/src/helpers/data-window';
+import { makeTest } from './helpers';
 
 const opConfig: OpConfig = {
     _op: 'accumulate_by_key',
@@ -22,10 +21,9 @@ const singleKeyData = data.map((doc) => DataEntity.make(doc, { _key: 1 }));
 const multiKeyData = data.map((doc, i) => DataEntity.make(doc, { _key: i }));
 
 describe('accumulate_by_key should', () => {
-    // @ts-ignore FIXME:
-    const testHarness = new OpTestHarness({ Processor, Schema });
+    const testHarness = makeTest(Processor, Schema);
 
-    beforeAll(() => testHarness.initialize({ opConfig }));
+    beforeAll(() => testHarness.initialize({ opConfig, type: 'processor' }));
     afterAll(() => testHarness.shutdown());
 
     it('generate an empty result if no input data', async () => {
@@ -58,16 +56,16 @@ describe('accumulate_by_key should', () => {
 });
 
 describe('accumulate_by_key should', () => {
-    // @ts-ignore FIXME:
-    const testHarness = new OpTestHarness({ Processor, Schema });
-
+    const testHarness = makeTest(Processor, Schema);
     const localData: DataEntity[] = [];
+
     beforeAll(async () => {
         await testHarness.initialize({
             opConfig: {
                 _op: 'accumulate_by_key',
                 empty_after: 3
-            }
+            },
+            type: 'processor'
         });
 
         for (let i = 0; i < 100; i++) {
@@ -102,7 +100,7 @@ describe('accumulate_by_key should', () => {
         expect(results).toBeArrayOfSize(4);
 
         // check each window result and key value
-        results.forEach((result: DataWindow, i: number) => {
+        results.forEach((result: any, i: number) => {
             expect(result.asArray()).toBeArrayOfSize(75);
             expect(result.getMetadata('_key')).toBe(i);
         });
@@ -134,7 +132,7 @@ describe('accumulate_by_key should', () => {
 
         // verify each data window size and key
         expect(results).toBeArrayOfSize(4);
-        results.forEach((result: DataWindow, i: number) => {
+        results.forEach((result: any, i: number) => {
             expect(result.asArray()).toBeArrayOfSize(75);
             expect(result.getMetadata('_key')).toBe(i);
         });
@@ -148,12 +146,10 @@ describe('accumulate_by_key should', () => {
 
 
 describe('accumulate_by_key should', () => {
-    // @ts-ignore FIXME:
-    const testHarness = new OpTestHarness({ Processor, Schema });
-
+    const testHarness = makeTest(Processor, Schema);
     const names = ['joe', 'moe', 'poe', 'randy', 'fin'];
-
     const localData: DataEntity[] = [];
+
     beforeAll(async () => {
         await testHarness.initialize({
             opConfig: {
@@ -162,7 +158,8 @@ describe('accumulate_by_key should', () => {
                 key_field: 'name',
                 batch_return: true,
                 batch_size: 150
-            }
+            },
+            type: 'processor'
         });
 
         for (let i = 0; i < 125; i++) {
@@ -200,7 +197,7 @@ describe('accumulate_by_key should', () => {
         expect(results).toBeArrayOfSize(2);
 
         // check each window result and key value
-        results.forEach((result: DataWindow, i: number) => {
+        results.forEach((result: any, i: number) => {
             expect(result.asArray()).toBeArrayOfSize(75);
             expect(result.getMetadata('_key')).toBe(names[i]);
         });
@@ -209,7 +206,7 @@ describe('accumulate_by_key should', () => {
         expect(results).toBeArrayOfSize(2);
 
         // check each window result and key value
-        results.forEach((result: DataWindow, i: number) => {
+        results.forEach((result: any, i: number) => {
             expect(result.asArray()).toBeArrayOfSize(75);
             expect(result.getMetadata('_key')).toBe(names[i + 2]);
         });
@@ -217,7 +214,7 @@ describe('accumulate_by_key should', () => {
         // Next slice should return data
         results = await testHarness.run([]);
         expect(results).toBeArrayOfSize(1);
-        results.forEach((result: DataWindow) => {
+        results.forEach((result: any) => {
             expect(result.asArray()).toBeArrayOfSize(75);
             expect(result.getMetadata('_key')).toBe('fin');
         });

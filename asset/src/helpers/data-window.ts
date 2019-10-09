@@ -20,7 +20,7 @@ export default class DataWindow extends DataEntity {
         this.dataArray = [];
     }
 
-    static make(key?: string, docs?: any | any[]) {
+    static make(key?: any, docs?: any | any[]) {
         const newWindow = new DataWindow();
 
         if (key != null) newWindow.setMetadata('_key', key);

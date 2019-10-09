@@ -1,11 +1,10 @@
 
 import 'jest-extended';
 import { DataEntity, cloneDeep, OpConfig } from '@terascope/job-components';
-import { OpTestHarness } from 'teraslice-test-harness';
-
 import DataWindow from '../asset/src/helpers/data-window';
 import Processor from '../asset/src/set_key/processor';
 import Schema from '../asset/src/set_key/schema';
+import { makeTest } from './helpers';
 
 const opConfig: OpConfig = {
     _op: 'set_key',
@@ -28,11 +27,10 @@ const testData = [
 ];
 
 describe('set_key should', () => {
-    // @ts-ignore FIXME:
-    const testHarness = new OpTestHarness({ Processor, Schema });
+    const testHarness = makeTest(Processor, Schema);
 
     beforeAll(async () => {
-        await testHarness.initialize({ opConfig });
+        await testHarness.initialize({ opConfig, type: 'processor' });
     });
 
     afterAll(() => testHarness.shutdown());
@@ -64,11 +62,10 @@ describe('set_key should', () => {
 });
 
 describe('set_key should', () => {
-    // @ts-ignore FIXME:
-    const testHarness = new OpTestHarness({ Processor, Schema });
+    const testHarness = makeTest(Processor, Schema);
 
     beforeAll(async () => {
-        await testHarness.initialize({ opConfig });
+        await testHarness.initialize({ opConfig, type: 'processor' });
     });
     afterAll(() => testHarness.shutdown());
 

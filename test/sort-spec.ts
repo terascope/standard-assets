@@ -1,11 +1,10 @@
 
 import 'jest-extended';
 import { DataEntity, OpConfig } from '@terascope/job-components';
-
-import { OpTestHarness } from 'teraslice-test-harness';
 import Processor from '../asset/src/sort/processor';
 import Schema from '../asset/src/sort/schema';
 import DataWindow from '../asset/src/helpers/data-window';
+import { makeTest } from './helpers';
 
 const testData = [
     {
@@ -20,15 +19,15 @@ const testData = [
 ];
 
 describe('sort should', () => {
-    // @ts-ignore FIXME:
-    const testHarness = new OpTestHarness({ Processor, Schema });
+    const testHarness = makeTest(Processor, Schema);
 
     beforeAll(async () => {
         await testHarness.initialize({
             opConfig: {
                 _op: 'sort',
                 field: 'id'
-            }
+            },
+            type: 'processor'
         });
     });
 
@@ -40,7 +39,7 @@ describe('sort should', () => {
     });
 
     it('sort input correctly', async () => {
-        const results = await testHarness.run(testData);
+        const results = await testHarness.run(testData) as any[];
         expect(results).toBeArrayOfSize(3);
 
         let next = 1;
@@ -52,10 +51,9 @@ describe('sort should', () => {
 });
 
 describe('sort should', () => {
-    // @ts-ignore FIXME:
-    const testHarness = new OpTestHarness({ Processor, Schema });
-
+    const testHarness = makeTest(Processor, Schema);
     let opConfig: OpConfig;
+
     beforeEach(async () => {
         opConfig = {
             _op: 'sort',
@@ -68,17 +66,16 @@ describe('sort should', () => {
     // array of 3 windows, 10 unordered items in each window
     const dataWindows: DataWindow[] = [];
     for (let i = 0; i < 3; i++) {
-        // @ts-ignore FIXME:
+        // @ts-ignore
         const dataArray = Array(10).fill().map(() => {
             const obj = { id: Math.floor(Math.random() * 1000) };
             return obj;
         });
-        // @ts-ignore FIXME:
         dataWindows.push(DataWindow.make(i, dataArray));
     }
 
     it('sort array of data windows correctly in ascending order', async () => {
-        await testHarness.initialize({ opConfig });
+        await testHarness.initialize({ opConfig, type: 'processor' });
         const results = await testHarness.run(dataWindows) as DataWindow[];
 
         // all items should be returned
@@ -94,7 +91,7 @@ describe('sort should', () => {
 
     it('sort array of data windows correctly in descending order', async () => {
         opConfig.order = 'desc';
-        await testHarness.initialize({ opConfig });
+        await testHarness.initialize({ opConfig, type: 'processor' });
         const results = await testHarness.run(dataWindows) as DataWindow[];
 
         // all items should be returned
@@ -110,15 +107,14 @@ describe('sort should', () => {
 });
 
 describe('sort should', () => {
-    // @ts-ignore FIXME:
-    const testHarness = new OpTestHarness({ Processor, Schema });
-
+    const testHarness = makeTest(Processor, Schema);
     beforeAll(async () => {
         await testHarness.initialize({
             opConfig: {
                 _op: 'sort',
                 field: 'id'
-            }
+            },
+            type: 'processor'
         });
     });
 
@@ -138,15 +134,14 @@ describe('sort should', () => {
 });
 
 describe('sort should', () => {
-    // @ts-ignore FIXME:
-    const testHarness = new OpTestHarness({ Processor, Schema });
-
+    const testHarness = makeTest(Processor, Schema);
     beforeAll(async () => {
         await testHarness.initialize({
             opConfig: {
                 _op: 'sort',
                 field: 'date'
-            }
+            },
+            type: 'processor'
         });
     });
 

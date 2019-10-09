@@ -3,7 +3,6 @@ import 'jest-extended';
 import path from 'path';
 import { DataEntity, OpConfig } from '@terascope/job-components';
 import {
-    OpTestHarness,
     WorkerTestHarness,
     newTestJobConfig,
     newTestSlice
@@ -11,6 +10,7 @@ import {
 import Processor from '../asset/src/accumulate/processor';
 import Schema from '../asset/src/accumulate/schema';
 import DataWindow from '../asset/src/helpers/data-window';
+import { makeTest } from './helpers';
 
 const testData = [
     {
@@ -25,8 +25,7 @@ const testData = [
 ];
 
 describe('accumulate should', () => {
-    // @ts-ignore FIXME:
-    const testHarness = new OpTestHarness({ Processor, Schema });
+    const testHarness = makeTest(Processor, Schema);
 
     let opConfig: OpConfig;
     beforeEach(async () => {
@@ -38,14 +37,14 @@ describe('accumulate should', () => {
     afterEach(() => testHarness.shutdown());
 
     it('generate an empty result if no input data', async () => {
-        await testHarness.initialize({ opConfig });
+        await testHarness.initialize({ opConfig, type: 'processor' });
         const results = await testHarness.run([]);
         expect(results).toBeArrayOfSize(0);
     });
 
     it('return a data window with all results', async () => {
-        await testHarness.initialize({ opConfig });
-        const results = await testHarness.run(testData);
+        await testHarness.initialize({ opConfig, type: 'processor' });
+        const results = await testHarness.run(testData) as DataWindow[];
 
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()[0]).toEqual(testData[0]);
@@ -56,16 +55,16 @@ describe('accumulate should', () => {
 });
 
 describe('accumulate should', () => {
-    // @ts-ignore FIXME:
-    const testHarness = new OpTestHarness({ Processor, Schema });
-
+    const testHarness = makeTest(Processor, Schema);
     const localData: DataEntity[] = [];
+
     beforeAll(async () => {
         await testHarness.initialize({
             opConfig: {
                 _op: 'accumulate',
                 empty_after: 3
-            }
+            },
+            type: 'processor'
         });
 
         for (let i = 0; i < 100; i++) {
@@ -99,7 +98,7 @@ describe('accumulate should', () => {
         // After the 3rd empty slice we should see results.
         // batch_size is 50 so we expect all 300 records back
         // in one chunk
-        results = await testHarness.run([]);
+        results = await testHarness.run([]) as DataWindow[];
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(300);
 

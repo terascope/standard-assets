@@ -2,10 +2,10 @@
 import 'jest-extended';
 import { DataEntity, cloneDeep, OpConfig } from '@terascope/job-components';
 import { OpTestHarness } from 'teraslice-test-harness';
-
 import DataWindow from '../asset/src/helpers/data-window';
 import Processor from '../asset/src/remove_key/processor';
 import Schema from '../asset/src/remove_key/schema';
+import { makeTest } from './helpers';
 
 const opConfig: OpConfig = {
     _op: 'set_key',
@@ -28,11 +28,10 @@ const testData = [
 ];
 
 describe('set_key should', () => {
-    const testHarness = new OpTestHarness({ Processor, Schema });
+    const testHarness = makeTest(Processor, Schema);
 
     beforeAll(async () => {
-        // @ts-ignore FIXME:
-        await testHarness.initialize({ opConfig });
+        await testHarness.initialize({ opConfig, type: 'processor' });
     });
     afterAll(() => testHarness.shutdown());
 
@@ -43,26 +42,21 @@ describe('set_key should', () => {
 
     it('return docs as data entities with no field as the key', async () => {
         const results = await testHarness.run(testData) as DataEntity[];
+
         results.forEach((doc) => expect(DataEntity.isDataEntity(doc)).toBe(true));
-        // @ts-ignore FIXME:
+
         expect(results[0].getMetadata('_key')).toBe(undefined);
-        // @ts-ignore FIXME:
         expect(results[1].getMetadata('_key')).toBe(undefined);
-        // @ts-ignore FIXME:
         expect(results[2].getMetadata('_key')).toBe(undefined);
     });
 
     it('return data entities with the name field as the key', async () => {
-        // @ts-ignore FIXME:
-        const newTestData = cloneDeep(testData).map((doc) => DataEntity.make(doc, { _key: 'key' }));
-
+        const newTestData = cloneDeep(testData).map((doc: any) => DataEntity.make(doc, { _key: 'key' }));
         const results = await testHarness.run(newTestData) as DataEntity[];
+
         results.forEach((doc) => expect(DataEntity.isDataEntity(doc)).toBe(true));
-        // @ts-ignore FIXME:
         expect(results[0].getMetadata('_key')).toBe(undefined);
-        // @ts-ignore FIXME:
         expect(results[1].getMetadata('_key')).toBe(undefined);
-        // @ts-ignore FIXME:
         expect(results[2].getMetadata('_key')).toBe(undefined);
     });
 });
@@ -71,8 +65,7 @@ describe('set_key should', () => {
     const testHarness = new OpTestHarness({ Processor, Schema });
 
     beforeAll(async () => {
-        // @ts-ignore FIXME:
-        await testHarness.initialize({ opConfig });
+        await testHarness.initialize({ opConfig, type: 'processor' });
     });
 
     it('return data window with data entities metadata _key field as the key', async () => {
@@ -84,17 +77,11 @@ describe('set_key should', () => {
         const results = await testHarness.run(testWindow) as DataEntity[];
 
         results.forEach((doc) => expect(DataEntity.isDataEntity(doc)).toBe(true));
-        // @ts-ignore FIXME:
         expect(results[0].asArray()[0].getMetadata('_key')).toBe(undefined);
-        // @ts-ignore FIXME:
         expect(results[0].asArray()[1].getMetadata('_key')).toBe(undefined);
-        // @ts-ignore FIXME:
         expect(results[0].asArray()[2].getMetadata('_key')).toBe(undefined);
-        // @ts-ignore FIXME:
         expect(results[1].asArray()[0].getMetadata('_key')).toBe(undefined);
-        // @ts-ignore FIXME:
         expect(results[1].asArray()[1].getMetadata('_key')).toBe(undefined);
-        // @ts-ignore FIXME:
         expect(results[1].asArray()[2].getMetadata('_key')).toBe(undefined);
     });
 });
