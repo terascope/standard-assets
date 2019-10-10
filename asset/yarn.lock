@@ -108,11 +108,6 @@
   resolved "https://registry.yarnpkg.com/@types/shortid/-/shortid-0.0.29.tgz#8093ee0416a6e2bf2aa6338109114b3fbffa0e9b"
   integrity sha1-gJPuBBam4r8qpjOBCRFLP7/6Dps=
 
-"@types/timsort@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@types/timsort/-/timsort-0.3.0.tgz#f93fd394b89b5119e22e19ae2349f5a85f185d4b"
-  integrity sha512-SFjNmiiq4uCs9eXvxbaJMa8pnmlepV8dT2p0nCfdRL1h/UU7ZQFsnCLvtXRHTb3rnyILpQz4Kh8JoTqvDdgxYw==
-
 ansi-regex@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-4.1.0.tgz#8b9f8f08cf1acb843756a839ca8c7e3168c51997"

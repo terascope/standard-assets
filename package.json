@@ -1,6 +1,6 @@
 {
     "name": "standard-assets-bundle",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "description": "Teraslice standard processor asset bundle",
     "scripts": {
         "asset:build": "yarn run build",
@@ -17,6 +17,7 @@
         "@terascope/eslint-config": "^0.1.5",
         "@types/jest": "^24.0.18",
         "@types/node": "^12.7.11",
+        "@types/timsort": "^0.3.0",
         "eslint": "^6.5.1",
         "jest": "^24.9.0",
         "jest-extended": "^0.11.2",
