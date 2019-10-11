@@ -19,3 +19,5 @@ build/
 
 # Dependency directory
 node_modules
+
+asset/dist
