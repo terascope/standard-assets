@@ -1,33 +1,36 @@
-
-import opTestHarness from '@terascope/teraslice-op-test-harness';
-import { DataEntity, newTestExecutionConfig } from '@terascope/job-components';
+import 'jest-extended';
 import path from 'path';
+import { OpTestHarness } from 'teraslice-test-harness';
+import { DataEntity, newTestExecutionConfig } from '@terascope/job-components';
 import { Processor, Schema } from '../asset/src/selection';
+import { makeTest } from './helpers';
 
 describe('selection phase', () => {
     const testAssetPath = path.join(__dirname, './assets');
-    let opTest: opTestHarness.TestHarness;
+    let opTest: OpTestHarness;
     const type = 'processor';
     const assetName = 'someAssetId';
+    const opConfig = {
+        _op: 'transform',
+        rules: [`${assetName}:transformRules.txt`],
+        plugins: ['someAssetId:plugins'],
+        types: { location: 'geo' }
+    };
 
-    beforeEach(() => {
-        opTest = opTestHarness({ Processor, Schema });
-        opTest.context.sysconfig.teraslice.assets_directory = testAssetPath;
+    const executionConfig = newTestExecutionConfig({
+        assets: [assetName],
+        operations: [opConfig]
     });
 
+    beforeAll(() => {
+        opTest = makeTest(Processor, Schema);
+        opTest.harness.context.sysconfig.teraslice.assets_directory = testAssetPath;
+        return opTest.initialize({ executionConfig, type });
+    });
+
+    afterAll(() => opTest.shutdown());
+
     it('can run and select data', async () => {
-        const opConfig = {
-            _op: 'transform',
-            rules: [`${assetName}:transformRules.txt`],
-            plugins: ['someAssetId:plugins'],
-            types: { location: 'geo' }
-        };
-
-        const executionConfig = newTestExecutionConfig({
-            assets: [assetName],
-            operations: [opConfig]
-        });
-
         const data = DataEntity.makeArray([
             { some: 'data', isTall: true },
             { some: 'thing else', person: {} },
@@ -36,9 +39,8 @@ describe('selection phase', () => {
             {}
         ]);
 
-        const test = await opTest.init({ executionConfig, type });
-        const results = await test.run(data);
+        const results = await opTest.run(data);
         // because of the * selector
-        expect(results.length).toEqual(5);
+        expect(results).toBeArrayOfSize(5);
     });
 });

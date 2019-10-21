@@ -1,32 +1,35 @@
-
-import opTestHarness from '@terascope/teraslice-op-test-harness';
-import { DataEntity, newTestExecutionConfig } from '@terascope/job-components';
 import path from 'path';
+import { OpTestHarness } from 'teraslice-test-harness';
+import { DataEntity, newTestExecutionConfig } from '@terascope/job-components';
 import { Processor, Schema } from '../asset/src/transform';
+import { makeTest } from './helpers';
 
-describe('can transform matches', () => {
+describe('transform matches', () => {
     const testAssetPath = path.join(__dirname, './assets');
-    let opTest: opTestHarness.TestHarness;
+    let opTest: OpTestHarness;
     const type = 'processor';
+    const opConfig = {
+        _op: 'transform',
+        plugins: ['someAssetId:plugins'],
+        rules: ['someAssetId:transformRules.txt'],
+        types: { date: 'date' }
+    };
 
-    beforeEach(() => {
-        opTest = opTestHarness({ Processor, Schema });
-        opTest.context.sysconfig.teraslice.assets_directory = testAssetPath;
+    const executionConfig = newTestExecutionConfig({
+        assets: ['someAssetId'],
+        operations: [opConfig]
     });
 
-    it('can uses typeConifg', async () => {
-        const date = new Date().toISOString();
-        const opConfig = {
-            _op: 'transform',
-            plugins: ['someAssetId:plugins'],
-            rules: ['someAssetId:transformRules.txt'],
-            types: { date: 'date' }
-        };
+    beforeAll(() => {
+        opTest = makeTest(Processor, Schema);
+        opTest.harness.context.sysconfig.teraslice.assets_directory = testAssetPath;
+        return opTest.initialize({ executionConfig, type });
+    });
 
-        const executionConfig = newTestExecutionConfig({
-            assets: ['someAssetId'],
-            operations: [opConfig]
-        });
+    afterAll(() => opTest.shutdown());
+
+    it('can uses type config', async () => {
+        const date = new Date().toISOString();
 
         const data = DataEntity.makeArray([
             {
@@ -37,8 +40,7 @@ describe('can transform matches', () => {
             { other: 'stuff', _id: '4' }
         ]);
 
-        const test = await opTest.init({ executionConfig, type });
-        const results = await test.run(data);
+        const results = await opTest.run(data);
 
         expect(results.length).toEqual(3);
         expect(results[0]).toEqual({ final: 'hello world', id: 1 });

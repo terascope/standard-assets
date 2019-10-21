@@ -1,4 +1,3 @@
-
 import { OpTestHarness } from 'teraslice-test-harness';
 
 export function makeTest(Processor: any, Schema: any): OpTestHarness {
