@@ -1,32 +1,34 @@
-
-import opTestHarness from '@terascope/teraslice-op-test-harness';
-import { DataEntity, newTestExecutionConfig } from '@terascope/job-components';
 import path from 'path';
+import { OpTestHarness } from 'teraslice-test-harness';
+import { DataEntity, newTestExecutionConfig } from '@terascope/job-components';
 import { Processor, Schema } from '../asset/src/extraction';
+import { makeTest } from './helpers';
 
 describe('extraction phase', () => {
     const testAssetPath = path.join(__dirname, './assets');
-    let opTest: opTestHarness.TestHarness;
+    let opTest: OpTestHarness;
     const type = 'processor';
+    const opConfig = {
+        _op: 'transform',
+        plugins: ['someAssetId:plugins'],
+        rules: ['someAssetId:transformRules.txt'],
+        types: { date: 'date' }
+    };
 
-    beforeEach(() => {
-        opTest = opTestHarness({ Processor, Schema });
-        opTest.context.sysconfig.teraslice.assets_directory = testAssetPath;
+    const executionConfig = newTestExecutionConfig({
+        assets: ['someAssetId'],
+        operations: [opConfig]
     });
 
+    beforeAll(() => {
+        opTest = makeTest(Processor, Schema);
+        opTest.harness.context.sysconfig.teraslice.assets_directory = testAssetPath;
+        return opTest.initialize({ executionConfig, type });
+    });
+
+    afterAll(() => opTest.shutdown());
+
     it('can run and extract data', async () => {
-        const opConfig = {
-            _op: 'transform',
-            plugins: ['someAssetId:plugins'],
-            rules: ['someAssetId:transformRules.txt'],
-            types: { date: 'date' }
-        };
-
-        const executionConfig = newTestExecutionConfig({
-            assets: ['someAssetId'],
-            operations: [opConfig]
-        });
-
         const data = [
             { some: 'data', field: 'onething', field2: 'something' },
             { location: '33.242, -111.453' }
@@ -45,8 +47,7 @@ describe('extraction phase', () => {
 
         const dataArray = data.map((obj, ind) => new DataEntity(obj, metaArray[ind]));
 
-        const test = await opTest.init({ executionConfig, type });
-        const results = await test.run(dataArray);
+        const results = await opTest.run(dataArray);
 
         expect(results.length).toEqual(2);
 

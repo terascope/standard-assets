@@ -1,4 +1,3 @@
-
 import 'jest-extended';
 import { DataEntity, cloneDeep, OpConfig } from '@terascope/job-components';
 import { OpTestHarness } from 'teraslice-test-harness';
@@ -62,7 +61,7 @@ describe('set_key should', () => {
 });
 
 describe('set_key should', () => {
-    const testHarness = new OpTestHarness({ Processor, Schema });
+    const testHarness = new OpTestHarness({ Processor, Schema } as any);
 
     beforeAll(async () => {
         await testHarness.initialize({ opConfig, type: 'processor' });
