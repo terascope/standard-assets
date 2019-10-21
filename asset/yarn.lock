@@ -18,10 +18,10 @@
   resolved "https://registry.yarnpkg.com/@terascope/queue/-/queue-1.1.7.tgz#26cd3a42747ec802744f9b86c08034b0bbe07091"
   integrity sha512-foPas4K4rShs0RxtLNauC9ssXbzWvf5YzCa+6tJ9BAEk+PfjHJhi9bPDL6stXfcHroKtbet49dPwFbFIJJAOHw==
 
-"@terascope/utils@^0.20.1":
-  version "0.20.1"
-  resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.20.1.tgz#a8b14b85e34bb5f66c8ac44fe55f98f7b97a24a6"
-  integrity sha512-Omm85MgrQ6yiBefedbsCMLMD0Y6+4Smhibu+WjlPDSgauq+dbuGJJkC6nXZgSvWC9ZnLLkzY/aQtaGotseVmCg==
+"@terascope/utils@^0.20.1", "@terascope/utils@^0.20.3":
+  version "0.20.3"
+  resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.20.3.tgz#75df8af61e7efc0e96ea7c525a9f37eb7347cb08"
+  integrity sha512-61xyyR2Xus/zk6E1zcv1c9eLBJixTnqC3Jh89ZtP9R6cg4nQSHXcGQJVQbkXiyTlWKqEjsWvmAnIaR0suFc7Cg==
   dependencies:
     debug "^4.1.1"
     is-plain-object "^3.0.0"
@@ -442,12 +442,12 @@ timsort@^0.3.0:
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
 
-ts-transforms@^0.24.5:
-  version "0.24.5"
-  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.24.5.tgz#3c50fe0dc14dd022bd65858ec251a582861e5273"
-  integrity sha512-xWFdc1M6My0pLQ1gbNPofalYYKzVaWUkNxyhD393HX7iWJzgEOEhLKK5jRarOK/UFHVMoz/7rZ0TRVlFZCFh5Q==
+ts-transforms@^0.24.7:
+  version "0.24.7"
+  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.24.7.tgz#29c19f33cf927915f49336d79776ce97ae3238d5"
+  integrity sha512-+Vp2BEdGi9+qfdsnVhAf1VWkqomRgGJZQdJo8L5ZurD84InuM9y/XhTHmZfGmF5ZeHYbO5NqUBL0SfRJHutaVg==
   dependencies:
-    "@terascope/utils" "^0.20.1"
+    "@terascope/utils" "^0.20.3"
     "@types/graphlib" "^2.1.5"
     "@types/shortid" "^0.0.29"
     awesome-phonenumber "^2.15.0"
@@ -456,7 +456,7 @@ ts-transforms@^0.24.5:
     shortid "^2.2.14"
     valid-url "^1.0.9"
     validator "^11.0.0"
-    xlucene-evaluator "^0.11.1"
+    xlucene-evaluator "^0.11.3"
     yargs "^14.0.0"
 
 uuid@^3.3.3:
@@ -502,12 +502,12 @@ wrap-ansi@^5.1.0:
     string-width "^3.0.0"
     strip-ansi "^5.0.0"
 
-xlucene-evaluator@^0.11.1:
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/xlucene-evaluator/-/xlucene-evaluator-0.11.1.tgz#19aee73a8a613d47e8fba15ac5c7b48a61213dcc"
-  integrity sha512-wQ+fpWxfjifpgYDqH/aBGdEQT6EW40MxgaTT/VsAxLv1Q1zGkxVn4z3QjG9qVxkhzmCKbAKH2nMxyud7p3OyWQ==
+xlucene-evaluator@^0.11.3:
+  version "0.11.3"
+  resolved "https://registry.yarnpkg.com/xlucene-evaluator/-/xlucene-evaluator-0.11.3.tgz#ea2875996c259e49bd340f28d435955faef9af9d"
+  integrity sha512-vBzhaAtti/zWlzfeUDr/Wg7LmgxmoE/eNf8M4PH/C1rFdtENhmwLK0AvLFwGp9fUEV6/yxbNvf0uTCQ8QfXj+w==
   dependencies:
-    "@terascope/utils" "^0.20.1"
+    "@terascope/utils" "^0.20.3"
     "@turf/bbox" "^6.0.1"
     "@turf/bbox-polygon" "^6.0.1"
     "@turf/boolean-point-in-polygon" "^6.0.1"
