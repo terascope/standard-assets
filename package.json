@@ -16,7 +16,7 @@
     "devDependencies": {
         "@terascope/eslint-config": "^0.1.5",
         "@types/jest": "^24.0.19",
-        "@types/node": "^12.11.1",
+        "@types/node": "^12.11.7",
         "@types/timsort": "^0.3.0",
         "eslint": "^6.5.1",
         "jest": "^24.9.0",
