@@ -6,6 +6,6 @@
     "dependencies": {
         "@terascope/job-components": "^0.23.7",
         "timsort": "^0.3.0",
-        "ts-transforms": "^0.24.7"
+        "ts-transforms": "^0.24.13"
     }
 }
