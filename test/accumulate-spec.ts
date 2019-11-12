@@ -162,7 +162,7 @@ describe('accumulate should', () => {
     });
 
     it('return data after flush event', async () => {
-        const results = await harness.flush() as DataWindow[];
+        const results: DataWindow[] = (await harness.flush()) as any;
         await harness.shutdown();
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(3);
