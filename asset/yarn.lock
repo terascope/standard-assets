@@ -427,12 +427,12 @@ get-caller-file@^2.0.1:
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-2.0.5.tgz#4f94412a82db32f36e3b0b9741f8a97feb031f7e"
   integrity sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==
 
-graphlib@^2.1.7:
-  version "2.1.7"
-  resolved "https://registry.yarnpkg.com/graphlib/-/graphlib-2.1.7.tgz#b6a69f9f44bd9de3963ce6804a2fc9e73d86aecc"
-  integrity sha512-TyI9jIy2J4j0qgPmOOrHTCtpPqJGN/aurBwc6ZT+bRii+di1I+Wv3obRhVrmBEXet+qkMaEX67dXrwsd3QQM6w==
+graphlib@^2.1.8:
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/graphlib/-/graphlib-2.1.8.tgz#5761d414737870084c92ec7b5dbcb0592c9d35da"
+  integrity sha512-jcLLfkpoVGmH7/InMC/1hIvOPSUh38oJtGhvrOFGzioE1DZ+0YW16RgmOJhHiuWTvGiJQ9Z1Ik43JvkRPRvE+A==
   dependencies:
-    lodash "^4.17.5"
+    lodash "^4.17.15"
 
 has@^1.0.1:
   version "1.0.3"
@@ -564,7 +564,7 @@ lodash.unset@^4.5.2:
   resolved "https://registry.yarnpkg.com/lodash.unset/-/lodash.unset-4.5.2.tgz#370d1d3e85b72a7e1b0cdf2d272121306f23e4ed"
   integrity sha1-Nw0dPoW3Kn4bDN8tJyEhMG8j5O0=
 
-lodash@^4.17.11, lodash@^4.17.5:
+lodash@^4.17.11, lodash@^4.17.15:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
@@ -690,21 +690,21 @@ timsort@^0.3.0:
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
 
-ts-transforms@^0.26.1:
-  version "0.26.1"
-  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.26.1.tgz#5d082a2229f38d18645061c95e8b81bbefcdcba4"
-  integrity sha512-AsEErlaqH7GTI1jkl7uwYuyaqUwrTGLMHfZOHUXbmyhJeYuxLv8SzDUdTB9RgFBaZH8apb70Lg6ClH+kdYGDxQ==
+ts-transforms@^0.27.1:
+  version "0.27.1"
+  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.27.1.tgz#2290ee6de2fafe6363f9ef41ff605969880f08c6"
+  integrity sha512-ylpyhMHAHMtrYN+MtOVP2Rijdbjs8V+K9XweNgZJeeBVE6cQnDIz7iuubZKnr/kKUcetbwFSkGHqiCUPzR2r1A==
   dependencies:
     "@terascope/utils" "^0.20.7"
     "@types/graphlib" "^2.1.5"
     "@types/shortid" "^0.0.29"
     awesome-phonenumber "^2.22.0"
-    graphlib "^2.1.7"
+    graphlib "^2.1.8"
     jexl "^2.2.1"
     shortid "^2.2.14"
     valid-url "^1.0.9"
     validator "^12.1.0"
-    xlucene-evaluator "^0.13.1"
+    xlucene-evaluator "^0.14.1"
     yargs "^15.0.2"
 
 uuid@^3.3.3:
@@ -750,10 +750,10 @@ wrap-ansi@^6.2.0:
     string-width "^4.1.0"
     strip-ansi "^6.0.0"
 
-xlucene-evaluator@^0.13.1:
-  version "0.13.1"
-  resolved "https://registry.yarnpkg.com/xlucene-evaluator/-/xlucene-evaluator-0.13.1.tgz#f099bf37f9c6569bdac1cd5593c3872f90e07dc9"
-  integrity sha512-QoS+TN2bCzehWwx7eBRld/L8ls9VrIlXg+OimigvZc7nLYVjcS9OFAqwV/eqk6WBEoEqs5RjdOzyOOvW371Vpg==
+xlucene-evaluator@^0.14.1:
+  version "0.14.1"
+  resolved "https://registry.yarnpkg.com/xlucene-evaluator/-/xlucene-evaluator-0.14.1.tgz#6c7167f5760e735ef3354091bfe413df8497c7b5"
+  integrity sha512-2m1NiBG0mdmx0s91HZ2nDVX8RLExW+Rr8OfjLU/gNngM7HeDe/t4ov8buGk70pLr92hFYBTlh+7SGA9mfH1ydw==
   dependencies:
     "@terascope/utils" "^0.20.7"
     "@turf/bbox" "^6.0.1"
