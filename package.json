@@ -14,7 +14,7 @@
         "postinstall": "yarn --cwd ./asset --prod --no-progress"
     },
     "devDependencies": {
-        "@terascope/eslint-config": "^0.1.8",
+        "@terascope/eslint-config": "^0.2.0",
         "@types/jest": "^24.0.23",
         "@types/node": "^12.12.18",
         "@types/timsort": "^0.3.0",
