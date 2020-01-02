@@ -1,4 +1,3 @@
-
 import { sort } from 'timsort';
 import { BatchProcessor, WorkerContext, ExecutionConfig } from '@terascope/job-components';
 import { sortFunction } from '../helpers/utils';

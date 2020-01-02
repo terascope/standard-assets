@@ -1,4 +1,3 @@
-
 import 'jest-extended';
 import DataWindow from '../asset/src/helpers/data-window';
 import Processor from '../asset/src/data_window_to_array/processor';

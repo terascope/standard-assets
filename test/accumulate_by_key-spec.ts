@@ -1,4 +1,3 @@
-
 import 'jest-extended';
 import path from 'path';
 import { DataEntity, OpConfig } from '@terascope/job-components';
@@ -55,7 +54,7 @@ describe('accumulate_by_key should', () => {
     });
 });
 
-describe('accumulate_by_key should', () => {
+describe('accumulate_by_key (with empty_after: 3) should', () => {
     const testHarness = makeTest(Processor, Schema);
     const localData: DataEntity[] = [];
 
@@ -137,15 +136,13 @@ describe('accumulate_by_key should', () => {
             expect(result.getMetadata('_key')).toBe(i);
         });
 
-
         // Next slice should be back to 0
         results = await testHarness.run([]);
         expect(results).toBeArrayOfSize(0);
     });
 });
 
-
-describe('accumulate_by_key should', () => {
+describe('accumulate_by_key (with batch return) should', () => {
     const testHarness = makeTest(Processor, Schema);
     const names = ['joe', 'moe', 'poe', 'randy', 'fin'];
     const localData: DataEntity[] = [];

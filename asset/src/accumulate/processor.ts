@@ -1,4 +1,3 @@
-
 import {
     BatchProcessor, DataEntity, WorkerContext, ExecutionConfig
 } from '@terascope/job-components';

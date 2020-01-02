@@ -1,6 +1,5 @@
 import 'jest-extended';
 import { DataEntity, cloneDeep, OpConfig } from '@terascope/job-components';
-import { OpTestHarness } from 'teraslice-test-harness';
 import DataWindow from '../asset/src/helpers/data-window';
 import Processor from '../asset/src/remove_key/processor';
 import Schema from '../asset/src/remove_key/schema';
@@ -57,14 +56,6 @@ describe('set_key should', () => {
         expect(results[0].getMetadata('_key')).toBe(undefined);
         expect(results[1].getMetadata('_key')).toBe(undefined);
         expect(results[2].getMetadata('_key')).toBe(undefined);
-    });
-});
-
-describe('set_key should', () => {
-    const testHarness = new OpTestHarness({ Processor, Schema } as any);
-
-    beforeAll(async () => {
-        await testHarness.initialize({ opConfig, type: 'processor' });
     });
 
     it('return data window with data entities metadata _key field as the key', async () => {

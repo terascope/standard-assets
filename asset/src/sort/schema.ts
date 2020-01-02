@@ -1,4 +1,3 @@
-
 import { ConvictSchema } from '@terascope/job-components';
 import { SortConfig } from './interfaces';
 import { Order } from '../helpers/utils';

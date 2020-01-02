@@ -1,4 +1,3 @@
-
 import 'jest-extended';
 import { DataEntity, OpConfig } from '@terascope/job-components';
 import Processor from '../asset/src/sort/processor';
@@ -50,7 +49,7 @@ describe('sort should', () => {
     });
 });
 
-describe('sort should', () => {
+describe('sort (with field) should', () => {
     const testHarness = makeTest(Processor, Schema);
     let opConfig: OpConfig;
 
@@ -104,23 +103,9 @@ describe('sort should', () => {
             });
         });
     });
-});
 
-describe('sort should', () => {
-    const testHarness = makeTest(Processor, Schema);
-    beforeAll(async () => {
-        await testHarness.initialize({
-            opConfig: {
-                _op: 'sort',
-                field: 'id'
-            },
-            type: 'processor'
-        });
-    });
-
-    afterAll(() => testHarness.shutdown());
-
-    it('not treat data entities like data windows', async () => {
+    it('should not treat data entities like data windows', async () => {
+        await testHarness.initialize({ opConfig, type: 'processor' });
         const dataEntities = DataEntity.makeArray(testData);
         const results = await testHarness.run(dataEntities);
         expect(results).toBeArrayOfSize(3);
@@ -133,7 +118,7 @@ describe('sort should', () => {
     });
 });
 
-describe('sort should', () => {
+describe('sort (with date field) should', () => {
     const testHarness = makeTest(Processor, Schema);
     beforeAll(async () => {
         await testHarness.initialize({

@@ -1,4 +1,3 @@
-
 import 'jest-extended';
 import { DataEntity, cloneDeep, OpConfig } from '@terascope/job-components';
 import DataWindow from '../asset/src/helpers/data-window';
@@ -59,15 +58,6 @@ describe('set_key should', () => {
         expect(results[1].getMetadata('_key')).toBe('moe');
         expect(results[2].getMetadata('_key')).toBe('randy');
     });
-});
-
-describe('set_key should', () => {
-    const testHarness = makeTest(Processor, Schema);
-
-    beforeAll(async () => {
-        await testHarness.initialize({ opConfig, type: 'processor' });
-    });
-    afterAll(() => testHarness.shutdown());
 
     it('return data window with data entities metadata _key field as the key', async () => {
         const testWindow = [

@@ -1,4 +1,3 @@
-
 import { BatchProcessor, DataEntity } from '@terascope/job-components';
 import DataWindow from '../helpers/data-window';
 import { DedupConfig } from './interfaces';
@@ -44,9 +43,10 @@ export default class Dedup extends BatchProcessor<DedupConfig> {
 
         return [...uniqDocs.values()];
     }
+
     // @ts-ignore
     onBatch(dataArray: DataWindow[] | DataEntity[]) {
-        if (dataArray.length > 0 && dataArray[0] instanceof DataWindow) {
+        if (isDataWindows(dataArray)) {
             dataArray.forEach((window) => {
                 window.dataArray = this._dedup(window.dataArray);
             });
@@ -55,4 +55,8 @@ export default class Dedup extends BatchProcessor<DedupConfig> {
         }
         return this._dedup(dataArray);
     }
+}
+
+function isDataWindows(input: any): input is DataWindow[] {
+    return input.length > 0 && input[0] instanceof DataWindow;
 }
