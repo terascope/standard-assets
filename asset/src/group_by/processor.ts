@@ -1,4 +1,3 @@
-
 import { BatchProcessor, DataEntity } from '@terascope/job-components';
 import DataWindow from '../helpers/data-window';
 import { GroupByConfig } from './interfaces';
@@ -26,9 +25,10 @@ export default class GroupBy extends BatchProcessor<GroupByConfig> {
 
         this.groups.get(key).push(doc);
     }
+
     // @ts-ignore
     onBatch(dataArray: DataWindow[] | DataEntity[]) {
-        dataArray.forEach((doc) => {
+        dataArray.forEach((doc: DataWindow | DataEntity) => {
             if (doc instanceof DataWindow) {
                 doc.asArray().forEach((item: DataEntity) => this._group(item));
             } else {

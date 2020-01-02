@@ -4,7 +4,7 @@
     "description": "Teraslice standard processor asset bundle",
     "license": "MIT",
     "dependencies": {
-        "@terascope/job-components": "^0.24.0",
+        "@terascope/job-components": "^0.26.0",
         "timsort": "^0.3.0",
         "ts-transforms": "^0.28.0"
     }

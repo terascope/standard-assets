@@ -1,4 +1,3 @@
-
 import { MapProcessor, DataEntity } from '@terascope/job-components';
 import DataWindow from '../helpers/data-window';
 import { SetKeyConfig } from './interfaces';
@@ -11,7 +10,6 @@ export default class SetKey extends MapProcessor<SetKeyConfig> {
         }
         return DataEntity.make(doc, { _key: doc[this.opConfig.field] });
     }
-
 
     map(doc: DataEntity | DataWindow) {
         if (doc instanceof DataWindow) {
