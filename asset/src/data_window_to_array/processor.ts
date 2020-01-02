@@ -1,4 +1,3 @@
-
 import { BatchProcessor, DataEntity, OpConfig } from '@terascope/job-components';
 import DataWindow from '../helpers/data-window';
 

@@ -1,4 +1,3 @@
-
 import 'jest-extended';
 import path from 'path';
 import util from 'util';
@@ -179,7 +178,6 @@ describe('window should', () => {
             }
         ];
 
-
         await testHarness.initialize({ opConfig, type: 'processor' });
         let results = await testHarness.run(data) as DataWindow[];
         expect(results).toBeArrayOfSize(1);
@@ -280,7 +278,7 @@ describe('window should', () => {
         };
     });
 
-    it('use sliding windows and assign docs to correct windows ', async () => {
+    it('use sliding windows and assign docs to correct windows', async () => {
         const data: any[] = [];
         let time = 1556300016000;
 

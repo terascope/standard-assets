@@ -1,4 +1,3 @@
-
 import 'jest-extended';
 import path from 'path';
 import { DataEntity, OpConfig } from '@terascope/job-components';
@@ -168,7 +167,6 @@ describe('accumulate should', () => {
         expect(results[0].asArray()).toBeArrayOfSize(3);
     });
 });
-
 
 describe('accumulate should', () => {
     const job = newTestJobConfig();

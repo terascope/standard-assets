@@ -1,4 +1,3 @@
-
 import { BatchProcessor, DataEntity } from '@terascope/job-components';
 import { PostProcessPhase, Loader, OperationsManager } from 'ts-transforms';
 import { PhaseConfig } from '../transform/interfaces';

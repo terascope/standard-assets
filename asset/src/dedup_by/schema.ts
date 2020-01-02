@@ -1,4 +1,3 @@
-
 import { ConvictSchema } from '@terascope/job-components';
 import { DedupConfig } from './interfaces';
 

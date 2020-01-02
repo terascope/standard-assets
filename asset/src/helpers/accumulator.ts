@@ -1,4 +1,3 @@
-
 import { DataEntity } from '@terascope/job-components';
 
 export default class Accumulator {

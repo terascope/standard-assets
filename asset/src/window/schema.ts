@@ -1,4 +1,3 @@
-
 import { ConvictSchema } from '@terascope/job-components';
 import { WindowConfig, TimeSetting, WindowType } from './interfaces';
 

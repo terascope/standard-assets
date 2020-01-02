@@ -1,4 +1,3 @@
-
 import Tag from './tag';
 
 export default class Plugin {

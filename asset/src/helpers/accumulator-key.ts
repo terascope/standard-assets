@@ -1,4 +1,3 @@
-
 import { DataEntity } from '@terascope/job-components';
 import Accumulator from './accumulator';
 import DataWindow from './data-window';

@@ -1,4 +1,3 @@
-
 import 'jest-extended';
 import { DataEntity, OpConfig } from '@terascope/job-components';
 import Processor from '../asset/src/sort/processor';

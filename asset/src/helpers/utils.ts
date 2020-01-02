@@ -1,4 +1,3 @@
-
 import path from 'path';
 import { get, getUnixTime } from '@terascope/job-components';
 import { PhaseConfig } from '../transform/interfaces';
