@@ -54,7 +54,7 @@ describe('accumulate_by_key should', () => {
     });
 });
 
-describe('accumulate_by_key should', () => {
+describe('accumulate_by_key (with empty_after: 3) should', () => {
     const testHarness = makeTest(Processor, Schema);
     const localData: DataEntity[] = [];
 
@@ -142,7 +142,7 @@ describe('accumulate_by_key should', () => {
     });
 });
 
-describe('accumulate_by_key should', () => {
+describe('accumulate_by_key (with batch return) should', () => {
     const testHarness = makeTest(Processor, Schema);
     const names = ['joe', 'moe', 'poe', 'randy', 'fin'];
     const localData: DataEntity[] = [];

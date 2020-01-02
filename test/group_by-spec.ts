@@ -26,7 +26,7 @@ const testData = [
     }
 ];
 
-describe('group_by should', () => {
+describe('group_by (with field) should', () => {
     const opConfig = {
         _op: 'group_by',
         field: 'id'

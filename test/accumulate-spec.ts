@@ -53,7 +53,7 @@ describe('accumulate should', () => {
     });
 });
 
-describe('accumulate should', () => {
+describe('accumulate (with empty_after:3) should', () => {
     const testHarness = makeTest(Processor, Schema);
     const localData: DataEntity[] = [];
 
@@ -134,7 +134,7 @@ describe('accumulate should', () => {
     });
 });
 
-describe('accumulate should', () => {
+describe('accumulate (empty_after: 10 and flush_data_on_shutdown)should', () => {
     const job = newTestJobConfig();
 
     job.operations = [
@@ -168,7 +168,7 @@ describe('accumulate should', () => {
     });
 });
 
-describe('accumulate should', () => {
+describe('accumulate (with empty_after: 10) should', () => {
     const job = newTestJobConfig();
 
     job.operations = [
