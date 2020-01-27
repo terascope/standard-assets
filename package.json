@@ -20,7 +20,7 @@
         "@types/timsort": "^0.3.0",
         "eslint": "^6.8.0",
         "jest": "^25.1.0",
-        "jest-extended": "^0.11.4",
+        "jest-extended": "^0.11.5",
         "teraslice-test-harness": "^0.12.0",
         "ts-jest": "^25.0.0",
         "ts-node": "^8.6.2",
