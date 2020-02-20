@@ -17,6 +17,7 @@ describe('Field partitioner Schema', () => {
                 });
             }).toThrowError(/Invalid `fields` option: must include at least one field to partition on./);
         });
+
         it('should throw an error if `fields` is not an array', () => {
             expect(() => {
                 schema.validate({

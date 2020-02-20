@@ -25,6 +25,7 @@ describe('Date path partitioner', () => {
         }, {});
 
         await harness.initialize();
+
         const [slice] = await harness.runSlice(data);
         expect(slice.getMetadata('_partition')).toEqual('date_year=2020/date_month=01/date_day=17');
     });
@@ -34,10 +35,26 @@ describe('Date path partitioner', () => {
             _op: 'partition_by_date',
             field: 'date',
             resolution: 'monthly'
-        }, {});
+        });
+
         await harness.initialize();
+
         const slice = await harness.runSlice(data);
         expect(slice[0].getMetadata('_partition')).toEqual('date_year=2020/date_month=01');
+    });
+
+    it('properly adds a monthly path with another delimiter', async () => {
+        harness = WorkerTestHarness.testProcessor({
+            _op: 'partition_by_date',
+            field: 'date',
+            resolution: 'monthly',
+            delimiter: ' > '
+        });
+
+        await harness.initialize();
+
+        const slice = await harness.runSlice(data);
+        expect(slice[0].getMetadata('_partition')).toEqual('date_year=2020 > date_month=01');
     });
 
     it('properly adds a yearly path', async () => {
@@ -45,8 +62,10 @@ describe('Date path partitioner', () => {
             _op: 'partition_by_date',
             field: 'date',
             resolution: 'yearly'
-        }, {});
+        });
+
         await harness.initialize();
+
         const slice = await harness.runSlice(data);
         expect(slice[0].getMetadata('_partition')).toEqual('date_year=2020');
     });

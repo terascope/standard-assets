@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@sindresorhus/fnv1a@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sindresorhus/fnv1a/-/fnv1a-2.0.0.tgz#2c8c77f887eeb9762dc5fa6614215671085a7a3b"
+  integrity sha512-HAK3TQvR1AbJ4uMFBp9K0V+jlujsHkCokWJRebQK1mlXBG+i7Q5/Y7AKRmqVPt4T78Uqp2U5fFHgK3gxi4OUqw==
+
 "@terascope/job-components@^0.27.0":
   version "0.27.0"
   resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.27.0.tgz#83dbfdc4183f285aded159ffdbb14919f326d0df"

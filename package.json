@@ -29,7 +29,5 @@
     "engines": {
         "node": ">=8.0.0"
     },
-    "dependencies": {
-        "@sindresorhus/fnv1a": "^2.0.0"
-    }
+    "dependencies": {}
 }
