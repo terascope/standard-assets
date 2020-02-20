@@ -6,7 +6,7 @@ export default class PartitionByKey extends BatchProcessor<PartionByKeyConfig> {
         const key = record.getKey();
 
         record.setMetadata(
-            'standard:partition',
+            '_partition',
             key,
         );
     }

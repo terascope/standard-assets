@@ -13,7 +13,7 @@ class PartitionByDate extends BatchProcessor<PartitionByHashConfig> {
         const partition = fnv1a(hashString) % this.opConfig.partitions;
         // TODO: what should this look like?
         record.setMetadata(
-            'standard:partition',
+            '_partition',
             `partition=${partition}`
         );
     }

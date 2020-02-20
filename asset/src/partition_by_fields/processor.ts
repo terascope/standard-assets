@@ -10,7 +10,7 @@ export default class PartitionByFields extends BatchProcessor<PartitionByFieldsC
         });
 
         record.setMetadata(
-            'standard:partition',
+            '_partition',
             partitions.join(this.opConfig.delimiter)
         );
     }

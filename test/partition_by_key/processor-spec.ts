@@ -52,8 +52,8 @@ describe('Key path partitioner', () => {
         harness.fetcher().handle = async () => data;
         const [slice1, slice2, slice3] = await harness.runSlice(data);
 
-        expect(slice1.getMetadata('standard:partition')).toEqual(key1);
-        expect(slice2.getMetadata('standard:partition')).toEqual(key2);
-        expect(slice3.getMetadata('standard:partition')).toEqual(key3);
+        expect(slice1.getMetadata('_partition')).toEqual(key1);
+        expect(slice2.getMetadata('_partition')).toEqual(key2);
+        expect(slice3.getMetadata('_partition')).toEqual(key3);
     });
 });

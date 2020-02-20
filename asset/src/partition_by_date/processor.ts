@@ -25,7 +25,7 @@ export default class PartitionByDate extends BatchProcessor<PartitionByDateConfi
         }
 
         record.setMetadata(
-            'standard:partition',
+            '_partition',
             partitions.join(this.opConfig.delimiter)
         );
     }

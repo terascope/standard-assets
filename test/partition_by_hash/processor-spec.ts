@@ -39,7 +39,7 @@ describe('Date path partitioner', () => {
 
         const [slice1, slice2] = await harness.runSlice(data);
 
-        expect(slice1.getMetadata('standard:partition')).toEqual('partition=4');
-        expect(slice2.getMetadata('standard:partition')).toEqual('partition=8');
+        expect(slice1.getMetadata('_partition')).toEqual('partition=4');
+        expect(slice2.getMetadata('_partition')).toEqual('partition=8');
     });
 });
