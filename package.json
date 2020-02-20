@@ -1,6 +1,6 @@
 {
     "name": "standard-assets-bundle",
-    "version": "0.3.2",
+    "version": "0.4.0",
     "description": "Teraslice standard processor asset bundle",
     "scripts": {
         "asset:build": "yarn run build",
