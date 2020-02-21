@@ -14,7 +14,7 @@ class PartitionByDate extends BatchProcessor<PartitionByHashConfig> {
         // TODO: what should this look like?
         record.setMetadata(
             '_partition',
-            `partition=${partition}`
+            `${partition}`
         );
     }
 
