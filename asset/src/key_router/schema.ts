@@ -10,6 +10,7 @@ export default class Schema extends ConvictSchema<KeyRouterConfig> {
             throw new Error('Invalid parameters, if "from" or "use" are specified, they must be used together');
         }
     }
+
     build() {
         return {
             use: {

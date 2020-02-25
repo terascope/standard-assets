@@ -24,5 +24,3 @@ export default class Schema extends ConvictSchema<HashRouterConfig> {
         };
     }
 }
-
-module.exports = Schema;

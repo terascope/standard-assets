@@ -7,7 +7,7 @@ import {
     newTestSlice
 } from 'teraslice-test-harness';
 import { Processor, Schema } from '../asset/src/accumulate_by_key';
-import DataWindow from '../asset/src/helpers/data-window';
+import DataWindow from '../asset/src/__lib/data-window';
 import { makeTest } from './helpers';
 
 const opConfig: OpConfig = {

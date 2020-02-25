@@ -8,7 +8,7 @@ import {
 } from 'teraslice-test-harness';
 import Processor from '../asset/src/accumulate/processor';
 import Schema from '../asset/src/accumulate/schema';
-import DataWindow from '../asset/src/helpers/data-window';
+import DataWindow from '../asset/src/__lib/data-window';
 import { makeTest } from './helpers';
 
 const testData = [
