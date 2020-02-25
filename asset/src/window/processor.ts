@@ -1,7 +1,7 @@
 import { BatchProcessor } from '@terascope/job-components';
-import DataWindow from '../helpers/data-window';
+import DataWindow from '../__lib/data-window';
 import { WindowConfig } from './interfaces';
-import { getTime } from '../helpers/utils';
+import { getTime } from '../__lib/utils';
 
 export default class Window extends BatchProcessor<WindowConfig> {
     flushWindows = false;
@@ -33,6 +33,7 @@ export default class Window extends BatchProcessor<WindowConfig> {
 
     _closeExpiredWindows() {
         for (const key of this.windows.keys()) {
+            console.log(this.time, key, this.opConfig.window_length, this.time - key > this.opConfig.window_length)
             if (this.time - key > this.opConfig.window_length) {
                 const window = this.windows.get(key);
                 if (window) this.results.push(window);
@@ -67,7 +68,7 @@ export default class Window extends BatchProcessor<WindowConfig> {
     // @ts-ignore
     onBatch(dataArray: DataWindow[]) {
         this.results = [];
-
+        console.log({ dataArray })
         dataArray.forEach((doc) => {
             if (!doc[this.opConfig.time_field]) return;
             this._setTime(doc);
@@ -83,10 +84,13 @@ export default class Window extends BatchProcessor<WindowConfig> {
 
         // remove expired event based windows
         if (dataArray.length === 0 && this.opConfig.window_time_setting === 'event') {
+            console.log('im not here')
             for (const [key, value] of this.windows.entries()) {
                 const createTime = value.getMetadata('_createTime') || value.getMetadata('createdAt');
                 const elapsed = (Date.now() - createTime);
+
                 if (elapsed > this.opConfig.event_window_expiration) {
+                    console.log('i have elapsed')
                     const window = this.windows.get(key);
                     if (window) this.results.push(window);
                     this.windows.delete(key);

@@ -1,7 +1,7 @@
 import { sort } from 'timsort';
 import { BatchProcessor, WorkerContext, ExecutionConfig } from '@terascope/job-components';
-import { sortFunction } from '../helpers/utils';
-import DataWindow from '../helpers/data-window';
+import { sortFunction } from '../__lib/utils';
+import DataWindow from '../__lib/data-window';
 import { SortConfig } from './interfaces';
 
 export default class Sort extends BatchProcessor<SortConfig> {

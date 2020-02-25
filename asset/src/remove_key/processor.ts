@@ -1,5 +1,5 @@
 import { MapProcessor, DataEntity, OpConfig } from '@terascope/job-components';
-import DataWindow from '../helpers/data-window';
+import DataWindow from '../__lib/data-window';
 
 export default class SetKey extends MapProcessor<OpConfig> {
     // Does this need to make a new DataEntity since it recieves one starting out?

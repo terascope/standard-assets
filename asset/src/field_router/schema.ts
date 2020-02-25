@@ -1,11 +1,11 @@
 import { ConvictSchema } from '@terascope/job-components';
-import { PartitionByHashConfig } from './interfaces';
+import { FieldRouterConfig } from './interfaces';
 
-export default class Schema extends ConvictSchema<PartitionByHashConfig> {
+export default class Schema extends ConvictSchema<FieldRouterConfig> {
     build() {
         return {
             fields: {
-                doc: 'Specifies fields to hash for partitioning. Must specify at least one field.',
+                doc: 'Array fields to partition on. Must specify at least one field.',
                 default: [],
                 format: (fields: any) => {
                     if (!Array.isArray(fields)) {
@@ -16,18 +16,16 @@ export default class Schema extends ConvictSchema<PartitionByHashConfig> {
                     }
                 }
             },
-            partitions: {
-                doc: 'Number of partitions to use with hashing',
-                default: null,
-                format: Number
+            field_delimiter: {
+                doc: 'separator between field/value combinations - default "-"',
+                default: '-',
+                format: 'optional_String'
             },
-            delimiter: {
-                doc: 'Char which will be used to join by',
-                default: '/',
+            value_delimiter: {
+                doc: 'separator between the field name and the value - default "_"',
+                default: '_',
                 format: 'optional_String'
             }
         };
     }
 }
-
-module.exports = Schema;

@@ -1,5 +1,5 @@
 import { BatchProcessor, DataEntity, OpConfig } from '@terascope/job-components';
-import DataWindow from '../helpers/data-window';
+import DataWindow from '../__lib/data-window';
 
 export default class DataWindowToArray extends BatchProcessor<OpConfig> {
     // @ts-ignore

@@ -8,7 +8,7 @@ import {
 import { OpConfig, pDelay } from '@terascope/job-components';
 import Processor from '../asset/src/window/processor';
 import Schema from '../asset/src/window/schema';
-import DataWindow from '../asset/src/helpers/data-window';
+import DataWindow from '../asset/src/__lib/data-window';
 import { makeTest } from './helpers';
 
 const testData = [
@@ -44,12 +44,14 @@ describe('window should', () => {
     it('generate an empty result if no input data', async () => {
         await testHarness.initialize({ opConfig, type: 'processor' });
         const results = await testHarness.run([]);
+
         expect(results).toBeArrayOfSize(0);
     });
 
-    it('return the docs in the window frame', async () => {
+    fit('return the docs in the window frame', async () => {
         await testHarness.initialize({ opConfig, type: 'processor' });
         let results = await testHarness.run(testData) as DataWindow[];
+        console.log({ results })
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(2);
         // @ts-ignore

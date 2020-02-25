@@ -1,7 +1,7 @@
 import { BatchProcessor, DataEntity } from '@terascope/job-components';
 import { ExtractionPhase, Loader, OperationsManager } from 'ts-transforms';
 import { PhaseConfig } from '../transform/interfaces';
-import { loadResources } from '../helpers/utils';
+import { loadResources } from '../__lib/utils';
 
 export default class Extraction extends BatchProcessor<PhaseConfig> {
     private phase!: ExtractionPhase;

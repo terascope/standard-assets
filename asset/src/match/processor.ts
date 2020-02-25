@@ -3,7 +3,7 @@ import {
 } from '@terascope/job-components';
 import { Matcher } from 'ts-transforms';
 import { PhaseConfig } from '../transform/interfaces';
-import { loadResources } from '../helpers/utils';
+import { loadResources } from '../__lib/utils';
 
 export default class Match extends BatchProcessor<PhaseConfig> {
     private matcher!: Matcher;

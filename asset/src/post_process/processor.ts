@@ -1,7 +1,7 @@
 import { BatchProcessor, DataEntity } from '@terascope/job-components';
 import { PostProcessPhase, Loader, OperationsManager } from 'ts-transforms';
 import { PhaseConfig } from '../transform/interfaces';
-import { loadResources } from '../helpers/utils';
+import { loadResources } from '../__lib/utils';
 
 export default class PostProcess extends BatchProcessor<PhaseConfig> {
     private phase!: PostProcessPhase;
