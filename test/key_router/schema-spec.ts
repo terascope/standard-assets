@@ -18,7 +18,7 @@ describe('Key router Schema', () => {
     describe('when validating the schema', () => {
         it('should throw if use and count are not used together', () => {
             expect(() => {
-                const results = schema.validateJob(jobConfig);
+                schema.validateJob(jobConfig);
             }).toThrowError();
         });
     });
