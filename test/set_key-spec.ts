@@ -1,6 +1,6 @@
 import 'jest-extended';
 import { DataEntity, cloneDeep, OpConfig } from '@terascope/job-components';
-import DataWindow from '../asset/src/helpers/data-window';
+import DataWindow from '../asset/src/__lib/data-window';
 import Processor from '../asset/src/set_key/processor';
 import Schema from '../asset/src/set_key/schema';
 import { makeTest } from './helpers';

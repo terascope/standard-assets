@@ -1,7 +1,7 @@
 import { BatchProcessor } from '@terascope/job-components';
-import DataWindow from '../helpers/data-window';
+import DataWindow from '../__lib/data-window';
 import { WindowConfig } from './interfaces';
-import { getTime } from '../helpers/utils';
+import { getTime } from '../__lib/utils';
 
 export default class Window extends BatchProcessor<WindowConfig> {
     flushWindows = false;
@@ -23,6 +23,7 @@ export default class Window extends BatchProcessor<WindowConfig> {
         } else {
             const value = doc[this.opConfig.time_field];
             const newTime = getTime(value);
+
             if (newTime) {
                 this.time = newTime;
             } else {
@@ -35,6 +36,7 @@ export default class Window extends BatchProcessor<WindowConfig> {
         for (const key of this.windows.keys()) {
             if (this.time - key > this.opConfig.window_length) {
                 const window = this.windows.get(key);
+
                 if (window) this.results.push(window);
                 this.windows.delete(key);
             }
@@ -86,6 +88,7 @@ export default class Window extends BatchProcessor<WindowConfig> {
             for (const [key, value] of this.windows.entries()) {
                 const createTime = value.getMetadata('_createTime') || value.getMetadata('createdAt');
                 const elapsed = (Date.now() - createTime);
+
                 if (elapsed > this.opConfig.event_window_expiration) {
                     const window = this.windows.get(key);
                     if (window) this.results.push(window);

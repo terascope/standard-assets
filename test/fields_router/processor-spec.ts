@@ -1,0 +1,84 @@
+import { DataEntity } from '@terascope/utils';
+import { WorkerTestHarness } from 'teraslice-test-harness';
+
+describe('Date path partitioner', () => {
+    let harness: WorkerTestHarness;
+    let data: DataEntity[];
+
+    async function makeTest(config?: any) {
+        const _op = {
+            _op: 'field_router',
+            fields: [
+                'field2',
+                'field1'
+            ]
+        };
+        const opConfig = config ? Object.assign({}, _op, config) : _op;
+        harness = WorkerTestHarness.testProcessor(opConfig);
+
+        await harness.initialize();
+        // Need this in order to feed the record in with the metadata
+        harness.fetcher().handle = async () => data;
+        return harness;
+    }
+
+    beforeEach(async () => {
+        data = [
+            DataEntity.make(
+                {
+                    date: '2020-01-17T19:21:52.159Z',
+                    field1: 'val1',
+                    field2: 'val2'
+                }
+            ),
+            DataEntity.make(
+                {
+                    date: '2020-01-17T19:21:52.159Z',
+                    field1: 'val/1',
+                    field2: 'val/2'
+                }
+            ),
+            DataEntity.make(
+                {
+                    date: '2020-01-17T19:21:52.159Z',
+                    field1: 'val=1',
+                    field2: 'val=2'
+                }
+            )
+        ];
+    });
+
+    afterEach(async () => {
+        if (harness) await harness.shutdown();
+    });
+
+    it('properly santizies routes with specified keys', async () => {
+        harness = await makeTest();
+
+        const [slice1, slice2, slice3] = await harness.runSlice(data);
+
+        expect(slice1.getMetadata('standard:route')).toEqual('field2_val2-field1_val1');
+        expect(slice2.getMetadata('standard:route')).toEqual('field2_val_2-field1_val_1');
+        expect(slice3.getMetadata('standard:route')).toEqual('field2_val_2-field1_val_1');
+    });
+
+    it('can change field_delimiter', async () => {
+        harness = await makeTest({ field_delimiter: '/' });
+
+        const [slice1, slice2, slice3] = await harness.runSlice(data);
+
+        expect(slice1.getMetadata('standard:route')).toEqual('field2_val2/field1_val1');
+        expect(slice2.getMetadata('standard:route')).toEqual('field2_val_2/field1_val_1');
+        expect(slice3.getMetadata('standard:route')).toEqual('field2_val_2/field1_val_1');
+    });
+
+    it('can change value_delimiter', async () => {
+        harness = await makeTest({ value_delimiter: '&' });
+
+        const [slice1, slice2, slice3] = await harness.runSlice(data);
+
+        expect(slice1.getMetadata('standard:route')).toEqual('field2&val2-field1&val1');
+        expect(slice2.getMetadata('standard:route')).toEqual('field2&val_2-field1&val_1');
+        expect(slice3.getMetadata('standard:route')).toEqual('field2&val_2-field1&val_1');
+    });
+});

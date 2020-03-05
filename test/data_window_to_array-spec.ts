@@ -1,5 +1,5 @@
 import 'jest-extended';
-import DataWindow from '../asset/src/helpers/data-window';
+import DataWindow from '../asset/src/__lib/data-window';
 import Processor from '../asset/src/data_window_to_array/processor';
 import Schema from '../asset/src/data_window_to_array/schema';
 import { makeTest } from './helpers';

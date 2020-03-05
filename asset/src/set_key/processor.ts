@@ -1,5 +1,5 @@
 import { MapProcessor, DataEntity } from '@terascope/job-components';
-import DataWindow from '../helpers/data-window';
+import DataWindow from '../__lib/data-window';
 import { SetKeyConfig } from './interfaces';
 
 export default class SetKey extends MapProcessor<SetKeyConfig> {

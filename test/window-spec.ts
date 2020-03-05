@@ -8,7 +8,7 @@ import {
 import { OpConfig, pDelay } from '@terascope/job-components';
 import Processor from '../asset/src/window/processor';
 import Schema from '../asset/src/window/schema';
-import DataWindow from '../asset/src/helpers/data-window';
+import DataWindow from '../asset/src/__lib/data-window';
 import { makeTest } from './helpers';
 
 const testData = [
@@ -44,16 +44,19 @@ describe('window should', () => {
     it('generate an empty result if no input data', async () => {
         await testHarness.initialize({ opConfig, type: 'processor' });
         const results = await testHarness.run([]);
+
         expect(results).toBeArrayOfSize(0);
     });
 
     it('return the docs in the window frame', async () => {
         await testHarness.initialize({ opConfig, type: 'processor' });
         let results = await testHarness.run(testData) as DataWindow[];
+
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(2);
         // @ts-ignore
         results = await testHarness.run([{ id: 4, time: '2019-04-25T18:12:04.000Z' }]);
+
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(1);
     });
@@ -61,6 +64,7 @@ describe('window should', () => {
     it('not return any data if window is not expired', async () => {
         opConfig.event_window_expiration = 30000;
         opConfig.window_length = 30000;
+
         await testHarness.initialize({ opConfig, type: 'processor' });
 
         let results = await testHarness.run(testData);
@@ -115,6 +119,7 @@ describe('window should', () => {
         // all event windows should be expired by now
         await pDelay(250);
         const windowResult = (await testHarness.run([])) as DataWindow[];
+
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(4);
 
@@ -128,6 +133,7 @@ describe('window should', () => {
 
         const data = [];
         const time = new Date();
+
         for (let i = 0; i < 5; i++) {
             const doc = {
                 time: time.toISOString(),
@@ -143,6 +149,7 @@ describe('window should', () => {
         // all event windows should be expired by now
         await pDelay(250);
         const windowResult = (await testHarness.run([])) as DataWindow[];
+
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(5);
 
@@ -173,12 +180,14 @@ describe('window should', () => {
 
         await testHarness.initialize({ opConfig, type: 'processor' });
         let results = await testHarness.run(data) as DataWindow[];
+
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(2);
 
         // all event windows should be expired by now
         await pDelay(250);
         const windowResult = (await testHarness.run([])) as DataWindow[];
+
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(1);
 
@@ -223,6 +232,7 @@ describe('window (with window_time_setting: clock) should', () => {
         // all event windows should be expired by now
         await pDelay(250);
         let windowResult = (await testHarness.run(data.slice(1000, 2000))) as DataWindow[];
+
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(1000);
         expect(windowResult[0].get(0).id).toBe(0);
@@ -231,6 +241,7 @@ describe('window (with window_time_setting: clock) should', () => {
         // need to wait for window to expire
         await pDelay(250);
         windowResult = (await testHarness.run(data.slice(2000, 3000))) as DataWindow[];
+
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(1000);
         expect(windowResult[0].get(0).id).toBe(1000);
@@ -238,6 +249,7 @@ describe('window (with window_time_setting: clock) should', () => {
         // need to wait for window to expire
         await pDelay(250);
         windowResult = (await testHarness.run([])) as DataWindow[];
+
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(1000);
         expect(windowResult[0].get(0).id).toBe(2000);
@@ -289,6 +301,7 @@ describe('window (with window_type sliding) should', () => {
         // need to wait for window to expire
         await pDelay(250);
         const windowResult = (await testHarness.run([])) as DataWindow[];
+
         expect(windowResult).toBeArrayOfSize(2);
         expect(windowResult[0].asArray()).toBeArrayOfSize(4);
         expect(windowResult[1].asArray()).toBeArrayOfSize(2);

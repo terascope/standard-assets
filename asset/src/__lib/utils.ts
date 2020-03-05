@@ -1,5 +1,5 @@
 import path from 'path';
-import { get, getUnixTime } from '@terascope/job-components';
+import { get, getTime as tsGetTime } from '@terascope/job-components';
 import { PhaseConfig } from '../transform/interfaces';
 
 export enum Order {
@@ -26,7 +26,7 @@ export function sortFunction(field: string, order: Order) {
 
 export function getTime(field: string) {
     if (field == null) return false;
-    return getUnixTime(field);
+    return tsGetTime(field);
 }
 
 type getPath = (name: string) => Promise<string>;

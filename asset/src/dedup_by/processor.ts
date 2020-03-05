@@ -1,7 +1,7 @@
 import { BatchProcessor, DataEntity } from '@terascope/job-components';
-import DataWindow from '../helpers/data-window';
+import DataWindow from '../__lib/data-window';
 import { DedupConfig } from './interfaces';
-import { getTime } from '../helpers/utils';
+import { getTime } from '../__lib/utils';
 
 function adjustTimes(original: DataEntity, doc: DataEntity) {
     const origFirstSeen = getTime(original.first_seen);

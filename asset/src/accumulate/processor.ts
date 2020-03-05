@@ -2,8 +2,8 @@ import {
     BatchProcessor, DataEntity, WorkerContext, ExecutionConfig
 } from '@terascope/job-components';
 import { AccumulateConfig } from './interfaces';
-import DataWindow from '../helpers/data-window';
-import Accumulator from '../helpers/accumulator';
+import DataWindow from '../__lib/data-window';
+import Accumulator from '../__lib/accumulator';
 
 export default class Accumulate extends BatchProcessor<AccumulateConfig> {
     flushData = false;

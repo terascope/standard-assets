@@ -2,7 +2,7 @@ import 'jest-extended';
 import { DataEntity } from '@terascope/job-components';
 import Processor from '../asset/src/group_by/processor';
 import Schema from '../asset/src/group_by/schema';
-import DataWindow from '../asset/src/helpers/data-window';
+import DataWindow from '../asset/src/__lib/data-window';
 import { makeTest } from './helpers';
 
 const testData = [

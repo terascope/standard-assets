@@ -2,7 +2,7 @@ import {
     BatchProcessor, WorkerContext, ExecutionConfig, DataEntity
 } from '@terascope/job-components';
 import { AccumulateByKeyConfig } from './interfaces';
-import AccumulatorByKey from '../helpers/accumulator-key';
+import AccumulatorByKey from '../__lib/accumulator-key';
 
 export default class AccumulateByKey extends BatchProcessor<AccumulateByKeyConfig> {
     flushData = false;
