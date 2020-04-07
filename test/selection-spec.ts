@@ -14,7 +14,10 @@ describe('selection phase', () => {
         _op: 'transform',
         rules: [`${assetName}:transformRules.txt`],
         plugins: ['someAssetId:plugins'],
-        types: { location: 'geo' }
+        type_config: { location: 'geo-point' },
+        variables: {
+            foo: 'data'
+        }
     };
 
     const executionConfig = newTestExecutionConfig({

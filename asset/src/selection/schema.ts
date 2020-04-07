@@ -18,8 +18,12 @@ export default class Schema extends ConvictSchema<PhaseConfig> {
                 doc: 'an array of strings that are the locations where plugins reside. must be specifed in "assetName:modulePath" format',
                 default: [],
             },
-            types: {
+            type_config: {
                 doc: 'if specified it sets describes the types on the incoming records',
+                default: {}
+            },
+            variables: {
+                doc: 'variables used in the xLucene query',
                 default: {}
             }
         };

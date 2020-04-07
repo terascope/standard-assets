@@ -31,7 +31,7 @@ describe('extraction phase', () => {
 
     it('can run and post_process data', async () => {
         const data = [
-            new DataEntity({ interm1: 'hello', interm2: 'world' }, { selectors: ['some:data'] }),
+            new DataEntity({ interm1: 'hello', interm2: 'world' }, { selectors: ['some: $foo'] }),
             new DataEntity({ id: '1' }, { selectors: ['*'] }),
             new DataEntity({}, { selectors: ['date:[2019-04-16T20:14:44.304Z TO *] AND bytes:>=1000000'] }),
         ];

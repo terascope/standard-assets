@@ -12,7 +12,10 @@ describe('extraction phase', () => {
         _op: 'transform',
         plugins: ['someAssetId:plugins'],
         rules: ['someAssetId:transformRules.txt'],
-        types: { date: 'date' }
+        types: { date: 'date', location: 'geo-point' },
+        variables: {
+            foo: 'data'
+        }
     };
 
     const executionConfig = newTestExecutionConfig({
@@ -35,9 +38,9 @@ describe('extraction phase', () => {
         ];
 
         const metaArray = [
-            { selectors: ['some:data', '*'] },
+            { selectors: ['some: $foo', '*'] },
             // eslint-disable-next-line no-useless-escape
-            { selectors: ['location:(_geo_box_top_left_: \"33.906320,  -112.758421\" _geo_box_bottom_right_:\"32.813646,-111.058902\")', '*'] }
+            { selectors: ["location: geoBox( top_left: '33.906320, -112.758421' bottom_right: '32.813646,-111.058902')", '*'] }
         ];
 
         const resultsArray = [

@@ -12,7 +12,13 @@ describe('transform matches', () => {
         _op: 'transform',
         plugins: ['someAssetId:plugins'],
         rules: ['someAssetId:transformRules.txt'],
-        types: { date: 'date' }
+        type_config: {
+            date: 'date',
+            location: 'geo-point'
+        },
+        variables: {
+            foo: 'data'
+        }
     };
 
     const executionConfig = newTestExecutionConfig({
