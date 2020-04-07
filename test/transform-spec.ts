@@ -12,7 +12,13 @@ describe('transform matches', () => {
         _op: 'transform',
         plugins: ['someAssetId:plugins'],
         rules: ['someAssetId:transformRules.txt'],
-        types: { date: 'date' }
+        type_config: {
+            date: 'date',
+            location: 'geo-point'
+        },
+        variables: {
+            foo: 'data'
+        }
     };
 
     const executionConfig = newTestExecutionConfig({
@@ -41,7 +47,7 @@ describe('transform matches', () => {
         ]);
 
         const results = await opTest.run(data);
-
+        console.log('results', results)
         expect(results.length).toEqual(3);
         expect(results[0]).toEqual({ final: 'hello world', id: 1 });
         expect(results[1]).toEqual({ loc: '33.435967,  -111.867710', id: 2 });
