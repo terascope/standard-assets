@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/fnv1a/-/fnv1a-2.0.0.tgz#2c8c77f887eeb9762dc5fa6614215671085a7a3b"
   integrity sha512-HAK3TQvR1AbJ4uMFBp9K0V+jlujsHkCokWJRebQK1mlXBG+i7Q5/Y7AKRmqVPt4T78Uqp2U5fFHgK3gxi4OUqw==
 
-"@terascope/data-mate@^0.7.1":
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.7.1.tgz#9e55b4a6ec96ae32c55785a365addef5a9205b23"
-  integrity sha512-kxsGSIShfko2x/XykJGHqLct8pFOKY7/RKBtP/0wGeAIU/TmGcP+eEk8Z6hjP8bhVsNFmMOJC9R2PQ3aL8UtDQ==
+"@terascope/data-mate@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.8.0.tgz#494adefff79aef6c55afd1b5a19b3afc5bdb85f0"
+  integrity sha512-hluEDBinLbxQmLurMfzFCaRtEJd7ZI+d0UC6oFCYyUYHsm3qxkhcmeCYTjOyPsGTb5gcsWiqBkzcmvW4jA/oLg==
   dependencies:
     "@terascope/data-types" "^0.17.1"
     "@terascope/types" "^0.3.0"
@@ -846,12 +846,12 @@ timsort@^0.3.0:
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
 
-ts-transforms@^0.36.1:
-  version "0.36.1"
-  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.36.1.tgz#6b86928e1338a4cb648ab6812568a943d094db80"
-  integrity sha512-QAn+ppAwxTdRj8Z46LUJVXEdUMLJzifpJ1X2YZTFrIqHkVlYt27WpZ8yPq/XHunN+WbwkUANtUTQWS/yKWeq/Q==
+ts-transforms@^0.37.0:
+  version "0.37.0"
+  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.37.0.tgz#d43581b7328c1ab0af3ff7d9625fc39649aefdc5"
+  integrity sha512-9ASQAo/08C/hSalXDHyZQHOr5ta98bEDD/jhMfOAK8/e0TlsOd8+JsSrTdEUhI3GcOjpFrFjn1D6hhmGXIXvog==
   dependencies:
-    "@terascope/data-mate" "^0.7.1"
+    "@terascope/data-mate" "^0.8.0"
     "@terascope/types" "^0.3.0"
     "@terascope/utils" "^0.26.1"
     awesome-phonenumber "^2.29.0"
