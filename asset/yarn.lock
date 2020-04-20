@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/fnv1a/-/fnv1a-2.0.0.tgz#2c8c77f887eeb9762dc5fa6614215671085a7a3b"
   integrity sha512-HAK3TQvR1AbJ4uMFBp9K0V+jlujsHkCokWJRebQK1mlXBG+i7Q5/Y7AKRmqVPt4T78Uqp2U5fFHgK3gxi4OUqw==
 
-"@terascope/data-mate@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.8.0.tgz#494adefff79aef6c55afd1b5a19b3afc5bdb85f0"
-  integrity sha512-hluEDBinLbxQmLurMfzFCaRtEJd7ZI+d0UC6oFCYyUYHsm3qxkhcmeCYTjOyPsGTb5gcsWiqBkzcmvW4jA/oLg==
+"@terascope/data-mate@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.8.1.tgz#2f4f21b51eba4ee5cf3bead3783c0fad014ced62"
+  integrity sha512-b2pe1QfBCkfqv7O5R34lzQO0cmcGUuYoyE2AnXzPccFlEpvzPoVkvZ2+oAzAEvjHCLWFL28i5Yj/FXCegmi6wA==
   dependencies:
     "@terascope/data-types" "^0.17.1"
     "@terascope/types" "^0.3.0"
@@ -29,7 +29,7 @@
     jexl "^2.2.2"
     valid-url "^1.0.9"
     validator "^13.0.0"
-    xlucene-parser "^0.21.1"
+    xlucene-parser "^0.21.2"
 
 "@terascope/data-types@^0.17.1":
   version "0.17.1"
@@ -846,12 +846,12 @@ timsort@^0.3.0:
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
 
-ts-transforms@^0.37.0:
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.37.0.tgz#d43581b7328c1ab0af3ff7d9625fc39649aefdc5"
-  integrity sha512-9ASQAo/08C/hSalXDHyZQHOr5ta98bEDD/jhMfOAK8/e0TlsOd8+JsSrTdEUhI3GcOjpFrFjn1D6hhmGXIXvog==
+ts-transforms@^0.37.1:
+  version "0.37.1"
+  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.37.1.tgz#02e69b07f5b89c900f4400aade54ee8f920515a8"
+  integrity sha512-g84338peX2PrUd/UN9oXPRL7zYzUgWA9zp3j7SIE+W2RRXjiXtfRL7Fa2b6UtUk9k0Ji1JYyHCVSW9AMyv30Og==
   dependencies:
-    "@terascope/data-mate" "^0.8.0"
+    "@terascope/data-mate" "^0.8.1"
     "@terascope/types" "^0.3.0"
     "@terascope/utils" "^0.26.1"
     awesome-phonenumber "^2.29.0"
@@ -905,10 +905,10 @@ wrap-ansi@^6.2.0:
     string-width "^4.1.0"
     strip-ansi "^6.0.0"
 
-xlucene-parser@^0.21.1:
-  version "0.21.1"
-  resolved "https://registry.yarnpkg.com/xlucene-parser/-/xlucene-parser-0.21.1.tgz#1d4836156c8f0930d05710885954539965d21efe"
-  integrity sha512-0WgtGtxZU0bFE5Lq/0QN3aqsMLAt2GgrkyoggZZmQ8ej1AykY3VGSXz3boXR9O6145k24B/cg3tPa6NKvwNnZQ==
+xlucene-parser@^0.21.2:
+  version "0.21.2"
+  resolved "https://registry.yarnpkg.com/xlucene-parser/-/xlucene-parser-0.21.2.tgz#91d988014d573ff3e3ca66e8556bfb31d0a6f109"
+  integrity sha512-53hVEfvHLI8cZ1Yg+GNfVESpBzvQRK5IEM7KRodVCU1m7zSbLMb9RIa/X5BA+v5ZEPreYowMvSD6e4ewKiYCMg==
   dependencies:
     "@terascope/types" "^0.3.0"
     "@terascope/utils" "^0.26.1"
