@@ -7,6 +7,6 @@
         "@sindresorhus/fnv1a": "^2.0.0",
         "@terascope/job-components": "^0.32.2",
         "timsort": "^0.3.0",
-        "ts-transforms": "^0.37.0"
+        "ts-transforms": "^0.38.0"
     }
 }
