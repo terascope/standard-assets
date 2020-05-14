@@ -42,12 +42,12 @@
     lodash.defaultsdeep "^4.6.1"
     yargs "^15.3.1"
 
-"@terascope/job-components@^0.32.2":
-  version "0.32.3"
-  resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.32.3.tgz#27d35f4021d9c6e4f8f84d358c6cb61b83682412"
-  integrity sha512-lPCSeYdGlvUN+ERpf6jreQCNvr9ixjcCl0SHSM9znfWeeEkJUOHDhLZGlo7QaxbZBKXRkH26/DVhJ+cIwHQ2hg==
+"@terascope/job-components@^0.33.0":
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.33.0.tgz#82a83e2c97ac2f7b6b0c61d6ec2d56b9fe6f2e28"
+  integrity sha512-sN+ODQOc4w4nplzFaBpcJWL91x+RoMxdBrVjv49okFovvnUZXgvHJKRCvL7hJM4jm0elUsVQqYv33aLrfjXTFg==
   dependencies:
-    "@terascope/utils" "^0.26.2"
+    "@terascope/utils" "^0.27.0"
     convict "^4.4.1"
     datemath-parser "^1.0.6"
     uuid "^7.0.2"
@@ -56,23 +56,6 @@
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@terascope/types/-/types-0.3.0.tgz#41a0ac5a440841d89d6902064f360cc03fd0f4d0"
   integrity sha512-qvCI0gfsI8HYHJhnfRa5rRTkITM0ZnPpAYX1M0GdYsR8h2ytIUF5jnsf2Bn6OqDdReQCFisr4h+FQafpqxmE6g==
-
-"@terascope/utils@^0.26.2":
-  version "0.26.2"
-  resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.26.2.tgz#a96fd7023a6135d0402670fc8839587be8f0a68a"
-  integrity sha512-8aQi/dlyn2hLN2d2SVa1l3HkGad06Cw2qPj2tb2O4qO5SQQ0oqJ/DR1dIGDtsFsxJ6oJLE/kWx0jTmjfYyJWBA==
-  dependencies:
-    "@terascope/types" "^0.3.0"
-    debug "^4.1.1"
-    is-plain-object "^3.0.0"
-    js-string-escape "^1.0.1"
-    kind-of "^6.0.3"
-    latlon-geohash "^1.1.0"
-    lodash.get "^4.4.2"
-    lodash.has "^4.5.2"
-    lodash.set "^4.3.2"
-    lodash.unset "^4.5.2"
-    shallow-clone "^3.0.1"
 
 "@terascope/utils@^0.27.0":
   version "0.27.0"
@@ -394,9 +377,9 @@ core-util-is@1.0.2:
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
 date-fns@^2.11.1:
-  version "2.12.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.12.0.tgz#01754c8a2f3368fc1119cf4625c3dad8c1845ee6"
-  integrity sha512-qJgn99xxKnFgB1qL4jpxU7Q2t0LOn1p8KMIveef3UZD7kqjT3tpFNNdXJelEHhE+rUgffriXriw/sOSU+cS1Hw==
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.13.0.tgz#d7b8a0a2d392e8d88a8024d0a46b980bbfdbd708"
+  integrity sha512-xm0c61mevGF7f0XpCGtDTGpzEFC/1fpLXHbmFpxZZQJuvByIK2ozm6cSYuU+nxFYOPh2EuCfzUwlTEFwKG+h5w==
 
 datemath-parser@^1.0.6:
   version "1.0.6"
@@ -572,9 +555,9 @@ is-callable@^1.1.4, is-callable@^1.1.5:
   integrity sha512-ESKv5sMCJB2jnHTWZ3O5itG+O128Hsus4K4Qh1h2/cgn2vbgnLSVqfV46AeJA9D5EeeLa9w81KUXMtn34zhX+Q==
 
 is-cidr@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/is-cidr/-/is-cidr-3.1.0.tgz#72e233d8e1c4cd1d3f11713fcce3eba7b0e3476f"
-  integrity sha512-3kxTForpuj8O4iHn0ocsn1jxRm5VYm60GDghK6HXmpn4IyZOoRy9/GmdjFA2yEMqw91TB1/K3bFTuI7FlFNR1g==
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/is-cidr/-/is-cidr-3.1.1.tgz#e92ef121bdec2782271a77ce487a8b8df3718ab7"
+  integrity sha512-Gx+oErgq1j2jAKCR2Kbq0b3wbH0vQKqZ0wOlHxm0o56nq51Cs/DZA8oz9dMDhbHyHEGgJ86eTeVudtgMMOx3Mw==
   dependencies:
     cidr-regex "^2.0.10"
 
@@ -714,9 +697,9 @@ moment@2.22.2:
   integrity sha1-PCV/mDn8DpP/UxSWMiOeuQeD/2Y=
 
 moment@^2.22.2:
-  version "2.24.0"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
-  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
+  version "2.25.3"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.25.3.tgz#252ff41319cf41e47761a1a88cab30edfe9808c0"
+  integrity sha512-PuYv0PHxZvzc15Sp8ybUCoQ+xpyPWvjOuK72a5ovzp2LI32rJXOiIfyoFoYvG3s6EwwrdkMyWuRiEHSZRLJNdg==
 
 ms@^2.1.1:
   version "2.1.2"
