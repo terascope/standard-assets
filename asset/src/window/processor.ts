@@ -44,11 +44,12 @@ export default class Window extends BatchProcessor<WindowConfig> {
     }
 
     _ensureOpenWindow(): void {
-        if (this.windows.size === 0
+        if (this.windows.size === 0 || (
         // calculate new sliding window (current time - newest window) > sliding interval
-        || (this.opConfig.window_type === 'sliding'
+            this.opConfig.window_type === 'sliding'
         && (this.time - Math.max(...this.windows.keys()))
-        >= this.opConfig.sliding_window_interval)) {
+        >= this.opConfig.sliding_window_interval)
+        ) {
             this.windows.set(this.time, DataWindow.make());
         }
     }

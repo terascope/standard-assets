@@ -7,9 +7,9 @@ import { DataEntity } from '@terascope/utils';
 // TODO: we cam remove ts-expect-error and this class when DataWindow is native to DataEntity
 // @ts-expect-error
 export default class DataWindow extends DataEntity {
-    static [Symbol.hasInstance](instance: any) {
+    static [Symbol.hasInstance](instance: unknown): boolean {
         if (instance == null) return false;
-        return instance.__isDataWindow === true;
+        return (instance as any).__isDataWindow === true;
     }
 
     constructor(...args: any[]) {
@@ -19,7 +19,7 @@ export default class DataWindow extends DataEntity {
         this.dataArray = [];
     }
 
-    static make(key?: any, docs?: any | any[]) {
+    static make(key?: string, docs?: any | any[]): DataWindow {
         const newWindow = new DataWindow();
 
         if (key != null) newWindow.setMetadata('_key', key);
@@ -35,20 +35,20 @@ export default class DataWindow extends DataEntity {
         return newWindow;
     }
 
-    set(item: any) {
+    set(item: Record<string, any>): void {
         this.dataArray.push(DataEntity.make(item));
     }
 
-    get(item: any) {
+    get(item: Record<string, any>|number): void {
         // returns the index if given a data entity or returns the data entity if given an index
         if (DataEntity.isDataEntity(item)) {
             return this.dataArray.indexOf(item);
         }
 
-        return this.dataArray[item];
+        return this.dataArray[item as number];
     }
 
-    asArray() {
+    asArray(): DataEntity[] {
         return this.dataArray;
     }
 }
