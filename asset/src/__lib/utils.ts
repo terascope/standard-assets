@@ -7,7 +7,7 @@ export enum Order {
     desc = 'desc'
 }
 
-export function sortFunction(field: string, order: Order) {
+export function sortFunction(field: string, order: Order): (a: number, b: number) => number {
     const sortDescending = (a: number, b: number) => {
         if (get(a, field) === get(b, field)) return 0;
         return (get(a, field) < get(b, field) ? 1 : -1);
@@ -24,22 +24,25 @@ export function sortFunction(field: string, order: Order) {
     return sort;
 }
 
-export function getTime(field: string) {
+export function getTime(field: string): number|false {
     if (field == null) return false;
     return tsGetTime(field);
 }
 
-type getPath = (name: string) => Promise<string>;
+type GetPathFn = (name: string) => Promise<string>;
 
-async function formatPaths(getPath: getPath, paths: string[]) {
+async function formatPaths(getPath: GetPathFn, paths: string[]) {
     const splitPaths = paths.map((pathStr) => pathStr.split(':'));
     const assetPaths = splitPaths.map((arr) => getPath(arr[0]));
     const results = await Promise.all(assetPaths);
     return results.map((assetPath, ind) => path.join(assetPath, splitPaths[ind][1]));
 }
 
-export async function loadResources(opConfig: PhaseConfig, getPaths: getPath) {
-    let plugins;
+export async function loadResources(opConfig: PhaseConfig, getPaths: GetPathFn): Promise<{
+    opConfig: PhaseConfig;
+    plugins?: any[];
+}> {
+    let plugins: any[]|undefined;
 
     if (opConfig.rules) {
         const rules = await formatPaths(getPaths, opConfig.rules);

@@ -44,7 +44,7 @@ export default class Dedup extends BatchProcessor<DedupConfig> {
         return [...uniqDocs.values()];
     }
 
-    // @ts-ignore
+    // @ts-expect-error
     onBatch(dataArray: DataWindow[] | DataEntity[]) {
         if (isDataWindows(dataArray)) {
             dataArray.forEach((window) => {

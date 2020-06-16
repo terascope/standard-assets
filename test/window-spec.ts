@@ -54,7 +54,7 @@ describe('window should', () => {
 
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(2);
-        // @ts-ignore
+        // @ts-expect-error
         results = await testHarness.run([{ id: 4, time: '2019-04-25T18:12:04.000Z' }]);
 
         expect(results).toBeArrayOfSize(1);
@@ -82,7 +82,7 @@ describe('window should', () => {
         let time = new Date();
 
         for (let i = 0; i < 20; i++) {
-            // @ts-ignore
+            // @ts-expect-error
             time = new Date(Date.parse(time) + 1000).toISOString();
             const doc = {
                 time
@@ -191,7 +191,7 @@ describe('window should', () => {
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(1);
 
-        // @ts-ignore
+        // @ts-expect-error
         results = await testHarness.run([]);
         expect(results).toBeArrayOfSize(0);
     });
@@ -290,10 +290,10 @@ describe('window (with window_type sliding) should', () => {
 
         expect(results).toBeArrayOfSize(3);
         results.forEach((window) => expect(window.asArray()).toBeArrayOfSize(4));
-        // @ts-ignore
+        // @ts-expect-error
         results = await testHarness.run([]);
         expect(results).toBeArrayOfSize(0);
-        // @ts-ignore
+        // @ts-expect-error
         results = await testHarness.run(data.slice(10,));
         expect(results).toBeArrayOfSize(5);
         results.forEach((window) => expect(window.asArray()).toBeArrayOfSize(4));
@@ -306,7 +306,7 @@ describe('window (with window_type sliding) should', () => {
         expect(windowResult[0].asArray()).toBeArrayOfSize(4);
         expect(windowResult[1].asArray()).toBeArrayOfSize(2);
 
-        // @ts-ignore
+        // @ts-expect-error
         results = await testHarness.run([]);
         expect(results).toBeArrayOfSize(0);
     });

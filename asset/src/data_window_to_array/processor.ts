@@ -2,7 +2,7 @@ import { BatchProcessor, DataEntity, OpConfig } from '@terascope/job-components'
 import DataWindow from '../__lib/data-window';
 
 export default class DataWindowToArray extends BatchProcessor<OpConfig> {
-    // @ts-ignore
+    // @ts-expect-error
     onBatch(dataArray: DataWindow[]) {
         const results: DataEntity[] = [];
 

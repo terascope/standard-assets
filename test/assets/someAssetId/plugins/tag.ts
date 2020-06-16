@@ -3,12 +3,12 @@ import { DataEntity } from '@terascope/job-components';
 export default class Tag {
     static cardinality = 'one-to-one';
 
-    constructor(operationConfig: any) {
-        // @ts-ignore
+    constructor(operationConfig: unknown) {
+        // @ts-expect-error
         this.operationConfig = operationConfig;
     }
 
-    run(doc: DataEntity) {
+    run(doc: DataEntity): DataEntity {
         doc.wasTagged = true;
         return doc;
     }

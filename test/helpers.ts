@@ -1,6 +1,8 @@
 import { OpTestHarness } from 'teraslice-test-harness';
 
-export function makeTest(Processor: any, Schema: any): OpTestHarness {
-    // @ts-ignore
-    return new OpTestHarness({ Processor, Schema });
+export function makeTest(Processor: unknown, Schema: unknown): OpTestHarness {
+    return new OpTestHarness({
+        Processor: Processor as any,
+        Schema: Schema as any,
+    });
 }

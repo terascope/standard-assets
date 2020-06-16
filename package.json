@@ -3,14 +3,9 @@
     "version": "0.5.1",
     "description": "Teraslice standard processor asset bundle",
     "private": true,
-    "workspaces": {
-        "packages": [
-            "asset"
-        ],
-        "nohoist": [
-            "**"
-        ]
-    },
+    "workspaces": [
+        "asset"
+    ],
     "scripts": {
         "asset:build": "yarn run build",
         "build": "rm -rf asset/dist; tsc --project tsconfig.json",

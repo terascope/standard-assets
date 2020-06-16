@@ -22,7 +22,7 @@ export default class AccumulateByKey extends BatchProcessor<AccumulateByKeyConfi
         this.flushData = false;
     }
 
-    // @ts-ignore
+    // @ts-expect-error
     onBatch(dataArray: DataEntity[]) {
         // on shutdown event return accumulated data
         if (dataArray.length === 0) this.accumulator.emptySlice();
