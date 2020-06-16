@@ -17,13 +17,13 @@ cache:
   yarn: false
 before_script:
   - yarn build
+  - yarn global add teraslice-cli
 script:
   - yarn test
   - yarn lint
+  - teraslice-cli assets build
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - yarn global add teraslice-cli
-  - teraslice-cli assets build
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN

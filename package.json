@@ -7,7 +7,7 @@
         "asset"
     ],
     "scripts": {
-        "asset:build": "yarn run build",
+        "asset:build": "yarn && yarn run build",
         "build": "rm -rf asset/dist; tsc --project tsconfig.json",
         "build:watch": "yarn build --watch",
         "lint": "eslint --ignore-path .gitignore --ext .js,.ts .",
