@@ -4,14 +4,14 @@ import {
 import { KeyRouterConfig, FromOptions, CaseOptions } from './interfaces';
 
 export default class Schema extends ConvictSchema<KeyRouterConfig> {
-    validateJob(job: ValidatedJobConfig) {
+    validateJob(job: ValidatedJobConfig): void {
         const op = getOpConfig(job, 'key_router') as KeyRouterConfig;
         if ((op.from && !op.use) || (!op.from && op.use)) {
             throw new Error('Invalid parameters, if "from" or "use" are specified, they must be used together');
         }
     }
 
-    build() {
+    build(): Record<string, any> {
         return {
             use: {
                 doc: 'The number of characters to slice off the key and use as the routing value',

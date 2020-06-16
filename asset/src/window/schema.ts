@@ -2,7 +2,7 @@ import { ConvictSchema } from '@terascope/job-components';
 import { WindowConfig, TimeSetting, WindowType } from './interfaces';
 
 export default class Schema extends ConvictSchema<WindowConfig> {
-    build() {
+    build(): Record<string, any> {
         return {
             time_field: {
                 doc: 'field name that holds the time value',

@@ -3,7 +3,7 @@ import { SortConfig } from './interfaces';
 import { Order } from '../__lib/utils';
 
 export default class Schema extends ConvictSchema<SortConfig> {
-    build() {
+    build(): Record<string, any> {
         return {
             field: {
                 doc: 'The field in the input records to use for sorting',

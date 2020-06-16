@@ -33,7 +33,7 @@ export default class HashRouter extends MapProcessor<HashRouterConfig> {
         this.createHash = makeHashFn(opConfig);
     }
 
-    addPath(record: DataEntity) {
+    addPath(record: DataEntity): void {
         const hashStr = this.createHash(record);
         const partition = fnv1a(hashStr) % this.opConfig.buckets;
 
@@ -43,7 +43,7 @@ export default class HashRouter extends MapProcessor<HashRouterConfig> {
         );
     }
 
-    map(record: DataEntity) {
+    map(record: DataEntity): DataEntity {
         this.addPath(record);
         return record;
     }

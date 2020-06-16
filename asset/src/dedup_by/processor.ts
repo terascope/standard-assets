@@ -20,7 +20,7 @@ function adjustTimes(original: DataEntity, doc: DataEntity) {
 }
 
 export default class Dedup extends BatchProcessor<DedupConfig> {
-    _dedup(dataArray: DataEntity[]) {
+    _dedup(dataArray: DataEntity[]): DataEntity[] {
         const uniqDocs = new Map();
 
         dataArray.forEach((doc) => {
@@ -44,8 +44,7 @@ export default class Dedup extends BatchProcessor<DedupConfig> {
         return [...uniqDocs.values()];
     }
 
-    // @ts-expect-error
-    onBatch(dataArray: DataWindow[] | DataEntity[]) {
+    async onBatch(dataArray: DataWindow[] | DataEntity[]): Promise<DataEntity[]> {
         if (isDataWindows(dataArray)) {
             dataArray.forEach((window) => {
                 window.dataArray = this._dedup(window.dataArray);

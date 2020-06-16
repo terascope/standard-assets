@@ -14,16 +14,15 @@ export default class AccumulateByKey extends BatchProcessor<AccumulateByKeyConfi
         this.accumulator = new AccumulatorByKey(emptyAfter, opConfig);
     }
 
-    onFlushStart() {
+    onFlushStart(): void {
         if (this.opConfig.flush_data_on_shutdown) this.flushData = true;
     }
 
-    onFlushEnd() {
+    onFlushEnd(): void {
         this.flushData = false;
     }
 
-    // @ts-expect-error
-    onBatch(dataArray: DataEntity[]) {
+    async onBatch(dataArray: DataEntity[]): Promise<DataEntity[]> {
         // on shutdown event return accumulated data
         if (dataArray.length === 0) this.accumulator.emptySlice();
         else this.accumulator.add(dataArray);
