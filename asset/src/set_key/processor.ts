@@ -11,7 +11,7 @@ export default class SetKey extends MapProcessor<SetKeyConfig> {
         return DataEntity.make(doc, { _key: doc[this.opConfig.field] });
     }
 
-    map(doc: DataEntity | DataWindow) {
+    map(doc: DataEntity | DataWindow): DataEntity {
         if (doc instanceof DataWindow) {
             doc.dataArray = doc.asArray().map((item: DataEntity) => this._setKey(item));
             return doc;

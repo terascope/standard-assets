@@ -6,7 +6,7 @@ function santize(str: string) {
 }
 
 export default class FieldRouter extends MapProcessor<FieldRouterConfig> {
-    addPath(record: DataEntity) {
+    addPath(record: DataEntity): void {
         const partitions: string[] = [];
 
         this.opConfig.fields.forEach((field) => {
@@ -20,7 +20,7 @@ export default class FieldRouter extends MapProcessor<FieldRouterConfig> {
         );
     }
 
-    map(record: DataEntity) {
+    map(record: DataEntity): DataEntity {
         this.addPath(record);
         return record;
     }

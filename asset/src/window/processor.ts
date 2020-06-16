@@ -1,4 +1,4 @@
-import { BatchProcessor } from '@terascope/job-components';
+import { BatchProcessor, DataEntity } from '@terascope/job-components';
 import DataWindow from '../__lib/data-window';
 import { WindowConfig } from './interfaces';
 import { getTime } from '../__lib/utils';
@@ -9,18 +9,18 @@ export default class Window extends BatchProcessor<WindowConfig> {
     results: DataWindow[] = [];
     time!: number;
 
-    onFlushStart() {
+    onFlushStart(): void {
         this.flushWindows = true;
     }
 
-    onFlushEnd() {
+    onFlushEnd(): void {
         this.flushWindows = false;
     }
 
-    _setTime(doc?: any) {
+    _setTime(doc?: Record<string, any>): void {
         if (this.opConfig.window_time_setting === 'clock') {
             this.time = Date.now();
-        } else {
+        } else if (doc) {
             const value = doc[this.opConfig.time_field];
             const newTime = getTime(value);
 
@@ -32,7 +32,7 @@ export default class Window extends BatchProcessor<WindowConfig> {
         }
     }
 
-    _closeExpiredWindows() {
+    _closeExpiredWindows(): void {
         for (const key of this.windows.keys()) {
             if (this.time - key > this.opConfig.window_length) {
                 const window = this.windows.get(key);
@@ -43,17 +43,18 @@ export default class Window extends BatchProcessor<WindowConfig> {
         }
     }
 
-    _ensureOpenWindow() {
-        if (this.windows.size === 0
-        // calculate new sliding window (current time - newest window) > sliding interval
-        || (this.opConfig.window_type === 'sliding'
-        && (this.time - Math.max(...this.windows.keys()))
-        >= this.opConfig.sliding_window_interval)) {
+    _ensureOpenWindow(): void {
+        if (this.windows.size === 0 || (
+            // calculate new sliding window (current time - newest window) > sliding interval
+            this.opConfig.window_type === 'sliding'
+            && (this.time - Math.max(...this.windows.keys()))
+            >= this.opConfig.sliding_window_interval
+        )) {
             this.windows.set(this.time, DataWindow.make());
         }
     }
 
-    _dumpWindows() {
+    _dumpWindows(): void {
         for (const window of this.windows.values()) {
             this.results.push(window);
         }
@@ -61,13 +62,13 @@ export default class Window extends BatchProcessor<WindowConfig> {
         this.windows.clear();
     }
 
-    _assignWindow(doc: DataWindow) {
+    _assignWindow(doc: DataWindow): void {
         for (const window of this.windows.values()) {
             window.set(doc);
         }
     }
-    // @ts-ignore
-    onBatch(dataArray: DataWindow[]) {
+
+    async onBatch(dataArray: DataWindow[]): Promise<DataEntity[]> {
         this.results = [];
 
         dataArray.forEach((doc) => {
@@ -99,6 +100,6 @@ export default class Window extends BatchProcessor<WindowConfig> {
 
         if (this.flushWindows === true) this._dumpWindows();
 
-        return this.results;
+        return this.results as DataEntity[];
     }
 }

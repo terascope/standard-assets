@@ -65,7 +65,7 @@ describe('sort (with field) should', () => {
     // array of 3 windows, 10 unordered items in each window
     const dataWindows: DataWindow[] = [];
     for (let i = 0; i < 3; i++) {
-        // @ts-ignore
+        // @ts-expect-error
         const dataArray = Array(10).fill().map(() => {
             const obj = { id: Math.floor(Math.random() * 1000) };
             return obj;

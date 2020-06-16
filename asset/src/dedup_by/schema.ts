@@ -2,7 +2,7 @@ import { ConvictSchema } from '@terascope/job-components';
 import { DedupConfig } from './interfaces';
 
 export default class Schema extends ConvictSchema<DedupConfig> {
-    build() {
+    build(): Record<string, any> {
         return {
             field: {
                 doc: 'field to dedup records on',

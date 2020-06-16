@@ -9,27 +9,27 @@ export default class Accumulator {
         this.emptyAfter = emptyAfter;
     }
 
-    add(dataArray: DataEntity[]) {
+    add(dataArray: DataEntity[]): void {
         // reset empty slice count if break in incoming data
         this.emptySliceCount = 0;
         dataArray.forEach((doc) => this.records.push(doc));
     }
 
-    emptySlice() {
+    emptySlice(): void {
         this.emptySliceCount++;
     }
 
-    flush() {
+    flush(): DataEntity[] {
         const results = this.records;
         this.records = [];
-        return results;
+        return results.slice();
     }
 
-    readyToEmpty() {
+    readyToEmpty(): boolean {
         return this.emptySliceCount >= this.emptyAfter;
     }
 
-    get size() {
+    get size(): number {
         return this.records.length;
     }
 }

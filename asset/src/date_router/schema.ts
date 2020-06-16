@@ -2,7 +2,7 @@ import { ConvictSchema } from '@terascope/job-components';
 import { DateRouterConfig, DateResolution } from './interfaces';
 
 export default class Schema extends ConvictSchema<DateRouterConfig> {
-    build() {
+    build(): Record<string, any> {
         return {
             field: {
                 doc: 'Which field in each data record contains the date to use for timeseries',

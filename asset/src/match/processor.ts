@@ -12,14 +12,14 @@ export default class Match extends BatchProcessor<PhaseConfig> {
         super(context, opConfig, executionConfig);
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         const { getPath } = this.context.apis.assets;
         const { opConfig, plugins } = await loadResources(this.opConfig, getPath);
         this.matcher = new Matcher(opConfig, this.logger);
         return this.matcher.init(plugins);
     }
 
-    async onBatch(data: DataEntity[]) {
+    async onBatch(data: DataEntity[]): Promise<DataEntity[]> {
         return this.matcher.run(data);
     }
 }

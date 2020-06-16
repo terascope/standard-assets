@@ -31,9 +31,9 @@ describe('data_window_to_array should', () => {
     it('add type to all the docs', async () => {
         const results = await testHarness.run(testData);
         expect(results).toBeArrayOfSize(9);
-        // @ts-ignore FIXME:
+        // @ts-expect-error FIXME:
         expect(results[0].id).toBe(1);
-        // @ts-ignore FIXME:
+        // @ts-expect-error FIXME:
         expect(results[8].id).toBe(9);
     });
 });

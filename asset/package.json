@@ -3,10 +3,16 @@
     "version": "0.5.1",
     "description": "Teraslice standard processor asset bundle",
     "license": "MIT",
+    "private": true,
+    "workspaces": {
+        "nohoist": [
+            "**"
+        ]
+    },
     "dependencies": {
         "@sindresorhus/fnv1a": "^2.0.1",
-        "@terascope/job-components": "^0.34.3",
+        "@terascope/job-components": "^0.35.0",
         "timsort": "^0.3.0",
-        "ts-transforms": "^0.39.5"
+        "ts-transforms": "^0.40.1"
     }
 }

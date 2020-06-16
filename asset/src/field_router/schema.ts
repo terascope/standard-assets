@@ -2,7 +2,7 @@ import { ConvictSchema } from '@terascope/job-components';
 import { FieldRouterConfig } from './interfaces';
 
 export default class Schema extends ConvictSchema<FieldRouterConfig> {
-    build() {
+    build(): Record<string, any> {
         return {
             fields: {
                 doc: 'Array fields to partition on. Must specify at least one field.',
