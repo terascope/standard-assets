@@ -5,7 +5,8 @@ import {
     ExecutionConfig,
     TSError,
     isEmpty,
-    RouteSenderAPI
+    RouteSenderAPI,
+    chunk
 } from '@terascope/job-components';
 import {
     RouteSenderConfig, RouteDict, RoutingExectuion, Endpoint
@@ -33,7 +34,7 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
             const keys = keyset.split(',');
 
             for (const key of keys) {
-                this.routeDict.set(key.toLowerCase(), config);
+                this.routeDict.set(key, config);
             }
         }
     }
@@ -49,9 +50,13 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
         await client.verifyRoute(config);
     }
 
-    async routeToDestinations(batch: DataEntity[]): Promise<void> {
-        const senders = [];
+    private sendRecords(client: RouteSenderAPI, data: DataEntity[]) {
+        if (data.length === 0) return [];
+        return chunk(data, this.limit)
+            .map((chunkedData) => client.send(chunkedData));
+    }
 
+    async routeToDestinations(batch: DataEntity[]): Promise<void> {
         for (const record of batch) {
             const route = record.getMetadata('standard:route');
             // if we have route, then use it, else make a topic if allowed.
@@ -90,9 +95,11 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
             }
         }
 
+        const senders = [];
+
         for (const [, { data, client }] of this.routingExectuion) {
             if (data.length > 0) {
-                senders.push(client.send(data));
+                senders.push(...this.sendRecords(client, data));
             }
         }
 

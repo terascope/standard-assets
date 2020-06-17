@@ -32,6 +32,11 @@ describe('Route Sender', () => {
                     _op: 'test-reader',
                     passthrough_slice: true,
                 },
+                {
+                    _op: 'key_router',
+                    use: 1,
+                    from: 'beginning'
+                },
                 opConfig
             ],
         });
@@ -76,7 +81,10 @@ describe('Route Sender', () => {
         const opConfig = {
             routing: { '*': 'default' }
         };
-        const data = [{ some: 'data' }, { other: 'data' }];
+        const data = [
+            DataEntity.make({ some: 'data' }, { _key: 'aasdfsd' }),
+            DataEntity.make({ other: 'data' }, { _key: 'ba7sd' })
+        ];
         const test = await makeTest(opConfig);
         const results = await test.runSlice(data);
 
@@ -91,25 +99,29 @@ describe('Route Sender', () => {
         const opConfig = {
             routing: {
                 '*': 'default',
-                a: 'other'
+                'a,A': 'other'
             }
         };
         const data = [
-            DataEntity.make({ some: 'data' }, { 'standard:route': 'a' }),
-            DataEntity.make({ other: 'data' }, { 'standard:route': 'b' })
+            DataEntity.make({ some: 'data' }, { _key: 'aasdfsd' }),
+            DataEntity.make({ other: 'data' }, { _key: 'ba7sd' }),
+            DataEntity.make({ last: 'data' }, { _key: 'Aasdfsd' }),
+
         ];
 
         const test = await makeTest(opConfig);
         const results = await test.runSlice(data);
 
-        expect(results.length).toEqual(2);
+        expect(results.length).toEqual(3);
 
         const routing = getRoutingExecution(test);
 
         const routeDataDefault = getRouteData(routing, '*');
-        const routeDataA = getRouteData(routing, 'a');
+        const routeDataMinorA = getRouteData(routing, 'a');
+        const routeDataCapitalA = getRouteData(routing, 'A');
 
         expect(routeDataDefault.length).toEqual(1);
-        expect(routeDataA.length).toEqual(1);
+        expect(routeDataMinorA.length).toEqual(1);
+        expect(routeDataCapitalA.length).toEqual(1);
     });
 });
