@@ -1,27 +1,33 @@
 import {
     BatchProcessor,
-    DataEntity,
     WorkerContext,
     ExecutionConfig,
-    TSError,
-    isEmpty,
     RouteSenderAPI,
-    chunk
 } from '@terascope/job-components';
+import {
+    chunk, TSError, DataEntity, isEmpty, pMap
+} from '@terascope/utils';
 import {
     RouteSenderConfig, RouteDict, RoutingExectuion, Endpoint
 } from './interfaces';
+
+interface SenderExecution {
+    client: RouteSenderAPI;
+    data: DataEntity[];
+}
 
 export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
     limit: number;
     routeDict: RouteDict = new Map();
     routingExectuion: RoutingExectuion = new Map();
+    concurrency: number;
 
     constructor(context: WorkerContext, opConfig: RouteSenderConfig, exConfig: ExecutionConfig) {
         super(context, opConfig, exConfig);
-        const { routing, size } = opConfig;
+        const { routing, size, concurrency } = opConfig;
 
         this.limit = size;
+        this.concurrency = concurrency;
 
         if (isEmpty(routing)) throw new TSError('Parameter routing must not be an empty object');
 
@@ -50,10 +56,10 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
         await client.verifyRoute(config);
     }
 
-    private sendRecords(client: RouteSenderAPI, data: DataEntity[]) {
+    private formatRecords({ client, data }: SenderExecution) {
         if (data.length === 0) return [];
         return chunk(data, this.limit)
-            .map((chunkedData) => client.send(chunkedData));
+            .map((chunkedData) => ({ client, data: chunkedData }));
     }
 
     async routeToDestinations(batch: DataEntity[]): Promise<void> {
@@ -88,22 +94,27 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
                 if (route == null) {
                     error = new TSError('No route was specified in record metadata');
                 } else {
-                    error = new TSError(`Invalid connection route: ${route} was not found on connector_map`);
+                    error = new TSError(`Invalid connection route: ${route} was not found in routing`);
                 }
 
                 this.rejectRecord(record, error);
             }
         }
 
-        const senders = [];
+        const chunkedSegments: SenderExecution[] = [];
 
-        for (const [, { data, client }] of this.routingExectuion) {
-            if (data.length > 0) {
-                senders.push(...this.sendRecords(client, data));
-            }
+        for (const execution of this.routingExectuion.values()) {
+            chunkedSegments.push(...this.formatRecords(execution));
         }
 
-        await Promise.all(senders);
+        await pMap(
+            chunkedSegments,
+            async ({ client, data }) => {
+                if (data.length === 0) return true;
+                return client.send(data);
+            },
+            { concurrency: this.concurrency }
+        );
 
         this._cleanupRouteExecution();
     }

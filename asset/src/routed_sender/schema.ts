@@ -1,4 +1,5 @@
 import { ConvictSchema, AnyObject } from '@terascope/job-components';
+import { isNumber, getTypeOf } from '@terascope/utils';
 import { RouteSenderConfig } from './interfaces';
 
 export default class Schema extends ConvictSchema<RouteSenderConfig> {
@@ -10,9 +11,9 @@ export default class Schema extends ConvictSchema<RouteSenderConfig> {
                 default: 500,
                 format(val: any) {
                     if (isNaN(val)) {
-                        throw new Error('Invalid size parameter for elasticsearch_bulk opConfig, it must be a number');
+                        throw new Error('Invalid size parameter for routed_sender opConfig, it must be a number');
                     } else if (val <= 0) {
-                        throw new Error('Invalid size parameter for elasticsearch_bulk, it must be greater than zero');
+                        throw new Error('Invalid size parameter for routed_sender, it must be greater than zero');
                     }
                 }
             },
@@ -30,6 +31,14 @@ export default class Schema extends ConvictSchema<RouteSenderConfig> {
                 doc: 'Name of the elasticsearch connection to use when sending data.',
                 default: null,
                 format: 'required_String'
+            },
+            concurrency: {
+                doc: 'The number of inflight calls to the api.send allowed',
+                default: 10,
+                format(val: unknown) {
+                    if (!isNumber(val)) throw new Error(`Invalid parameter concurrency, must be a number, was given ${getTypeOf(val)}`);
+                    if (val < 0) throw new Error('Invalid parameter concurrency, it must be a positive integer greater than zero');
+                }
             },
         };
     }
