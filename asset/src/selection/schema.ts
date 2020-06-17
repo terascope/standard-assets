@@ -1,14 +1,14 @@
-import { ConvictSchema } from '@terascope/job-components';
+import { ConvictSchema, APIConfig } from '@terascope/job-components';
 import { PhaseConfig } from '../transform/interfaces';
 
 export default class Schema extends ConvictSchema<PhaseConfig> {
-    validate(input: any) {
+    validate(input: PhaseConfig): APIConfig & PhaseConfig {
         const validatedSchema = super.validate(input);
         if (!Array.isArray(input.rules) || input.rules.length === 0) throw new Error('you must specify rules path to retrive the rules for this op');
         return validatedSchema;
     }
 
-    build() {
+    build(): Record<string, any> {
         return {
             rules: {
                 doc: 'an array of strings that are the locations where rule files. must be specifed in "assetName:path" format',

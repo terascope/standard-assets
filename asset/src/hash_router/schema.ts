@@ -2,7 +2,7 @@ import { ConvictSchema, isString, isNumber } from '@terascope/job-components';
 import { HashRouterConfig } from './interfaces';
 
 export default class Schema extends ConvictSchema<HashRouterConfig> {
-    build() {
+    build(): Record<string, any> {
         return {
             fields: {
                 doc: 'Specifies fields to hash for partitioning. Must specify at least one field.',

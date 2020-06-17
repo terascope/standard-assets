@@ -26,7 +26,7 @@ export default class DateRouter extends MapProcessor<DateRouterConfig> {
         return this._joinValue('day', value);
     }
 
-    addPath(record: DataEntity) {
+    addPath(record: DataEntity): void {
         const partitions: string[] = [];
 
         // This value is enforced by the schema
@@ -64,7 +64,7 @@ export default class DateRouter extends MapProcessor<DateRouterConfig> {
         );
     }
 
-    map(record: DataEntity) {
+    map(record: DataEntity): DataEntity {
         this.addPath(record);
         return record;
     }

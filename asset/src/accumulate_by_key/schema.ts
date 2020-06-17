@@ -2,7 +2,7 @@ import { ConvictSchema } from '@terascope/job-components';
 import { AccumulateByKeyConfig } from './interfaces';
 
 export default class Schema extends ConvictSchema<AccumulateByKeyConfig> {
-    build() {
+    build(): Record<string, any> {
         return {
             empty_after: {
                 doc: 'How many 0 record slices to require before starting to return the accumulated data',

@@ -6,7 +6,7 @@ import { loadResources } from '../__lib/utils';
 export default class Selection extends BatchProcessor<PhaseConfig> {
     private phase!: SelectionPhase;
 
-    async initialize() {
+    async initialize(): Promise<void> {
         const { getPath } = this.context.apis.assets;
         const { opConfig, plugins } = await loadResources(this.opConfig, getPath);
         const loader = new Loader(opConfig, this.logger);
@@ -15,7 +15,7 @@ export default class Selection extends BatchProcessor<PhaseConfig> {
         this.phase = new SelectionPhase(opConfig, selectors, opsManager);
     }
 
-    async onBatch(data: DataEntity[]) {
+    async onBatch(data: DataEntity[]): Promise<DataEntity[]> {
         return this.phase.run(data);
     }
 }

@@ -9,7 +9,7 @@ import { GroupByConfig } from './interfaces';
 export default class GroupBy extends BatchProcessor<GroupByConfig> {
     groups = new Map();
 
-    _group(doc: DataEntity) {
+    _group(doc: DataEntity): void {
         let key;
 
         if (this.opConfig.field) key = doc[this.opConfig.field];
@@ -26,8 +26,7 @@ export default class GroupBy extends BatchProcessor<GroupByConfig> {
         this.groups.get(key).push(doc);
     }
 
-    // @ts-ignore
-    onBatch(dataArray: DataWindow[] | DataEntity[]) {
+    async onBatch(dataArray: DataWindow[] | DataEntity[]): Promise<DataEntity[]> {
         dataArray.forEach((doc: DataWindow | DataEntity) => {
             if (doc instanceof DataWindow) {
                 doc.asArray().forEach((item: DataEntity) => this._group(item));
@@ -44,6 +43,6 @@ export default class GroupBy extends BatchProcessor<GroupByConfig> {
         }
 
         this.groups.clear();
-        return results;
+        return results as DataEntity[];
     }
 }

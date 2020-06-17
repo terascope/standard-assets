@@ -4,22 +4,22 @@ import { DataEntity } from '@terascope/utils';
     An array of DataEntities inside a DataEntity
 */
 
-// TODO: we cam remove ts-ignore and this class when DataWindow is native to DataEntity
-// @ts-ignore
+// TODO: we cam remove ts-expect-error and this class when DataWindow is native to DataEntity
+// @ts-expect-error
 export default class DataWindow extends DataEntity {
-    static [Symbol.hasInstance](instance: any) {
+    static [Symbol.hasInstance](instance: unknown): boolean {
         if (instance == null) return false;
-        return instance.__isDataWindow === true;
+        return (instance as any).__isDataWindow === true;
     }
 
     constructor(...args: any[]) {
-        // @ts-ignore
+        // @ts-expect-error
         super(...args);
         this.__isDataWindow = true;
         this.dataArray = [];
     }
 
-    static make(key?: any, docs?: any | any[]) {
+    static make(key?: string|number, docs?: DataOrEntity[]|(DataOrEntity)): DataWindow {
         const newWindow = new DataWindow();
 
         if (key != null) newWindow.setMetadata('_key', key);
@@ -28,27 +28,31 @@ export default class DataWindow extends DataEntity {
             if (Array.isArray(docs)) {
                 newWindow.dataArray = DataEntity.makeArray(docs);
             } else {
-                newWindow.set(docs);
+                newWindow.set(docs as DataEntity);
             }
         }
 
         return newWindow;
     }
 
-    set(item: any) {
+    set(item: DataEntity): void {
         this.dataArray.push(DataEntity.make(item));
     }
 
-    get(item: any) {
+    get(item: DataEntity): number;
+    get(item: number): DataEntity;
+    get(item: DataEntity|number): DataEntity|number {
         // returns the index if given a data entity or returns the data entity if given an index
         if (DataEntity.isDataEntity(item)) {
             return this.dataArray.indexOf(item);
         }
 
-        return this.dataArray[item];
+        return this.dataArray[item as number];
     }
 
-    asArray() {
+    asArray(): DataEntity[] {
         return this.dataArray;
     }
 }
+
+type DataOrEntity = DataEntity|Record<string, any>;

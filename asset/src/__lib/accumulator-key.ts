@@ -22,11 +22,11 @@ export default class AccumulatorByKey extends Accumulator {
         this.batchSize = batchSize;
     }
 
-    readyToEmpty() {
+    readyToEmpty(): boolean {
         return super.readyToEmpty() && this.buckets.size > 0;
     }
 
-    add(dataArray: DataEntity[]) {
+    add(dataArray: DataEntity[]): void {
         this.emptySliceCount = 0;
 
         dataArray.forEach((doc) => {
@@ -49,8 +49,8 @@ export default class AccumulatorByKey extends Accumulator {
         });
     }
 
-    flush() {
-        const result = [];
+    flush(): any[] {
+        const result: any[] = [];
         let resultSize = 0;
         if (this.batchReturn === true) {
             const dataWindowKeys = this.buckets.keys();

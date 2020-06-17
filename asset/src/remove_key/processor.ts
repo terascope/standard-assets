@@ -3,7 +3,7 @@ import DataWindow from '../__lib/data-window';
 
 export default class SetKey extends MapProcessor<OpConfig> {
     // Does this need to make a new DataEntity since it recieves one starting out?
-    _setKey(doc: DataEntity) {
+    _setKey(doc: DataEntity): DataEntity {
         if (DataEntity.isDataEntity(doc)) {
             doc.setMetadata('_key', undefined);
             return doc;
@@ -11,7 +11,7 @@ export default class SetKey extends MapProcessor<OpConfig> {
         return DataEntity.make(doc, { _key: undefined });
     }
 
-    map(doc: DataEntity | DataWindow) {
+    map(doc: DataEntity | DataWindow): DataEntity {
         if (doc instanceof DataWindow) {
             doc.dataArray = doc.asArray().map((item: DataEntity) => this._setKey(item));
             return doc;

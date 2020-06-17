@@ -15,24 +15,23 @@ export default class Accumulate extends BatchProcessor<AccumulateConfig> {
         this.accum = new Accumulator(this.opConfig.empty_after);
     }
 
-    onFlushStart() {
+    onFlushStart(): void {
         if (this.opConfig.flush_data_on_shutdown) this.flushData = true;
     }
 
-    onFlushEnd() {
+    onFlushEnd(): void {
         this.flushData = false;
     }
 
-    // @ts-ignore
-    onBatch(dataArray: DataEntity[]) {
+    async onBatch(dataArray: DataEntity[]): Promise<DataEntity[]> {
         if (dataArray.length === 0) this.accum.emptySlice();
         else this.accum.add(dataArray);
         let results: DataEntity[] = [];
         if ((this.accum.readyToEmpty() || this.flushData) && this.accum.size > 0) {
-            // @ts-ignore TODO: we are ignorinng util DataWindow is native to DataEntity
+            // @ts-expect-error TODO: we are ignorinng util DataWindow is native to DataEntity
             results = DataWindow.make(this.opConfig.data_window_key, this.accum.flush());
         }
 
-        return results;
+        return results as DataEntity[];
     }
 }

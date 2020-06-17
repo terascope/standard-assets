@@ -37,7 +37,7 @@ export default class KeyRouter extends MapProcessor<KeyRouterConfig> {
         this.transforms = (data: string) => caseFn(extractionFn(data));
     }
 
-    addMeta(record: DataEntity) {
+    addMeta(record: DataEntity): void {
         const metaKey = toString(record.getKey());
         const key = this.transforms(metaKey);
 
@@ -47,7 +47,7 @@ export default class KeyRouter extends MapProcessor<KeyRouterConfig> {
         );
     }
 
-    map(record: DataEntity) {
+    map(record: DataEntity): DataEntity {
         this.addMeta(record);
         return record;
     }

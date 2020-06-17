@@ -1,7 +1,7 @@
 import Tag from './tag';
 
 export default class Plugin {
-    init() {
+    init(): { tag: typeof Tag } {
         return {
             tag: Tag,
         };
