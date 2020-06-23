@@ -11,8 +11,8 @@ export default class Schema extends ConvictSchema<DedupConfig> {
             },
             adjust_time: {
                 doc: 'Adjust first and last seen',
-                default: false,
-                format: 'Boolean'
+                default: [],
+                format: 'Array'
             }
         };
     }

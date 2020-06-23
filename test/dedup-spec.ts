@@ -3,8 +3,8 @@
 import 'jest-extended';
 import { DataEntity } from '@terascope/job-components';
 import DataWindow from '../asset/src/__lib/data-window';
-import Processor from '../asset/src/dedup_by/processor';
-import Schema from '../asset/src/dedup_by/schema';
+import Processor from '../asset/src/dedup/processor';
+import Schema from '../asset/src/dedup/schema';
 import { makeTest } from './helpers';
 
 describe('dedup should', () => {
@@ -12,6 +12,7 @@ describe('dedup should', () => {
         _op: 'dedup',
         field: 'name'
     };
+
     const testHarness = makeTest(Processor, Schema);
     afterEach(() => testHarness.shutdown());
 
@@ -95,7 +96,10 @@ describe('dedup_by', () => {
     const opConfig = {
         _op: 'dedup',
         field: 'name',
-        adjust_time: true
+        adjust_time: [
+            { field: 'first_seen', preference: 'oldest' },
+            { field: 'last_seen', preference: 'newest' }
+        ]
     };
     const testHarness = makeTest(Processor, Schema);
 
