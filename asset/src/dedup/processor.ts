@@ -1,4 +1,5 @@
 import { BatchProcessor, DataEntity } from '@terascope/job-components';
+import { FieldValidator, FieldTransform } from '@terascope/data-mate';
 import DataWindow from '../__lib/data-window';
 import { DedupConfig } from './interfaces';
 import { getTime } from '../__lib/utils';
@@ -25,7 +26,7 @@ export default class Dedup extends BatchProcessor<DedupConfig> {
             const key = this._getKey(doc);
 
             if (uniqDocs.has(key)) {
-                this.adjustTimes(uniqDocs.get(key), doc);
+                this._adjustTimes(uniqDocs.get(key), doc);
 
                 return;
             }
@@ -42,15 +43,15 @@ export default class Dedup extends BatchProcessor<DedupConfig> {
         return entity.getKey();
     }
 
-    adjustTimes(saved: DataEntity, incoming: DataEntity): void {
+    _adjustTimes(saved: DataEntity, incoming: DataEntity): void {
         this.opConfig.adjust_time.forEach((time) => {
             const { field, preference } = time;
 
-            saved[field] = this.correctTime(saved[field], incoming[field], preference);
+            saved[field] = this._preferedTime(saved[field], incoming[field], preference);
         });
     }
 
-    correctTime(savedTime: string, incomingTime: string, preference: string): string | undefined {
+    _preferedTime(savedTime: string, incomingTime: string, preference: string): string | undefined {
         const saved = getTime(savedTime);
         const incoming = getTime(incomingTime);
 
