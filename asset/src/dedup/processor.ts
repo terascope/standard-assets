@@ -1,5 +1,4 @@
 import { BatchProcessor, DataEntity } from '@terascope/job-components';
-import { FieldValidator, FieldTransform } from '@terascope/data-mate';
 import DataWindow from '../__lib/data-window';
 import { DedupConfig } from './interfaces';
 import { getTime } from '../__lib/utils';
