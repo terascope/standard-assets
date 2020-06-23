@@ -3,13 +3,13 @@
 import 'jest-extended';
 import { DataEntity } from '@terascope/job-components';
 import DataWindow from '../asset/src/__lib/data-window';
-import Processor from '../asset/src/dedup/processor';
-import Schema from '../asset/src/dedup/schema';
+import Processor from '../asset/src/dedupe/processor';
+import Schema from '../asset/src/dedupe/schema';
 import { makeTest } from './helpers';
 
-describe('dedup should', () => {
+describe('dedupe should', () => {
     const opConfig = {
-        _op: 'dedup',
+        _op: 'dedupe',
         field: 'name'
     };
 
@@ -22,7 +22,7 @@ describe('dedup should', () => {
         expect(results).toBeArrayOfSize(0);
     });
 
-    it('dedup array of data', async () => {
+    it('dedupe array of data', async () => {
         const keyedTestData = [
             { id: 1, name: 'roy' }, { id: 2, name: 'roy' },
             { id: 2, name: 'bob' }, { id: 2, name: 'roy' },
@@ -35,7 +35,7 @@ describe('dedup should', () => {
         expect(results).toEqual([{ id: 1, name: 'roy' }, { id: 2, name: 'bob' }, { id: 3, name: 'mel' }]);
     });
 
-    it('dedup data windows using the metadata key', async () => {
+    it('dedupe data windows using the metadata key', async () => {
         const keyedTestData = [
             DataWindow.make(1, [DataEntity.make({ id: 1, name: 'roy' }, { _key: 'roy' })]),
             DataWindow.make(2, [
@@ -49,7 +49,7 @@ describe('dedup should', () => {
         ];
 
         const nOpConfig = {
-            _op: 'dedup'
+            _op: 'dedupe'
         };
 
         await testHarness.initialize({ opConfig: nOpConfig, type: 'processor' });
@@ -68,7 +68,7 @@ describe('dedup should', () => {
         expect(results[2].asArray()).toEqual([{ id: 3, name: 'bob' }, { id: 3, name: 'mel' }]);
     });
 
-    it('dedup data windows', async () => {
+    it('dedupe data windows', async () => {
         const keyedTestData = [
             DataWindow.make(1, [{ id: 1, name: 'roy' }]),
             DataWindow.make(2, [{ id: 2, name: 'roy' }, { id: 2, name: 'bob' }, { id: 2, name: 'roy' }]),
@@ -92,9 +92,9 @@ describe('dedup should', () => {
     });
 });
 
-describe('dedup_by', () => {
+describe('dedupe', () => {
     const opConfig = {
-        _op: 'dedup',
+        _op: 'dedupe',
         field: 'name',
         adjust_time: [
             { field: 'first_seen', preference: 'oldest' },
