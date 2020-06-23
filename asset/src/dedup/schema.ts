@@ -1,7 +1,7 @@
 import { ConvictSchema } from '@terascope/job-components';
-import { DedupConfig } from './interfaces';
+import * as I from './interfaces';
 
-export default class Schema extends ConvictSchema<DedupConfig> {
+export default class Schema extends ConvictSchema<I.DedupConfig> {
     build(): Record<string, any> {
         return {
             field: {
@@ -10,10 +10,24 @@ export default class Schema extends ConvictSchema<DedupConfig> {
                 format: 'String',
             },
             adjust_time: {
-                doc: 'Adjust first and last seen',
+                doc: 'Requires and array of objects with field and preference properties.  Preference should be oldest of newest.',
                 default: [],
-                format: 'Array'
+                format: (value: []) => validateTime(value)
             }
         };
     }
+}
+
+function validateTime(value: I.AdjustTime[]) {
+    value.forEach((time) => {
+        const { field, preference } = time;
+
+        if (!field || !preference) {
+            throw new Error('Both the time field and the preference must be present');
+        }
+
+        if (preference !== 'oldest' && preference !== 'newest') {
+            throw new Error('Preference must be oldest or newest');
+        }
+    });
 }
