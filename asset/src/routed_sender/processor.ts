@@ -3,9 +3,10 @@ import {
     WorkerContext,
     ExecutionConfig,
     RouteSenderAPI,
+    APIFactoryRegistry
 } from '@terascope/job-components';
 import {
-    chunk, TSError, DataEntity, isEmpty, pMap
+    chunk, TSError, DataEntity, isEmpty, pMap, AnyObject, isNil
 } from '@terascope/utils';
 import {
     RouteSenderConfig, RouteDict, RoutingExectuion, Endpoint
@@ -16,16 +17,23 @@ interface SenderExecution {
     data: DataEntity[];
 }
 
+type SenderFactoryAPI = APIFactoryRegistry<RouteSenderAPI, AnyObject>
+
+export type SenderFn = (
+    fn: (msg: any) => DataEntity
+) => (msg: any) => void
+
 export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
     limit: number;
     routeDict: RouteDict = new Map();
     routingExectuion: RoutingExectuion = new Map();
     concurrency: number;
+    api!: SenderFactoryAPI;
+    tryFn: SenderFn;
 
     constructor(context: WorkerContext, opConfig: RouteSenderConfig, exConfig: ExecutionConfig) {
         super(context, opConfig, exConfig);
         const { routing, size, concurrency } = opConfig;
-
         this.limit = size;
         this.concurrency = concurrency;
 
@@ -40,20 +48,38 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
             const keys = keyset.split(',');
 
             for (const key of keys) {
-                this.routeDict.set(key, config);
+                this.routeDict.set(key, { ...config, _key: key });
             }
         }
+
+        this.tryFn = this.tryRecord.bind(this) as SenderFn;
+    }
+
+    async initialize(): Promise<void> {
+        super.initialize();
+        this.api = await this.createAPI(this.opConfig.api_name);
     }
 
     private async createRoute(route: string) {
-        const { api_name } = this.opConfig;
         const config = this.routeDict.get(route);
-        // we cannot cache this type of api becuase we need to call and get several types
-        // @ts-expect-error
-        const client: RouteSenderAPI = await this.context.apis.executionContext._apis[api_name]
-            .instance.createAPI(config);
+        if (isNil(config)) throw new Error(`Could not get config for route ${route}, please verify that this is in the routing`);
+
+        let client = this.api.get(config.connection);
+
+        if (isNil(client)) {
+            const { opConfig } = this;
+            client = await this.api.create(
+                config.connection,
+                {
+                    ...opConfig,
+                    ...config,
+                    tryFn: this.tryFn,
+                    logger: this.logger
+                }
+            );
+        }
+
         this.routingExectuion.set(route, { client, data: [] });
-        await client.verifyRoute(config);
     }
 
     private formatRecords({ client, data }: SenderExecution) {
@@ -79,14 +105,17 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
                 if (!this.routingExectuion.has('*')) {
                     await this.createRoute('*');
                 }
+
                 const routeConfig = this.routingExectuion.get('*') as Endpoint;
                 routeConfig.data.push(record);
             } else if (this.routeDict.has('**')) {
                 if (!this.routingExectuion.has('**')) {
                     await this.createRoute('**');
                 }
-
                 const routeConfig = this.routingExectuion.get('**') as Endpoint;
+
+                await routeConfig.client.verify(route);
+
                 routeConfig.data.push(record);
             } else {
                 let error: TSError;
@@ -127,7 +156,6 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
 
     async onBatch(batch: DataEntity[]): Promise<DataEntity[]> {
         await this.routeToDestinations(batch);
-
         return batch;
     }
 }

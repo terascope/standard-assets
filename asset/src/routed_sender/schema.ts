@@ -1,4 +1,4 @@
-import { ConvictSchema, AnyObject } from '@terascope/job-components';
+import { ConvictSchema, AnyObject, isPlainObject } from '@terascope/job-components';
 import { isNumber, getTypeOf } from '@terascope/utils';
 import { RouteSenderConfig } from './interfaces';
 
@@ -22,10 +22,12 @@ export default class Schema extends ConvictSchema<RouteSenderConfig> {
                 + 'based on the incoming key. Used when multisend is set to true. The key name can be a '
                 + 'comma separated list of prefixes that will map to the same connection. Prefixes matching takes '
                 + 'the first character of the key.',
-                default: {
-                    '*': 'default'
-                },
-                format: Object
+                default: null,
+                format: (val: any) => {
+                    if (val !== null) {
+                        if (!isPlainObject(val)) throw new Error('Invalid parameter, connection_map must be an object');
+                    }
+                }
             },
             api_name: {
                 doc: 'Name of the elasticsearch connection to use when sending data.',
