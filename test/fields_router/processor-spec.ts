@@ -81,4 +81,22 @@ describe('Date path partitioner', () => {
         expect(slice2.getMetadata('standard:route')).toEqual('field2&val_2-field1&val_1');
         expect(slice3.getMetadata('standard:route')).toEqual('field2&val_2-field1&val_1');
     });
+    it('includes field name when include_field_names is true', async () => {
+        harness = await makeTest({ value_delimiter: '&', include_field_names: true });
+
+        const [slice1, slice2, slice3] = await harness.runSlice(data);
+
+        expect(slice1.getMetadata('standard:route')).toEqual('field2&val2-field1&val1');
+        expect(slice2.getMetadata('standard:route')).toEqual('field2&val_2-field1&val_1');
+        expect(slice3.getMetadata('standard:route')).toEqual('field2&val_2-field1&val_1');
+    });
+    it('does not include field name when include_field_names is false', async () => {
+        harness = await makeTest({ include_field_names: false });
+
+        const [slice1, slice2, slice3] = await harness.runSlice(data);
+
+        expect(slice1.getMetadata('standard:route')).toEqual('val2-val1');
+        expect(slice2.getMetadata('standard:route')).toEqual('val_2-val_1');
+        expect(slice3.getMetadata('standard:route')).toEqual('val_2-val_1');
+    });
 });

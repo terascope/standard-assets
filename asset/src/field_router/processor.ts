@@ -11,7 +11,11 @@ export default class FieldRouter extends MapProcessor<FieldRouterConfig> {
 
         this.opConfig.fields.forEach((field) => {
             const fieldData = santize(toString(record[field]));
-            partitions.push(`${field}${this.opConfig.value_delimiter}${fieldData}`);
+            if (this.opConfig.include_field_names === true) {
+                partitions.push(`${field}${this.opConfig.value_delimiter}${fieldData}`);
+            } else {
+                partitions.push(`${fieldData}`);
+            }
         });
 
         record.setMetadata(
