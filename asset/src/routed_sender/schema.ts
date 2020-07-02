@@ -1,4 +1,6 @@
-import { ConvictSchema, AnyObject, isPlainObject } from '@terascope/job-components';
+import {
+    ConvictSchema, AnyObject, isPlainObject, isNotNil
+} from '@terascope/job-components';
 import { isNumber, getTypeOf } from '@terascope/utils';
 import { RouteSenderConfig } from './interfaces';
 
@@ -24,7 +26,7 @@ export default class Schema extends ConvictSchema<RouteSenderConfig> {
                 + 'the first character of the key.',
                 default: null,
                 format: (val: any) => {
-                    if (val !== null) {
+                    if (isNotNil(val)) {
                         if (!isPlainObject(val)) throw new Error('Invalid parameter, connection_map must be an object');
                     }
                 }

@@ -56,7 +56,7 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
     }
 
     async initialize(): Promise<void> {
-        super.initialize();
+        await super.initialize();
         this.api = await this.createAPI(this.opConfig.api_name);
     }
 
