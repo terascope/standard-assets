@@ -77,6 +77,17 @@ describe('Route Sender', () => {
         }
     });
 
+    it('will not throw if routing is misconfigured part 2', async () => {
+        const opConfig = {
+            routing: {
+                '**': 'default'
+            }
+        };
+
+        const test = await makeTest(opConfig);
+        expect(test).toBeDefined();
+    });
+
     it('can initialize and send to a single route', async () => {
         const opConfig = {
             routing: { '*': 'default' }
