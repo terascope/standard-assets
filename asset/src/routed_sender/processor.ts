@@ -67,11 +67,9 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
         let client = this.api.get(config.connection);
 
         if (isNil(client)) {
-            const { opConfig } = this;
             client = await this.api.create(
                 config.connection,
                 {
-                    ...opConfig,
                     ...config,
                     tryFn: this.tryFn,
                     logger: this.logger
