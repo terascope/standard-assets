@@ -11,7 +11,7 @@
     },
     "dependencies": {
         "@sindresorhus/fnv1a": "^2.0.1",
-        "@terascope/job-components": "^0.36.0",
+        "@terascope/job-components": "^0.37.0",
         "@terascope/utils": "^0.28.0",
         "timsort": "^0.3.0",
         "ts-transforms": "^0.40.2"
