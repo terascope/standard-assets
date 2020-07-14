@@ -534,12 +534,12 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@terascope/data-mate@^0.11.2":
-  version "0.11.2"
-  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.11.2.tgz#3f3693883eee2be6958f6c2ff747e47836967e1d"
-  integrity sha512-2E4Ps+jvUv1Mdv5dpGJrH3YAkR0c/i3v6lTncZpkU61C6TQ/4whQSNxo9chQ8V183dkNnHwGZRmrcb59dwyX/Q==
+"@terascope/data-mate@^0.11.3":
+  version "0.11.3"
+  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.11.3.tgz#45de38bbd2d1b023d567b05201e0a124ad3f0691"
+  integrity sha512-3/MMsRn0HwRGrM9wtsPj943osJ2fZFCETuWCiJ18E6AtAlq/thnl56h5Tp4Ag3gZsvTUq0Kq9m+ScxkAzRgWGw==
   dependencies:
-    "@terascope/data-types" "^0.19.2"
+    "@terascope/data-types" "^0.19.3"
     "@terascope/types" "^0.4.0"
     "@terascope/utils" "^0.28.1"
     "@turf/bbox" "^6.0.1"
@@ -558,16 +558,16 @@
     validator "^13.1.1"
     xlucene-parser "^0.23.1"
 
-"@terascope/data-types@^0.19.2":
-  version "0.19.2"
-  resolved "https://registry.yarnpkg.com/@terascope/data-types/-/data-types-0.19.2.tgz#65c697995f7cdbd86410402e61922ef092db1252"
-  integrity sha512-Pha5KauzqSgO0gcleDTNJw6t+GdDwFRaJ0tK3VrMQRb9RuHAiIHyeizfteOFPX6Xf5NQDebthi8pMN1IPOPJlQ==
+"@terascope/data-types@^0.19.3":
+  version "0.19.3"
+  resolved "https://registry.yarnpkg.com/@terascope/data-types/-/data-types-0.19.3.tgz#2c3028166edcfe07944dec32dfcb7ea56eb5ae2c"
+  integrity sha512-xjoPO9+MtOGoiIgvEe+yhaEehs3GNorQeIlWZUPu/A1peDVTlrvBeoF0qpNmbsEg4yG71U1UFZho0/bFdVj5iA==
   dependencies:
     "@terascope/types" "^0.4.0"
     "@terascope/utils" "^0.28.1"
-    graphql "^15.1.0"
+    graphql "^15.3.0"
     lodash.defaultsdeep "^4.6.1"
-    yargs "^15.3.1"
+    yargs "^15.4.1"
 
 "@terascope/eslint-config@^0.4.0":
   version "0.4.0"
@@ -2490,10 +2490,10 @@ graphlib@^2.1.8:
   dependencies:
     lodash "^4.17.15"
 
-graphql@^15.1.0:
-  version "15.1.0"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.1.0.tgz#b93e28de805294ec08e1630d901db550cb8960a1"
-  integrity sha512-0TVyfOlCGhv/DBczQkJmwXOK6fjWkjzY3Pt7wY8i0gcYXq8aogG3weCsg48m72lywKSeOqedEHvVPOvZvSD51Q==
+graphql@^15.3.0:
+  version "15.3.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.3.0.tgz#3ad2b0caab0d110e3be4a5a9b2aa281e362b5278"
+  integrity sha512-GTCJtzJmkFLWRfFJuoo9RWWa/FfamUHgiFosxi/X1Ani4AVWbeyBenZTNX6dM+7WSbbFfTo/25eh0LLkwHMw2w==
 
 growly@^1.3.0:
   version "1.3.0"
@@ -5024,12 +5024,12 @@ ts-node@^8.10.2:
     source-map-support "^0.5.17"
     yn "3.1.1"
 
-ts-transforms@^0.40.2:
-  version "0.40.2"
-  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.40.2.tgz#90ad7764c4005aa9497ca9dbbbc3f4e554a301ee"
-  integrity sha512-9/z3VpoSjoXdtXHeeWi2fO/WcUbq2p/iOhbHHUr/k36/VMxnL7Ehtf/QcxxyQFu6o2M+F1OPMeHCTJNXc61Hbg==
+ts-transforms@^0.40.3:
+  version "0.40.3"
+  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.40.3.tgz#9ad7ccdcec2ffdfe70c8264e7c4d4751ff1ec58e"
+  integrity sha512-7MMXRlsgnEJomcSDVngRcRsRw7pwIex+CypnmZ4u7xmIeh9XpbgZV9uUSezTLUTsf0Vq0Xuj5AJUDZJ+uuSzrg==
   dependencies:
-    "@terascope/data-mate" "^0.11.2"
+    "@terascope/data-mate" "^0.11.3"
     "@terascope/types" "^0.4.0"
     "@terascope/utils" "^0.28.1"
     awesome-phonenumber "^2.35.0"
@@ -5038,7 +5038,7 @@ ts-transforms@^0.40.2:
     nanoid "^3.1.10"
     valid-url "^1.0.9"
     validator "^13.1.1"
-    yargs "^15.3.1"
+    yargs "^15.4.1"
 
 tslib@^1.8.1:
   version "1.13.0"
@@ -5370,7 +5370,7 @@ yargs-parser@11.0.0:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
-yargs-parser@18.x, yargs-parser@^18.1.1:
+yargs-parser@18.x, yargs-parser@^18.1.2:
   version "18.1.3"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-18.1.3.tgz#be68c4975c6b2abf469236b0c870362fab09a7b0"
   integrity sha512-o50j0JeToy/4K6OZcaQmW6lyXXKhq7csREXcDwk2omFPJEwUNOVtJKvmDr9EI1fAJZUyZcRF7kxGBWmRXudrCQ==
@@ -5378,10 +5378,10 @@ yargs-parser@18.x, yargs-parser@^18.1.1:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
-yargs@^15.3.1:
-  version "15.3.1"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-15.3.1.tgz#9505b472763963e54afe60148ad27a330818e98b"
-  integrity sha512-92O1HWEjw27sBfgmXiixJWT5hRBp2eobqXicLtPBIDBhYB+1HpwZlXmbW2luivBJHBzki+7VyCLRtAkScbTBQA==
+yargs@^15.3.1, yargs@^15.4.1:
+  version "15.4.1"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-15.4.1.tgz#0d87a16de01aee9d8bec2bfbf74f67851730f4f8"
+  integrity sha512-aePbxDmcYW++PaqBsJ+HYUFwCdv4LVvdnhBy78E57PIor8/OVvhMrADFFEDh8DHDFRv/O9i3lPhsENjO7QX0+A==
   dependencies:
     cliui "^6.0.0"
     decamelize "^1.2.0"
@@ -5393,7 +5393,7 @@ yargs@^15.3.1:
     string-width "^4.2.0"
     which-module "^2.0.0"
     y18n "^4.0.0"
-    yargs-parser "^18.1.1"
+    yargs-parser "^18.1.2"
 
 yn@3.1.1:
   version "3.1.1"

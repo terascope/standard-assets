@@ -14,6 +14,6 @@
         "@terascope/job-components": "^0.36.0",
         "@terascope/utils": "^0.28.0",
         "timsort": "^0.3.0",
-        "ts-transforms": "^0.40.2"
+        "ts-transforms": "^0.40.3"
     }
 }
