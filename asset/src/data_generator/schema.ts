@@ -5,11 +5,11 @@ import { DataGenerator } from './interfaces';
 
 export default class Schema extends ConvictSchema<DataGenerator> {
     validateJob(job: ValidatedJobConfig): void {
-        const opConfig = getOpConfig(job, 'elasticsearch_data_generator');
-        if (!opConfig) throw new Error('No opConfig was found for operation elasticsearch_data_generator on the job');
+        const opConfig = getOpConfig(job, 'data_generator');
+        if (!opConfig) throw new Error('No opConfig was found for operation data_generator on the job');
 
         if (opConfig.id_start_key && !opConfig.set_id) {
-            throw new Error('Invalid elasticsearch_data_generator configuration, id_start_key must be used with set_id parameter, please set the missing parameters');
+            throw new Error('Invalid data_generator configuration, id_start_key must be used with set_id parameter, please set the missing parameters');
         }
 
         if (opConfig.set_id) {
@@ -17,11 +17,11 @@ export default class Schema extends ConvictSchema<DataGenerator> {
             if (!indexSelectorConfig) throw new Error('No opConfig was found for operation elasticsearch_index_selector on the job');
 
             if (!indexSelectorConfig.id_field) {
-                throw new Error('Invalid elasticsearch_data_generator configuration, set_id must be used in tandem with id_field which is set in elasticsearch_index_selector');
+                throw new Error('Invalid data_generator configuration, set_id must be used in tandem with id_field which is set in elasticsearch_index_selector');
             }
 
             if (indexSelectorConfig.id_field !== 'id') {
-                throw new Error('Invalid elasticsearch_data_generator configuration, id_field must be set to "id" when elasticsearch_data_generator is creating ids');
+                throw new Error('Invalid data_generator configuration, id_field must be set to "id" when data_generator is creating ids');
             }
         }
     }
@@ -39,9 +39,9 @@ export default class Schema extends ConvictSchema<DataGenerator> {
                 default: 5000,
                 format(val: any) {
                     if (isNaN(val)) {
-                        throw new Error('Invalid size parameter for elasticsearch_data_generator, must be a number');
+                        throw new Error('Invalid size parameter for data_generator, must be a number');
                     } else if (val <= 0) {
-                        throw new Error('Invalid size parameter for elasticsearch_data_generator, must be greater than zero');
+                        throw new Error('Invalid size parameter for data_generator, must be greater than zero');
                     }
                 }
             },
@@ -62,7 +62,7 @@ export default class Schema extends ConvictSchema<DataGenerator> {
                 format: 'optional_String'
             },
             stress_test: {
-                doc: 'used to speed up the creation process to test elasticsearch load',
+                doc: 'used to speed up the creation process to test load',
                 default: false,
                 format: Boolean
             },
@@ -72,7 +72,7 @@ export default class Schema extends ConvictSchema<DataGenerator> {
                 format: String
             },
             set_id: {
-                doc: 'used to make an id on the data that will be used for the doc _id for elasticsearch, values: base64url, hexadecimal, HEXADECIMAL',
+                doc: 'used to make an id on the data that will be used for the doc _id, values: base64url, hexadecimal, HEXADECIMAL',
                 default: '',
                 format: 'optional_String'
             },

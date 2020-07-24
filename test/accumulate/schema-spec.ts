@@ -3,7 +3,7 @@ import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
 import { AccumulateConfig } from '../../asset/src/accumulate/interfaces';
 
-describe('accumulate', () => {
+describe('accumulate schema', () => {
     let harness: WorkerTestHarness;
 
     async function makeSchema(config: AnyObject = {}): Promise<AccumulateConfig> {
