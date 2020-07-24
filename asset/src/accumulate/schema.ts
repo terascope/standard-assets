@@ -1,4 +1,6 @@
-import { ConvictSchema, isNumber, getTypeOf } from '@terascope/job-components';
+import {
+    ConvictSchema, isNumber, getTypeOf, isBoolean
+} from '@terascope/job-components';
 import { AccumulateConfig } from './interfaces';
 
 export default class Schema extends ConvictSchema<AccumulateConfig> {
@@ -18,7 +20,9 @@ export default class Schema extends ConvictSchema<AccumulateConfig> {
             flush_data_on_shutdown: {
                 doc: 'Option to flush partial data accumulation on unexpected shutdown',
                 default: false,
-                format: Boolean
+                format: (val: unknown):void => {
+                    if (!isBoolean(val)) throw new Error(`Invalid parameter flush_data_on_shutdown, expected boolean, got ${getTypeOf(val)}`);
+                }
             }
         };
     }

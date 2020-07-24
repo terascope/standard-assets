@@ -32,10 +32,7 @@ Used to gather and accumulate data from a stream, only to return results when a 
             "flush_data_on_shutdown": true
         },
         {
-            "_op": "noop",
-            "index": "other_index",
-            "size": 1000,
-            "index": true
+            "_op": "noop"
         }
     ],
 }
