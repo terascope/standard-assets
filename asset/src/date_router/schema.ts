@@ -6,7 +6,7 @@ export default class Schema extends ConvictSchema<DateRouterConfig> {
         return {
             field: {
                 doc: 'Which field in each data record contains the date to use for timeseries',
-                default: '',
+                default: null,
                 format: 'required_String'
             },
             resolution: {

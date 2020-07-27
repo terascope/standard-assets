@@ -43,7 +43,7 @@ In once mode, this will created a total of 25 million docs with dates ranging fr
 | start | start of date range | String | optional, only used with format isoBetween or utcBetween, defaults to Thu Jan 01 1970 00:00:00 GMT-0700 (MST) |
 | end | end of date range | String | optional, only used with format isoBetween or utcBetween, defaults to new Date() |
 | stress_test | If set to true, it will attempt to send non unique documents following your schema as fast as it can, originally used to help determine cluster write performance| Boolean | optional, defaults to false |
-| date_key | Use this to indicate which key of your schema you would like to use a format listed below, just in case you don't want to set your own | String | optional, defaults to created |
+| date_key | Use this to indicate which key of your schema you would like to use a format listed below, `if this is set, it will remove the "created" field on the default schema` | String | optional, defaults to created |
 | set_id | used to make an id on the data that will be used for the doc \_id for elasticsearch, values: base64url, hexadecimal, HEXADECIMAL | String | optional, if used, then index selector needs to have id_field set to "id" |
 | id_start_key | set if you would like to force the first part of the ID to a certain character, adds a regex to the front | Sting | optional, must be used in tandem with set_id id_start_key is essentially regex, if you set it to "a", then the first character of the id will be "a", can also set ranges [a-f] or randomly alternate betweeen b and a if its set to "[ab]" |
 
@@ -55,8 +55,8 @@ There are two categories of formats, ones that return the current date at which 
 | --------- | -------- |
 | dateNow | will create a new date in "2016-01-19T13:48:08.426-07:00" format, preserving local time |
 | utcDate | will create a new utc date e.g "2016-01-19T20:48:08.426Z" |
-| utcBetween | similar to utcDate, but uses start and end keys in the job config to specify range |
-| isoBetween | similar to dateNow, but uses start and end keys in the job config to specify range |
+| utcBetween | similar to utcDate, but uses `start` and `end` keys in the job config to specify range |
+| isoBetween | similar to dateNow, but uses `start` and `end` keys in the job config to specify range |
 
 
 #### persistent mode ####

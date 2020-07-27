@@ -1,7 +1,13 @@
 import {
-    ConvictSchema, ValidatedJobConfig, getOpConfig, AnyObject
+    ConvictSchema,
+    ValidatedJobConfig,
+    getOpConfig,
+    AnyObject,
+    isNotNil,
+    getTypeOf,
+    isString
 } from '@terascope/job-components';
-import { DataGenerator } from './interfaces';
+import { DataGenerator, IDType, DateOptions } from './interfaces';
 
 export default class Schema extends ConvictSchema<DataGenerator> {
     validateJob(job: ValidatedJobConfig): void {
@@ -12,17 +18,11 @@ export default class Schema extends ConvictSchema<DataGenerator> {
             throw new Error('Invalid data_generator configuration, id_start_key must be used with set_id parameter, please set the missing parameters');
         }
 
-        if (opConfig.set_id) {
-            const indexSelectorConfig = getOpConfig(job, 'elasticsearch_index_selector');
-            if (!indexSelectorConfig) throw new Error('No opConfig was found for operation elasticsearch_index_selector on the job');
+        if (opConfig.start && opConfig.end) {
+            const startingTime = new Date(opConfig.start).getTime();
+            const endingTime = new Date(opConfig.end).getTime();
 
-            if (!indexSelectorConfig.id_field) {
-                throw new Error('Invalid data_generator configuration, set_id must be used in tandem with id_field which is set in elasticsearch_index_selector');
-            }
-
-            if (indexSelectorConfig.id_field !== 'id') {
-                throw new Error('Invalid data_generator configuration, id_field must be set to "id" when data_generator is creating ids');
-            }
+            if (startingTime > endingTime) throw new Error('Invalid start and end times, start must be before end');
         }
     }
 
@@ -30,7 +30,7 @@ export default class Schema extends ConvictSchema<DataGenerator> {
         return {
             json_schema: {
                 doc: 'file path to custom data schema',
-                default: '',
+                default: null,
                 format: 'optional_String'
             },
             size: {
@@ -47,19 +47,27 @@ export default class Schema extends ConvictSchema<DataGenerator> {
             },
             start: {
                 doc: 'The start date (ISOstring or in ms) to which it will read from ',
-                default: '',
+                default: null,
                 format: 'optional_Date'
             },
             end: {
                 doc: 'The end date (ISOstring or in ms) to which it will read to',
-                default: '',
+                default: null,
                 format: 'optional_Date'
             },
             format: {
                 doc: 'This is only used with the teraslice provided schema, can elect different time structures'
                 + 'such as dateNow, utcDate, utcBetween and isoBetween',
-                default: '',
-                format: 'optional_String'
+                default: null,
+                format: (val: unknown): void => {
+                    if (isNotNil(val)) {
+                        if (isString(val)) {
+                            if (!Object.values(DateOptions).includes(val as any)) throw new Error(`Invalid parameter format, must be one of these values: ${Object.values(IDType).join(',')}, but was given ${val}`);
+                        } else {
+                            throw new Error(`Invalid parameter format, it must be a string, was given ${getTypeOf(val)}`);
+                        }
+                    }
+                }
             },
             stress_test: {
                 doc: 'used to speed up the creation process to test load',
@@ -73,12 +81,20 @@ export default class Schema extends ConvictSchema<DataGenerator> {
             },
             set_id: {
                 doc: 'used to make an id on the data that will be used for the doc _id, values: base64url, hexadecimal, HEXADECIMAL',
-                default: '',
-                format: 'optional_String'
+                default: null,
+                format: (val: unknown): void => {
+                    if (isNotNil(val)) {
+                        if (isString(val)) {
+                            if (!Object.values(IDType).includes(val as any)) throw new Error(`Invalid parameter set_id, must be one of these values: ${Object.values(IDType).join(',')}, but was given ${val}`);
+                        } else {
+                            throw new Error(`Invalid parameter set_id, it must be a string, was given ${getTypeOf(val)}`);
+                        }
+                    }
+                }
             },
             id_start_key: {
                 doc: 'set if you would like to force the first part of the ID to a certain character',
-                default: '',
+                default: null,
                 format: 'optional_String'
             }
         };

@@ -101,8 +101,13 @@ export default function getSchema(opConfig: DataGenerator, otherSchema: AnyObjec
     const end = endDate.valueOf();
     const diff = end - start;
 
+    if (opConfig.date_key !== 'created') {
+        schema[opConfig.date_key] = schema.created;
+        delete schema.created;
+    }
+
     if (opConfig.format) {
-        schema[opConfig.date_key].function = getFormatFunction(opConfig.format, { start, diff });
+        schema[opConfig.date_key || 'created'].function = getFormatFunction(opConfig.format, { start, diff });
     }
 
     if (opConfig.set_id) {
