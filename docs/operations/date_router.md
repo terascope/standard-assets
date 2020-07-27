@@ -4,7 +4,7 @@
 This processor will tag records with the `standard:route` metadata which is used by the routed_sender processor to dynamically routes records to different locations.
 
 
-This will will enable timeseries based routing for the routed_sender
+This will enable timeseries based routing for the routed_sender
 
 
 
@@ -12,9 +12,9 @@ This will will enable timeseries based routing for the routed_sender
 | --------- | -------- | ------ | ------ |
 | _op | Name of operation, it must reflect the exact name of the file | String | required |
 | field | Which field in each data record contains the date to use for timeseries | String | required |
-| resolution | Type of timeseries data, may be set to `daily`, `monthly`, or `yearly` | optional, defaults to `daily` |
-| field_delimiter | separator between field/value combinations | optional, defaults to `-` |
-| value_delimiter | separator between the field name and the value | optional, defaults to `_` |
+| resolution | Type of timeseries data, may be set to `daily`, `monthly`, or `yearly` | String | optional, defaults to `daily` |
+| field_delimiter | separator between field/value combinations | String | optional, defaults to `-` |
+| value_delimiter | separator between the field name and the value | String | optional, defaults to `_` |
 
 
 ## Usage

@@ -27,6 +27,7 @@ export default class Schema extends ConvictSchema<FieldRouterConfig> {
                 format: 'optional_String'
             },
             include_field_names: {
+                doc: 'separator between the field name and the value - default "_"',
                 default: true,
                 format: 'Boolean'
             }
