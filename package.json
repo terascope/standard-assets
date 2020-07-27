@@ -20,7 +20,7 @@
         "@terascope/eslint-config": "^0.4.1",
         "@types/jest": "^26.0.4",
         "@types/json2csv": "^5.0.1",
-        "@types/node": "^14.0.23",
+        "@types/node": "^14.0.26",
         "@types/node-gzip": "^1.1.0",
         "@types/timsort": "^0.3.0",
         "eslint": "^7.4.0",
