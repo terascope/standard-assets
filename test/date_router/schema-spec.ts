@@ -1,9 +1,9 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
-import { DateRouterConfig } from '../../asset/src/date_router/interfaces';
+import { DateRouterConfig, DateResolution } from '../../asset/src/date_router/interfaces';
 
-describe('data_window_to_array schema', () => {
+describe('date_router schema', () => {
     let harness: WorkerTestHarness;
     const name = 'date_router';
 
@@ -25,12 +25,19 @@ describe('data_window_to_array schema', () => {
     });
 
     it('should instantiate correctly and has defaults', async () => {
-        const schema = await makeSchema();
+        const schema = await makeSchema({ field: 'test' });
 
-        expect(schema).toMatchObject({
-            _op: name,
-            _encoding: 'json',
-            _dead_letter_action: 'throw'
-        });
+        expect(schema).toBeDefined();
+        expect(schema.field).toEqual('test');
+        expect(schema.resolution).toEqual(DateResolution.daily);
+        expect(schema.field_delimiter).toEqual('-');
+        expect(schema.value_delimiter).toEqual('_');
+    });
+
+    it('should throw with bad values', async () => {
+        await expect(makeSchema({})).toReject();
+        await expect(makeSchema({ field: 'test', resolution: 1234 })).toReject();
+        await expect(makeSchema({ field: 'test', field_delimiter: 1234 })).toReject();
+        await expect(makeSchema({ field: 'test', value_delimiter: 1234 })).toReject();
     });
 });

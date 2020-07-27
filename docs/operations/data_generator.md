@@ -72,6 +72,7 @@ There are two categories of formats, ones that return the current date at which 
     "slicers" : 1,
     "lifecycle" : "once",
     "assets" : [
+        "standard",
         "elasticsearch"
     ],
     "operations" : [
