@@ -1,34 +1,31 @@
 import path from 'path';
-import { OpTestHarness } from 'teraslice-test-harness';
-import { DataEntity, newTestExecutionConfig } from '@terascope/job-components';
-import { Processor, Schema } from '../asset/src/match';
-import { makeTest } from '../helpers';
+import { DataEntity, AnyObject } from '@terascope/utils';
+import { WorkerTestHarness } from 'teraslice-test-harness';
 
 describe('match phase', () => {
-    const testAssetPath = path.join(__dirname, './assets');
-    const type = 'processor';
-    let opTest: OpTestHarness;
+    let harness: WorkerTestHarness;
+
+    const testAssetPath = path.join(__dirname, '..', './assets');
     const assetName = 'someAssetId';
 
-    const opConfig = {
-        _op: 'watcher',
-        plugins: ['someAssetId:plugins'],
-        rules: [`${assetName}:matchRules.txt`],
-        types: { _created: 'date' }
-    };
+    async function makeTest(config: AnyObject = {}) {
+        const _op = {
+            _op: 'match',
+            plugins: ['someAssetId:plugins'],
+            rules: [`${testAssetPath}/${assetName}:matchRules.txt`],
+            types: { _created: 'date' }
+        };
+        const opConfig = config ? Object.assign({}, _op, config) : _op;
+        harness = WorkerTestHarness.testProcessor(opConfig);
 
-    const executionConfig = newTestExecutionConfig({
-        assets: [assetName],
-        operations: [opConfig]
+        await harness.initialize();
+
+        return harness;
+    }
+
+    afterEach(async () => {
+        if (harness) await harness.shutdown();
     });
-
-    beforeAll(() => {
-        opTest = makeTest(Processor, Schema);
-        opTest.harness.context.sysconfig.teraslice.assets_directory = testAssetPath;
-        return opTest.initialize({ executionConfig, type });
-    });
-
-    afterAll(() => opTest.shutdown());
 
     it('can return matching documents', async () => {
         const data = DataEntity.makeArray([
@@ -38,8 +35,8 @@ describe('match phase', () => {
             { other: 'xabcd' },
             { _created: '2018-12-16T15:16:09.076Z' }
         ]);
-
-        const results = await opTest.run(data);
+        const test = await makeTest();
+        const results = await test.runSlice(data);
 
         expect(results.length).toEqual(3);
     });

@@ -16,8 +16,7 @@ describe('Key path partitioner', () => {
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();
-        // Need this in order to feed the record in with the metadata
-        harness.fetcher().handle = async () => data;
+
         return harness;
     }
 
