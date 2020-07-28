@@ -1,9 +1,9 @@
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { isEmpty, DataEntity } from '@terascope/job-components';
 import path from 'path';
-import TestApi from './fixtures/test_api/api';
-import RoutedSender from '../asset/src/routed_sender/processor';
-import { RoutingExectuion } from '../asset/src/routed_sender/interfaces';
+import TestApi from '../fixtures/test_api/api';
+import RoutedSender from '../../asset/src/routed_sender/processor';
+import { RoutingExectuion } from '../../asset/src/routed_sender/interfaces';
 
 describe('Route Sender', () => {
     const assetDir = path.join(__dirname, '../asset');

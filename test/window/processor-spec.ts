@@ -6,10 +6,10 @@ import {
     newTestSlice
 } from 'teraslice-test-harness';
 import { OpConfig, pDelay } from '@terascope/job-components';
-import Processor from '../asset/src/window/processor';
-import Schema from '../asset/src/window/schema';
-import DataWindow from '../asset/src/__lib/data-window';
-import { makeTest } from './helpers';
+import Processor from '../../asset/src/window/processor';
+import Schema from '../../asset/src/window/schema';
+import DataWindow from '../../asset/src/__lib/data-window';
+import { makeTest } from '../helpers';
 
 const testData = [
     {

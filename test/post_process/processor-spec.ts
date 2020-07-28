@@ -2,8 +2,8 @@ import 'jest-extended';
 import path from 'path';
 import { OpTestHarness } from 'teraslice-test-harness';
 import { DataEntity, newTestExecutionConfig } from '@terascope/job-components';
-import { Processor, Schema } from '../asset/src/post_process';
-import { makeTest } from './helpers';
+import { Processor, Schema } from '../../asset/src/post_process';
+import { makeTest } from '../helpers';
 
 describe('extraction phase', () => {
     const testAssetPath = path.join(__dirname, './assets');

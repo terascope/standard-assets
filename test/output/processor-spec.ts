@@ -1,24 +1,22 @@
 import path from 'path';
 import { OpTestHarness } from 'teraslice-test-harness';
 import { DataEntity, newTestExecutionConfig } from '@terascope/job-components';
-import { Processor, Schema } from '../asset/src/match';
-import { makeTest } from './helpers';
+import { Processor, Schema } from '../../asset/src/output';
+import { makeTest } from '../helpers';
 
-describe('match phase', () => {
+describe('output phase', () => {
     const testAssetPath = path.join(__dirname, './assets');
-    const type = 'processor';
     let opTest: OpTestHarness;
-    const assetName = 'someAssetId';
+    const type = 'processor';
 
     const opConfig = {
-        _op: 'watcher',
+        _op: 'transform',
         plugins: ['someAssetId:plugins'],
-        rules: [`${assetName}:matchRules.txt`],
-        types: { _created: 'date' }
+        rules: ['someAssetId:transformRules.txt']
     };
 
     const executionConfig = newTestExecutionConfig({
-        assets: [assetName],
+        assets: ['someAssetId'],
         operations: [opConfig]
     });
 
@@ -30,17 +28,15 @@ describe('match phase', () => {
 
     afterAll(() => opTest.shutdown());
 
-    it('can return matching documents', async () => {
-        const data = DataEntity.makeArray([
-            { some: 'data', bytes: 1200 },
-            { some: 'data', bytes: 200 },
-            { some: 'other', bytes: 1200 },
-            { other: 'xabcd' },
-            { _created: '2018-12-16T15:16:09.076Z' }
-        ]);
+    it('can run and validate data', async () => {
+        const data = [
+            new DataEntity({ interm1: 'hello', interm2: 'world', final: 'hello world' }),
+            new DataEntity({ lastField: 'someValue' }),
+        ];
 
         const results = await opTest.run(data);
 
-        expect(results.length).toEqual(3);
+        expect(results.length).toEqual(1);
+        expect(results[0]).toEqual({ final: 'hello world' });
     });
 });

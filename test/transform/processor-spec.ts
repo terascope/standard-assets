@@ -2,7 +2,7 @@ import path from 'path';
 import { OpTestHarness } from 'teraslice-test-harness';
 import { DataEntity, newTestExecutionConfig } from '@terascope/job-components';
 import { Processor, Schema } from '../asset/src/transform';
-import { makeTest } from './helpers';
+import { makeTest } from '../helpers';
 
 describe('transform matches', () => {
     const testAssetPath = path.join(__dirname, './assets');
