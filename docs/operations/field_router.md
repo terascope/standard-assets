@@ -13,7 +13,7 @@ This will enable routing based off of field values for routed_sender
 | Configuration | Description | Type |  Notes |
 | --------- | -------- | ------ | ------ |
 | _op | Name of operation, it must reflect the exact name of the file | String | required |
-| fields | WArray fields to partition on. Must specify at least one field | String[] | required |
+| fields | Array of fields to partition on. Must specify at least one field | String[] | required |
 | include_field_names | Determines if field is included in route value | Boolean | optional, defaults to true |
 | field_delimiter | separator between field/value combinations | String | optional, defaults to `-` |
 | value_delimiter | separator between the field name and the value | String | optional, defaults to `_` |
