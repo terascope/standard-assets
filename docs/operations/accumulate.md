@@ -14,6 +14,40 @@ Used to gather and accumulate data from a stream, only to return results when a 
 | flush_data_on_shutdown | Option to flush partial data accumulation on unexpected shutdown | Boolean | optional, defaults to false |
 
 
+## Usage
+
+```javascript
+const opConfig = {
+    _op: 'accumulate',
+    empty_after: 3,
+};
+
+const data = [
+    DataEntity.make({ name: 'chilly' }, { _key: 1 }),
+    DataEntity.make({ name: 'willy' }, { _key: 2 }),
+    DataEntity.make({ name: 'billy' }, { _key: 3 }),
+    DataEntity.make({ name: 'dilly' }, { _key: 4 }),
+]
+
+const expectedDataWindows = [
+    { dataArray: [{ name: 'chilly' },  { name: 'willy' }, { name: 'billy' }, { name: 'dilly' }] },
+]
+
+processor.run(data)
+// returns []
+
+processor.run([])
+// returns []
+
+processor.run([])
+// returns []
+
+processor.run([])
+// returns expectedDataWindows
+
+```
+
+
 
 ## Example Job
 

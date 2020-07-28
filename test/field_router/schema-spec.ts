@@ -1,48 +1,39 @@
-import { TestContext } from '@terascope/job-components';
-import Schema from '../../asset/src/field_router/schema';
+import 'jest-extended';
+import { WorkerTestHarness } from 'teraslice-test-harness';
+import { AnyObject } from '@terascope/job-components';
+import { FieldRouterConfig } from '../../asset/src/field_router/interfaces';
 
-describe('Field partitioner Schema', () => {
-    const context = new TestContext('partition-by-fields');
-    const schema = new Schema(context);
+describe('Field Router Schema', () => {
+    let harness: WorkerTestHarness;
+    const name = 'field_router';
 
-    afterAll(() => {
-        context.apis.foundation.getSystemEvents().removeAllListeners();
+    async function makeSchema(config: AnyObject = {}): Promise<FieldRouterConfig> {
+        const opConfig = Object.assign({}, { _op: name }, config);
+        harness = WorkerTestHarness.testProcessor(opConfig);
+
+        await harness.initialize();
+
+        const accumConfig = harness.executionContext.config.operations.find(
+            (testConfig) => testConfig._op === name
+        );
+
+        return accumConfig as FieldRouterConfig;
+    }
+
+    afterEach(async () => {
+        if (harness) await harness.shutdown();
     });
 
     describe('when validating the schema', () => {
-        it('should throw an error if no fields specified', () => {
-            expect(() => {
-                schema.validate({
-                    _op: 'field_router'
-                });
-            }).toThrowError(/Invalid `fields` option: must include at least one field to partition on./);
+        it('should throw an error if no fields specified', async () => {
+            await expect(makeSchema({})).toReject();
         });
 
-        it('should throw an error if `fields` is not an array', () => {
-            expect(() => {
-                schema.validate({
-                    _op: 'field_router',
-                    fields: null
-                });
-            }).toThrowError(/Invalid `fields` option: must be an array./);
-            expect(() => {
-                schema.validate({
-                    _op: 'field_router',
-                    fields: undefined
-                });
-            }).toThrowError(/Invalid `fields` option: must be an array./);
-            expect(() => {
-                schema.validate({
-                    _op: 'field_router',
-                    fields: JSON.stringify('this ia a string')
-                });
-            }).toThrowError(/Invalid `fields` option: must be an array./);
-            expect(() => {
-                schema.validate({
-                    _op: 'field_router',
-                    fields: 42
-                });
-            }).toThrowError(/Invalid `fields` option: must be an array./);
+        it('should throw an error if `fields` is not an array', async () => {
+            await expect(makeSchema({ fields: null })).toReject();
+            await expect(makeSchema({ fields: undefined })).toReject();
+            await expect(makeSchema({ fields: JSON.stringify('this ia a string') })).toReject();
+            await expect(makeSchema({ fields: 42 })).toReject();
         });
     });
 });

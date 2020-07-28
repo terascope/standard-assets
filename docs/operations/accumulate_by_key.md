@@ -16,6 +16,40 @@ Used to gather and accumulate data from a stream, only to return results when a 
 | batch_size | Size of batches to return | Number | optional, defaults to 1000 |
 
 
+## Usage
+
+```javascript
+const opConfig = {
+    _op: 'accumulate_by_key',
+    empty_after: 3,
+};
+
+const data = [
+    DataEntity.make({ name: 'chilly' }, { _key: 1 }),
+    DataEntity.make({ name: 'willy' }, { _key: 1 }),
+    DataEntity.make({ name: 'billy' }, { _key: 2 }),
+    DataEntity.make({ name: 'dilly' }, { _key: 3 }),
+]
+
+const expectedDataWindows = [
+    { dataArray: [{ name: 'chilly' },  { name: 'willy' }] },
+    { dataArray: [{ name: 'billy' }] },
+    { dataArray: [{ name: 'dilly' }] }
+]
+
+processor.run(data)
+// returns []
+
+processor.run([])
+// returns []
+
+processor.run([])
+// returns []
+
+processor.run([])
+// returns expectedDataWindows
+
+```
 
 ## Example Job
 

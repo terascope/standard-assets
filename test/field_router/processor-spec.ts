@@ -1,11 +1,11 @@
-import { DataEntity } from '@terascope/utils';
+import { DataEntity, AnyObject } from '@terascope/utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 
 describe('Date path partitioner', () => {
     let harness: WorkerTestHarness;
     let data: DataEntity[];
 
-    async function makeTest(config?: any) {
+    async function makeTest(config: AnyObject = {}) {
         const _op = {
             _op: 'field_router',
             fields: [
