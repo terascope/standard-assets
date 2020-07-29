@@ -1,8 +1,7 @@
 import path from 'path';
 import { OpTestHarness } from 'teraslice-test-harness';
 import { DataEntity, newTestExecutionConfig } from '@terascope/job-components';
-import { Processor, Schema } from '../../asset/src/output';
-import { makeTest } from '../helpers';
+
 
 describe('output phase', () => {
     const testAssetPath = path.join(__dirname, './assets');

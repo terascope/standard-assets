@@ -1,12 +1,18 @@
-import { WorkerTestHarness } from 'teraslice-test-harness';
+import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { DataEntity, AnyObject } from '@terascope/job-components';
+import path from 'path';
 
 describe('extraction phase', () => {
+    const assetName = 'someAssetId';
+    const assetDir = path.join(__dirname, '../assets', assetName);
+    const testAssetPath = path.join(__dirname, '../assets');
+    const opPathName = path.join(__dirname, '../../asset/src/extraction');
+
     let harness: WorkerTestHarness;
 
     async function makeTest(config: AnyObject = {}) {
         const _op = {
-            _op: 'transform',
+            _op: opPathName,
             plugins: ['someAssetId:plugins'],
             rules: ['someAssetId:transformRules.txt'],
             types: { date: 'date', location: 'geo-point' },
@@ -14,10 +20,21 @@ describe('extraction phase', () => {
                 foo: 'data'
             }
         };
-
         const opConfig = Object.assign({}, _op, config);
-        harness = WorkerTestHarness.testProcessor(opConfig);
 
+        const job = newTestJobConfig({
+            assets: [assetName],
+            operations: [
+                {
+                    _op: 'test-reader',
+                    passthrough_slice: true,
+                },
+                opConfig
+            ]
+        });
+        console.log('what is testAssetPath', testAssetPath)
+        harness = new WorkerTestHarness(job);
+        harness.context.sysconfig.teraslice.assets_directory = testAssetPath;
         await harness.initialize();
 
         return harness;

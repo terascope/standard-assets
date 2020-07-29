@@ -1,46 +1,56 @@
 import 'jest-extended';
-import { DataEntity, cloneDeep, OpConfig } from '@terascope/job-components';
+import { DataEntity, cloneDeep, AnyObject } from '@terascope/job-components';
+import { WorkerTestHarness } from 'teraslice-test-harness';
 import DataWindow from '../../asset/src/__lib/data-window';
-import Processor from '../../asset/src/set_key/processor';
-import Schema from '../../asset/src/set_key/schema';
-import { makeTest } from '../helpers';
-
-const opConfig: OpConfig = {
-    _op: 'set_key',
-    field: 'name'
-};
-// TODO: remove lodash from package.json
-const testData = [
-    {
-        id: 1,
-        name: 'joe'
-    },
-    {
-        id: 2,
-        name: 'moe'
-    },
-    {
-        id: 3,
-        name: 'randy'
-    }
-];
 
 describe('set_key should', () => {
-    const testHarness = makeTest(Processor, Schema);
+    let harness: WorkerTestHarness;
+    let data: AnyObject[];
 
-    beforeAll(async () => {
-        await testHarness.initialize({ opConfig, type: 'processor' });
+    beforeEach(() => {
+        data = [
+            {
+                id: 1,
+                name: 'joe'
+            },
+            {
+                id: 2,
+                name: 'moe'
+            },
+            {
+                id: 3,
+                name: 'randy'
+            }
+        ];
     });
 
-    afterAll(() => testHarness.shutdown());
+    async function makeTest(config: AnyObject = {}) {
+        const _op = {
+            _op: 'set_key',
+            field: 'name'
+        };
+        const opConfig = config ? Object.assign({}, _op, config) : _op;
+        harness = WorkerTestHarness.testProcessor(opConfig);
+
+        await harness.initialize();
+
+        return harness;
+    }
+
+    afterEach(async () => {
+        if (harness) await harness.shutdown();
+    });
 
     it('generate an empty result if no input data', async () => {
-        const results = await testHarness.run([]);
+        const test = await makeTest();
+        const results = await test.runSlice([]);
+
         expect(results).toBeArrayOfSize(0);
     });
 
     it('return docs as data entities with name field as the key', async () => {
-        const results = await testHarness.run(testData) as DataEntity[];
+        const test = await makeTest();
+        const results = await test.runSlice(data) as DataEntity[];
 
         results.forEach((doc) => expect(DataEntity.isDataEntity(doc)).toBe(true));
         expect(results[0].getMetadata('_key')).toBe('joe');
@@ -49,9 +59,9 @@ describe('set_key should', () => {
     });
 
     it('return data entities with the name field as the key', async () => {
-        const newTestData = cloneDeep(testData).map((doc: any) => DataEntity.make(doc, { _key: 'id' }));
-
-        const results = await testHarness.run(newTestData) as DataEntity[];
+        const newTestData = cloneDeep(data).map((doc: any) => DataEntity.make(doc, { _key: 'id' }));
+        const test = await makeTest();
+        const results = await test.runSlice(newTestData) as DataEntity[];
 
         results.forEach((doc) => expect(DataEntity.isDataEntity(doc)).toBe(true));
         expect(results[0].getMetadata('_key')).toBe('joe');
@@ -64,8 +74,8 @@ describe('set_key should', () => {
             DataWindow.make('1', [{ id: 1, name: 'joe' }, { id: 2, name: 'moe' }, { id: 3, name: 'randy' }]),
             DataWindow.make('2', [{ id: 4, name: 'floe' }, { id: 5, name: 'noe' }, { id: 6, name: 'blandy' }])
         ];
-
-        const results = await testHarness.run(testWindow) as DataEntity[];
+        const test = await makeTest();
+        const results = await test.runSlice(testWindow) as DataEntity[];
 
         results.forEach((doc) => expect(DataEntity.isDataEntity(doc)).toBe(true));
         expect(results[0].asArray()[0].getMetadata('_key')).toBe('joe');

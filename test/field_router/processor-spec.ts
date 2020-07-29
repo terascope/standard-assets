@@ -21,7 +21,7 @@ describe('Date path partitioner', () => {
         return harness;
     }
 
-    beforeEach(async () => {
+    beforeEach(() => {
         data = [
             DataEntity.make(
                 {
