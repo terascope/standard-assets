@@ -594,12 +594,21 @@
     datemath-parser "^1.0.6"
     uuid "^8.1.0"
 
-"@terascope/teraslice-op-test-harness@^1.20.0":
-  version "1.20.0"
-  resolved "https://registry.yarnpkg.com/@terascope/teraslice-op-test-harness/-/teraslice-op-test-harness-1.20.0.tgz#d6d4a596a8736b2d94f66c61a476a66928b0d464"
-  integrity sha512-lqW1+EKyhVUs3Rnwzi43QwajJzEPOL1aQrbCaHubh5R24G9VEfcvfijw9no5Fs3xCTu6ZU6ZM2wD2e6guHzdWg==
+"@terascope/job-components@^0.38.0":
+  version "0.38.2"
+  resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.38.2.tgz#633f98300f682e6eaabde2912e5377ad4d44ead0"
+  integrity sha512-yfovrTaPtZD0TEH9kviB3U/u6JUXUcFSePuHX8YC7nXC0Mimw7gNPnUvIDke4m7Ev3nSKlUwfUdHk0a06BRCyw==
   dependencies:
-    "@terascope/job-components" "^0.36.0"
+    "@terascope/utils" "^0.29.2"
+    convict "^4.4.1"
+    datemath-parser "^1.0.6"
+    uuid "^8.3.0"
+
+"@terascope/teraslice-op-test-harness@^1.22.0":
+  version "1.22.1"
+  resolved "https://registry.yarnpkg.com/@terascope/teraslice-op-test-harness/-/teraslice-op-test-harness-1.22.1.tgz#c6f8fee22e5cc5fc2b7508fe1a612c5471e9c4d2"
+  integrity sha512-Q/lSueDNQQItvlP1rgb2DeUt1+oIOE0a8t9H06o62aJ+l8aT1G1KU0S5NrchiUhgLIuMeYhXQKJ5wajU8oRdMA==
+  dependencies:
     bluebird "^3.7.2"
 
 "@terascope/types@^0.4.0":
@@ -615,6 +624,24 @@
     "@terascope/types" "^0.4.0"
     debug "^4.1.1"
     is-plain-object "^3.0.1"
+    js-string-escape "^1.0.1"
+    kind-of "^6.0.3"
+    latlon-geohash "^1.1.0"
+    lodash.get "^4.4.2"
+    lodash.has "^4.5.2"
+    lodash.set "^4.3.2"
+    lodash.unset "^4.5.2"
+    p-map "^4.0.0"
+    shallow-clone "^3.0.1"
+
+"@terascope/utils@^0.29.2":
+  version "0.29.2"
+  resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.29.2.tgz#14b76615e5ee2d8f13d54da664801cf1f8dfee99"
+  integrity sha512-sYWgF5WxtkP/hPOFXIyZY90hiiNQN+Lo5i0zGJNc6SPgNzJzPIphwra8l2Ct88ulsWo9UQxR//lML621n00wLA==
+  dependencies:
+    "@terascope/types" "^0.4.0"
+    debug "^4.1.1"
+    is-plain-object "^4.1.1"
     js-string-escape "^1.0.1"
     kind-of "^6.0.3"
     latlon-geohash "^1.1.0"
@@ -2871,6 +2898,11 @@ is-plain-object@^3.0.1:
   resolved "https://registry.yarnpkg.com/is-plain-object/-/is-plain-object-3.0.1.tgz#662d92d24c0aa4302407b0d45d21f2251c85f85b"
   integrity sha512-Xnpx182SBMrr/aBik8y+GuR4U1L9FqMSojwDQwPMmxyC6bvEqly9UBCxhauBF5vNh2gwWJNX6oDV7O+OM4z34g==
 
+is-plain-object@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/is-plain-object/-/is-plain-object-4.1.1.tgz#1a14d6452cbd50790edc7fdaa0aed5a40a35ebb5"
+  integrity sha512-5Aw8LLVsDlZsETVMhoMXzqsXwQqr/0vlnBYzIXJbYo2F4yYlhLHs+Ez7Bod7IIQKWkJbJfxrWD7pA1Dw1TKrwA==
+
 is-potential-custom-element-name@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/is-potential-custom-element-name/-/is-potential-custom-element-name-1.0.0.tgz#0c52e54bcca391bb2c494b21e8626d7336c6e397"
@@ -4941,13 +4973,13 @@ table@^5.2.3:
     slice-ansi "^2.1.0"
     string-width "^3.0.0"
 
-teraslice-test-harness@^0.22.0:
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/teraslice-test-harness/-/teraslice-test-harness-0.22.0.tgz#779ea5b31bc433c817ecc549ff26795552b78d18"
-  integrity sha512-hpBkxjlODhhT1NJSQ/2GhtPQUJCQ0IUitxxx59CPhuEI4IAy1f9xiTw6/P8uSZEjn3SLssdJCBIpukKYmNySIQ==
+teraslice-test-harness@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/teraslice-test-harness/-/teraslice-test-harness-0.24.0.tgz#afbc4fe857c045c2e9277ac3484d110a821d2bba"
+  integrity sha512-MW/IxTSp+VblGwhwoZhcWXz1dgKpeaegt5P0+HP97vO/oZYNuQNT9yGhTN6Or3/BbJ4g4HQ3rNj9grrnI8Nfvg==
   dependencies:
-    "@terascope/job-components" "^0.36.0"
-    "@terascope/teraslice-op-test-harness" "^1.20.0"
+    "@terascope/job-components" "^0.38.0"
+    "@terascope/teraslice-op-test-harness" "^1.22.0"
 
 terminal-link@^2.0.0:
   version "2.1.1"
@@ -5219,6 +5251,11 @@ uuid@^8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.1.0.tgz#6f1536eb43249f473abc6bd58ff983da1ca30d8d"
   integrity sha512-CI18flHDznR0lq54xBycOVmphdCYnQLKn8abKn7PXUiKUGdEd+/l9LWNJmugXel4hXq7S+RMNl34ecyC9TntWg==
+
+uuid@^8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.0.tgz#ab738085ca22dc9a8c92725e459b1d507df5d6ea"
+  integrity sha512-fX6Z5o4m6XsXBdli9g7DtWgAx+osMsRRZFKma1mIUsLCz6vRvv+pz5VNbyu9UEDzpMWulZfvpgb/cmDXVulYFQ==
 
 v8-compile-cache@^2.0.3:
   version "2.1.1"
