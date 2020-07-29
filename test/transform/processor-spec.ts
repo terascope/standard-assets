@@ -1,40 +1,39 @@
 import path from 'path';
-import { OpTestHarness } from 'teraslice-test-harness';
+import { WorkerTestHarness } from 'teraslice-test-harness';
 import { DataEntity, newTestExecutionConfig } from '@terascope/job-components';
-import { Processor, Schema } from '../asset/src/transform';
-import { makeTest } from '../helpers';
 
 describe('transform matches', () => {
     const testAssetPath = path.join(__dirname, './assets');
-    let opTest: OpTestHarness;
-    const type = 'processor';
-    const opConfig = {
-        _op: 'transform',
-        plugins: ['someAssetId:plugins'],
-        rules: ['someAssetId:transformRules.txt'],
-        type_config: {
-            date: 'date',
-            location: 'geo-point'
-        },
-        variables: {
-            foo: 'data'
-        }
-    };
 
-    const executionConfig = newTestExecutionConfig({
-        assets: ['someAssetId'],
-        operations: [opConfig]
+    let harness: WorkerTestHarness;
+
+    async function makeTest(config: AnyObject = {}) {
+        const _op = {
+            _op: 'transform',
+            plugins: ['someAssetId:plugins'],
+            rules: ['someAssetId:transformRules.txt'],
+            type_config: {
+                date: 'date',
+                location: 'geo-point'
+            },
+            variables: {
+                foo: 'data'
+            }
+        };
+        const opConfig = config ? Object.assign({}, _op, config) : _op;
+        harness = WorkerTestHarness.testProcessor(opConfig);
+
+        await harness.initialize();
+
+        return harness;
+    }
+
+    afterEach(async () => {
+        if (harness) await harness.shutdown();
     });
-
-    beforeAll(() => {
-        opTest = makeTest(Processor, Schema);
-        opTest.harness.context.sysconfig.teraslice.assets_directory = testAssetPath;
-        return opTest.initialize({ executionConfig, type });
-    });
-
-    afterAll(() => opTest.shutdown());
 
     it('can uses type config', async () => {
+        const test = await makeTest();
         const date = new Date().toISOString();
 
         const data = DataEntity.makeArray([
@@ -46,7 +45,7 @@ describe('transform matches', () => {
             { other: 'stuff', _id: '4' }
         ]);
 
-        const results = await opTest.run(data);
+        const results = await test.runSlice(data);
 
         expect(results.length).toEqual(3);
         expect(results[0]).toEqual({ final: 'hello world', id: 1 });

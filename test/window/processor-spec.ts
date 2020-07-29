@@ -1,15 +1,8 @@
 import 'jest-extended';
-import path from 'path';
-import {
-    WorkerTestHarness,
-    newTestJobConfig,
-    newTestSlice
-} from 'teraslice-test-harness';
-import { OpConfig, pDelay } from '@terascope/job-components';
-import Processor from '../../asset/src/window/processor';
-import Schema from '../../asset/src/window/schema';
+import { WorkerTestHarness, newTestSlice } from 'teraslice-test-harness';
+import { pDelay, AnyObject } from '@terascope/job-components';
+
 import DataWindow from '../../asset/src/__lib/data-window';
-import { makeTest } from '../helpers';
 
 const testData = [
     {
@@ -26,57 +19,66 @@ const testData = [
     }
 ];
 
-describe('window should', () => {
-    const testHarness = makeTest(Processor, Schema);
-    let opConfig: OpConfig;
+describe('window', () => {
+    let harness: WorkerTestHarness;
 
-    beforeEach(() => {
-        opConfig = {
+    async function makeTest(config: AnyObject = {}) {
+        const _op = {
             _op: 'window',
             window_length: 1000,
             time_field: 'time',
             event_window_expiration: 1
         };
+        const opConfig = config ? Object.assign({}, _op, config) : _op;
+        harness = WorkerTestHarness.testProcessor(opConfig);
+
+        await harness.initialize();
+
+        return harness;
+    }
+
+    afterEach(async () => {
+        if (harness) await harness.shutdown();
     });
 
-    afterEach(() => testHarness.shutdown());
-
-    it('generate an empty result if no input data', async () => {
-        await testHarness.initialize({ opConfig, type: 'processor' });
-        const results = await testHarness.run([]);
+    it('should generate an empty result if no input data', async () => {
+        const test = await makeTest();
+        const results = await test.runSlice([]);
 
         expect(results).toBeArrayOfSize(0);
     });
 
-    it('return the docs in the window frame', async () => {
-        await testHarness.initialize({ opConfig, type: 'processor' });
-        let results = await testHarness.run(testData) as DataWindow[];
+    it('shoultd return the docs in the window frame', async () => {
+        const test = await makeTest();
+        let results = await test.runSlice(testData) as DataWindow[];
 
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(2);
         // @ts-expect-error
-        results = await testHarness.run([{ id: 4, time: '2019-04-25T18:12:04.000Z' }]);
+        results = await test.runSlice([{ id: 4, time: '2019-04-25T18:12:04.000Z' }]);
 
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(1);
     });
 
-    it('not return any data if window is not expired', async () => {
-        opConfig.event_window_expiration = 30000;
-        opConfig.window_length = 30000;
+    it('should not return any data if window is not expired', async () => {
+        const test = await makeTest({
+            event_window_expiration: 30000,
+            window_length: 30000
+        });
 
-        await testHarness.initialize({ opConfig, type: 'processor' });
-
-        let results = await testHarness.run(testData);
+        let results = await test.runSlice(testData);
         expect(results).toBeArrayOfSize(0);
 
-        results = await testHarness.run([]);
+        results = await test.runSlice([]);
         expect(results).toBeArrayOfSize(0);
     });
 
-    it('return data as windows expire', async () => {
-        opConfig.window_length = 7000;
-        opConfig.event_window_expiration = 100;
+    it('should return data as windows expire', async () => {
+        const test = await makeTest({
+            window_length: 7000,
+            event_window_expiration: 100
+        });
 
         const data = [];
         let time = new Date();
@@ -90,47 +92,43 @@ describe('window should', () => {
             data.push(doc);
         }
 
-        await testHarness.initialize({ opConfig, type: 'processor' });
-        let results = await testHarness.run(data.slice(0, 3));
+        let results = await test.runSlice(data.slice(0, 3));
         expect(results).toBeArrayOfSize(0);
 
-        results = await testHarness.run(data.slice(3, 6));
-        expect(results).toBeArrayOfSize(0);
-
-        // window expires
-        results = await testHarness.run(data.slice(6, 9)) as DataWindow[];
-        expect(results).toBeArrayOfSize(1);
-        expect(results[0].asArray()).toBeArrayOfSize(8);
-
-        results = await testHarness.run(data.slice(9, 12));
-        expect(results).toBeArrayOfSize(0);
-
-        results = await testHarness.run(data.slice(12, 15));
+        results = await test.runSlice(data.slice(3, 6));
         expect(results).toBeArrayOfSize(0);
 
         // window expires
-        results = await testHarness.run(data.slice(15, 18)) as DataWindow[];
+        results = await test.runSlice(data.slice(6, 9)) as DataWindow[];
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(8);
 
-        results = await testHarness.run(data.slice(18));
+        results = await test.runSlice(data.slice(9, 12));
+        expect(results).toBeArrayOfSize(0);
+
+        results = await test.runSlice(data.slice(12, 15));
+        expect(results).toBeArrayOfSize(0);
+
+        // window expires
+        results = await test.runSlice(data.slice(15, 18)) as DataWindow[];
+        expect(results).toBeArrayOfSize(1);
+        expect(results[0].asArray()).toBeArrayOfSize(8);
+
+        results = await test.runSlice(data.slice(18));
         expect(results).toBeArrayOfSize(0);
 
         // all event windows should be expired by now
         await pDelay(250);
-        const windowResult = (await testHarness.run([])) as DataWindow[];
+        const windowResult = (await test.runSlice([])) as DataWindow[];
 
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(4);
 
-        results = await testHarness.run([]);
+        results = await test.runSlice([]);
         expect(results).toBeArrayOfSize(0);
     });
 
-    it('handle data with same times', async () => {
-        opConfig.window_length = 1000;
-        opConfig.event_window_expiration = 2;
-
+    it('should handle data with same times', async () => {
         const data = [];
         const time = new Date();
 
@@ -142,25 +140,26 @@ describe('window should', () => {
             data.push(doc);
         }
 
-        await testHarness.initialize({ opConfig, type: 'processor' });
-        let results = await testHarness.run(data);
+        const test = await makeTest({
+            window_length: 1000,
+            event_window_expiration: 2
+        });
+
+        let results = await test.runSlice(data);
         expect(results).toBeArrayOfSize(0);
 
         // all event windows should be expired by now
         await pDelay(250);
-        const windowResult = (await testHarness.run([])) as DataWindow[];
+        const windowResult = (await test.runSlice([])) as DataWindow[];
 
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(5);
 
-        results = await testHarness.run([]);
+        results = await test.runSlice([]);
         expect(results).toBeArrayOfSize(0);
     });
 
     it('handle out of order data', async () => {
-        opConfig.window_length = 5000;
-        opConfig.event_window_expiration = 100;
-
         const time = new Date();
 
         const data = [
@@ -178,41 +177,29 @@ describe('window should', () => {
             }
         ];
 
-        await testHarness.initialize({ opConfig, type: 'processor' });
-        let results = await testHarness.run(data) as DataWindow[];
+        const test = await makeTest({
+            window_length: 5000,
+            event_window_expiration: 100
+        });
+
+        let results = await test.runSlice(data) as DataWindow[];
 
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(2);
 
         // all event windows should be expired by now
         await pDelay(250);
-        const windowResult = (await testHarness.run([])) as DataWindow[];
+        const windowResult = (await test.runSlice([])) as DataWindow[];
 
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(1);
 
         // @ts-expect-error
-        results = await testHarness.run([]);
+        results = await test.runSlice([]);
         expect(results).toBeArrayOfSize(0);
     });
-});
 
-describe('window (with window_time_setting: clock) should', () => {
-    const testHarness = makeTest(Processor, Schema);
-    let opConfig: OpConfig;
-
-    beforeEach(() => {
-        opConfig = {
-            _op: 'window',
-            window_length: 100,
-            time_field: 'time',
-            window_time_setting: 'clock',
-        };
-    });
-
-    afterEach(() => testHarness.shutdown());
-
-    it('assign window data based on clock time', async () => {
+    it('should assign window data based on clock time', async () => {
         const data: any[] = [];
 
         for (let i = 0; i < 3000; i++) {
@@ -223,15 +210,19 @@ describe('window (with window_time_setting: clock) should', () => {
             data.push(doc);
         }
 
-        await testHarness.initialize({ opConfig, type: 'processor' });
+        const test = await makeTest({
+            window_length: 100,
+            time_field: 'time',
+            window_time_setting: 'clock',
+        });
 
         // first slice processed before window expires
-        const results = await testHarness.run(data.slice(0, 1000));
+        const results = await test.runSlice(data.slice(0, 1000));
         expect(results).toBeArrayOfSize(0);
 
         // all event windows should be expired by now
         await pDelay(250);
-        let windowResult = (await testHarness.run(data.slice(1000, 2000))) as DataWindow[];
+        let windowResult = (await test.runSlice(data.slice(1000, 2000))) as DataWindow[];
 
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(1000);
@@ -240,7 +231,7 @@ describe('window (with window_time_setting: clock) should', () => {
 
         // need to wait for window to expire
         await pDelay(250);
-        windowResult = (await testHarness.run(data.slice(2000, 3000))) as DataWindow[];
+        windowResult = (await test.runSlice(data.slice(2000, 3000))) as DataWindow[];
 
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(1000);
@@ -248,32 +239,15 @@ describe('window (with window_time_setting: clock) should', () => {
 
         // need to wait for window to expire
         await pDelay(250);
-        windowResult = (await testHarness.run([])) as DataWindow[];
+        windowResult = (await test.runSlice([])) as DataWindow[];
 
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(1000);
         expect(windowResult[0].get(0).id).toBe(2000);
         expect(windowResult[0].get(999).id).toBe(2999);
     });
-});
 
-describe('window (with window_type sliding) should', () => {
-    const testHarness = makeTest(Processor, Schema);
-    let opConfig: OpConfig;
-
-    beforeEach(() => {
-        opConfig = {
-            _op: 'window',
-            window_length: 3000,
-            window_type: 'sliding',
-            sliding_window_interval: 2000,
-            time_field: 'time',
-            window_time_setting: 'event',
-            event_window_expiration: 100
-        };
-    });
-
-    it('use sliding windows and assign docs to correct windows', async () => {
+    it('should use sliding windows and assign docs to correct windows', async () => {
         const data: any[] = [];
         let time = 1556300016000;
 
@@ -285,62 +259,53 @@ describe('window (with window_type sliding) should', () => {
             data.push(doc);
         }
 
-        await testHarness.initialize({ opConfig, type: 'processor' });
-        let results = await testHarness.run(data.slice(0, 10)) as DataWindow[];
+        const test = await makeTest({
+            window_length: 3000,
+            window_type: 'sliding',
+            sliding_window_interval: 2000,
+            time_field: 'time',
+            window_time_setting: 'event',
+            event_window_expiration: 100
+        });
+
+        let results = await test.runSlice(data.slice(0, 10)) as DataWindow[];
 
         expect(results).toBeArrayOfSize(3);
         results.forEach((window) => expect(window.asArray()).toBeArrayOfSize(4));
         // @ts-expect-error
-        results = await testHarness.run([]);
+        results = await test.runSlice([]);
         expect(results).toBeArrayOfSize(0);
         // @ts-expect-error
-        results = await testHarness.run(data.slice(10,));
+        results = await test.runSlice(data.slice(10,));
         expect(results).toBeArrayOfSize(5);
         results.forEach((window) => expect(window.asArray()).toBeArrayOfSize(4));
 
         // need to wait for window to expire
         await pDelay(250);
-        const windowResult = (await testHarness.run([])) as DataWindow[];
+        const windowResult = (await test.runSlice([])) as DataWindow[];
 
         expect(windowResult).toBeArrayOfSize(2);
         expect(windowResult[0].asArray()).toBeArrayOfSize(4);
         expect(windowResult[1].asArray()).toBeArrayOfSize(2);
 
         // @ts-expect-error
-        results = await testHarness.run([]);
+        results = await test.runSlice([]);
         expect(results).toBeArrayOfSize(0);
     });
-});
 
-describe('window (with window_time_setting: event) should', () => {
-    const job = newTestJobConfig();
-
-    job.operations = [
-        {
-            _op: 'test-reader',
-            fetcher_data_file_path: path.join(__dirname, 'fixtures', 'data.json')
-        },
-        {
-            _op: 'window',
+    it('return 2 windows on first slice and should flush', async () => {
+        const test = await makeTest({
             time_field: 'time',
             window_time_setting: 'event',
             window_length: 10,
-        }
-    ];
+        });
+        // TODO: this should not be used
+        const testSlice = newTestSlice();
+        const results = await test.runSlice(testSlice);
 
-    const testSlice = newTestSlice();
-    const harness = new WorkerTestHarness(job, { assetDir: path.join(__dirname, '..', 'asset') });
-
-    beforeAll(() => harness.initialize());
-    afterAll(() => harness.shutdown());
-
-    it('return 2 windows on first slice', async () => {
-        const results = await harness.runSlice(testSlice);
         expect(results).toBeArrayOfSize(2);
-    });
 
-    it('return remaing data windows on flush', async () => {
-        const results = await harness.flush();
-        expect(results).toBeArrayOfSize(1);
+        const flush = await harness.flush();
+        expect(flush).toBeArrayOfSize(1);
     });
 });
