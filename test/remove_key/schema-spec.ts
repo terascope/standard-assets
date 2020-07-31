@@ -2,9 +2,9 @@ import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
 
-describe('remove_id schema', () => {
+describe('remove_key schema', () => {
     let harness: WorkerTestHarness;
-    const name = 'remove_id';
+    const name = 'remove_key';
 
     async function makeSchema(config: AnyObject = {}): Promise<AnyObject> {
         const opConfig = Object.assign({}, { _op: name }, config);
@@ -12,11 +12,11 @@ describe('remove_id schema', () => {
 
         await harness.initialize();
 
-        const accumConfig = harness.executionContext.config.operations.find(
+        const validConfig = harness.executionContext.config.operations.find(
             (testConfig) => testConfig._op === name
         );
 
-        return accumConfig as AnyObject;
+        return validConfig as AnyObject;
     }
 
     afterEach(async () => {

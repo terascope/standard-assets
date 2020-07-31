@@ -5,20 +5,20 @@ import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 describe('match phase', () => {
     let harness: WorkerTestHarness;
 
-    const opPathName = path.join(__dirname, '../../asset/src/match');
-    const assetName = 'someAssetId';
-    const assetDir = path.join(__dirname, '../../asset');
+    const testAssetPath = path.join(__dirname, '../fixtures/someAssetId');
+    const opPathName = path.join(__dirname, '../../asset/');
+    const assetDir = [testAssetPath, opPathName];
+
     async function makeTest(config: AnyObject = {}) {
         const _op = {
             _op: 'match',
             plugins: ['someAssetId:plugins'],
-            rules: [`${assetName}:matchRules.txt`],
+            rules: ['someAssetId:matchRules.txt'],
             types: { _created: 'date' }
         };
         const opConfig = config ? Object.assign({}, _op, config) : _op;
 
         const job = newTestJobConfig({
-            assets: [assetName],
             operations: [
                 {
                     _op: 'test-reader',

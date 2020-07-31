@@ -13,11 +13,11 @@ describe('Hash partitioner Schema', () => {
 
         await harness.initialize();
 
-        const accumConfig = harness.executionContext.config.operations.find(
+        const validConfig = harness.executionContext.config.operations.find(
             (testConfig) => testConfig._op === name
         );
 
-        return accumConfig as HashRouterConfig;
+        return validConfig as HashRouterConfig;
     }
 
     afterEach(async () => {

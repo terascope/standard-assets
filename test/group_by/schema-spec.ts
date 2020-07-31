@@ -13,11 +13,11 @@ describe('group_by schema', () => {
 
         await harness.initialize();
 
-        const accumConfig = harness.executionContext.config.operations.find(
+        const validConfig = harness.executionContext.config.operations.find(
             (testConfig) => testConfig._op === name
         );
 
-        return accumConfig as GroupByConfig;
+        return validConfig as GroupByConfig;
     }
 
     afterEach(async () => {
@@ -25,7 +25,7 @@ describe('group_by schema', () => {
     });
 
     it('should expect to be properly configured', async () => {
-        await expect(makeSchema({})).toReject();
+        await expect(makeSchema({})).toResolve();
         await expect(makeSchema({ field: 'test' })).toResolve();
         await expect(makeSchema({ field: [12341234] })).toReject();
         await expect(makeSchema({ field: 12341234 })).toReject();

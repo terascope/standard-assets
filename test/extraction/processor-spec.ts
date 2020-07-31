@@ -3,16 +3,15 @@ import { DataEntity, AnyObject } from '@terascope/job-components';
 import path from 'path';
 
 describe('extraction phase', () => {
-    const assetName = 'someAssetId';
-    const assetDir = path.join(__dirname, '../assets', assetName);
-    const testAssetPath = path.join(__dirname, '../assets');
-    const opPathName = path.join(__dirname, '../../asset/src/extraction');
+    const testAssetPath = path.join(__dirname, '../fixtures/someAssetId');
+    const opPathName = path.join(__dirname, '../../asset/');
+    const assetDir = [testAssetPath, opPathName];
 
     let harness: WorkerTestHarness;
 
     async function makeTest(config: AnyObject = {}) {
         const _op = {
-            _op: opPathName,
+            _op: 'extraction',
             plugins: ['someAssetId:plugins'],
             rules: ['someAssetId:transformRules.txt'],
             types: { date: 'date', location: 'geo-point' },
@@ -23,7 +22,6 @@ describe('extraction phase', () => {
         const opConfig = Object.assign({}, _op, config);
 
         const job = newTestJobConfig({
-            assets: [assetName],
             operations: [
                 {
                     _op: 'test-reader',
@@ -32,9 +30,8 @@ describe('extraction phase', () => {
                 opConfig
             ]
         });
-        console.log('what is testAssetPath', testAssetPath)
-        harness = new WorkerTestHarness(job);
-        harness.context.sysconfig.teraslice.assets_directory = testAssetPath;
+
+        harness = new WorkerTestHarness(job, { assetDir });
         await harness.initialize();
 
         return harness;
@@ -52,7 +49,6 @@ describe('extraction phase', () => {
 
         const metaArray = [
             { selectors: ['some: $foo', '*'] },
-            // eslint-disable-next-line no-useless-escape
             { selectors: ["location: geoBox( top_left: '33.906320, -112.758421' bottom_right: '32.813646,-111.058902')", '*'] }
         ];
 

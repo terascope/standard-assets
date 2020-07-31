@@ -1,8 +1,6 @@
 import 'jest-extended';
-import { WorkerTestHarness, newTestSlice } from 'teraslice-test-harness';
+import { WorkerTestHarness } from 'teraslice-test-harness';
 import { pDelay, AnyObject } from '@terascope/job-components';
-
-import DataWindow from '../../asset/src/__lib/data-window';
 
 const testData = [
     {
@@ -30,6 +28,7 @@ describe('window', () => {
             event_window_expiration: 1
         };
         const opConfig = config ? Object.assign({}, _op, config) : _op;
+
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();
@@ -50,11 +49,11 @@ describe('window', () => {
 
     it('shoultd return the docs in the window frame', async () => {
         const test = await makeTest();
-        let results = await test.runSlice(testData) as DataWindow[];
+        let results = await test.runSlice(testData);
 
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(2);
-        // @ts-expect-error
+
         results = await test.runSlice([{ id: 4, time: '2019-04-25T18:12:04.000Z' }]);
 
         expect(results).toBeArrayOfSize(1);
@@ -99,7 +98,7 @@ describe('window', () => {
         expect(results).toBeArrayOfSize(0);
 
         // window expires
-        results = await test.runSlice(data.slice(6, 9)) as DataWindow[];
+        results = await test.runSlice(data.slice(6, 9));
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(8);
 
@@ -110,7 +109,7 @@ describe('window', () => {
         expect(results).toBeArrayOfSize(0);
 
         // window expires
-        results = await test.runSlice(data.slice(15, 18)) as DataWindow[];
+        results = await test.runSlice(data.slice(15, 18));
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(8);
 
@@ -119,7 +118,7 @@ describe('window', () => {
 
         // all event windows should be expired by now
         await pDelay(250);
-        const windowResult = (await test.runSlice([])) as DataWindow[];
+        const windowResult = (await test.runSlice([]));
 
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(4);
@@ -150,7 +149,7 @@ describe('window', () => {
 
         // all event windows should be expired by now
         await pDelay(250);
-        const windowResult = (await test.runSlice([])) as DataWindow[];
+        const windowResult = (await test.runSlice([]));
 
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(5);
@@ -182,19 +181,18 @@ describe('window', () => {
             event_window_expiration: 100
         });
 
-        let results = await test.runSlice(data) as DataWindow[];
+        let results = await test.runSlice(data);
 
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(2);
 
         // all event windows should be expired by now
         await pDelay(250);
-        const windowResult = (await test.runSlice([])) as DataWindow[];
+        const windowResult = (await test.runSlice([]));
 
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(1);
 
-        // @ts-expect-error
         results = await test.runSlice([]);
         expect(results).toBeArrayOfSize(0);
     });
@@ -222,7 +220,7 @@ describe('window', () => {
 
         // all event windows should be expired by now
         await pDelay(250);
-        let windowResult = (await test.runSlice(data.slice(1000, 2000))) as DataWindow[];
+        let windowResult = (await test.runSlice(data.slice(1000, 2000)));
 
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(1000);
@@ -231,7 +229,7 @@ describe('window', () => {
 
         // need to wait for window to expire
         await pDelay(250);
-        windowResult = (await test.runSlice(data.slice(2000, 3000))) as DataWindow[];
+        windowResult = (await test.runSlice(data.slice(2000, 3000)));
 
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(1000);
@@ -239,7 +237,7 @@ describe('window', () => {
 
         // need to wait for window to expire
         await pDelay(250);
-        windowResult = (await test.runSlice([])) as DataWindow[];
+        windowResult = (await test.runSlice([]));
 
         expect(windowResult).toBeArrayOfSize(1);
         expect(windowResult[0].asArray()).toBeArrayOfSize(1000);
@@ -268,27 +266,26 @@ describe('window', () => {
             event_window_expiration: 100
         });
 
-        let results = await test.runSlice(data.slice(0, 10)) as DataWindow[];
+        let results = await test.runSlice(data.slice(0, 10));
 
         expect(results).toBeArrayOfSize(3);
         results.forEach((window) => expect(window.asArray()).toBeArrayOfSize(4));
-        // @ts-expect-error
+
         results = await test.runSlice([]);
         expect(results).toBeArrayOfSize(0);
-        // @ts-expect-error
+
         results = await test.runSlice(data.slice(10,));
         expect(results).toBeArrayOfSize(5);
         results.forEach((window) => expect(window.asArray()).toBeArrayOfSize(4));
 
         // need to wait for window to expire
         await pDelay(250);
-        const windowResult = (await test.runSlice([])) as DataWindow[];
+        const windowResult = (await test.runSlice([]));
 
         expect(windowResult).toBeArrayOfSize(2);
         expect(windowResult[0].asArray()).toBeArrayOfSize(4);
         expect(windowResult[1].asArray()).toBeArrayOfSize(2);
 
-        // @ts-expect-error
         results = await test.runSlice([]);
         expect(results).toBeArrayOfSize(0);
     });
@@ -298,11 +295,10 @@ describe('window', () => {
             time_field: 'time',
             window_time_setting: 'event',
             window_length: 10,
+            event_window_expiration: 0
         });
-        // TODO: this should not be used
-        const testSlice = newTestSlice();
-        const results = await test.runSlice(testSlice);
 
+        const results = await test.runSlice(testData);
         expect(results).toBeArrayOfSize(2);
 
         const flush = await harness.flush();

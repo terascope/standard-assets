@@ -1,9 +1,11 @@
+import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
+import { DataEntity, AnyObject } from '@terascope/job-components';
 import path from 'path';
-import { WorkerTestHarness } from 'teraslice-test-harness';
-import { DataEntity, newTestExecutionConfig } from '@terascope/job-components';
 
 describe('transform matches', () => {
-    const testAssetPath = path.join(__dirname, './assets');
+    const testAssetPath = path.join(__dirname, '../fixtures/someAssetId');
+    const opPathName = path.join(__dirname, '../../asset/');
+    const assetDir = [testAssetPath, opPathName];
 
     let harness: WorkerTestHarness;
 
@@ -21,7 +23,18 @@ describe('transform matches', () => {
             }
         };
         const opConfig = config ? Object.assign({}, _op, config) : _op;
-        harness = WorkerTestHarness.testProcessor(opConfig);
+
+        const job = newTestJobConfig({
+            operations: [
+                {
+                    _op: 'test-reader',
+                    passthrough_slice: true,
+                },
+                opConfig
+            ]
+        });
+
+        harness = new WorkerTestHarness(job, { assetDir });
 
         await harness.initialize();
 

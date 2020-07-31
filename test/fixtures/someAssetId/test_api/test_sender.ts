@@ -13,6 +13,7 @@ export default class TestSenderApi implements RouteSenderAPI {
         this.sendArgs.push(...args);
         await pDelay(Math.random() * 10);
     }
+
     async verify(...args:any[]): Promise<void> {
         this.routeArgs.push(...args);
         await pDelay(Math.random() * 10);

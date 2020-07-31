@@ -13,11 +13,11 @@ describe('Field Router Schema', () => {
 
         await harness.initialize();
 
-        const accumConfig = harness.executionContext.config.operations.find(
+        const validConfig = harness.executionContext.config.operations.find(
             (testConfig) => testConfig._op === name
         );
 
-        return accumConfig as FieldRouterConfig;
+        return validConfig as FieldRouterConfig;
     }
 
     afterEach(async () => {

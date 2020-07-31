@@ -13,11 +13,11 @@ describe('date_router schema', () => {
 
         await harness.initialize();
 
-        const accumConfig = harness.executionContext.config.operations.find(
+        const validConfig = harness.executionContext.config.operations.find(
             (testConfig) => testConfig._op === name
         );
 
-        return accumConfig as DateRouterConfig;
+        return validConfig as DateRouterConfig;
     }
 
     afterEach(async () => {

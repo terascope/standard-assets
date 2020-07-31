@@ -12,11 +12,11 @@ describe('data_window_to_array schema', () => {
 
         await harness.initialize();
 
-        const accumConfig = harness.executionContext.config.operations.find(
+        const validConfig = harness.executionContext.config.operations.find(
             (testConfig) => testConfig._op === name
         );
 
-        return accumConfig as AnyObject;
+        return validConfig as AnyObject;
     }
 
     afterEach(async () => {

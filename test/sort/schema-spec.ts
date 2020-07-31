@@ -13,11 +13,11 @@ describe('sort schema', () => {
 
         await harness.initialize();
 
-        const accumConfig = harness.executionContext.config.operations.find(
+        const validConfig = harness.executionContext.config.operations.find(
             (testConfig) => testConfig._op === name
         );
 
-        return accumConfig as SortConfig;
+        return validConfig as SortConfig;
     }
 
     afterEach(async () => {

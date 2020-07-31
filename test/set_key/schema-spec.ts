@@ -13,11 +13,11 @@ describe('set_key schema', () => {
 
         await harness.initialize();
 
-        const accumConfig = harness.executionContext.config.operations.find(
+        const validConfig = harness.executionContext.config.operations.find(
             (testConfig) => testConfig._op === name
         );
 
-        return accumConfig as SetKeyConfig;
+        return validConfig as SetKeyConfig;
     }
 
     afterEach(async () => {
@@ -25,7 +25,7 @@ describe('set_key schema', () => {
     });
 
     it('should expect to be properly configured', async () => {
-        await expect(makeSchema({ field: { some: 'stuff' } })).toResolve();
+        await expect(makeSchema({ field: { some: 'stuff' } })).toReject();
         await expect(makeSchema({ field: 12341234 })).toReject();
     });
 });

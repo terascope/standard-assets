@@ -6,8 +6,9 @@ export interface ConnectionMapping {
 
 export interface RouteSenderConfig extends OpConfig {
     size: number;
-    connection_map: ConnectionMapping;
-    connection: string;
+    routing: ConnectionMapping;
+    api_name: string,
+    concurrency: number
 }
 
 export interface Endpoint {

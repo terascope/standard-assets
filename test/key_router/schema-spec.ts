@@ -13,11 +13,11 @@ describe('Key router Schema', () => {
 
         await harness.initialize();
 
-        const accumConfig = harness.executionContext.config.operations.find(
+        const validConfig = harness.executionContext.config.operations.find(
             (testConfig) => testConfig._op === name
         );
 
-        return accumConfig as KeyRouterConfig;
+        return validConfig as KeyRouterConfig;
     }
 
     afterEach(async () => {

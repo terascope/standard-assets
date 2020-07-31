@@ -1,14 +1,17 @@
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { isEmpty, DataEntity } from '@terascope/job-components';
 import path from 'path';
-import TestApi from '../fixtures/test_api/api';
+import TestApi from '../fixtures/someAssetId/test_api/api';
 import RoutedSender from '../../asset/src/routed_sender/processor';
 import { RoutingExectuion } from '../../asset/src/routed_sender/interfaces';
 
 describe('Route Sender', () => {
-    const assetDir = path.join(__dirname, '../asset');
-    const TestSender = path.join(__dirname, '../test/fixtures/test_api');
     let harness: WorkerTestHarness;
+
+    const testAssetPath = path.join(__dirname, '../fixtures/someAssetId');
+    const opPathName = path.join(__dirname, '../../asset/');
+    const assetDir = [testAssetPath, opPathName];
+    const apiName = 'test_api';
 
     afterEach(async () => {
         if (harness) await harness.shutdown();
@@ -17,13 +20,13 @@ describe('Route Sender', () => {
     async function makeTest(senderConfig = {}) {
         const opConfig = Object.assign({
             _op: 'routed_sender',
-            api_name: TestSender
+            api_name: apiName
         }, senderConfig);
         const job = newTestJobConfig({
             max_retries: 0,
             apis: [
                 {
-                    _name: TestSender,
+                    _name: apiName,
                     some: 'config'
                 },
             ],

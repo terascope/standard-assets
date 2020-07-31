@@ -1,37 +1,46 @@
 import 'jest-extended';
+import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
+import { DataEntity, AnyObject } from '@terascope/job-components';
 import path from 'path';
-import { OpTestHarness } from 'teraslice-test-harness';
-import { DataEntity, newTestExecutionConfig } from '@terascope/job-components';
-import { Processor, Schema } from '../../asset/src/selection';
-import { makeTest } from '../helpers';
 
 describe('selection phase', () => {
-    const testAssetPath = path.join(__dirname, './assets');
-    let opTest: OpTestHarness;
-    const type = 'processor';
-    const assetName = 'someAssetId';
-    const opConfig = {
-        _op: 'transform',
-        rules: [`${assetName}:transformRules.txt`],
-        plugins: ['someAssetId:plugins'],
-        type_config: { location: 'geo-point' },
-        variables: {
-            foo: 'data'
-        }
-    };
+    const testAssetPath = path.join(__dirname, '../fixtures/someAssetId');
+    const opPathName = path.join(__dirname, '../../asset/');
+    const assetDir = [testAssetPath, opPathName];
 
-    const executionConfig = newTestExecutionConfig({
-        assets: [assetName],
-        operations: [opConfig]
+    let harness: WorkerTestHarness;
+
+    async function makeTest(config: AnyObject = {}) {
+        const _op = {
+            _op: 'selection',
+            plugins: ['someAssetId:plugins'],
+            rules: ['someAssetId:transformRules.txt'],
+            types: { date: 'date', location: 'geo-point' },
+            variables: {
+                foo: 'data'
+            }
+        };
+        const opConfig = Object.assign({}, _op, config);
+
+        const job = newTestJobConfig({
+            operations: [
+                {
+                    _op: 'test-reader',
+                    passthrough_slice: true,
+                },
+                opConfig
+            ]
+        });
+
+        harness = new WorkerTestHarness(job, { assetDir });
+        await harness.initialize();
+
+        return harness;
+    }
+
+    afterEach(async () => {
+        if (harness) await harness.shutdown();
     });
-
-    beforeAll(() => {
-        opTest = makeTest(Processor, Schema);
-        opTest.harness.context.sysconfig.teraslice.assets_directory = testAssetPath;
-        return opTest.initialize({ executionConfig, type });
-    });
-
-    afterAll(() => opTest.shutdown());
 
     it('can run and select data', async () => {
         const data = DataEntity.makeArray([
@@ -42,7 +51,8 @@ describe('selection phase', () => {
             {}
         ]);
 
-        const results = await opTest.run(data);
+        const test = await makeTest();
+        const results = await test.runSlice(data);
         // because of the * selector
         expect(results).toBeArrayOfSize(5);
     });
