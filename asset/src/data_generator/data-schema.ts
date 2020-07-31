@@ -94,6 +94,7 @@ function getFormatFunction(format: DateOptions, options: FormatOptions = {}) {
 }
 
 export default function getSchema(opConfig: DataGenerator, otherSchema: AnyObject): AnyObject {
+    const dateKey = opConfig.date_key || 'created';
     const startDate = opConfig.start ? moment(opConfig.start) : moment(0); // 01 January, 1970 UTC
     const endDate = opConfig.end ? moment(opConfig.end) : moment();
     const schema = isEmpty(otherSchema) ? nativeSchema : otherSchema;
@@ -107,7 +108,10 @@ export default function getSchema(opConfig: DataGenerator, otherSchema: AnyObjec
     }
 
     if (opConfig.format) {
-        schema[opConfig.date_key || 'created'].function = getFormatFunction(opConfig.format, { start, diff });
+        const dataConfig = schema[dateKey];
+        const newFn = getFormatFunction(opConfig.format, { start, diff });
+        const formatConfig = Object.assign({}, dataConfig, { function: newFn });
+        schema[dateKey] = formatConfig;
     }
 
     if (opConfig.set_id) {
