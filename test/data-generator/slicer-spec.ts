@@ -13,7 +13,6 @@ interface SlicerTestArgs {
 }
 
 describe('data_generator slicer', () => {
-    const assetDir = path.join(__dirname, '..');
     let harness: SlicerTestHarness;
     let clients: any;
 
@@ -40,13 +39,13 @@ describe('data_generator slicer', () => {
                 }
             ],
         });
-        harness = new SlicerTestHarness(job, { assetDir, clients });
+        harness = new SlicerTestHarness(job, { clients });
         await harness.initialize(recoveryData);
         return harness;
     }
 
     it('in "once" mode will return number based off total size of last op', async () => {
-        const opConfig = { _op: 'elasticsearch_data_generator', size: 15 };
+        const opConfig = { _op: 'data_generator', size: 15 };
         const config: SlicerTestArgs = {
             opConfig,
             numOfSlicers: 1,
@@ -69,7 +68,7 @@ describe('data_generator slicer', () => {
     });
 
     it('in "once" mode can deal with uneven slice numbers', async () => {
-        const opConfig = { _op: 'elasticsearch_data_generator', size: 12 };
+        const opConfig = { _op: 'data_generator', size: 12 };
         const config: SlicerTestArgs = {
             opConfig,
             numOfSlicers: 1,
@@ -91,7 +90,7 @@ describe('data_generator slicer', () => {
     });
 
     it('can run recovery in once mode', async () => {
-        const opConfig = { _op: 'elasticsearch_data_generator', size: 15 };
+        const opConfig = { _op: 'data_generator', size: 15 };
         const config: SlicerTestArgs = {
             opConfig,
             numOfSlicers: 1,
@@ -111,7 +110,7 @@ describe('data_generator slicer', () => {
     });
 
     it('in "once" mode will return number based off total size, which can consume it all', async () => {
-        const opConfig = { _op: 'elasticsearch_data_generator', size: 15 };
+        const opConfig = { _op: 'data_generator', size: 15 };
         const config: SlicerTestArgs = {
             opConfig,
             numOfSlicers: 1,
@@ -133,7 +132,7 @@ describe('data_generator slicer', () => {
     });
 
     it('slicer in "persistent" mode will continuously produce the same number', async () => {
-        const opConfig = { _op: 'elasticsearch_data_generator', size: 550 };
+        const opConfig = { _op: 'data_generator', size: 550 };
         const config: SlicerTestArgs = {
             lifecycle: 'persistent',
             numOfSlicers: 1,
@@ -152,7 +151,7 @@ describe('data_generator slicer', () => {
     });
 
     it('data generator will only return one slicer', async () => {
-        const opConfig = { _op: 'elasticsearch_data_generator', size: 550 };
+        const opConfig = { _op: 'data_generator', size: 550 };
         const config: SlicerTestArgs = {
             lifecycle: 'persistent',
             numOfSlicers: 3,

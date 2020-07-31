@@ -66,7 +66,7 @@ describe('data_generator fetcher', () => {
         const timeEnd = new Date().getTime();
 
         expect(data).not.toHaveProperty('created');
-        expect(data.field).toBeString();
+        expect(data[field]).toBeString();
 
         const expression = timeStart <= generatedTime && generatedTime <= timeEnd;
         expect(expression).toBeTrue();
@@ -78,7 +78,7 @@ describe('data_generator fetcher', () => {
         const timeEnd = new Date(timeStart).getTime() + 200000;
 
         const test = await makeFetcherTest({
-            format: DateOptions.dateNow,
+            format: DateOptions.isoBetween,
             date_key: field,
             start: timeStart,
             end: timeEnd
@@ -89,7 +89,7 @@ describe('data_generator fetcher', () => {
         const generatedTime = new Date(data[field]).getTime();
 
         expect(data).not.toHaveProperty('created');
-        expect(data.field).toBeString();
+        expect(data[field]).toBeString();
 
         const expression = timeStart <= generatedTime && generatedTime <= timeEnd;
         expect(expression).toBeTrue();

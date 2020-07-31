@@ -74,7 +74,7 @@ describe('accumulate', () => {
         // After the 3rd empty slice we should see results.
         // batch_size is 50 so we expect all 300 records back
         // in one chunk
-        results = await test.runSlice([]) as DataWindow[];
+        results = await test.runSlice([]);
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(300);
 
@@ -101,7 +101,7 @@ describe('accumulate', () => {
 
         // Until the third empty slice when we get a chunk of
         // data again.
-        results = await test.runSlice([]) as DataWindow[];
+        results = await test.runSlice([]);
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(300);
 

@@ -55,7 +55,7 @@ describe('accumulate_by_key', () => {
 
     it('should return results for a single key to be grouped together', async () => {
         const test = await makeTest();
-        const results = await test.runSlice(singleKeyData) as DataWindow[];
+        const results = await test.runSlice(singleKeyData);
 
         expect(results).toBeArrayOfSize(1);
         expect(results[0].asArray()).toBeArrayOfSize(3);
@@ -67,7 +67,7 @@ describe('accumulate_by_key', () => {
 
     it('return results for many keys with a data window per key', async () => {
         const test = await makeTest();
-        const results = await test.runSlice(multiKeyData) as DataWindow[];
+        const results = await test.runSlice(multiKeyData) as unknown as DataWindow[];
 
         expect(results).toBeArrayOfSize(3);
 
