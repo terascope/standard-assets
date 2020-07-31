@@ -7,10 +7,10 @@ This processor encapsulates the [matcher](https://terascope.github.io/teraslice/
 | Configuration | Description | Type |  Notes |
 | --------- | -------- | ------ | ------ |
 | _op | Name of operation, it must reflect the exact name of the file | String | required |
-| rules | an array of strings that are the locations where rule files. must be specifed in "assetName:path" format | String[] | optional, defaults to [] (it just noops) |
+| rules | an array of strings that are the locations where rule files. must be specifed in "assetName:path" format | String[] | required |
 | plugins | an array of strings that are the locations where [plugins](https://terascope.github.io/teraslice/docs/packages/ts-transforms/plugins) reside. must be specifed in "assetName:modulePath" format | Object[] | optional, defaults to [] |
-| type_config |if specified it sets describes the types on the incoming records | Object | optional |
-| variables | variables used in the xLucene query | Object | optional |
+| type_config | a schema for the data being consumed. Set the keys to your data's field names, with values set to this [enum](https://terascope.github.io/teraslice/docs/packages/types/api/enums/xlucenefieldtype) | Object | optional |
+| variables | An object containing any varialbes for the xlucene rules | Object | optional|
 
 ## Usage
 
@@ -26,7 +26,15 @@ other:/.*abc.*/ OR _created:>=2018-11-16T15:16:09.076Z
 const config = {
     _op: 'match',
     rules: ['someAssetId:matchRules.txt'],
-    variables: { foo: "data" }
+    type_config: {
+        some: 'string',
+        bytes: 'number,
+        other: 'string',
+        _created: 'date',
+    },
+    variables: {
+        foo: 'data'
+    }
 };
 
 const data = [[

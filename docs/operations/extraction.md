@@ -9,8 +9,10 @@ This processor encapsulates the extraction phase of [ts-transforms](https://tera
 | Configuration | Description | Type |  Notes |
 | --------- | -------- | ------ | ------ |
 | _op | Name of operation, it must reflect the exact name of the file | String | required |
-| rules | an array of strings that are the locations where rule files. must be specifed in "assetName:path" format | String[] | optional, defaults to [] (it just noops) |
+| rules | an array of strings that are the locations where rule files. must be specifed in "assetName:path" format | String[] | required |
 | plugins | an array of strings that are the locations where [plugins](https://terascope.github.io/teraslice/docs/packages/ts-transforms/plugins) reside. must be specifed in "assetName:modulePath" format | Object[] | optional, defaults to [] |
+| type_config | a schema for the data being consumed. Set the keys to your data's field names, with values set to this [enum](https://terascope.github.io/teraslice/docs/packages/types/api/enums/xlucenefieldtype) | Object | optional |
+| variables | An object containing any varialbes for the xlucene rules | Object | optional|
 
 
 ## Usage
@@ -65,6 +67,16 @@ const config = {
     _op: 'extraction',
     plugins: ['someAssetId:plugins'],
     rules: ['someAssetId:transformRules.txt'],
+    type_config: {
+        some: 'string',
+        field: 'string,
+        field2: 'string',
+        date: 'date',
+        location: 'geo-point'
+    },
+    variables: {
+        foo: 'data'
+    }
 };
 
 const data = [
