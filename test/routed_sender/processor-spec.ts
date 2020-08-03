@@ -1,3 +1,4 @@
+import 'jest-extended';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { isEmpty, DataEntity } from '@terascope/job-components';
 import path from 'path';
@@ -59,6 +60,14 @@ describe('Route Sender', () => {
         return apiClient.sendArgs[0];
     }
 
+    function getRouteArgs(routing: RoutingExectuion, route: string) {
+        const routeApi = routing.get(route);
+        if (isEmpty(routeApi)) return false;
+        const apiClient = routeApi?.client as unknown as TestApi;
+        // @ts-expect-error
+        return apiClient.routeArgs;
+    }
+
     function getRoutingExecution(test: WorkerTestHarness): RoutingExectuion {
         const processor = test.getOperation<RoutedSender>('routed_sender');
         return processor.routingExectuion;
@@ -102,11 +111,11 @@ describe('Route Sender', () => {
         const test = await makeTest(opConfig);
         const results = await test.runSlice(data);
 
-        expect(results.length).toEqual(2);
+        expect(results).toBeArrayOfSize(2);
 
         const routing = getRoutingExecution(test);
         const routeData = getRouteData(routing, '*');
-        expect(routeData.length).toEqual(2);
+        expect(routeData).toBeArrayOfSize(2);
     });
 
     it('can send to multiple route', async () => {
@@ -120,13 +129,12 @@ describe('Route Sender', () => {
             DataEntity.make({ some: 'data' }, { _key: 'aasdfsd' }),
             DataEntity.make({ other: 'data' }, { _key: 'ba7sd' }),
             DataEntity.make({ last: 'data' }, { _key: 'Aasdfsd' }),
-
         ];
 
         const test = await makeTest(opConfig);
         const results = await test.runSlice(data);
 
-        expect(results.length).toEqual(3);
+        expect(results).toBeArrayOfSize(3);
 
         const routing = getRoutingExecution(test);
 
@@ -134,8 +142,36 @@ describe('Route Sender', () => {
         const routeDataMinorA = getRouteData(routing, 'a');
         const routeDataCapitalA = getRouteData(routing, 'A');
 
-        expect(routeDataDefault.length).toEqual(1);
-        expect(routeDataMinorA.length).toEqual(1);
-        expect(routeDataCapitalA.length).toEqual(1);
+        expect(routeDataDefault).toBeArrayOfSize(1);
+        expect(routeDataMinorA).toBeArrayOfSize(1);
+        expect(routeDataCapitalA).toBeArrayOfSize(1);
+    });
+
+    it('can be sent dynamically route', async () => {
+        const opConfig = {
+            routing: {
+                '**': 'default',
+            }
+        };
+        const data = [
+            DataEntity.make({ some: 'data' }, { _key: 'aasdfsd' }),
+            DataEntity.make({ other: 'data' }, { _key: 'ba7sd' }),
+            DataEntity.make({ last: 'data' }, { _key: 'Aasdfsd' }),
+        ];
+
+        const test = await makeTest(opConfig);
+        const results = await test.runSlice(data);
+
+        expect(results).toBeArrayOfSize(3);
+
+        const routing = getRoutingExecution(test);
+
+        const dynamicRouting = getRouteData(routing, '**');
+        const routes = getRouteArgs(routing, '**');
+
+        expect(dynamicRouting).toBeArrayOfSize(3);
+        expect(routes).toContain('a');
+        expect(routes).toContain('b');
+        expect(routes).toContain('A');
     });
 });

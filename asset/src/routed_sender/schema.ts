@@ -30,8 +30,7 @@ export default class Schema extends ConvictSchema<RouteSenderConfig> {
     build(): AnyObject {
         return {
             size: {
-                doc: 'the maximum number of docs it will take at a time, anything past it will be split up and sent'
-                + 'note that the value should be even, the first doc will be the index data and then the next is the data',
+                doc: 'the maximum number of docs it will take at a time, anything past it will be split up and sent',
                 default: 500,
                 format(val: any) {
                     if (!isNumber(val)) {
@@ -42,10 +41,9 @@ export default class Schema extends ConvictSchema<RouteSenderConfig> {
                 }
             },
             routing: {
-                doc: 'Mapping from ID prefix to connection names. Routes data to multiple clusters '
+                doc: 'Mapping of `standard:route` metadata to connection names. Routes data to multiple clusters '
                 + 'based on the incoming key. The key name can be a '
-                + 'comma separated list of prefixes that will map to the same connection. Prefixes matching takes '
-                + 'the first character of the key.',
+                + 'comma separated list of prefixes that will map to the same connection.',
                 default: null,
                 format: (val: any) => {
                     if (isPlainObject(val)) {
