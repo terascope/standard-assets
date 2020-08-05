@@ -549,10 +549,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@terascope/data-mate@^0.12.2":
-  version "0.12.2"
-  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.12.2.tgz#b9b460f5f76442ea5e0f2f3d9c76bdb026b9be0d"
-  integrity sha512-1OVgoibRtukOuANVnF4KCJ9MJ8uiEP6/FfiqxYFBtMpBVoqzbXmR+rQOpuUIPySg+nrIYFgvniPLcT2rgWFLog==
+"@terascope/data-mate@^0.12.3":
+  version "0.12.3"
+  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.12.3.tgz#e929f97ebd432be796ba43e87813525946042078"
+  integrity sha512-QNyTe5jQCEWBLbUFZ5s9bfFvbEKyl0xOXUAQ3IE2CLr0svRXametMo/7TOlQxfufelG+78DFeXFhrle7gefs6w==
   dependencies:
     "@terascope/data-types" "^0.20.2"
     "@terascope/types" "^0.4.0"
@@ -5118,12 +5118,12 @@ ts-node@^8.10.2:
     source-map-support "^0.5.17"
     yn "3.1.1"
 
-ts-transforms@^0.41.3:
-  version "0.41.3"
-  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.41.3.tgz#e7e5b93d881dbb08ab10e905ee90a413690573e4"
-  integrity sha512-WqwgrgdTGP5X4tlWPfYKdQEQNlZ8iHgAQFg45/BPFnwfHYJwM9Ea0VC7tFjjWbGJ+s+MijVKwY3kemTDEoSS3A==
+ts-transforms@^0.41.4:
+  version "0.41.4"
+  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.41.4.tgz#bcf92b9bdb48530b70fae7476fdcd276125385b0"
+  integrity sha512-yRLD1///aqZQ1BAQio5s8WFr2ASsHlTue5aNA/QWBAf/kyl33APLT76LiqFc2uoPMAHgkSVVqyihdLTph6tZhg==
   dependencies:
-    "@terascope/data-mate" "^0.12.2"
+    "@terascope/data-mate" "^0.12.3"
     "@terascope/types" "^0.4.0"
     "@terascope/utils" "^0.29.2"
     awesome-phonenumber "^2.36.0"
