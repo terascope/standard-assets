@@ -10,14 +10,14 @@ import { PhaseConfig } from './interfaces';
 export default class Schema extends ConvictSchema<PhaseConfig> {
     validate(input: PhaseConfig): APIConfig & PhaseConfig {
         const validatedSchema = super.validate(input);
-        if (!Array.isArray(input.rules) || input.rules.length === 0) throw new Error('you must specify rules path to retrive the rules for this op');
+        if (!Array.isArray(input.rules) || input.rules.length === 0) throw new Error('you must specify rules path to retrieve the rules for this op');
         return validatedSchema;
     }
 
     build(): Record<string, any> {
         return {
             rules: {
-                doc: 'an array of strings that are the locations where rule files. must be specifed in "assetName:path" format',
+                doc: 'an array of strings that are the locations where rule files. must be specified in "assetName:path" format',
                 default: [],
                 format: (val: unknown):void => {
                     if (Array.isArray(val)) {
@@ -28,7 +28,7 @@ export default class Schema extends ConvictSchema<PhaseConfig> {
                 }
             },
             plugins: {
-                doc: 'an array of strings that are the locations where plugins reside. must be specifed in "assetName:modulePath" format',
+                doc: 'an array of strings that are the locations where plugins reside. must be specified in "assetName:modulePath" format',
                 default: [],
                 format: (val: unknown):void => {
                     if (Array.isArray(val)) {

@@ -16,5 +16,5 @@ export interface Endpoint {
     data: any[];
 }
 
-export type RoutingExectuion = Map <string, Endpoint>;
+export type RoutingExecution = Map <string, Endpoint>;
 export type RouteDict = Map<string, Record<string, any>>;

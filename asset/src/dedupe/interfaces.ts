@@ -1,6 +1,6 @@
 import { OpConfig } from '@terascope/job-components';
 
-export interface DedupConfig extends OpConfig {
+export interface DedupeConfig extends OpConfig {
     field: string;
     adjust_time: AdjustTime[];
 }

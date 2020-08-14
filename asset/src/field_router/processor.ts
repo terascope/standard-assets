@@ -1,7 +1,7 @@
 import { MapProcessor, DataEntity, toString } from '@terascope/job-components';
 import { FieldRouterConfig } from './interfaces';
 
-function santize(str: string) {
+function sanitize(str: string) {
     return str.replace(/=/gi, '_').replace(/\//gi, '_');
 }
 
@@ -10,7 +10,7 @@ export default class FieldRouter extends MapProcessor<FieldRouterConfig> {
         const partitions: string[] = [];
 
         this.opConfig.fields.forEach((field) => {
-            const fieldData = santize(toString(record[field]));
+            const fieldData = sanitize(toString(record[field]));
             if (this.opConfig.include_field_names === true) {
                 partitions.push(`${field}${this.opConfig.value_delimiter}${fieldData}`);
             } else {

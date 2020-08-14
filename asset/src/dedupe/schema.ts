@@ -1,11 +1,11 @@
 import { ConvictSchema, isPlainObject, isString } from '@terascope/job-components';
 import * as I from './interfaces';
 
-export default class Schema extends ConvictSchema<I.DedupConfig> {
+export default class Schema extends ConvictSchema<I.DedupeConfig> {
     build(): Record<string, any> {
         return {
             field: {
-                doc: 'field to dedup records on',
+                doc: 'field to dedupe records on',
                 default: undefined,
                 format: 'optional_String',
             },
@@ -31,6 +31,6 @@ function validateTime(value: I.AdjustTime[]) {
             throw new Error('Invalid adjust_time config, it must have key "preference" set to "oldest" or "newest"');
         }
 
-        if (!isString(field)) throw new Error('Invalid adjust_time config, "field" must be specifed and must be a string');
+        if (!isString(field)) throw new Error('Invalid adjust_time config, "field" must be specified and must be a string');
     });
 }

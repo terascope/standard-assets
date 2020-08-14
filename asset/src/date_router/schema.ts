@@ -10,7 +10,7 @@ export default class Schema extends ConvictSchema<DateRouterConfig> {
                 format: 'required_String'
             },
             resolution: {
-                doc: 'Type of timeseries data',
+                doc: 'Type of time series data',
                 default: DateResolution.daily,
                 format: Object.keys(DateResolution)
             },

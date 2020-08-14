@@ -9,7 +9,7 @@ import {
     chunk, TSError, DataEntity, isEmpty, pMap, AnyObject, isNil
 } from '@terascope/utils';
 import {
-    RouteSenderConfig, RouteDict, RoutingExectuion, Endpoint
+    RouteSenderConfig, RouteDict, RoutingExecution, Endpoint
 } from './interfaces';
 
 interface SenderExecution {
@@ -26,7 +26,7 @@ export type SenderFn = (
 export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
     limit: number;
     routeDict: RouteDict = new Map();
-    routingExectuion: RoutingExectuion = new Map();
+    routingExecution: RoutingExecution = new Map();
     concurrency: number;
     api!: SenderFactoryAPI;
     tryFn: SenderFn;
@@ -77,7 +77,7 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
             );
         }
 
-        this.routingExectuion.set(route, { client, data: [] });
+        this.routingExecution.set(route, { client, data: [] });
     }
 
     private formatRecords({ client, data }: SenderExecution) {
@@ -91,26 +91,26 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
             const route = record.getMetadata('standard:route');
             // if we have route, then use it, else make a topic if allowed.
             // if not then check if a "*" is set, if not then use rejectRecord
-            if (this.routingExectuion.has(route)) {
-                const routeConfig = this.routingExectuion.get(route) as Endpoint;
+            if (this.routingExecution.has(route)) {
+                const routeConfig = this.routingExecution.get(route) as Endpoint;
                 routeConfig.data.push(record);
             } else if (this.routeDict.has(route)) {
                 await this.createRoute(route);
 
-                const routeConfig = this.routingExectuion.get(route) as Endpoint;
+                const routeConfig = this.routingExecution.get(route) as Endpoint;
                 routeConfig.data.push(record);
             } else if (this.routeDict.has('*')) {
-                if (!this.routingExectuion.has('*')) {
+                if (!this.routingExecution.has('*')) {
                     await this.createRoute('*');
                 }
 
-                const routeConfig = this.routingExectuion.get('*') as Endpoint;
+                const routeConfig = this.routingExecution.get('*') as Endpoint;
                 routeConfig.data.push(record);
             } else if (this.routeDict.has('**')) {
-                if (!this.routingExectuion.has('**')) {
+                if (!this.routingExecution.has('**')) {
                     await this.createRoute('**');
                 }
-                const routeConfig = this.routingExectuion.get('**') as Endpoint;
+                const routeConfig = this.routingExecution.get('**') as Endpoint;
 
                 await routeConfig.client.verify(route);
 
@@ -130,7 +130,7 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
 
         const chunkedSegments: SenderExecution[] = [];
 
-        for (const execution of this.routingExectuion.values()) {
+        for (const execution of this.routingExecution.values()) {
             chunkedSegments.push(...this.formatRecords(execution));
         }
 
@@ -147,7 +147,7 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
     }
 
     private _cleanupRouteExecution() {
-        for (const config of this.routingExectuion.values()) {
+        for (const config of this.routingExecution.values()) {
             config.data = [];
         }
     }

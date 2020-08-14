@@ -8,11 +8,11 @@ import Accumulator from '../__lib/accumulator';
 export default class Accumulate extends BatchProcessor<AccumulateConfig> {
     flushData = false;
     shuttingDown = false;
-    accum: Accumulator;
+    accumulator: Accumulator;
 
     constructor(context: WorkerContext, opConfig: AccumulateConfig, exConfig: ExecutionConfig) {
         super(context, opConfig, exConfig);
-        this.accum = new Accumulator(this.opConfig.empty_after);
+        this.accumulator = new Accumulator(this.opConfig.empty_after);
     }
 
     onFlushStart(): void {
@@ -24,12 +24,14 @@ export default class Accumulate extends BatchProcessor<AccumulateConfig> {
     }
 
     async onBatch(dataArray: DataEntity[]): Promise<DataEntity[]> {
-        if (dataArray.length === 0) this.accum.emptySlice();
-        else this.accum.add(dataArray);
+        if (dataArray.length === 0) this.accumulator.emptySlice();
+        else this.accumulator.add(dataArray);
         let results: DataEntity[] = [];
-        if ((this.accum.readyToEmpty() || this.flushData) && this.accum.size > 0) {
-            // @ts-expect-error TODO: we are ignorinng util DataWindow is native to DataEntity
-            results = DataWindow.make(this.opConfig.data_window_key, this.accum.flush());
+        if ((this.accumulator.readyToEmpty() || this.flushData) && this.accumulator.size > 0) {
+            results = DataWindow.make(
+                this.opConfig.data_window_key,
+                this.accumulator.flush()
+            ) as unknown as DataEntity[];
         }
 
         return results as DataEntity[];

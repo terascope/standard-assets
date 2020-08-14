@@ -1,24 +1,24 @@
 import { BatchProcessor, DataEntity } from '@terascope/job-components';
 import DataWindow from '../__lib/data-window';
-import { DedupConfig } from './interfaces';
+import { DedupeConfig } from './interfaces';
 import { getTime } from '../__lib/utils';
 
-export default class Dedup extends BatchProcessor<DedupConfig> {
+export default class Dedupe extends BatchProcessor<DedupeConfig> {
     async onBatch(dataArray: DataWindow[] | DataEntity[]): Promise<DataEntity[]> {
-        if (isDataWindows(dataArray)) return this._dedupDataWindows(dataArray);
+        if (isDataWindows(dataArray)) return this._dedupeDataWindows(dataArray);
 
-        return this._dedup(dataArray);
+        return this._dedupe(dataArray);
     }
 
-    _dedupDataWindows(dataWindow: DataWindow[]): DataWindow[] {
+    _dedupeDataWindows(dataWindow: DataWindow[]): DataWindow[] {
         dataWindow.forEach((window: DataWindow) => {
-            window.dataArray = this._dedup(window.dataArray);
+            window.dataArray = this._dedupe(window.dataArray);
         });
 
         return dataWindow;
     }
 
-    _dedup(dataArray: DataEntity[]): DataEntity[] {
+    _dedupe(dataArray: DataEntity[]): DataEntity[] {
         const uniqDocs = new Map();
 
         dataArray.forEach((doc) => {
@@ -46,11 +46,13 @@ export default class Dedup extends BatchProcessor<DedupConfig> {
         this.opConfig.adjust_time.forEach((time) => {
             const { field, preference } = time;
 
-            saved[field] = this._preferedTime(saved[field], incoming[field], preference);
+            saved[field] = this._preferredTime(saved[field], incoming[field], preference);
         });
     }
 
-    _preferedTime(savedTime: string, incomingTime: string, preference: string): string | undefined {
+    _preferredTime(
+        savedTime: string, incomingTime: string, preference: string
+    ): string | undefined {
         const saved = getTime(savedTime);
         const incoming = getTime(incomingTime);
 

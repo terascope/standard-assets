@@ -1,4 +1,3 @@
-
 # accumulate #
 
 Used to gather and accumulate data from a stream, only to return results when a certain amount of slices generating zero results have been reached in which it will return a [DataWindow](../entity/data-window.md) which is a special data-entity that encloses an array of data-entities.
