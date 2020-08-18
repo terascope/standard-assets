@@ -3,7 +3,7 @@ import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
 import { KeyRouterConfig } from '../../asset/src/key_router/interfaces';
 
-describe('Key router Schema', () => {
+describe('Key Router Schema', () => {
     let harness: WorkerTestHarness;
     const name = 'key_router';
 
@@ -29,7 +29,7 @@ describe('Key router Schema', () => {
             await expect(makeSchema({ use: 4 })).toReject();
         });
 
-        it('should values are inncorrect', async () => {
+        it('should values are incorrect', async () => {
             await expect(makeSchema({ use: 'hello', from: 4 })).toReject();
             await expect(makeSchema({ use: 3, from: 'hello' })).toReject();
             await expect(makeSchema({ case: 4 })).toReject();

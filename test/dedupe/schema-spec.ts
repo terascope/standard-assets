@@ -1,13 +1,13 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
-import { DedupConfig } from '../../asset/src/dedupe/interfaces';
+import { DedupeConfig } from '../../asset/src/dedupe/interfaces';
 
 describe('dedupe schema', () => {
     let harness: WorkerTestHarness;
     const name = 'dedupe';
 
-    async function makeSchema(config: AnyObject = {}): Promise<DedupConfig> {
+    async function makeSchema(config: AnyObject = {}): Promise<DedupeConfig> {
         const opConfig = Object.assign({}, { _op: name }, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
@@ -17,7 +17,7 @@ describe('dedupe schema', () => {
             (testConfig) => testConfig._op === name
         );
 
-        return validConfig as DedupConfig;
+        return validConfig as DedupeConfig;
     }
 
     afterEach(async () => {

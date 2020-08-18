@@ -31,7 +31,6 @@ Example Job
 
 Here is a representation of what the processor will do with the configuration listed in the job above
 
-Default shape of generated data:
 ```javascript
 const slice = { count: 1000 }
 
@@ -51,23 +50,10 @@ results[0] === {
 }
 ```
 
-Example configuration
-```
-{
-    "_op": "data_generator",
-    "size": 25000000,
-    "json_schema": "some/path/to/file.js",
-    "format": "isoBetween",
-    "start": "2015-08-01",
-    "end": "2015-12-30"
-}
-```
+### Generate custom data and generate a date from within a range
+This is an example of using a custom schema to generate records with dates between `2015-08-01T10:33:09.356Z` and `2015-12-30T20:33:09.356Z`
 
-In once mode, this will created a total of 25 million docs with dates ranging from 2015-08-01 to 2015-12-30. The dates will appear in "2015-11-19T13:48:08.426-07:00" format.
-
-
-## Example Job
-
+Example Job
 ```json
 {
     "name" : "testing",
@@ -75,20 +61,101 @@ In once mode, this will created a total of 25 million docs with dates ranging fr
     "slicers" : 1,
     "lifecycle" : "once",
     "assets" : [
-        "standard",
-        "elasticsearch"
+        "standard"
     ],
     "operations" : [
         {
             "_op": "data_generator",
+            "json_schema": "some/path/to/file.js",
+            "format": "isoBetween",
+            "start": "2015-08-01T10:33:09.356Z",
+            "end": "2015-12-30T20:33:09.356Z",
+            "date_key": "joinDate"
+        },
+        {
+            "_op": "noop"
+        }
+    ]
+}
+```
+
+Example schema located at `some/path/to/file.js`
+
+```javascript
+export default const schema = {
+    firstName: {
+        faker: 'name.firstName'
+    },
+    lastName: {
+        faker: 'name.lastName'
+    },
+    country: {
+        faker: 'address.country'
+    }
+}
+```
+
+Here is a representation of what the processor will do with the configuration listed in the job and schema above
+
+```javascript
+const slice = { count: 2 }
+
+const results = await fetcher.run(slice);
+
+results.length ==== 2;
+
+results[0] === {
+    "firstName": "Chilly",
+    "lastName": "Willy",
+    "country": "United States",
+    "joinDate": "2015-10-10T10:13:09.157Z",
+}
+```
+
+### Stress Test a cluster in persistent mode
+In this example the data_generator can act as a high volume out hose, generating a persistent slice of 10000 for all 50 workers until the job is shutdown. This is useful if you need to test and try to overwhelm services.
+
+Example Job
+```json
+{
+    "name" : "testing",
+    "workers" : 50,
+    "slicers" : 1,
+    "lifecycle" : "once",
+    "assets" : [
+        "standard"
+    ],
+    "operations" : [
+        {
+            "_op": "data_generator",
+            "stress_test": true,
             "size": 10000
         },
         {
-            "_op": "elasticsearch_bulk",
-            "index": "other_index",
-            "size": 1000
+            "_op": "noop"
         }
     ]
+}
+```
+
+Here is a representation of what the processor will do with the configuration listed in the job above
+
+```javascript
+const slice = { count: 1000 }
+
+const results = await fetcher.run(slice);
+
+results.length ==== 1000;
+
+results[0] === {
+    "ip": "1.12.146.136",
+    "userAgent": "Mozilla/5.0 (Windows NT 5.2; WOW64; rv:8.9) Gecko/20100101 Firefox/8.9.9",
+    "url": "https://gabrielle.org",
+    "uuid": "408433ff-9495-4d1c-b066-7f9668b168f0",
+    "ipv6": "8188:b9ad:d02d:d69e:5ca4:05e2:9aa5:23b0",
+    "location": "-25.40587, 56.56418",
+    "created": "2016-01-19T13:33:09.356-07:00",
+    "bytes": 4850020
 }
 ```
 

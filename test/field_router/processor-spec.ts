@@ -1,7 +1,7 @@
 import { DataEntity, AnyObject } from '@terascope/utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 
-describe('Date path partitioner', () => {
+describe('Field Router Processor', () => {
     let harness: WorkerTestHarness;
     let data: DataEntity[];
 
@@ -51,7 +51,7 @@ describe('Date path partitioner', () => {
         if (harness) await harness.shutdown();
     });
 
-    it('properly santizies routes with specified keys', async () => {
+    it('properly sanitizes routes with specified keys', async () => {
         harness = await makeTest();
 
         const [slice1, slice2, slice3] = await harness.runSlice(data);

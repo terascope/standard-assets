@@ -2,7 +2,7 @@ import { DataEntity } from '@terascope/utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { FromOptions, CaseOptions } from '../../asset/src/key_router/interfaces';
 
-describe('Key path partitioner', () => {
+describe('Key Router Processor', () => {
     let harness: WorkerTestHarness;
     let data: DataEntity[];
 

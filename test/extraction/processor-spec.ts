@@ -43,7 +43,7 @@ describe('extraction phase', () => {
 
     it('can run and extract data', async () => {
         const data = [
-            { some: 'data', field: 'onething', field2: 'something' },
+            { some: 'data', field: 'oneThing', field2: 'something' },
             { location: '33.242, -111.453' }
         ];
 
@@ -53,7 +53,7 @@ describe('extraction phase', () => {
         ];
 
         const resultsArray = [
-            { interm1: 'onething', interm2: 'something' },
+            { interm1: 'oneThing', interm2: 'something' },
             { loc: '33.242, -111.453' }
         ];
 
