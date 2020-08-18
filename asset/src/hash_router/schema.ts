@@ -13,7 +13,7 @@ export default class Schema extends ConvictSchema<HashRouterConfig> {
                     if (!Array.isArray(fields)) {
                         throw new Error('Invalid `fields` option: must be an array.');
                     }
-                    if (fields.length > 0 && !fields.every(isString)) {
+                    if (!fields.every(isString)) {
                         throw new Error('Invalid fields parameter, if specified it must be an array of strings');
                     }
                 }

@@ -53,6 +53,27 @@ describe('dedupe', () => {
         ]);
     });
 
+    it('should dedupe by _key when no field is set', async () => {
+        const data = [
+            DataEntity.make({ id: 1, name: 'roy' }, { _key: 1 }),
+            DataEntity.make({ id: 2, name: 'roy' }, { _key: 2 }),
+            DataEntity.make({ id: 2, name: 'bob' }, { _key: 2 }),
+            DataEntity.make({ id: 2, name: 'roy' }, { _key: 2 }),
+            DataEntity.make({ id: 3, name: 'bob' }, { _key: 3 }),
+            DataEntity.make({ id: 3, name: 'mel' }, { _key: 3 }),
+        ];
+
+        const test = await makeTest({ field: undefined });
+
+        const results = await test.runSlice(data);
+        expect(results).toBeArrayOfSize(3);
+        expect(results).toEqual([
+            { id: 1, [field]: 'roy' },
+            { id: 2, [field]: 'roy' },
+            { id: 3, [field]: 'bob' }
+        ]);
+    });
+
     it('should should remove duplicates in data windows using the metadata key', async () => {
         const keyedTestData = [
             DataWindow.make(1, [DataEntity.make({ id: 1, [field]: 'roy' }, { _key: 'roy' })]),

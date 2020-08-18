@@ -1,7 +1,7 @@
 import { DataEntity } from '@terascope/utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 
-describe('Date path partitioner', () => {
+describe('Hash Router Processor', () => {
     let harness: WorkerTestHarness;
     let data: DataEntity[];
 

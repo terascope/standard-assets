@@ -3,7 +3,7 @@ import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
 import { HashRouterConfig } from '../../asset/src/hash_router/interfaces';
 
-describe('Hash partitioner Schema', () => {
+describe('Hash Router Schema', () => {
     let harness: WorkerTestHarness;
     const name = 'hash_router';
 
@@ -26,8 +26,8 @@ describe('Hash partitioner Schema', () => {
 
     describe('when validating the schema', () => {
         it('should throw an error if `fields` is not an array of strings', async () => {
-            await expect(makeSchema({ fields: null, buckets: 1 })).toReject();
-            await expect(makeSchema({ fields: undefined, buckets: 1 })).toReject();
+            await expect(makeSchema({ fields: null, buckets: 1 })).toResolve();
+            await expect(makeSchema({ fields: undefined, buckets: 1 })).toResolve();
             await expect(makeSchema({ fields: JSON.stringify('this ia a string'), buckets: 1 })).toReject();
             await expect(makeSchema({ fields: 42, buckets: 1 })).toReject();
             await expect(makeSchema({ fields: [42], buckets: 1 })).toReject();
