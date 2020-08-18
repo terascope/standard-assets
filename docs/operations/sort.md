@@ -1,28 +1,42 @@
+# sort
 
-# sort #
+This is a helper processor that is used sort the data by a given field that has numbers or strings as values. This will sort Objects, DataEntities or [DataWindows](../entity/data-window.md).
 
-Used sort the data by a given field that has numbers or strings as values. This will sort Objects, DataEntites or [DataWindow](../entity/data-window.md) which is a special data-entity that encloses an array of data-entities.
-
-
-
-| Configuration | Description | Type |  Notes |
-| --------- | -------- | ------ | ------ |
-| _op | Name of operation, it must reflect the exact name of the file | String | required |
-| field | The field in the input records to use for sorting | String | required |
-| order | The order in which it will be sorted (`asc` or `desc`) | String | optional, defaults to `asc` |
-
+For this processor to work, the fields specified should have non-nullable defined values that you are sorting
 
 ## Usage
 
+### Simple number sorting
+This is an example of a simple sort on number values
+
+Example Job
+```json
+{
+    "name" : "testing",
+    "workers" : 1,
+    "slicers" : 1,
+    "lifecycle" : "once",
+    "assets" : [
+        "standard"
+    ],
+    "operations" : [
+        {
+            "_op": "test-reader"
+        },
+        {
+            "_op": "sort",
+            "field": "id"
+        }
+    ]
+}
+
+```
+
+Here is a representation of what the processor will do with the configuration listed in the job above
+
 ```javascript
 
-// sort by number
-const opConfig = {
-    _op: 'sort',
-    field: 'id'
-};
-
-const dateData = [
+const data = [
     {
         id: 2,
         date: '2019-05-03T20:02:00.000Z'
@@ -41,11 +55,9 @@ const dateData = [
     }
 ];
 
-// returns data, but _key is removed
+const results = await processor.run(data);
 
-const results = processor.run(data);
-
-resuts === [
+results === [
     {
         id: 1,
         date: '2019-05-03T20:01:00.000Z'
@@ -63,19 +75,60 @@ resuts === [
         date: '2019-05-03T20:01:00.000Z'
     }
 ]
+```
 
+### Simple date sorting
+This is an example of a simple sort on date values
 
-// sort by string
-const opConfig = {
-    _op: 'sort',
-    field: 'date'
-};
+Example Job
+```json
+{
+    "name" : "testing",
+    "workers" : 1,
+    "slicers" : 1,
+    "lifecycle" : "once",
+    "assets" : [
+        "standard"
+    ],
+    "operations" : [
+        {
+            "_op": "test-reader"
+        },
+        {
+            "_op": "sort",
+            "field": "date"
+        }
+    ]
+}
 
-// returns data, but _key is removed
+```
 
-const results = processor.run(data);
+Here is a representation of what the processor will do with the configuration listed in the job above
 
-resuts === [
+```javascript
+
+const data = [
+    {
+        id: 2,
+        date: '2019-05-03T20:02:00.000Z'
+    },
+    {
+        id: 1,
+        date: '2019-05-03T20:01:00.000Z'
+    },
+    {
+        id: 4,
+        date: '2019-05-03T20:01:00.000Z'
+    },
+    {
+        id: 3,
+        date: '2019-05-03T20:03:00.000Z'
+    }
+];
+
+const results = await processor.run(data);
+
+results === [
     {
         id: 1,
         date: '2019-05-03T20:01:00.000Z'
@@ -93,14 +146,37 @@ resuts === [
         date: '2019-05-03T20:03:00.000Z'
     }
 ]
+```
 
+### Sort DataWindows by descending values
+This is an example of a sorting DataWindows by desc
 
-// sort by number, desc on data-windows
-const opConfig = {
-    _op: 'sort',
-    field: 'id',
-    order: 'desc'
-};
+Example Job
+```json
+{
+    "name" : "testing",
+    "workers" : 1,
+    "slicers" : 1,
+    "lifecycle" : "once",
+    "assets" : [
+        "standard"
+    ],
+    "operations" : [
+        {
+            "_op": "test-reader"
+        },
+        {
+            "_op": "sort",
+            "field": "id",
+            "order": "desc"
+        }
+    ]
+}
+```
+
+Here is a representation of what the processor will do with the configuration listed in the job above
+
+```javascript
 
 const data = [
     {
@@ -119,7 +195,7 @@ const data = [
     }
 ]
 
-const results = processor.run(data);
+const results = await processor.run(data);
 
 results === [
     {
@@ -137,31 +213,12 @@ results === [
         ]
     }
 ]
-
-
 ```
 
+## Parameters
 
-## Example Job
-
-```json
-{
-    "name" : "testing",
-    "workers" : 1,
-    "slicers" : 1,
-    "lifecycle" : "once",
-    "assets" : [
-        "standard"
-    ],
-    "operations" : [
-        {
-            "_op": "test-reader",
-        },
-        {
-            "_op": "sort",
-            "field": "someField"
-        }
-    ],
-}
-
-```
+| Configuration | Description | Type |  Notes |
+| --------- | -------- | ------ | ------ |
+| _op | Name of operation, it must reflect the exact name of the file | String | required |
+| field | The field in the input records to use for sorting | String | required |
+| order | The order in which it will be sorted (`asc` or `desc`) | String | optional, defaults to `asc` |

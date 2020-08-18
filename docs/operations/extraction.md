@@ -1,4 +1,4 @@
-# extraction #
+# extraction
 
 This processor encapsulates the extraction phase of [ts-transforms](https://terascope.github.io/teraslice/docs/packages/ts-transforms/overview).
 
@@ -64,7 +64,7 @@ Example Job
 
 Example rules located at `someAssetId:transformRules.txt`
 
-```JSON
+```json
 { "selector": "some: $foo", "source_field": "field", "target_field": "interm1", "tag": "someTag", "output": false }
 { "selector": "some: $foo", "source_field": "field2", "target_field": "interm2", "tag": "someTag", "output": false }
 { "follow": "someTag", "post_process": "join", "target_field": "final", "delimiter": " " }
@@ -92,7 +92,7 @@ class Tag {
         this.operationConfig = operationConfig;
     }
 
-    run(doc: DataEntity): DataEntity {
+    run(doc: DataEntity) {
         doc.wasTagged = true;
         return doc;
     }

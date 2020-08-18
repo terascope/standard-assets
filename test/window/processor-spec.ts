@@ -47,7 +47,7 @@ describe('window', () => {
         expect(results).toBeArrayOfSize(0);
     });
 
-    it('shoultd return the docs in the window frame', async () => {
+    it('should return the docs in the window frame', async () => {
         const test = await makeTest();
         let results = await test.runSlice(testData);
 

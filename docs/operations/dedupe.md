@@ -1,4 +1,4 @@
-# dedupe #
+# dedupe
 
 This is helper processor that is used to dedupe an array of records or an array of [DataWindow](../entity/data-window.md) by a given field.
 

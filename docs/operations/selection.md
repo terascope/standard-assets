@@ -1,25 +1,54 @@
+# selection
 
-# selection #
+This processor encapsulates the selection phase of [ts-transforms](https://terascope.github.io/teraslice/docs/packages/ts-transforms/overview).
 
-This processor encapsulates the selection phase of [ts-transforms](https://terascope.github.io/teraslice/docs/packages/ts-transforms/overview). This is meant to work in conjunction with the selection processor as this works by using the metadata set in the selection processor.
+To use this processor, it is required to use the [selection](./selection.md) processor as this works by using the metadata that is set in the selection processor. It also requires a file containing all transform rules that is will be preforming and any necessary plugins that those rules require to operate.
 
+The full functionality of ts-transforms is encapsulated in the [transform]( ../transform.md) processor.
 
-
-
-| Configuration | Description | Type |  Notes |
-| --------- | -------- | ------ | ------ |
-| _op | Name of operation, it must reflect the exact name of the file | String | required |
-| rules | an array of strings that are the locations where rule files. must be specifed in "assetName:path" format | String[] | required |
-| plugins | an array of strings that are the locations where [plugins](https://terascope.github.io/teraslice/docs/packages/ts-transforms/plugins) reside. must be specifed in "assetName:modulePath" format | Object[] | optional, defaults to [] |
-| type_config | a schema for the data being consumed. Set the keys to your data's field names, with values set to this [enum](https://terascope.github.io/teraslice/docs/packages/types/api/enums/xlucenefieldtype) | Object | optional |
-| variables | An object containing any varialbes for the xlucene rules | Object | optional|
-
+You would only want to use this processor instead of the fully functional transform processor if you wanted to inject a custom operation between each phase, or to capture the analytics of the records between each phase.
 
 ## Usage
 
-```typescript
+### Example of the rules and plugins to run the selection phase
+Below contains an example of the transform rules, plugins and configurations to perform the selection phase. Note that the post-process and output phases of ts-transforms are not executed.
 
-// someAssetId:transformRules.txt
+Example Job
+```json
+{
+    "name" : "testing",
+    "workers" : 1,
+    "slicers" : 1,
+    "lifecycle" : "once",
+    "assets" : [
+        "standard"
+    ],
+    "operations" : [
+        {
+            "_op": "test-reader"
+        },
+        {
+            "_op": "selection",
+            "plugins": ["someAssetId:plugins"],
+            "rules": ["someAssetId:transformRules.txt"],
+            "type_config": {
+                "some": "string",
+                "field": "string",
+                "field2": "string",
+                "date": "date",
+                "location": "geo-point"
+            },
+            "variables": {
+                "foo": "data"
+            }
+        }
+    ]
+}
+```
+
+Example rules located at `someAssetId:transformRules.txt`
+
+```json
 { "selector": "some: $foo", "source_field": "field", "target_field": "interm1", "tag": "someTag", "output": false }
 { "selector": "some: $foo", "source_field": "field2", "target_field": "interm2", "tag": "someTag", "output": false }
 { "follow": "someTag", "post_process": "join", "target_field": "final", "delimiter": " " }
@@ -33,136 +62,60 @@ This processor encapsulates the selection phase of [ts-transforms](https://teras
 { "selector": "date:[2019-04-16T20:14:44.304Z TO *] AND bytes:>=1000000", "source_field": "date", "target_field": "last_seen", "tag": "tagOp" }
 { "follow": "tagOp", "post_process": "tag" }
 
-// ------------
+```
 
-// someAssetId:plugins
+Example plugin used by rules above located at `someAssetId:plugins`
+
+```javascript
 import { DataEntity } from '@terascope/job-components';
 
 class Tag {
     static cardinality = 'one-to-one';
 
-    constructor(operationConfig: unknown) {
-        // @ts-expect-error
+    constructor(operationConfig) {
         this.operationConfig = operationConfig;
     }
 
-    run(doc: DataEntity): DataEntity {
+    run(doc: DataEntity) {
         doc.wasTagged = true;
         return doc;
     }
 }
 
 export default class Plugin {
-    init(): { tag: typeof Tag } {
+    init() {
         return {
             tag: Tag,
         };
     }
 }
 
+```
 
-// ------------
+Example of the data and the expected results of the selection phase, the metadata is what is set by the selection processor
 
-const config = {
-    _op: 'selection',
-    plugins: ['someAssetId:plugins'],
-    rules: ['someAssetId:transformRules.txt'],
-    type_config: {
-        some: 'string',
-        field: 'string,
-        field2: 'string',
-        date: 'date',
-        location: 'geo-point'
-    },
-    variables: {
-        foo: 'data'
-    }
-};
+```javascript
 
- const data = [
+const data = [
     new DataEntity({ some: 'data' }),
     new DataEntity({ some: 'other' }),
     new DataEntity({ location: '33.435967,-111.867710', zip: 94302 })
 ];
 
-// Results
-const resultsArray = [
+const results = await processor.run(data);
+
+results === [
    { some: 'data' },
    { location: '33.435967,-111.867710', zip: 94302 }
 ];
-
 ```
 
-## Example Job
+## Parameters
 
-```json
-{
-    "name" : "testing",
-    "workers" : 1,
-    "slicers" : 1,
-    "lifecycle" : "once",
-    "assets" : [
-        "standard"
-    ],
-    "operations" : [
-        {
-            "_op": "test-reader",
-        },
-        {
-            "_op": "selection",
-            "plugins": ["someAssetId:plugins"],
-            "rules": ["someAssetId:transformRules.txt"],
-            "types": { "date": "date", "location": "geo-point" },
-            "variables": {
-                "foo": "data"
-            }
-        }
-        {
-            "_op": "extraction",
-            "plugins": ["someAssetId:plugins"],
-            "rules": ["someAssetId:transformRules.txt"],
-            "type_config": {
-                "some": "string",
-                "field": "string",
-                "field2": "string"',
-                "date": "date",
-                "location": "geo-point"
-            },
-            "variables": {
-                "foo": "data"
-            }
-        },
-        {
-            "_op": "post_process",
-            "plugins": ["someAssetId:plugins"],
-            "rules": ["someAssetId:transformRules.txt"],
-            "type_config": {
-                "some": "string",
-                "field": "string",
-                "field2": "string"',
-                "date": "date",
-                "location": "geo-point"
-            },
-            "variables": {
-                "foo": "data"
-            }
-        },
-        {
-            "_op": "output",
-            "plugins": ["someAssetId:plugins"],
-            "rules": ["someAssetId:transformRules.txt"],
-            "type_config": {
-                "some": "string",
-                "field": "string",
-                "field2": "string"',
-                "date": "date",
-                "location": "geo-point"
-            },
-            "variables": {
-                "foo": "data"
-            }
-        }
-    ],
-}
-
-```
+| Configuration | Description | Type |  Notes |
+| --------- | -------- | ------ | ------ |
+| _op | Name of operation, it must reflect the exact name of the file | String | required |
+| rules | an array of strings that are the locations where rule files. must be specified in "assetName:path" format | String[] | required |
+| plugins | an array of strings that are the locations where [plugins](https://terascope.github.io/teraslice/docs/packages/ts-transforms/plugins) reside. must be specified in "assetName:modulePath" format | Object[] | optional, defaults to [] |
+| type_config | a schema for the data being consumed. Set the keys to your data field names, with values set to this [enum](https://terascope.github.io/teraslice/docs/packages/types/api/enums/xlucenefieldtype) | Object | optional |
+| variables | An object containing any variables for the xlucene rules | Object | optional|

@@ -1,41 +1,14 @@
+# remove_key
 
-# remove_key #
-
-Used to remove the _key metadata value for any DataEntity or [DataWindow](../entity/data-window.md) which is a special data-entity that encloses an array of data-entities.
-
-
-
-| Configuration | Description | Type |  Notes |
-| --------- | -------- | ------ | ------ |
-| _op | Name of operation, it must reflect the exact name of the file | String | required |
-
+This is a helper processor to remove the `_key` metadata value for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
 
 
 ## Usage
 
-```javascript
-const opConfig = {
-    _op: 'remove_key',
-};
+### Remove the _key of records
+Here is an example of using this processor to remove the `_key` metadata value
 
-const data = [
-    DataEntity.make({ name: 'chilly' }, { _key: 1 }),
-    DataEntity.make({ name: 'willy' }, { _key: 2 }),
-    DataEntity.make({ name: 'billy' }, { _key: 3 }),
-    DataEntity.make({ name: 'dilly' }, { _key: 4 }),
-]
-
-// returns data, but _key is removed
-
-const results = processor.run(data);
-
-resuts[0].getKey() === undefined
-
-```
-
-
-
-## Example Job
+Example Job
 
 ```json
 {
@@ -48,12 +21,30 @@ resuts[0].getKey() === undefined
     ],
     "operations" : [
         {
-            "_op": "test-reader",
+            "_op": "test-reader"
         },
         {
-            "_op": "remove_key",
+            "_op": "remove_key"
         }
-    ],
+    ]
 }
-
 ```
+
+Here is a representation of what the processor will do with the configuration listed in the job above
+
+```javascript
+const data = [
+    DataEntity.make({ name: 'chilly' }, { _key: 1 }),
+]
+
+const results = await processor.run(data);
+
+results[0].getKey() === undefined
+```
+
+
+## Parameters
+
+| Configuration | Description | Type |  Notes |
+| --------- | -------- | ------ | ------ |
+| _op | Name of operation, it must reflect the exact name of the file | String | required |

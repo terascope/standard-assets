@@ -1,5 +1,4 @@
-
-# Match #
+# match
 
 This processor encapsulates the [matcher](https://terascope.github.io/teraslice/docs/packages/ts-transforms/overview#matcher) of ts-transforms. This does not do any transformations on the data, it just returns any matched data
 

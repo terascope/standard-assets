@@ -1,67 +1,16 @@
+# set_key
 
-# set_key #
+This is a helper processor that can be used to set the `_key` metadata value for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
 
-Used to set the _key metadata value for any DataEntity or [DataWindow](../entity/data-window.md) which is a special data-entity that encloses an array of data-entities.
-
-
-
-| Configuration | Description | Type |  Notes |
-| --------- | -------- | ------ | ------ |
-| _op | Name of operation, it must reflect the exact name of the file | String | required |
-| field | Field name of value used to set key | String | optional, defaults to `_id` |
-
+For the processor to work, you need to specify a field (defaults to the `_id` field) that exists on the records and has a defined, non-nullable value.
 
 
 ## Usage
 
-```javascript
-const opConfig = {
-    _op: 'set_key',
-};
+### Set the _key metadata from a field value
+Here is an example of setting the `_key` metadata value from a field
 
-const data = [
-    DataEntity.make({ name: 'chilly', _id: 1 }),
-    DataEntity.make({ name: 'willy', _id: 2  }),
-    DataEntity.make({ name: 'billy', _id: 3  }),
-    DataEntity.make({ name: 'dilly', _id: 4  }),
-]
-
-// returns data, but _key is removed
-
-const results = processor.run(data);
-
-resuts[0].getKey() === 1
-resuts[1].getKey() === 2
-resuts[2].getKey() === 3
-resuts[3].getKey() === 4
-
-
-const opConfig = {
-    _op: 'set_key',
-    field: 'otherField'
-};
-
-const data = [
-    DataEntity.make({ name: 'chilly', otherField: 1 }),
-    DataEntity.make({ name: 'willy', otherField: 2  }),
-    DataEntity.make({ name: 'billy', otherField: 3  }),
-    DataEntity.make({ name: 'dilly', otherField: 4  }),
-]
-
-// returns data, but _key is removed
-
-const results = processor.run(data);
-
-resuts[0].getKey() === 1
-resuts[1].getKey() === 2
-resuts[2].getKey() === 3
-resuts[3].getKey() === 4
-
-```
-
-
-
-## Example Job
+Example Job
 
 ```json
 {
@@ -74,12 +23,37 @@ resuts[3].getKey() === 4
     ],
     "operations" : [
         {
-            "_op": "test-reader",
+            "_op": "test-reader"
         },
         {
             "_op": "set_key",
+            "field": "otherField"
         }
-    ],
+    ]
 }
 
 ```
+Example of the data and the expected results of the extraction phase, the metadata is what is set by the selection processor
+
+```javascript
+const data = [
+    DataEntity.make({ name: 'chilly', otherField: 1 }),
+    DataEntity.make({ name: 'willy', otherField: 2  }),
+    DataEntity.make({ name: 'billy', otherField: 3  }),
+    DataEntity.make({ name: 'dilly', otherField: 4  }),
+]
+
+const results = await processor.run(data);
+
+results[0].getKey() === 1
+results[1].getKey() === 2
+results[2].getKey() === 3
+results[3].getKey() === 4
+```
+
+## Parameters
+
+| Configuration | Description | Type |  Notes |
+| --------- | -------- | ------ | ------ |
+| _op | Name of operation, it must reflect the exact name of the file | String | required |
+| field | Field name of value used to set key | String | optional, defaults to `_id` |

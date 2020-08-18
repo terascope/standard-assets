@@ -1,8 +1,8 @@
-# accumulate_by_key #
+# accumulate_by_key
 
 The `accumulate_by_key` processor is used to gather and accumulate data over time, only to return results when a certain amount of slices generating zero results have been reached in which it will return an array of multiple [DataWindows](../entity/data-window.md) with each DataWindow containing records that have the same `_key` metadata value.
 
-DataWindows are a special data-entity that encloses an array of data-entities.
+DataWindows are a special [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity)  that encloses an array of data-entities.
 
 For this processor to work, the `_key` metadata value of the records must be set.
 
@@ -83,11 +83,11 @@ const flushedResults = [
 
 ## Parameters
 
-| Configuration | Description | Type |  Notes |
-| --------- | -------- | ------ | ------ |
-| _op | Name of operation, it must reflect the exact name of the file | String | required |
-| empty_after | How many 0 record slices to require before starting to return the accumulated data | Number | optional, defaults to 10 |
-| flush_data_on_shutdown | Option to flush partial data accumulation on unexpected shutdown | Boolean | optional, defaults to false |
-| key_field | Field to key docs by | String | optional, defaults to _key |
-| batch_return | If true will return arrays of specified batch_size | Boolean | optional, defaults to false |
-| batch_size | Size of batches to return | Number | optional, defaults to 1000 |
+| Configuration          | Description                                                                        | Type    | Notes                       |
+| ---------------------- | ---------------------------------------------------------------------------------- | ------- | --------------------------- |
+| _op                    | Name of operation, it must reflect the exact name of the file                      | String  | required                    |
+| empty_after            | How many 0 record slices to require before starting to return the accumulated data | Number  | optional, defaults to 10    |
+| flush_data_on_shutdown | Option to flush partial data accumulation on unexpected shutdown                   | Boolean | optional, defaults to false |
+| key_field              | Field to key docs by                                                               | String  | optional, defaults to _key  |
+| batch_return           | If true will return arrays of specified batch_size                                 | Boolean | optional, defaults to false |
+| batch_size             | Size of batches to return                                                          | Number  | optional, defaults to 1000  |

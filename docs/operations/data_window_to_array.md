@@ -1,4 +1,4 @@
-# data_window_to_array #
+# data_window_to_array
 
 The `data_window_to_array` is a helper processor that is used to convert [DataWindows](../entity/data-window.md) to a flattened array of all results of the DataWindows.
 

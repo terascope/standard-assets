@@ -1,4 +1,4 @@
-# date_router #
+# date_router
 
 The `date_router` processor will tag the incoming records with the `standard:route` metadata which is used by the [routed_sender](./routed_sender.md) processor to dynamically routes records to different locations.
 

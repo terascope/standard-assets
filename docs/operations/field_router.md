@@ -1,4 +1,4 @@
-# field_router #
+# field_router
 
 The `field_router` processor will tag the incoming records with the `standard:route` metadata which is used by the [routed_sender](./routed_sender.md) processor to dynamically routes records to different locations.
 

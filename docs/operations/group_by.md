@@ -1,9 +1,8 @@
-
-# group_by #
+# group_by
 
 This processor can be used to group records by a `field` or the `_key` metadata if no field is specified.
 
-It will return an array of [DataWindow](../entity/data-window.md) which is a special data-entity that encloses an array of data-entities.
+It will return an array of [DataWindow](../entity/data-window.md) which is a special [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity)  that encloses an array of data-entities.
 
 For this processor to work, the field values needs to be set or the `_key` metadata value of the records must be set.
 
@@ -103,7 +102,7 @@ results === [
 ```
 
 ## Parameters
-| Configuration | Description | Type |  Notes |
-| --------- | -------- | ------ | ------ |
-| _op | Name of operation, it must reflect the exact name of the file | String | required |
-| field | field to group records on | String | optional, defaults to metadata value set at '_key' |
+| Configuration | Description                                                   | Type   | Notes                                              |
+| ------------- | ------------------------------------------------------------- | ------ | -------------------------------------------------- |
+| _op           | Name of operation, it must reflect the exact name of the file | String | required                                           |
+| field         | field to group records on                                     | String | optional, defaults to metadata value set at '_key' |
