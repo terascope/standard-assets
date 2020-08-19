@@ -71,4 +71,13 @@ describe('Hash Router Processor', () => {
         expect(slice1.getMetadata('standard:route')).toEqual('0');
         expect(slice2.getMetadata('standard:route')).toEqual('14');
     });
+
+    it('properly routes by key if no fields is null', async () => {
+        await makeTest({ buckets: 15, fields: null });
+
+        const [slice1, slice2] = await harness.runSlice(data);
+
+        expect(slice1.getMetadata('standard:route')).toEqual('0');
+        expect(slice2.getMetadata('standard:route')).toEqual('14');
+    });
 });

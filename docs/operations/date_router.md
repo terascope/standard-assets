@@ -62,7 +62,7 @@ const data = [{
 
 const results = await processor.run(data);
 
-results[0].getMetadata('standard:route') === `year_2020-month_01-day_17`;
+results[0].getMetadata('standard:route') === `2020-01-17`;
 ```
 
 ### Example of changing the date resolution and delimiters
@@ -96,8 +96,7 @@ Example Job
             "_op": "date_router",
             "field": "created",
             "resolution": "monthly",
-            "field_delimiter": " > ",
-            "value_delimiter": ":"
+            "field_delimiter": "."
         },
         {
             "_op": "routed_sender",
@@ -118,6 +117,63 @@ const data = [{
 
 const results = await processor.run(data);
 
+results[0].getMetadata('standard:route') === `2020.01`;
+```
+
+### Enable time series indexing by year, month and date including date units
+Here is an example of using the processor to annotate records by year, month and date attached with its unit name, and dynamically send it to different indicies in elasticsearch. The way the operation is configured will check the created field, and format the date accordingly
+
+Example Job
+```json
+{
+    "name" : "testing",
+    "workers" : 1,
+    "slicers" : 1,
+    "lifecycle" : "once",
+    "assets" : [
+        "standard",
+        "elasticsearch"
+    ],
+    "apis": [
+        {
+            "_name": "elasticsearch_sender_api",
+            "index": "other_index",
+            "size": 1000
+        }
+    ],
+    "operations" : [
+        {
+            "_op": "data_generator",
+            "size": 10000
+        },
+        {
+            "_op": "date_router",
+            "field": "created",
+            "resolution": "monthly",
+            "field_delimiter": " > ",
+            "value_delimiter": ":",
+            "include_date_units": "true"
+        },
+        {
+            "_op": "routed_sender",
+            "api_name": "elasticsearch_sender_api",
+            "routing": {
+                "**": "default"
+            }
+        }
+    ]
+}
+```
+Here is an example of data and the resulting metadata generated from it based on the job above.
+
+``` javascript
+const data = [{
+    created: '2020-01-17T19:21:52.159Z',
+    text: 'test data'
+}];
+
+const results = await processor.run(data);
+
 results[0].getMetadata('standard:route') === `year:2020 > month:01`;
 ```
 
@@ -130,3 +186,4 @@ results[0].getMetadata('standard:route') === `year:2020 > month:01`;
 | resolution | Type of time series data, may be set to `daily`, `monthly`, or `yearly` | String | optional, defaults to `daily` |
 | field_delimiter | separator between field/value combinations | String | optional, defaults to `-` |
 | value_delimiter | separator between the field name and the value | String | optional, defaults to `_` |
+| include_date_units | Determines if the date unit (year, month, day) should be included in final output | Boolean | optional, defaults to false |

@@ -11,7 +11,8 @@ const offsets = {
 
 export default class DateRouter extends MapProcessor<DateRouterConfig> {
     private _joinValue(key: string, value: string) {
-        return `${key}${this.opConfig.value_delimiter}${value}`;
+        if (this.opConfig.include_date_units) return `${key}${this.opConfig.value_delimiter}${value}`;
+        return `${value}`;
     }
 
     private _joinYear(value: string) {

@@ -25,7 +25,7 @@ describe('Hash Router Schema', () => {
     });
 
     describe('when validating the schema', () => {
-        it('should throw an error if `fields` is not an array of strings', async () => {
+        it('should throw an error if `fields` is not an array of strings or null/undefined', async () => {
             await expect(makeSchema({ fields: null, buckets: 1 })).toResolve();
             await expect(makeSchema({ fields: undefined, buckets: 1 })).toResolve();
             await expect(makeSchema({ fields: JSON.stringify('this ia a string'), buckets: 1 })).toReject();

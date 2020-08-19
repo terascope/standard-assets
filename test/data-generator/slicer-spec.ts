@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { SlicerRecoveryData, LifeCycle } from '@terascope/job-components';
 import { SlicerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
-import path from 'path';
 
 interface SlicerTestArgs {
     opConfig: any;

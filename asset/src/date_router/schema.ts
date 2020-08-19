@@ -5,7 +5,7 @@ export default class Schema extends ConvictSchema<DateRouterConfig> {
     build(): Record<string, any> {
         return {
             field: {
-                doc: 'Which field in each data record contains the date to use for timeseries',
+                doc: 'Which field in each data record contains the date to use for time series',
                 default: null,
                 format: 'required_String'
             },
@@ -23,6 +23,11 @@ export default class Schema extends ConvictSchema<DateRouterConfig> {
                 doc: 'separator between the field name and the value - default "_"',
                 default: '_',
                 format: 'optional_String'
+            },
+            include_date_units: {
+                doc: 'determines if the date unit (year, month, day) should be included in final output',
+                default: false,
+                format: 'Boolean'
             }
         };
     }

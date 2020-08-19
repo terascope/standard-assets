@@ -8,7 +8,7 @@ import { DataGenerator, CounterResults } from './interfaces';
 import defaultSchema from './data-schema';
 
 export default class DataGeneratorFetcher extends Fetcher<DataGenerator> {
-    dataSchema: any;
+    dataSchema: AnyObject;
 
     constructor(context: WorkerContext, opConfig: DataGenerator, exConfig: ExecutionConfig) {
         super(context, opConfig, exConfig);
