@@ -1,7 +1,7 @@
 import { MapProcessor, DataEntity, OpConfig } from '@terascope/job-components';
 import DataWindow from '../__lib/data-window';
 
-export default class SetKey extends MapProcessor<OpConfig> {
+export default class RemoveKey extends MapProcessor<OpConfig> {
     // Does this need to make a new DataEntity since it receives one starting out?
     _setKey(doc: DataEntity): DataEntity {
         if (DataEntity.isDataEntity(doc)) {
