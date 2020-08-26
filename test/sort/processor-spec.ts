@@ -1,5 +1,5 @@
 import 'jest-extended';
-import { DataEntity, AnyObject } from '@terascope/job-components';
+import { DataEntity, AnyObject, times } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import DataWindow from '../../asset/src/__lib/data-window';
 
@@ -17,11 +17,11 @@ const testData = [
 
 const dataWindows: DataWindow[] = [];
 for (let i = 0; i < 3; i++) {
-    // @ts-expect-error
-    const dataArray = Array(10).fill().map(() => {
+    const dataArray = times(10, () => {
         const obj = { id: Math.floor(Math.random() * 1000) };
         return obj;
     });
+
     dataWindows.push(DataWindow.make(i, dataArray));
 }
 
