@@ -21,7 +21,7 @@
         "@terascope/job-components": "^0.39.0",
         "@types/jest": "^26.0.8",
         "@types/json2csv": "^5.0.1",
-        "@types/node": "^14.0.27",
+        "@types/node": "^14.6.2",
         "@types/node-gzip": "^1.1.0",
         "@types/timsort": "^0.3.0",
         "eslint": "^7.6.0",
