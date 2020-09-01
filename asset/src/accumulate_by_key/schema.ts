@@ -1,4 +1,4 @@
-import { ConvictSchema } from '@terascope/job-components';
+import { ConvictSchema, isInteger } from '@terascope/job-components';
 import { AccumulateByKeyConfig } from './interfaces';
 
 export default class Schema extends ConvictSchema<AccumulateByKeyConfig> {
@@ -7,23 +7,23 @@ export default class Schema extends ConvictSchema<AccumulateByKeyConfig> {
             empty_after: {
                 doc: 'How many 0 record slices to require before starting to return the accumulated data',
                 default: 10,
-                format: 'Number'
+                format: Number
             },
             key_field: {
                 doc: 'Field to key docs by',
                 default: undefined,
-                format: 'String'
+                format: String
             },
             batch_return: {
                 doc: 'If true will return arrays of specified batch_size',
                 default: false,
-                format: 'Boolean'
+                format: Boolean
             },
             batch_size: {
                 doc: 'Size of batches to return',
                 default: 1000,
                 format: (value: any) => {
-                    if (!Number.isInteger(value) || value < 1) {
+                    if (!isInteger(value) || value < 1) {
                         throw new Error('batch size must be an integer greater then 0');
                     }
                 }
@@ -31,7 +31,7 @@ export default class Schema extends ConvictSchema<AccumulateByKeyConfig> {
             flush_data_on_shutdown: {
                 doc: 'Option to flush partial data accumulation on unexpected shutdown',
                 default: false,
-                format: 'Boolean'
+                format: Boolean
             }
         };
     }

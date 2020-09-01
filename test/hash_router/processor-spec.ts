@@ -1,7 +1,7 @@
 import { DataEntity } from '@terascope/utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 
-describe('Date path partitioner', () => {
+describe('Hash Router Processor', () => {
     let harness: WorkerTestHarness;
     let data: DataEntity[];
 
@@ -21,8 +21,7 @@ describe('Date path partitioner', () => {
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();
-        // Need this in order to feed the record in with the metadata
-        harness.fetcher().handle = async () => data;
+
         return harness;
     }
 
@@ -66,6 +65,15 @@ describe('Date path partitioner', () => {
 
     it('properly routes by key if no fields are specified', async () => {
         await makeTest({ buckets: 15, fields: [] });
+
+        const [slice1, slice2] = await harness.runSlice(data);
+
+        expect(slice1.getMetadata('standard:route')).toEqual('0');
+        expect(slice2.getMetadata('standard:route')).toEqual('14');
+    });
+
+    it('properly routes by key if no fields is null', async () => {
+        await makeTest({ buckets: 15, fields: null });
 
         const [slice1, slice2] = await harness.runSlice(data);
 

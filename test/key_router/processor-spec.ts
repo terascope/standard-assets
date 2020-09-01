@@ -2,7 +2,7 @@ import { DataEntity } from '@terascope/utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { FromOptions, CaseOptions } from '../../asset/src/key_router/interfaces';
 
-describe('Key path partitioner', () => {
+describe('Key Router Processor', () => {
     let harness: WorkerTestHarness;
     let data: DataEntity[];
 
@@ -16,8 +16,7 @@ describe('Key path partitioner', () => {
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();
-        // Need this in order to feed the record in with the metadata
-        harness.fetcher().handle = async () => data;
+
         return harness;
     }
 

@@ -40,7 +40,11 @@ export default class Schema extends ConvictSchema<WindowConfig> {
             event_window_expiration: {
                 doc: 'Determines how long to hold event based windows in milliseconds, 0 means no expiration',
                 default: 0,
-                format: 'Number'
+                format: (value: any) => {
+                    if (!Number.isInteger(value) || value < 0) {
+                        throw new Error('event_window_expiration must be an integer greater than or equal to 0');
+                    }
+                }
             }
         };
     }

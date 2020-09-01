@@ -11,4 +11,5 @@ export interface DateRouterConfig extends OpConfig {
     field_delimiter: string;
     value_delimiter: string;
     resolution: string;
+    include_date_units: boolean;
 }

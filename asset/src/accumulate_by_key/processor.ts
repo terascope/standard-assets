@@ -8,8 +8,10 @@ export default class AccumulateByKey extends BatchProcessor<AccumulateByKeyConfi
     flushData = false;
     accumulator: AccumulatorByKey
 
-    constructor(ctxt: WorkerContext, opConfig: AccumulateByKeyConfig, exConfig: ExecutionConfig) {
-        super(ctxt, opConfig, exConfig);
+    constructor(
+        context: WorkerContext, opConfig: AccumulateByKeyConfig, exConfig: ExecutionConfig
+    ) {
+        super(context, opConfig, exConfig);
         const { empty_after: emptyAfter } = opConfig;
         this.accumulator = new AccumulatorByKey(emptyAfter, opConfig);
     }

@@ -6,7 +6,7 @@ export default class DataWindowToArray extends BatchProcessor<OpConfig> {
         const results: DataEntity[] = [];
 
         return dataArray.reduce((allDocs, window) => {
-            window.asArray().forEach((doc: DataEntity) => allDocs.push(doc));
+            allDocs.push(...window.asArray());
             return allDocs;
         }, results);
     }
