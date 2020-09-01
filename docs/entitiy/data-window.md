@@ -15,6 +15,9 @@ const dataWindow = DataWindow.make('someKey', data);
 // DataWindow.make also accepts a single object and creates the internal data array or appends it to the internal data array
 const dataWindow = DataWindow.make('someKey', { id: 1 });
 
+// resulting data-window:
+{ dataArray: [{ id: 1 }] }
+
 // add object to dataArray
 dataWindow.set({ id: 4 });
 
@@ -32,7 +35,9 @@ dataWindow.get({ id: 3 }];
 2
 
 // convert dataArray to an array
-dataWindow.asArray() === [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]
+dataWindow.asArray()
+// returns
+[{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]
 
 // resuling data-window:
 { dataArray: [{ id: 1 }]}
