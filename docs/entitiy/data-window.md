@@ -39,9 +39,6 @@ dataWindow.asArray()
 // returns
 [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]
 
-// resuling data-window:
-{ dataArray: [{ id: 1 }]}
-
 // all data-entity functions are valid data-window functions for example:
 dataWindow.getKey();
 // returns
