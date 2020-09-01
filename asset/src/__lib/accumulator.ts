@@ -22,7 +22,7 @@ export default class Accumulator {
     flush(): DataEntity[] {
         const results = this.records;
         this.records = [];
-        return results;
+        return results.slice();
     }
 
     readyToEmpty(): boolean {
