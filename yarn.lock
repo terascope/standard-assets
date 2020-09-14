@@ -577,7 +577,7 @@
 
 "@terascope/data-mate@^0.13.0":
   version "0.13.0"
-  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.13.0.tgz#9a9db6412f149c55c7b256e52a7b2a66a852724f"
+  resolved "https://registry.npmjs.org/@terascope/data-mate/-/data-mate-0.13.0.tgz#9a9db6412f149c55c7b256e52a7b2a66a852724f"
   integrity sha512-OVLRB0Rq7FepKnrpUxnWBp+PS5HPrnUiLRuO6LcsCLqOlp6Qo9THvo/T388RNKI9bh+2B1eXmps97gjwLo72Qg==
   dependencies:
     "@terascope/data-types" "^0.21.0"
@@ -601,7 +601,7 @@
 
 "@terascope/data-types@^0.21.0":
   version "0.21.0"
-  resolved "https://registry.yarnpkg.com/@terascope/data-types/-/data-types-0.21.0.tgz#ef65aea7c01b4fe6b3aa2a39c51683e35c0af895"
+  resolved "https://registry.npmjs.org/@terascope/data-types/-/data-types-0.21.0.tgz#ef65aea7c01b4fe6b3aa2a39c51683e35c0af895"
   integrity sha512-Tx0bYSHkF1YIR7I1gZfJGixv4QV6u3PhRv1D6Bclt9fZ2fXW5AouZ/Oi9bSYapvKiQJSsi32ju3BL686Z4nKoA==
   dependencies:
     "@terascope/types" "^0.5.0"
@@ -627,7 +627,7 @@
 
 "@terascope/job-components@^0.40.0":
   version "0.40.0"
-  resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.40.0.tgz#0c9869328a45a185041087aad5482c0b1aa76bfd"
+  resolved "https://registry.npmjs.org/@terascope/job-components/-/job-components-0.40.0.tgz#0c9869328a45a185041087aad5482c0b1aa76bfd"
   integrity sha512-fCL9xRRO000+oDCZVdxRtqk559mNg2cnyZjbKvx8m10CtLuaBxen78WpmNM8nMEX/eYSZtMu8zqJzDaFTzrALg==
   dependencies:
     "@terascope/utils" "^0.30.0"
@@ -644,12 +644,12 @@
 
 "@terascope/types@^0.5.0":
   version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@terascope/types/-/types-0.5.0.tgz#b8d1a65a8943276aa3e6652baed3dadf4f5323eb"
+  resolved "https://registry.npmjs.org/@terascope/types/-/types-0.5.0.tgz#b8d1a65a8943276aa3e6652baed3dadf4f5323eb"
   integrity sha512-C3QnRtSsgR96WAkWFRCAx3lZjg2WXMScvFzFnTVSgk8srRBtBe0EiL4aD07z/VE6Ajxq7RBzD0SRoiZ57LjYxw==
 
 "@terascope/utils@^0.30.0":
   version "0.30.0"
-  resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.30.0.tgz#b6793ab20a382d3ccf724f4a6b7b83d077c59bf8"
+  resolved "https://registry.npmjs.org/@terascope/utils/-/utils-0.30.0.tgz#b6793ab20a382d3ccf724f4a6b7b83d077c59bf8"
   integrity sha512-pl2DMpYFNeMpVpN7oKw6cB/uXmtqeOWV0sH6QoJSuVQAT4x7+mwftFiv9jkrGDA+LhFpOxT4HKzJgyxwM2K36w==
   dependencies:
     "@terascope/types" "^0.5.0"
@@ -1000,7 +1000,7 @@
 
 "@types/node@^14.10.1":
   version "14.10.1"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.10.1.tgz#cc323bad8e8a533d4822f45ce4e5326f36e42177"
+  resolved "https://registry.npmjs.org/@types/node/-/node-14.10.1.tgz#cc323bad8e8a533d4822f45ce4e5326f36e42177"
   integrity sha512-aYNbO+FZ/3KGeQCEkNhHFRIzBOUgc7QvcVNKXbfnhDkSfwUv91JsQQa10rDgKSTSLkXZ1UIyPe4FJJNVgw1xWQ==
 
 "@types/normalize-package-data@^2.4.0":
@@ -1326,7 +1326,7 @@ atob@^2.1.2:
 
 awesome-phonenumber@^2.38.0:
   version "2.38.0"
-  resolved "https://npm.terascope.io/awesome-phonenumber/-/awesome-phonenumber-2.38.0.tgz#f3eaf7339828b3e816634c05c42b4fbd17030fce"
+  resolved "https://registry.npmjs.org/awesome-phonenumber/-/awesome-phonenumber-2.38.0.tgz#f3eaf7339828b3e816634c05c42b4fbd17030fce"
   integrity sha512-2PiyRzkQonHKqlXeJM3giPt/0X/lpFcZR5+WtcfhKn76u7E6Rzsz3dzUyCffEXyHz4kiSklEZXwhUz8mvCcLFA==
 
 aws-sign2@~0.7.0:
@@ -1778,7 +1778,7 @@ data-urls@^2.0.0:
 
 date-fns@^2.16.1:
   version "2.16.1"
-  resolved "https://npm.terascope.io/date-fns/-/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
+  resolved "https://registry.npmjs.org/date-fns/-/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
   integrity sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ==
 
 datemath-parser@^1.0.6:
@@ -2167,7 +2167,7 @@ eslint-visitor-keys@^2.0.0:
 
 eslint@^7.9.0:
   version "7.9.0"
-  resolved "https://npm.terascope.io/eslint/-/eslint-7.9.0.tgz#522aeccc5c3a19017cf0cb46ebfd660a79acf337"
+  resolved "https://registry.npmjs.org/eslint/-/eslint-7.9.0.tgz#522aeccc5c3a19017cf0cb46ebfd660a79acf337"
   integrity sha512-V6QyhX21+uXp4T+3nrNfI3hQNBDa/P8ga7LoQOenwrlEFXrEnUEE+ok1dMtaS3b6rmLXhT1TkTIsG75HMLbknA==
   dependencies:
     "@babel/code-frame" "^7.0.0"
@@ -2820,7 +2820,7 @@ ip6addr@^0.2.3:
 
 ipaddr.js@^2.0.0:
   version "2.0.0"
-  resolved "https://npm.terascope.io/ipaddr.js/-/ipaddr.js-2.0.0.tgz#77ccccc8063ae71ab65c55f21b090698e763fc6e"
+  resolved "https://registry.npmjs.org/ipaddr.js/-/ipaddr.js-2.0.0.tgz#77ccccc8063ae71ab65c55f21b090698e763fc6e"
   integrity sha512-S54H9mIj0rbxRIyrDMEuuER86LdlgUg9FSeZ8duQb6CUG2iRrA36MYVQBSprTF/ZeAwvyQ5mDGuNvIPM0BIl3w==
 
 is-accessor-descriptor@^0.1.6:
@@ -4000,7 +4000,7 @@ natural-compare@^1.4.0:
 
 netmask@^1.0.6:
   version "1.0.6"
-  resolved "https://npm.terascope.io/netmask/-/netmask-1.0.6.tgz#20297e89d86f6f6400f250d9f4f6b4c1945fcd35"
+  resolved "https://registry.npmjs.org/netmask/-/netmask-1.0.6.tgz#20297e89d86f6f6400f250d9f4f6b4c1945fcd35"
   integrity sha1-ICl+idhvb2QA8lDZ9Pa0wZRfzTU=
 
 nice-try@^1.0.4:
@@ -5245,7 +5245,7 @@ ts-node@^9.0.0:
 
 ts-transforms@^0.42.1:
   version "0.42.1"
-  resolved "https://npm.terascope.io/ts-transforms/-/ts-transforms-0.42.1.tgz#c0b3ee7714393dfd5cf468688520f3dd4e448bf8"
+  resolved "https://registry.npmjs.org/ts-transforms/-/ts-transforms-0.42.1.tgz#c0b3ee7714393dfd5cf468688520f3dd4e448bf8"
   integrity sha512-r0FoxeFkIaa21YLvga+/zzE8HQrG2E/3CC2VJwHn+TtmBqjKYgMeM+r3Tdd88VS0LgTNUfnc9ssDSE8kD18erw==
   dependencies:
     "@terascope/data-mate" "^0.13.0"
@@ -5549,7 +5549,7 @@ ws@^7.2.3:
 
 xlucene-parser@^0.25.0:
   version "0.25.0"
-  resolved "https://npm.terascope.io/xlucene-parser/-/xlucene-parser-0.25.0.tgz#42b5c108f3320101ddf4f6388ef6c020cf0b3126"
+  resolved "https://registry.npmjs.org/xlucene-parser/-/xlucene-parser-0.25.0.tgz#42b5c108f3320101ddf4f6388ef6c020cf0b3126"
   integrity sha512-QoT43mXC8PAvk6YPyscVmSShnfSIuHr6ZkgZfdIWOTQ+vWJ9jeF+BOQ77XbRKLq3HHrwQ43MVONC+VhVuZpDhg==
   dependencies:
     "@terascope/types" "^0.5.0"
