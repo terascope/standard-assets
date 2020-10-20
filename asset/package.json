@@ -13,7 +13,7 @@
         "@sindresorhus/fnv1a": "^2.0.1",
         "@terascope/job-components": "^0.42.2",
         "@terascope/utils": "^0.32.0",
-        "mocker-data-generator": "^2.9.0",
+        "mocker-data-generator": "^2.10.0",
         "timsort": "^0.3.0",
         "ts-transforms": "^0.45.2"
     }
