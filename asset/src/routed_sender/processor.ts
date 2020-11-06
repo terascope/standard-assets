@@ -60,6 +60,10 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
         this.api = await this.createAPI(this.opConfig.api_name);
     }
 
+    onSliceFailure(): void {
+        this._cleanupRouteExecution();
+    }
+
     private async createRoute(route: string) {
         const config = this.routeDict.get(route);
         if (isNil(config)) throw new Error(`Could not get config for route ${route}, please verify that this is in the routing`);
