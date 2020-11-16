@@ -594,10 +594,10 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@terascope/data-mate@^0.17.0":
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.17.0.tgz#4f7fae0a403e7814d77cffec07be06d30658568a"
-  integrity sha512-j0z/KAjtgr9N+WXseTK0o5BoAsTenWtM+FUt1cchAgrU3VvVSGxzVDWUKeP6WkZUzQ+A9WQ7ebsjfAsb3I7KYw==
+"@terascope/data-mate@^0.17.2":
+  version "0.17.2"
+  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.17.2.tgz#1c6799101ace4078a90a646da29c40bbc2c5a79d"
+  integrity sha512-15ak0QcHB1GQdmi5VxR5APJfN9fjSGbboShwJ0Fc2gl19t9g1GK4mPKWuLRl1ni35MG+AOslXDdSfNReyMh1Jw==
   dependencies:
     "@terascope/data-types" "^0.23.3"
     "@terascope/types" "^0.6.1"
@@ -4429,10 +4429,10 @@ multi-progress@^3.0.0:
   resolved "https://registry.yarnpkg.com/multi-progress/-/multi-progress-3.0.0.tgz#ee33d96ecc9a96315bce6b6a82a1520ad91e7e98"
   integrity sha512-4QNgWKyAy9PTasSyI66Yz5MxbebKY5+vuX74ZEL1jkwD9oheCWcDXqfKps99tW6iY9l2UeqbJ+/rETRYIeGUfg==
 
-nanoid@^3.1.12:
-  version "3.1.12"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.12.tgz#6f7736c62e8d39421601e4a0c77623a97ea69654"
-  integrity sha512-1qstj9z5+x491jfiC4Nelk+f8XBad7LN20PmyWINJEMRSf3wcAjAWysw1qaA8z6NSKe2sjq1hRSDpBH5paCb6A==
+nanoid@^3.1.16:
+  version "3.1.16"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.16.tgz#b21f0a7d031196faf75314d7c65d36352beeef64"
+  integrity sha512-+AK8MN0WHji40lj8AEuwLOvLSbWYApQpre/aFJZD71r43wVRLrOYS4FmJOPQYon1TqB462RzrrxlfA74XRES8w==
 
 nanomatch@^1.2.9:
   version "1.2.13"
@@ -5848,18 +5848,18 @@ ts-node@^9.0.0:
     source-map-support "^0.5.17"
     yn "3.1.1"
 
-ts-transforms@^0.46.0:
-  version "0.46.0"
-  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.46.0.tgz#c2488d0b985f386debe4abdea68f15edce66612a"
-  integrity sha512-OnCOGJ7zwNBxI6dSEQ6Stp+oCYd6bC/kP44BH25r2/whsN99oN5Q/Z3Yi75H5rkPuxVjKqNtSBD7uP4Rug/QBw==
+ts-transforms@^0.46.2:
+  version "0.46.2"
+  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.46.2.tgz#982b32bd780da3ecaadf740d953302408a0e05ec"
+  integrity sha512-y9wk++ivnes5qCFWhN+H0F6SXZFcse++ixe/G7rduvhfIJdnDRnB8LKEzyAm0IrBQokwvOLugANM81V9FtcZzA==
   dependencies:
-    "@terascope/data-mate" "^0.17.0"
+    "@terascope/data-mate" "^0.17.2"
     "@terascope/types" "^0.6.1"
     "@terascope/utils" "^0.32.3"
     awesome-phonenumber "^2.40.0"
     graphlib "^2.1.8"
     jexl "^2.2.2"
-    nanoid "^3.1.12"
+    nanoid "^3.1.16"
     valid-url "^1.0.9"
     validator "^13.1.1"
     yargs "^16.1.0"
