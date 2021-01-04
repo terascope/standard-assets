@@ -11,10 +11,10 @@
     },
     "dependencies": {
         "@sindresorhus/fnv1a": "^2.0.1",
-        "@terascope/job-components": "^0.42.3",
-        "@terascope/utils": "^0.32.0",
+        "@terascope/job-components": "^0.44.1",
+        "@terascope/utils": "^0.34.1",
         "mocker-data-generator": "^2.10.0",
         "timsort": "^0.3.0",
-        "ts-transforms": "^0.46.2"
+        "ts-transforms": "^0.48.4"
     }
 }
