@@ -1,6 +1,6 @@
 {
     "name": "standard",
-    "version": "0.10.3",
+    "version": "0.10.4",
     "description": "Teraslice standard processor asset bundle",
     "license": "MIT",
     "private": true,
