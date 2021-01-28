@@ -584,18 +584,18 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@terascope/data-mate@^0.20.1":
-  version "0.20.1"
-  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.20.1.tgz#b063c99ad714c2d7c583e67141a4643979f7739d"
-  integrity sha512-R07YWkm/gC6r1F5gvMlSvoYSbqWnTbYtIR1k8DqAST08F0Ct2Izd57qjSdJE+kaiKV8PAfoywMw+AMc4OYZXEQ==
+"@terascope/data-mate@^0.20.2":
+  version "0.20.2"
+  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.20.2.tgz#4a52c9c124763f9d0d714112956fa03399d77f56"
+  integrity sha512-MSozE1JXe+9aj5o8LqOW2AnGLcLiqxHe4ERT5l7JaV8kkVRtYEcXji0T+G8i57KqFASxoJ5fn16UBlgZIcYbrA==
   dependencies:
     "@terascope/data-types" "^0.25.1"
     "@terascope/types" "^0.7.0"
     "@terascope/utils" "^0.34.1"
     "@turf/bbox" "^6.2.0"
-    "@turf/bbox-polygon" "^6.2.0"
+    "@turf/bbox-polygon" "^6.3.0"
     "@turf/boolean-point-in-polygon" "^6.2.0"
-    "@turf/circle" "^6.2.0"
+    "@turf/circle" "^6.3.0"
     "@turf/clean-coords" "^6.2.0"
     "@turf/helpers" "^6.2.0"
     awesome-phonenumber "^2.43.0"
@@ -691,7 +691,7 @@
     p-map "^4.0.0"
     shallow-clone "^3.0.1"
 
-"@turf/bbox-polygon@^6.2.0":
+"@turf/bbox-polygon@^6.2.0", "@turf/bbox-polygon@^6.3.0":
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/@turf/bbox-polygon/-/bbox-polygon-6.3.0.tgz#9ffa79d56ae50cc7730b35b2a6d2a02493268365"
   integrity sha512-CCyTBM8LzGRu/lReNlgDyjRO8NojtJ7EPPvSl3bdKQbNFsCm25gwe7Y3xsaCkWLNn5g89lQJI9Izf9xdEsENjQ==
@@ -801,7 +801,7 @@
     "@turf/helpers" "^6.3.0"
     "@turf/invariant" "^6.3.0"
 
-"@turf/circle@^6.2.0":
+"@turf/circle@^6.2.0", "@turf/circle@^6.3.0":
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/@turf/circle/-/circle-6.3.0.tgz#4cee9a2a412bda08bd433c15ea75cef09cce1e54"
   integrity sha512-5N3J4YQr1efidvPgvtIQYpxb7gBVEoo00IFC0JNH6KqIVBMttFZw3Wsqor34ya91m58A5m6HTiz9Cdm1ktrEdw==
@@ -1060,10 +1060,18 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@26.x", "@types/jest@^26.0.19":
+"@types/jest@26.x":
   version "26.0.19"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.19.tgz#e6fa1e3def5842ec85045bd5210e9bb8289de790"
   integrity sha512-jqHoirTG61fee6v6rwbnEuKhpSKih0tuhqeFbCmMmErhtu3BYlOZaXWjffgOstMM4S/3iQD31lI5bGLTrs97yQ==
+  dependencies:
+    jest-diff "^26.0.0"
+    pretty-format "^26.0.0"
+
+"@types/jest@^26.0.20":
+  version "26.0.20"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.20.tgz#cd2f2702ecf69e86b586e1f5223a60e454056307"
+  integrity sha512-9zi2Y+5USJRxd0FsahERhBwlcvFh6D2GLQnY2FH2BzK8J9s9omvNHIbvABwIluXa0fD8XVKMLTO0aOEuUfACAA==
   dependencies:
     jest-diff "^26.0.0"
     pretty-format "^26.0.0"
@@ -1099,10 +1107,15 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*", "@types/node@^14.14.19":
+"@types/node@*":
   version "14.14.19"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.19.tgz#5135176a8330b88ece4e9ab1fdcfc0a545b4bab4"
   integrity sha512-4nhBPStMK04rruRVtVc6cDqhu7S9GZai0fpXgPXrFpcPX6Xul8xnrjSdGB4KPBVYG/R5+fXWdCM8qBoiULWGPQ==
+
+"@types/node@^14.14.22":
+  version "14.14.22"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.22.tgz#0d29f382472c4ccf3bd96ff0ce47daf5b7b84b18"
+  integrity sha512-g+f/qj/cNcqKkc3tFqlXOYjrmZA+jNBiDzbP3kH+B+otKFqAdPgVTGP1IeKRdMml/aE69as5S4FqtxAbl+LaMw==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -5947,12 +5960,12 @@ ts-node@^9.1.1:
     source-map-support "^0.5.17"
     yn "3.1.1"
 
-ts-transforms@^0.49.1:
-  version "0.49.1"
-  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.49.1.tgz#1ef333df537d89281352c5a7973e90818bc8921e"
-  integrity sha512-RF8ZeIEIJnXXqPm4BrUqRlHBFAyhiyBn119j6TJSgf+MWJ+WCV50Y+AVqyUhQ86wUfzWBdx+L+I6Fwa5lzdMQg==
+ts-transforms@^0.49.2:
+  version "0.49.2"
+  resolved "https://npm.terascope.io/ts-transforms/-/ts-transforms-0.49.2.tgz#08983a74a41de80512c7dba53fdbc11686f026cf"
+  integrity sha512-mvEwtbUNd+00a5M0V/Y2hFz0BZ3YO1pZcVMEEd2DfWf2Xd12kHsFcfXbMqpGADKUhJSLrUzuiWiLdyGh+8dtFg==
   dependencies:
-    "@terascope/data-mate" "^0.20.1"
+    "@terascope/data-mate" "^0.20.2"
     "@terascope/types" "^0.7.0"
     "@terascope/utils" "^0.34.1"
     awesome-phonenumber "^2.43.0"
