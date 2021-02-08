@@ -12,7 +12,7 @@
     "dependencies": {
         "@sindresorhus/fnv1a": "^2.0.1",
         "@terascope/job-components": "^0.46.1",
-        "@terascope/utils": "^0.36.1",
+        "@terascope/utils": "^0.36.2",
         "mocker-data-generator": "^2.10.0",
         "timsort": "^0.3.0",
         "ts-transforms": "^0.51.2"

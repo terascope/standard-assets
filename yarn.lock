@@ -674,10 +674,10 @@
   resolved "https://registry.yarnpkg.com/@terascope/types/-/types-0.7.1.tgz#0712b34e148db0bd19bea219d386f49e833e703d"
   integrity sha512-cbayopONnDam37C6qn4ARl2K0UdXbxs9ObPUQ2IeV7gMia6dPZ+QByvw3qDYuUFLpS1VTxhxd4nKu2KiNxxDgw==
 
-"@terascope/utils@^0.36.1":
-  version "0.36.1"
-  resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.36.1.tgz#0e3e169a391dcb27c53ef936d2b6196c73c490e3"
-  integrity sha512-YmA9/IDXFkICkEn2pG9jiJtpKS8feBBsOkKjcnnjizpCQMIDEIMPHWJ47DLBoksaQDGHp011Hwvlq5qB228Kbg==
+"@terascope/utils@^0.36.1", "@terascope/utils@^0.36.2":
+  version "0.36.2"
+  resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.36.2.tgz#c0772b5e68109f24bb310fc83fc83d9ff5c15e6a"
+  integrity sha512-C1lcSXfiPviSzNHvdzWWXtVO9S7z4ll/b3TCPHDR8GhW8xxoT03fjlMlGXnPNfbzOaCD8o8K9ba/mgpvVjSO6Q==
   dependencies:
     "@terascope/types" "^0.7.1"
     debug "^4.3.1"
