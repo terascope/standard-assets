@@ -584,10 +584,10 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@terascope/data-mate@^0.23.0":
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.23.0.tgz#413f31c2079089d0c96020dab30fa0fc0eac42c3"
-  integrity sha512-/8gSzs0MKbesasIWMndubwQUxEzJGxcpbcfynxJNJ28mTdLNLyhpo9gD05dPxZgvjjtG2UHyoalFq0ZJ7rDAWQ==
+"@terascope/data-mate@^0.23.3":
+  version "0.23.3"
+  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.23.3.tgz#8720b5a6d446543c217e1754e1589494c289f99d"
+  integrity sha512-T01upE3jTskqre323Cjp60grtesTtngai2xgSfhjqxTL4taNG3btpvfPltd+OshP0+ljZttBlS6dAadUvZos9A==
   dependencies:
     "@terascope/data-types" "^0.27.2"
     "@terascope/types" "^0.7.1"
@@ -599,7 +599,7 @@
     "@turf/clean-coords" "^6.2.0"
     "@turf/helpers" "^6.2.0"
     awesome-phonenumber "^2.43.0"
-    date-fns "^2.16.1"
+    date-fns "^2.17.0"
     ip-bigint "^3.0.0"
     ip6addr "^0.2.3"
     ipaddr.js "^2.0.0"
@@ -610,7 +610,7 @@
     uuid "^8.3.2"
     valid-url "^1.0.9"
     validator "^13.5.2"
-    xlucene-parser "^0.34.0"
+    xlucene-parser "^0.34.1"
 
 "@terascope/data-types@^0.27.2":
   version "0.27.2"
@@ -744,16 +744,16 @@
     "@turf/invariant" "^6.3.0"
     geojson-equality "0.1.6"
 
-"@turf/boolean-overlap@~6.0.1":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/@turf/boolean-overlap/-/boolean-overlap-6.0.1.tgz#6cd8fc5ae3fbf52ffd31e4cb31d62ef574356c16"
-  integrity sha512-Ud6a75BzNYICVc5/Pf/GJ/3M5XZci6AOGlBNUPvhUrG4nT4NNYeXIpVrx1FB/tAg8EwZZXlhwSO26CTDC13XlA==
+"@turf/boolean-overlap@^6.3.0":
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/@turf/boolean-overlap/-/boolean-overlap-6.3.0.tgz#b696945154fc85f8e700b82f8e15502a03995b35"
+  integrity sha512-rWh8JKTqlJ1m27FY8YeWcGoXutLyCVfSi2/8AOkXi2F+36P9GM4tHz19yKY3btbnHJTgSZf1xO2YhX2d0BmNqg==
   dependencies:
-    "@turf/helpers" "6.x"
-    "@turf/invariant" "6.x"
-    "@turf/line-intersect" "6.x"
-    "@turf/line-overlap" "6.x"
-    "@turf/meta" "6.x"
+    "@turf/helpers" "^6.3.0"
+    "@turf/invariant" "^6.3.0"
+    "@turf/line-intersect" "^6.3.0"
+    "@turf/line-overlap" "^6.3.0"
+    "@turf/meta" "^6.3.0"
     geojson-equality "0.1.6"
 
 "@turf/boolean-point-in-polygon@^6.2.0", "@turf/boolean-point-in-polygon@^6.3.0":
@@ -827,14 +827,14 @@
   resolved "https://registry.yarnpkg.com/@turf/helpers/-/helpers-6.3.0.tgz#87f90f806c3f8ad6385ef8d2041d3662bf3c9fb1"
   integrity sha512-kr6KuD4Z0GZ30tblTEvi90rvvVNlKieXuMC8CTzE/rVQb0/f/Cb29zCXxTD7giQTEQY/P2nRW23wEqqyNHulCg==
 
-"@turf/invariant@6.x", "@turf/invariant@^6.2.0", "@turf/invariant@^6.3.0":
+"@turf/invariant@^6.2.0", "@turf/invariant@^6.3.0":
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/@turf/invariant/-/invariant-6.3.0.tgz#04a22b26c5503146c03fa6198176b72bd591eadf"
   integrity sha512-2OFOi9p+QOrcIMySEnr+WlOiKaFZ1bY56jA98YyECewJHfhPFWUBZEhc4nWGRT0ahK08Vus9+gcuBX8QIpCIIw==
   dependencies:
     "@turf/helpers" "^6.3.0"
 
-"@turf/line-intersect@6.x", "@turf/line-intersect@^6.3.0":
+"@turf/line-intersect@^6.3.0":
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/@turf/line-intersect/-/line-intersect-6.3.0.tgz#726a50edc66bb7b5e798b052b103fb0da4d1c4f4"
   integrity sha512-3naxR7XpkPd2vst3Mw6DFry4C9m3o0/f2n/xu5UAyxb88Ie4m2k+1eqkhzMMx/0L+E6iThWpLx7DASM6q6o9ow==
@@ -845,7 +845,7 @@
     "@turf/meta" "^6.3.0"
     geojson-rbush "3.x"
 
-"@turf/line-overlap@6.x":
+"@turf/line-overlap@^6.3.0":
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/@turf/line-overlap/-/line-overlap-6.3.0.tgz#c7e92c09e7626e1287a80742df7f509f0b4da693"
   integrity sha512-fVyXfTpr/A+ZXZWG6PbuYz5rAGbTQWyrMZveCl2049SbOXSkVXGjUfpnLaklP0p+adw7eRR0LhZn6FGz9CQaFg==
@@ -1969,10 +1969,10 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
-date-fns@^2.16.1:
-  version "2.16.1"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
-  integrity sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ==
+date-fns@^2.17.0:
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.17.0.tgz#afa55daea539239db0a64e236ce716ef3d681ba1"
+  integrity sha512-ZEhqxUtEZeGgg9eHNSOAJ8O9xqSgiJdrL0lzSSfMF54x6KXWJiOH/xntSJ9YomJPrYH/p08t6gWjGWq1SDJlSA==
 
 datemath-parser@^1.0.6:
   version "1.0.6"
@@ -5791,12 +5791,12 @@ ts-node@^9.1.1:
     source-map-support "^0.5.17"
     yn "3.1.1"
 
-ts-transforms@^0.52.0:
-  version "0.52.0"
-  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.52.0.tgz#045a5859b6a5feef75fa6d6961611ab214d67633"
-  integrity sha512-k5OP99FDvdr6xHo1TmhK0jwaG4M5/y9noYP9qYfE4EmFU0/E7KWuc2VVRf1heJzsA8E2YaRMrDVS1VNTuUIJvg==
+ts-transforms@^0.52.3:
+  version "0.52.3"
+  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.52.3.tgz#8a40a4a0553b7455e5b9a14c59e55b4c9c61a86d"
+  integrity sha512-Awdl4iFItgbjIpfuzhFHxHQGFOF8ZlP47Jm6Hk6h4gA27vl6EG2eCGhDyOyWv38UGShBy3CfDkcyHq+/ROQl6g==
   dependencies:
-    "@terascope/data-mate" "^0.23.0"
+    "@terascope/data-mate" "^0.23.3"
     "@terascope/types" "^0.7.1"
     "@terascope/utils" "^0.36.2"
     awesome-phonenumber "^2.43.0"
@@ -6123,10 +6123,10 @@ ws@^7.2.3:
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.3.tgz#1f9643de34a543b8edb124bdcbc457ae55a6e5cd"
   integrity sha512-hr6vCR76GsossIRsr8OLR9acVVm1jyfEWvhbNjtgPOrfvAlKzvyeg/P6r8RuDjRyrcQoPQT7K0DGEPc7Ae6jzA==
 
-xlucene-parser@^0.34.0:
-  version "0.34.0"
-  resolved "https://registry.yarnpkg.com/xlucene-parser/-/xlucene-parser-0.34.0.tgz#bfe5d555ea076bf810928bbd1497c4958ef159ac"
-  integrity sha512-iiMk0ZBh/LancMcbvh7rpB+BHiMZ9rFGP8ZpuxIdfkLc9R0KWzmbBu9OIRm9ucNbdTdGYMcaJhGlePgCM+9dVQ==
+xlucene-parser@^0.34.1:
+  version "0.34.1"
+  resolved "https://registry.yarnpkg.com/xlucene-parser/-/xlucene-parser-0.34.1.tgz#58881d67122a19512a3c824b49c0340de3eb96e7"
+  integrity sha512-gfsW31zwJAdSAVZ77DxbRremBZjVeEZlaOxzLPIqMll7TNhtljlnjZrrqY65+g51NpnSVAs4mkkazfHxD6Lc2A==
   dependencies:
     "@terascope/types" "^0.7.1"
     "@terascope/utils" "^0.36.2"
@@ -6135,7 +6135,7 @@ xlucene-parser@^0.34.0:
     "@turf/boolean-contains" "^6.3.0"
     "@turf/boolean-disjoint" "^6.3.0"
     "@turf/boolean-equal" "^6.3.0"
-    "@turf/boolean-overlap" "~6.0.1"
+    "@turf/boolean-overlap" "^6.3.0"
     "@turf/boolean-point-in-polygon" "^6.2.0"
     "@turf/boolean-within" "^6.2.0"
     "@turf/circle" "^6.3.0"
