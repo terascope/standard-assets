@@ -676,12 +676,12 @@
     progress "^2.0.3"
     regenerator-runtime "^0.13.5"
 
-"@terascope/job-components@^0.50.1":
-  version "0.50.1"
-  resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.50.1.tgz#270a28fd052649589e40c68c534c50537b048322"
-  integrity sha512-U4SukJgKgnPzzinLPA41dP0JNPCUl5VsGhQa/GcyXy+59+fcCpFNNbPKDEYEtsMj6mmQvjMblwk91YYVxG854A==
+"@terascope/job-components@^0.50.2":
+  version "0.50.2"
+  resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.50.2.tgz#d68063d14ab1d46c61262adc29607316382e0ed2"
+  integrity sha512-QGdJ47XBMj+nhUtCKXnhHNumC1JQzhUUTVehe5mNzdPN19nXxKX2T4fni9hlyaxmyauk/fOVZKlsLrv0olmv4w==
   dependencies:
-    "@terascope/utils" "^0.37.0"
+    "@terascope/utils" "^0.38.1"
     convict "^4.4.1"
     datemath-parser "^1.0.6"
     uuid "^8.3.2"
@@ -710,6 +710,22 @@
     kind-of "^6.0.3"
     latlon-geohash "^1.1.0"
     lodash "^4.17.21"
+    p-map "^4.0.0"
+    shallow-clone "^3.0.1"
+
+"@terascope/utils@^0.38.1":
+  version "0.38.1"
+  resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.38.1.tgz#bedffb022522ade4b059dd3b831ca9c0c467a3d6"
+  integrity sha512-JzoRJ7EWaIXNhWMzuavS9+KlPI8cjkO+ClsAv3BjGd/4hW1TRJ/cF4/B9RXY9kJRoxmuIjOhf0JI1+yh6HQ72Q==
+  dependencies:
+    "@terascope/types" "^0.8.0"
+    debug "^4.3.1"
+    is-plain-object "^5.0.0"
+    js-string-escape "^1.0.1"
+    kind-of "^6.0.3"
+    latlon-geohash "^1.1.0"
+    lodash "^4.17.21"
+    mnemonist "^0.38.3"
     p-map "^4.0.0"
     shallow-clone "^3.0.1"
 
