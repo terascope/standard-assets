@@ -11,7 +11,7 @@
     },
     "dependencies": {
         "@sindresorhus/fnv1a": "^2.0.1",
-        "@terascope/job-components": "^0.50.1",
+        "@terascope/job-components": "^0.51.0",
         "@terascope/utils": "^0.37.0",
         "mocker-data-generator": "^2.12.0",
         "timsort": "^0.3.0",
