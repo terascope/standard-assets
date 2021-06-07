@@ -1,6 +1,6 @@
 import 'jest-extended';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
-import { isEmpty, DataEntity } from '@terascope/job-components';
+import { isEmpty, DataEntity, get } from '@terascope/job-components';
 import path from 'path';
 import TestApi from '../fixtures/someAssetId/test_api/api';
 import RoutedSender from '../../asset/src/routed_sender/processor';
@@ -66,6 +66,17 @@ describe('Route Sender', () => {
         const apiClient = routeApi?.client as unknown as TestApi;
         // @ts-expect-error
         return apiClient.routeArgs;
+    }
+
+    function getRoutingKeys(routing: RoutingExecution): string[] {
+        const results: string[] = [];
+
+        for (const routeConfig of routing.values()) {
+            const config = get(routeConfig, 'client.configArgs[1]');
+            results.push(config._key);
+        }
+
+        return results;
     }
 
     function getRoutingExecution(test: WorkerTestHarness): RoutingExecution {
@@ -137,6 +148,7 @@ describe('Route Sender', () => {
         expect(results).toBeArrayOfSize(3);
 
         const routing = getRoutingExecution(test);
+        const keyValues = getRoutingKeys(routing);
 
         const routeDataDefault = getRouteData(routing, '*');
         const routeDataMinorA = getRouteData(routing, 'a');
@@ -145,6 +157,12 @@ describe('Route Sender', () => {
         expect(routeDataDefault).toBeArrayOfSize(1);
         expect(routeDataMinorA).toBeArrayOfSize(1);
         expect(routeDataCapitalA).toBeArrayOfSize(1);
+
+        // this tests to make sure that the _key is being propagated correctly on the config
+        for (const opKey of Object.keys(opConfig.routing)) {
+            const keys = opKey.split(',').map((key) => key.trim());
+            keys.forEach((key) => expect(keyValues.includes(key)).toBeTrue());
+        }
     });
 
     it('can be sent dynamically route', async () => {
@@ -165,6 +183,7 @@ describe('Route Sender', () => {
         expect(results).toBeArrayOfSize(3);
 
         const routing = getRoutingExecution(test);
+        const keyValues = getRoutingKeys(routing);
 
         const dynamicRouting = getRouteData(routing, '**');
         const routes = getRouteArgs(routing, '**');
@@ -173,5 +192,7 @@ describe('Route Sender', () => {
         expect(routes).toContain('a');
         expect(routes).toContain('b');
         expect(routes).toContain('A');
+
+        expect(keyValues).toEqual(['**']);
     });
 });
