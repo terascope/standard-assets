@@ -68,11 +68,11 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
         const config = this.routeDict.get(route);
         if (isNil(config)) throw new Error(`Could not get config for route ${route}, please verify that this is in the routing`);
 
-        let client = this.api.get(config.connection);
+        let client = this.api.get(route);
 
         if (isNil(client)) {
             client = await this.api.create(
-                config.connection,
+                route,
                 {
                     ...config,
                     tryFn: this.tryFn,
