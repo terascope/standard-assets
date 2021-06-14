@@ -1,6 +1,6 @@
 {
     "name": "standard-assets-bundle",
-    "version": "0.11.1",
+    "version": "0.11.2",
     "description": "Teraslice standard processor asset bundle",
     "private": true,
     "workspaces": [
@@ -18,14 +18,14 @@
         "test:debug": "env DEBUG=\"${DEBUG:-*teraslice*}\" jest --detectOpenHandles --coverage=false --runInBand"
     },
     "resolutions": {
-        "@terascope/utils": "^0.39.0"
+        "@terascope/utils": "^0.40.2"
     },
     "devDependencies": {
         "@terascope/eslint-config": "^0.6.0",
-        "@terascope/job-components": "^0.51.0",
+        "@terascope/job-components": "^0.52.2",
         "@types/jest": "^26.0.23",
         "@types/json2csv": "^5.0.2",
-        "@types/node": "^15.3.0",
+        "@types/node": "^15.12.2",
         "@types/node-gzip": "^1.1.0",
         "@types/timsort": "^0.3.0",
         "eslint": "^7.28.0",
