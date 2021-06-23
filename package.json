@@ -29,7 +29,7 @@
         "@types/node-gzip": "^1.1.0",
         "@types/timsort": "^0.3.0",
         "eslint": "^7.29.0",
-        "jest": "^27.0.4",
+        "jest": "^27.0.5",
         "jest-extended": "^0.11.5",
         "teraslice-test-harness": "^0.28.0",
         "ts-jest": "^27.0.3",
