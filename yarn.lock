@@ -698,7 +698,7 @@
     progress "^2.0.3"
     regenerator-runtime "^0.13.5"
 
-"@terascope/job-components@^0.52.4":
+"@terascope/job-components@^0.52.4", "@terascope/job-components@^0.52.5":
   version "0.52.5"
   resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.52.5.tgz#8ebdf22cc1845aa668d03aacb3085c6f971b6e13"
   integrity sha512-n1Y3xZfnfUTlkPA+Ewvz3AiyWx4gZzmCvwFFx8U4TEkNuN8b3PpU83M+VMRrVhvO3PNTocPDFqhP+W3pR4aQnA==
@@ -720,7 +720,7 @@
   resolved "https://registry.yarnpkg.com/@terascope/types/-/types-0.10.0.tgz#ed0f2e5614dcb45bfebc38e029ad880f9b868874"
   integrity sha512-vRX1wDbjGqw+IiUB5ldbGWd9S4PX2roXFC9Ne2lv0Bo7oilwxCLOnMNUA0Na/59kXJQum489v4r4PZLGRTeiRA==
 
-"@terascope/utils@^0.40.2", "@terascope/utils@^0.40.4", "@terascope/utils@^0.40.5":
+"@terascope/utils@^0.40.2", "@terascope/utils@^0.40.5":
   version "0.40.5"
   resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.40.5.tgz#dab621817cd7ab0cddc5385a1cd6e9f7663b431f"
   integrity sha512-UYB3hb2W8s3MEeLTUs6mbK+tdPpsN9kteQX2dMyiJWiF9IgxEDRJy3wH3lPknJkdahXcRdl8HQxB0l6s5Yw2ug==
@@ -6100,7 +6100,7 @@ ts-jest@^27.0.3:
     semver "7.x"
     yargs-parser "20.x"
 
-ts-transforms@^0.59.0:
+ts-transforms@^0.59.1:
   version "0.59.1"
   resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.59.1.tgz#bbfeb777a04358ff8fe0829a4a9a2419d89d3ecb"
   integrity sha512-ogDIMQq7ODoF2hemUpQpd20v05z5z9Qqg3N/X7mpFqMswRE4VL1JgTp8OlaXxtDuq1Es5M1ZpMKT8QQ7ZtpS8Q==
