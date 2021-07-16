@@ -1,24 +1,44 @@
 import promClient from 'prom-client';
+import { Application, Request, Response } from 'express';
 import { JobMetricAPIConfig } from './interfaces';
 
 const express = require('express');
 
-export default async function createExporter(
+export async function createExporter(
     jobMetricApiConfig: JobMetricAPIConfig
-): Promise<void> {
+): Promise<Application> {
     if (jobMetricApiConfig.default_metrics) {
         promClient.collectDefaultMetrics();
     }
 
-    const metricServer = express();
-
-    metricServer.get('/', (_req: any, res: { send: (arg0: string) => void; }) => {
-        res.send('See the \'/metrics\' endpoint for the teraslice job metric exporter\n');
+    const app = express();
+    app.get('/', async (_req: Request, res: Response) => {
+        res.status(404).send('See the \'/metrics\' endpoint for the teraslice job metric exporter\n');
     });
 
-    metricServer.get('/metrics', async (_req: any, res: { set: (arg0: string, arg1: string) => void; end: (arg0: string) => void; }) => {
+    app.get('/metrics', async (_req: Request, res: Response) => {
         res.set('Content-Type', promClient.register.contentType);
         res.end(await promClient.register.metrics());
     });
-    metricServer.listen(jobMetricApiConfig.port);
+    const metricServer = app.listen(jobMetricApiConfig.port);
+
+    await shutdown(metricServer);
+
+    return metricServer;
+}
+
+export async function shutdownExporter(server: { close: () => Application; }): Promise<void> {
+    server.close();
+}
+export async function deleteMetricFromExporter(name: string): Promise<void> {
+    promClient.register.removeSingleMetric(name);
+}
+
+async function shutdown(server: { close: () => Application; }) {
+    process.on('SIGTERM', () => {
+        server.close();
+    });
+    process.on('SIGINT', () => {
+        server.close();
+    });
 }

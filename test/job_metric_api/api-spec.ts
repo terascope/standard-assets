@@ -46,18 +46,10 @@ describe('job_metric_api', () => {
         jest.resetAllMocks();
         await harness.shutdown();
     });
-    it('returns records', async () => {
-        harness = new WorkerTestHarness(jobWithDefaultMetrics, {
-            assetDir: path.join(__dirname, '../../asset')
-        });
-        const api = harness.getOperationAPI<JobMetricApi>('job_metric_api');
-        api.initialize = jest.fn(async () => Promise.resolve());
-        await harness.initialize();
-        const records = await harness.runSlice([testRecord]);
-        expect(records.length).toEqual(1);
-        jest.resetAllMocks();
-        await harness.shutdown();
+    afterAll(async () => {
+        await harness.flush();
     });
+
     it('includes default metrics when default_metrics is true', async () => {
         const response = await axios.get('http://localhost:3339/metrics');
         const responseOutput = response.data.split('\n');

@@ -61,16 +61,20 @@ describe('job_metric_api', () => {
 
     afterAll(async () => {
         fs.unlink(path.join(__dirname, '../../asset/src/job_metric_example'), () => {});
+        await harness.flush();
     });
 
     it('does not include default metrics when default_metrics is false', async () => {
         const records = await harness.runSlice([testRecord]);
         expect(records.length).toEqual(1);
-        const rootResponse = await axios.get('http://localhost:3338');
+        try {
+            await axios.get('http://localhost:3338');
+        } catch (err) {
+            expect(err.response.status).toEqual(404);
+            expect(err.response.data).toEqual("See the '/metrics' endpoint for the teraslice job metric exporter\n");
+        }
         const response = await axios.get('http://localhost:3338/metrics');
         const responseOutput = response.data.split('\n');
-        const rootResponseOutput = rootResponse.data.split('\n');
-        expect(rootResponseOutput[0]).toEqual("See the '/metrics' endpoint for the teraslice job metric exporter");
         expect(responseOutput[0]).toEqual('# HELP teraslice_job_job_metric_example_cache_hits_total job_metric_example state storage cache hits');
         expect(responseOutput[1]).toEqual('# TYPE teraslice_job_job_metric_example_cache_hits_total counter');
         expect(responseOutput[2]).toContain('teraslice_job_job_metric_example_cache_hits_total');
