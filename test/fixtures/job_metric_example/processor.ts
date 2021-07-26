@@ -1,15 +1,16 @@
 import { DataArray } from './interfaces';
 
-const { BatchProcessor, } = require('@terascope/job-components');
+const { BatchProcessor } = require('@terascope/job-components');
 
 class JobMetricExample extends BatchProcessor {
+    _initialized = false;
     constructor(...args: any) {
         super(...args);
-        this.initialize();
+        this.opName = 'job_metric_example';
     }
 
     async initialize(): Promise<void> {
-        this.opName = 'job_metric_example';
+        this._initialized = true;
         // setup metric api
         if (this.opConfig.collect_metrics && !this.metrics) {
             this.metrics = await this.createAPI(this.opConfig.metric_api_name);

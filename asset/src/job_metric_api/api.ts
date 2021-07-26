@@ -6,7 +6,7 @@ import {
     Gauge, Counter, Histogram, Summary
 } from 'prom-client';
 
-import { JobMetricAPIConfig, JobMetricsApi, MetricList } from './interfaces';
+import { JobMetricAPIConfig, JobMetricsAPI, MetricList } from './interfaces';
 
 import {
     createExporter, shutdownExporter, deleteMetricFromExporter
@@ -246,7 +246,7 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
         return { name, metric: histogram, functions: new Set(['observe']) };
     }
 
-    async createAPI(): Promise<JobMetricsApi> {
+    async createAPI(): Promise<JobMetricsAPI> {
         try {
             if (!this.metricExporter) {
                 this.metricExporter = await createExporter(this.apiConfig);

@@ -13,7 +13,7 @@ export interface MetricList {
     readonly functions?: Set<string> | undefined
 }
 
-export interface JobMetricsApi {
+export interface JobMetricsAPI {
     set: (name: string, labels: Record<string, string>, value: number) => void;
     inc: (name: string, labelValues: Record<string, string>, value: number) => void;
     dec: (name: string, labelValues: Record<string, string>, value: number) => void;

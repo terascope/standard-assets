@@ -22,8 +22,6 @@ export async function createExporter(
     });
     const metricServer = app.listen(jobMetricApiConfig.port);
 
-    await shutdown(metricServer);
-
     return metricServer;
 }
 
@@ -32,13 +30,4 @@ export async function shutdownExporter(server: { close: () => Application; }): P
 }
 export async function deleteMetricFromExporter(name: string): Promise<void> {
     promClient.register.removeSingleMetric(name);
-}
-
-async function shutdown(server: { close: () => Application; }) {
-    process.on('SIGTERM', () => {
-        server.close();
-    });
-    process.on('SIGINT', () => {
-        server.close();
-    });
 }
