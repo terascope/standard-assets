@@ -9,7 +9,7 @@ import {
 import { JobMetricAPIConfig, JobMetricsAPI, MetricList } from './interfaces';
 
 import {
-    createExporter, shutdownExporter, deleteMetricFromExporter
+    createExporter, shutdownExporter, deleteMetricFromExporter, CloseExporter
 } from './exporter';
 
 export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
@@ -17,7 +17,7 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
 
     default_labels!: Record<string, string>;
     prefix: string;
-    metricExporter!: any;
+    private metricExporter!: CloseExporter;
 
     constructor(
         workerContext: WorkerContext,
@@ -35,7 +35,6 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
         // Prefix hard coded standardize the way these metrics appear in prometheus
         this.prefix = 'teraslice_job_';
         this.metricList = {};
-        this.metricExporter = null;
         this.setPodName();
     }
 

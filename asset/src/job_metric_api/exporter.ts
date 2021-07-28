@@ -1,12 +1,14 @@
 import promClient from 'prom-client';
-import { Application, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { JobMetricAPIConfig } from './interfaces';
 
 const express = require('express');
 
+export type CloseExporter = () => void;
+
 export async function createExporter(
     jobMetricApiConfig: JobMetricAPIConfig
-): Promise<Application> {
+): Promise<CloseExporter> {
     if (jobMetricApiConfig.default_metrics) {
         promClient.collectDefaultMetrics();
     }
@@ -22,11 +24,13 @@ export async function createExporter(
     });
     const metricServer = app.listen(jobMetricApiConfig.port);
 
-    return metricServer;
+    return function close(): void {
+        metricServer.close();
+    };
 }
 
-export async function shutdownExporter(server: { close: () => Application; }): Promise<void> {
-    server.close();
+export async function shutdownExporter(close: CloseExporter): Promise<void> {
+    close();
 }
 export async function deleteMetricFromExporter(name: string): Promise<void> {
     promClient.register.removeSingleMetric(name);
