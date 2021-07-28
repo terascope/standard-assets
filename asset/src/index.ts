@@ -29,6 +29,9 @@ import GroupBySchema from '../src/group_by/schema';
 import HashRouter from '../src/hash_router/processor';
 import HashRouterSchema from '../src/hash_router/schema';
 
+import JobMetricApi from '../src/job_metric_api/api';
+import JobMetricSchema from '../src/job_metric_api/schema';
+
 import KeyRouter from '../src/key_router/processor';
 import KeyRouterSchema from '../src/key_router/schema';
 
@@ -104,6 +107,11 @@ export const ASSETS = {
         Processor: HashRouter,
         Schema: HashRouterSchema
     },
+    job_metric_api: {
+        Api: JobMetricApi,
+        Schema: JobMetricSchema
+    },
+
     key_router: {
         Processor: KeyRouter,
         Schema: KeyRouterSchema
