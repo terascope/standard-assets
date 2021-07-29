@@ -31,7 +31,7 @@ export default class Schema extends ConvictSchema<RouteSenderConfig> {
         return {
             size: {
                 doc: 'the maximum number of docs it will take at a time, anything past it will be split up and sent',
-                default: 500,
+                default: 10000,
                 format(val: any) {
                     if (!isNumber(val)) {
                         throw new Error('Invalid size parameter for routed_sender opConfig, it must be a number');
