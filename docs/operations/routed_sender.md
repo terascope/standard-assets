@@ -294,7 +294,7 @@ export default class FileSender implements RouteSenderAPI {
 | Configuration | Description | Type |  Notes |
 | --------- | -------- | ------ | ------ |
 | _op | Name of operation, it must reflect the exact name of the file | String | required |
-| size | the maximum number of docs it will take at a time, anything past it will be split up and sent according to the `concurrency` setting | Number | optional, defaults to 500 |
+| size | the maximum number of docs it will take at a time, anything past it will be split up and sent according to the `concurrency` setting | Number | optional, defaults to 10000 |
 | concurrency | The number of inflight calls to the api.send allowed | Number | optional, defaults to 10 |
 | api_name | The name of the api that will be used | String | required |
 | routing | Mapping of `standard:route` metadata to connection names. Routes data to multiple clusters based on the incoming key. The key name can be a comma separated list of prefixes that will map to the same connection | Object | required |
