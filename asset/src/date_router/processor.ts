@@ -51,23 +51,23 @@ export default class DateRouter extends MapProcessor<DateRouterConfig> {
             return this._getWeeklyEpochIndex(date);
         }
 
-        const dateComponents = this._parseDate(date);
+        const [year, month, day] = this._parseDate(date);
 
         const partitions: string[] = [];
 
-        partitions.push(this._joinValue('year', dateComponents[0]));
+        partitions.push(this._joinValue('year', year));
 
         if (resolution === DateResolution.yearly) return partitions;
 
         if (resolution === DateResolution.weekly) {
-            partitions.push(this._joinValue('week', this._getWeeksInYear(date, dateComponents[0])));
+            partitions.push(this._joinValue('week', this._getWeeksInYear(date, year)));
             return partitions;
         }
 
-        partitions.push(this._joinValue('month', dateComponents[1]));
+        partitions.push(this._joinValue('month', month));
         if (resolution === DateResolution.monthly) return partitions;
 
-        partitions.push(this._joinValue('day', dateComponents[2]));
+        partitions.push(this._joinValue('day', day));
         return partitions;
     }
 
