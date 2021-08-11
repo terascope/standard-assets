@@ -10,7 +10,7 @@ export default class Schema extends ConvictSchema<DateRouterConfig> {
                 format: 'required_String'
             },
             resolution: {
-                doc: 'Type of time series data: yearly, monthly, weekly, weekly_epoch, and daily.  Weekly_epoch is weeks since start of epoch time, Jan 1, 1970.',
+                doc: 'Type of time series data: yearly, monthly, weekly, weekly_epoch, or daily.  Weekly_epoch is weeks since start of epoch time, Jan 1, 1970.',
                 default: DateResolution.daily,
                 format: Object.keys(DateResolution)
             },
