@@ -3,13 +3,6 @@ import {
 } from '@terascope/job-components';
 import { DateRouterConfig, DateResolution } from './interfaces';
 
-const offsets = {
-    [DateResolution.daily]: 10,
-    [DateResolution.monthly]: 7,
-    [DateResolution.yearly]: 4,
-    [DateResolution.weekly]: 10
-};
-
 const weekInMs = 86400 * 7 * 1000;
 
 export default class DateRouter extends MapProcessor<DateRouterConfig> {
@@ -86,7 +79,7 @@ export default class DateRouter extends MapProcessor<DateRouterConfig> {
     }
 
     private _parseDate(date: Date): string[] {
-        return date.toISOString().slice(0, offsets[this.opConfig.resolution]).split('-');
+        return date.toISOString().slice(0, 10).split('-');
     }
 
     private _getWeeksInYear(date: Date, year: string): string | number {
