@@ -3,7 +3,8 @@ import { OpConfig } from '@terascope/job-components';
 export enum DateResolution {
     daily = 'daily',
     monthly = 'monthly',
-    yearly = 'yearly'
+    yearly = 'yearly',
+    weekly = 'weekly'
 }
 
 export interface DateRouterConfig extends OpConfig {

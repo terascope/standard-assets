@@ -53,6 +53,25 @@ describe('date_router', () => {
         expect(slice.getMetadata('standard:route')).toEqual('year_2020-month_01-day_17');
     });
 
+    it('properly adds a weekly parameter', async () => {
+        const test = await makeTest({
+            resolution: DateResolution.weekly
+        });
+
+        const [slice] = await test.runSlice(data);
+        expect(slice.getMetadata('standard:route')).toEqual('2611');
+    });
+
+    it('properly adds a weekly parameter with fields', async () => {
+        const test = await makeTest({
+            resolution: DateResolution.weekly,
+            include_date_units: true
+        });
+
+        const [slice] = await test.runSlice(data);
+        expect(slice.getMetadata('standard:route')).toEqual('week_2611');
+    });
+
     it('properly adds a monthly parameter', async () => {
         const test = await makeTest({
             resolution: DateResolution.monthly

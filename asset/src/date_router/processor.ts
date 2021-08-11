@@ -9,31 +9,31 @@ const offsets = {
     [DateResolution.yearly]: 4
 };
 
+const weekInMs = 86400 * 7 * 1000;
+
 export default class DateRouter extends MapProcessor<DateRouterConfig> {
-    private _joinValue(key: string, value: string) {
-        if (this.opConfig.include_date_units) return `${key}${this.opConfig.value_delimiter}${value}`;
-        return `${value}`;
-    }
-
-    private _joinYear(value: string) {
-        return this._joinValue('year', value);
-    }
-
-    private _joinMonth(value: string) {
-        return this._joinValue('month', value);
-    }
-
-    private _joinDay(value: string) {
-        return this._joinValue('day', value);
+    map(record: DataEntity): DataEntity {
+        this.addPath(record);
+        return record;
     }
 
     addPath(record: DataEntity): void {
-        const partitions: string[] = [];
+        const date = this._getDateValue(record);
 
-        // This value is enforced by the schema
-        const end = offsets[this.opConfig.resolution];
+        if (date == null) return;
+
+        const indexParts = this._getIndexParts(date);
+
+        record.setMetadata(
+            'standard:route',
+            indexParts.join(this.opConfig.field_delimiter)
+        );
+    }
+
+    private _getDateValue(record: DataEntity): Date | undefined {
         const value = record[this.opConfig.field];
-        const date = getValidDate(record[this.opConfig.field]);
+
+        const date = getValidDate(value);
 
         if (date === false) {
             const error = new TSError(`Could not convert value ${value} to a date`, {
@@ -46,27 +46,48 @@ export default class DateRouter extends MapProcessor<DateRouterConfig> {
             return;
         }
 
-        const dates = date.toISOString().slice(0, end).split('-');
-        // Schema enforces one of these formatting options
-        if (this.opConfig.resolution === DateResolution.yearly) {
-            partitions.push(this._joinYear(dates[0]));
-        } else if (this.opConfig.resolution === DateResolution.monthly) {
-            partitions.push(this._joinYear(dates[0]));
-            partitions.push(this._joinMonth(dates[1]));
-        } else {
-            partitions.push(this._joinYear(dates[0]));
-            partitions.push(this._joinMonth(dates[1]));
-            partitions.push(this._joinDay(dates[2]));
-        }
-
-        record.setMetadata(
-            'standard:route',
-            partitions.join(this.opConfig.field_delimiter)
-        );
+        return date;
     }
 
-    map(record: DataEntity): DataEntity {
-        this.addPath(record);
-        return record;
+    private _getIndexParts(date: Date): string[] {
+        if (this.opConfig.resolution === 'weekly') {
+            return this._getWeeklyIndex(date);
+        }
+
+        return this._datePartitions(this._parseDate(date));
+    }
+
+    private _getWeeklyIndex(date: Date): string[] {
+        // weeks since Jan 1, 1970
+        const epochWeeks = Math.floor(date.getTime() / weekInMs);
+
+        return [this._joinValue('week', epochWeeks)];
+    }
+
+    private _parseDate(date: Date): string[] {
+        return date.toISOString().slice(0, offsets[this.opConfig.resolution]).split('-');
+    }
+
+    private _datePartitions(dateComponents: string[]): string[] {
+        // Schema enforces these formatting options
+        const partitions: string[] = [];
+        const { resolution } = this.opConfig;
+
+        partitions.push(this._joinValue('year', dateComponents[0]));
+
+        if (resolution === DateResolution.yearly) return partitions;
+
+        partitions.push(this._joinValue('month', dateComponents[1]));
+
+        if (resolution === DateResolution.monthly) return partitions;
+
+        partitions.push(this._joinValue('day', dateComponents[2]));
+
+        return partitions;
+    }
+
+    private _joinValue(key: string, value: string | number) {
+        if (this.opConfig.include_date_units) return `${key}${this.opConfig.value_delimiter}${value}`;
+        return `${value}`;
     }
 }
