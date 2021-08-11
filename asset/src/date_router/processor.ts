@@ -43,7 +43,7 @@ export default class DateRouter extends MapProcessor<DateRouterConfig> {
                 }
             });
             this.logger.error(error);
-            // we do not annotate metadata, it will be dropped
+            // can't annotate metadata, record will be dropped
             return;
         }
 
