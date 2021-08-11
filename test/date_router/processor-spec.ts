@@ -59,12 +59,42 @@ describe('date_router', () => {
         });
 
         const [slice] = await test.runSlice(data);
-        expect(slice.getMetadata('standard:route')).toEqual('2611');
+        expect(slice.getMetadata('standard:route')).toEqual('2020-02');
+    });
+
+    it('properly adds a weekly parameter for weeks greater than 10', async () => {
+        const test = await makeTest({
+            resolution: DateResolution.weekly
+        });
+
+        data[0].date = '2021-08-22T19:21:52.159Z';
+
+        const [slice] = await test.runSlice(data);
+        expect(slice.getMetadata('standard:route')).toEqual('2021-33');
     });
 
     it('properly adds a weekly parameter with fields', async () => {
         const test = await makeTest({
             resolution: DateResolution.weekly,
+            include_date_units: true
+        });
+
+        const [slice] = await test.runSlice(data);
+        expect(slice.getMetadata('standard:route')).toEqual('year_2020-week_02');
+    });
+
+    it('properly adds a weekly_epoch parameter', async () => {
+        const test = await makeTest({
+            resolution: DateResolution.weekly_epoch
+        });
+
+        const [slice] = await test.runSlice(data);
+        expect(slice.getMetadata('standard:route')).toEqual('2611');
+    });
+
+    it('properly adds a weekly_epoch parameter with fields', async () => {
+        const test = await makeTest({
+            resolution: DateResolution.weekly_epoch,
             include_date_units: true
         });
 

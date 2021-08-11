@@ -6,7 +6,8 @@ import { DateRouterConfig, DateResolution } from './interfaces';
 const offsets = {
     [DateResolution.daily]: 10,
     [DateResolution.monthly]: 7,
-    [DateResolution.yearly]: 4
+    [DateResolution.yearly]: 4,
+    [DateResolution.weekly]: 10
 };
 
 const weekInMs = 86400 * 7 * 1000;
@@ -22,7 +23,7 @@ export default class DateRouter extends MapProcessor<DateRouterConfig> {
 
         if (date == null) return;
 
-        const indexParts = this._getIndexParts(date);
+        const indexParts = this._createIndexParts(date);
 
         record.setMetadata(
             'standard:route',
@@ -49,15 +50,35 @@ export default class DateRouter extends MapProcessor<DateRouterConfig> {
         return date;
     }
 
-    private _getIndexParts(date: Date): string[] {
-        if (this.opConfig.resolution === 'weekly') {
-            return this._getWeeklyIndex(date);
+    private _createIndexParts(date: Date): string[] {
+        const { resolution } = this.opConfig;
+
+        // Schema enforces these formatting options
+        if (resolution === 'weekly_epoch') {
+            return this._getWeeklyEpochIndex(date);
         }
 
-        return this._datePartitions(this._parseDate(date));
+        const dateComponents = this._parseDate(date);
+
+        const partitions: string[] = [];
+
+        partitions.push(this._joinValue('year', dateComponents[0]));
+
+        if (resolution === DateResolution.yearly) return partitions;
+
+        if (resolution === DateResolution.weekly) {
+            partitions.push(this._joinValue('week', this._getWeeksInYear(date, dateComponents[0])));
+            return partitions;
+        }
+
+        partitions.push(this._joinValue('month', dateComponents[1]));
+        if (resolution === DateResolution.monthly) return partitions;
+
+        partitions.push(this._joinValue('day', dateComponents[2]));
+        return partitions;
     }
 
-    private _getWeeklyIndex(date: Date): string[] {
+    private _getWeeklyEpochIndex(date: Date): string[] {
         // weeks since Jan 1, 1970
         const epochWeeks = Math.floor(date.getTime() / weekInMs);
 
@@ -68,22 +89,12 @@ export default class DateRouter extends MapProcessor<DateRouterConfig> {
         return date.toISOString().slice(0, offsets[this.opConfig.resolution]).split('-');
     }
 
-    private _datePartitions(dateComponents: string[]): string[] {
-        // Schema enforces these formatting options
-        const partitions: string[] = [];
-        const { resolution } = this.opConfig;
+    private _getWeeksInYear(date: Date, year: string): string | number {
+        const weeks = Math.floor((date.getTime() - Date.parse(year)) / weekInMs);
 
-        partitions.push(this._joinValue('year', dateComponents[0]));
+        if (weeks < 10) return `0${weeks}`;
 
-        if (resolution === DateResolution.yearly) return partitions;
-
-        partitions.push(this._joinValue('month', dateComponents[1]));
-
-        if (resolution === DateResolution.monthly) return partitions;
-
-        partitions.push(this._joinValue('day', dateComponents[2]));
-
-        return partitions;
+        return weeks;
     }
 
     private _joinValue(key: string, value: string | number) {

@@ -4,6 +4,7 @@ export enum DateResolution {
     daily = 'daily',
     monthly = 'monthly',
     yearly = 'yearly',
+    weekly_epoch = 'weekly_epoch',
     weekly = 'weekly'
 }
 
