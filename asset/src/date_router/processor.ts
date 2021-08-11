@@ -46,36 +46,34 @@ export default class DateRouter extends MapProcessor<DateRouterConfig> {
     private _createIndexParts(date: Date): string[] {
         const { resolution } = this.opConfig;
 
+        const indexParts: string[] = [];
         // Schema enforces these formatting options
+
         if (resolution === 'weekly_epoch') {
-            return this._getWeeklyEpochIndex(date);
+            this._addToIndex(indexParts, 'week', this._getWeeksInEpoch(date));
+            return indexParts;
         }
 
         const [year, month, day] = this._parseDate(date);
 
-        const partitions: string[] = [];
-
-        partitions.push(this._joinValue('year', year));
-
-        if (resolution === DateResolution.yearly) return partitions;
+        this._addToIndex(indexParts, 'year', year);
+        if (resolution === DateResolution.yearly) return indexParts;
 
         if (resolution === DateResolution.weekly) {
-            partitions.push(this._joinValue('week', this._getWeeksInYear(date, year)));
-            return partitions;
+            this._addToIndex(indexParts, 'week', this._getWeeksInYear(date, year));
+            return indexParts;
         }
 
-        partitions.push(this._joinValue('month', month));
-        if (resolution === DateResolution.monthly) return partitions;
+        this._addToIndex(indexParts, 'month', month);
+        if (resolution === DateResolution.monthly) return indexParts;
 
-        partitions.push(this._joinValue('day', day));
-        return partitions;
+        this._addToIndex(indexParts, 'day', day);
+        return indexParts;
     }
 
-    private _getWeeklyEpochIndex(date: Date): string[] {
+    private _getWeeksInEpoch(date: Date): number {
         // weeks since Jan 1, 1970
-        const epochWeeks = Math.floor(date.getTime() / weekInMs);
-
-        return [this._joinValue('week', epochWeeks)];
+        return Math.floor(date.getTime() / weekInMs);
     }
 
     private _parseDate(date: Date): string[] {
@@ -88,6 +86,10 @@ export default class DateRouter extends MapProcessor<DateRouterConfig> {
         if (weeks < 10) return `0${weeks}`;
 
         return weeks;
+    }
+
+    private _addToIndex(partitions: string[], label: string, value: string | number) {
+        partitions.push(this._joinValue(label, value));
     }
 
     private _joinValue(key: string, value: string | number) {
