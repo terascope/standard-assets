@@ -11,7 +11,7 @@ export default class DateRouter extends MapProcessor<DateRouterConfig> {
         return record;
     }
 
-    addPath(record: DataEntity): void {
+    private addPath(record: DataEntity): void {
         const date = this._getDateValue(record);
 
         if (date == null) return;
