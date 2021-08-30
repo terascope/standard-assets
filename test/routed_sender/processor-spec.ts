@@ -85,7 +85,6 @@ describe('Route Sender', () => {
     }
 
     it('will throw if routing is misconfigured', async () => {
-        expect.hasAssertions();
         const opConfig = {
             routing: {
                 '*': 'default',
@@ -93,11 +92,7 @@ describe('Route Sender', () => {
             }
         };
 
-        try {
-            await makeTest(opConfig);
-        } catch (err) {
-            expect(err.message).toEqual('routing cannot specify "*" and "**"');
-        }
+        await expect(makeTest(opConfig)).rejects.toThrowError('routing cannot specify "*" and "**"');
     });
 
     it('will not throw if routing is misconfigured part 2', async () => {
