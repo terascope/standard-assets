@@ -61,7 +61,7 @@ const nativeSchema = {
         faker: 'internet.url'
     },
     uuid: {
-        faker: 'random.uuid'
+        faker: 'datatype.uuid'
     },
     created: {
         function: dateNow
