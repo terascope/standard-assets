@@ -698,12 +698,12 @@
     progress "^2.0.3"
     regenerator-runtime "^0.13.5"
 
-"@terascope/job-components@^0.54.1":
-  version "0.54.1"
-  resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.54.1.tgz#aebcf2fea776cdba1a8a8ae60dbe14eb0feb7e6b"
-  integrity sha512-Joa44vCStALUSIk2kuBAR+ut02gRTFY0d6aGd9j7RHxEueznF/fFYRZcGU3bd81vYI0KvAXadds2bv5sZwRngg==
+"@terascope/job-components@^0.54.2":
+  version "0.54.2"
+  resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.54.2.tgz#80972fed80fdacb42059a12e88cef72c66e626d2"
+  integrity sha512-oiAd/o0yu3WN+aVeK/uVNEd947ZMM1ukViHOWyduiIUnKIKE9XYw5Y7hOg8bBaIVvAzKX+vaC1csm2eU3ORgPQ==
   dependencies:
-    "@terascope/utils" "^0.42.1"
+    "@terascope/utils" "^0.42.2"
     convict "^4.4.1"
     datemath-parser "^1.0.6"
     uuid "^8.3.2"
@@ -720,7 +720,7 @@
   resolved "https://registry.yarnpkg.com/@terascope/types/-/types-0.10.1.tgz#5a1d3993e84d98a2b841218d5f301d30ce290d39"
   integrity sha512-IL28o1zVXWLlLhF3STeQJmrBqEy3+h2MKRctcWw3ZvBd39opC1RUHzblvkOFCxnF4e1uTQ8kuNvlQXWE/HFLoQ==
 
-"@terascope/utils@^0.40.2", "@terascope/utils@^0.42.1":
+"@terascope/utils@^0.40.2", "@terascope/utils@^0.42.1", "@terascope/utils@^0.42.2":
   version "0.40.7"
   resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.40.7.tgz#5257d8d8aa0e794f8a75b9200d66f4dd276befda"
   integrity sha512-B438mTbURghYNDwZNpKwXm/2dIg1JldHHJ4XBa5CiZr1xIkbrIC9rAYWesavyGwxGiG/f5xOEdOahkRYDxg65g==
@@ -6213,10 +6213,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^4.3.5:
-  version "4.3.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.5.tgz#4d1c37cc16e893973c45a06886b7113234f119f4"
-  integrity sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==
+typescript@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.4.2.tgz#6d618640d430e3569a1dfb44f7d7e600ced3ee86"
+  integrity sha512-gzP+t5W4hdy4c+68bfcv0t400HVJMMd2+H9B7gae1nQlBzCqvrXX+6GL/b3GAgyTH966pzrZ70/fRjwAtZksSQ==
 
 unbox-primitive@^1.0.1:
   version "1.0.1"
