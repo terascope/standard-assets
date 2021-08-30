@@ -10,7 +10,7 @@
         ]
     },
     "dependencies": {
-        "@sindresorhus/fnv1a": "^2.0.1",
+        "@sindresorhus/fnv1a": "^3.0.0",
         "@terascope/job-components": "^0.54.1",
         "@terascope/utils": "^0.42.1",
         "express": "^4.17.1",
