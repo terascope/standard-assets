@@ -1,6 +1,6 @@
 import 'jest-extended';
 import path from 'path';
-import fs from 'fs';
+import fs from 'fs/promises';
 import axios from 'axios';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { DataEntity } from '@terascope/job-components';
@@ -37,10 +37,15 @@ describe('job_metric_api', () => {
 
     let harness: WorkerTestHarness;
     beforeAll(async () => {
-        fs.unlink(path.join(__dirname, '../../asset/src/job_metric_example'), () => {});
-        fs.symlink(path.join(__dirname, '../fixtures/job_metric_example'),
-            path.join(__dirname, '../../asset/src/job_metric_example'), () => {
-            });
+        await fs.unlink(path.join(__dirname, '../../asset/src/job_metric_example')).catch(() => {
+            // ignore the error
+        });
+        await fs.symlink(
+            path.join(__dirname, '../fixtures/job_metric_example'),
+            path.join(__dirname, '../../asset/src/job_metric_example')
+        ).catch(() => {
+            // ignore the error
+        });
     });
 
     beforeEach(async () => {
@@ -60,7 +65,9 @@ describe('job_metric_api', () => {
     });
 
     afterAll(async () => {
-        fs.unlink(path.join(__dirname, '../../asset/src/job_metric_example'), () => {});
+        await fs.unlink(path.join(__dirname, '../../asset/src/job_metric_example')).catch(() => {
+            // ignore the error
+        });
         await harness.flush();
     });
 
@@ -69,10 +76,15 @@ describe('job_metric_api', () => {
         expect(records.length).toEqual(1);
         try {
             await axios.get('http://localhost:3338');
+            throw new Error('Expected this test to fail');
         } catch (err) {
-            expect(err.response.status).toEqual(404);
-            expect(err.response.data).toEqual("See the '/metrics' endpoint for the teraslice job metric exporter\n");
+            expect(err).toHaveProperty('response.status', 404);
+            expect(err).toHaveProperty(
+                'response.data',
+                "See the '/metrics' endpoint for the teraslice job metric exporter\n"
+            );
         }
+
         const response = await axios.get('http://localhost:3338/metrics');
         const responseOutput = response.data.split('\n');
         expect(responseOutput[0]).toEqual('# HELP teraslice_job_job_metric_example_cache_hits_total job_metric_example state storage cache hits');
