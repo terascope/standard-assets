@@ -1,10 +1,12 @@
 import 'jest-extended';
 import path from 'path';
-import fs from 'fs/promises';
 import axios from 'axios';
+import _fs from 'fs';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { DataEntity } from '@terascope/job-components';
 import JobMetricApi from '../../asset/src/job_metric_api/api';
+
+const fs = _fs.promises;
 
 describe('job_metric_api', () => {
     const jobWithOutDefaultMetrics = newTestJobConfig({
