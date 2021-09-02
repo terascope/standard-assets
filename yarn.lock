@@ -720,7 +720,7 @@
   resolved "https://registry.yarnpkg.com/@terascope/types/-/types-0.10.1.tgz#5a1d3993e84d98a2b841218d5f301d30ce290d39"
   integrity sha512-IL28o1zVXWLlLhF3STeQJmrBqEy3+h2MKRctcWw3ZvBd39opC1RUHzblvkOFCxnF4e1uTQ8kuNvlQXWE/HFLoQ==
 
-"@terascope/utils@^0.40.2", "@terascope/utils@^0.42.1":
+"@terascope/utils@^0.40.2", "@terascope/utils@^0.42.1", "@terascope/utils@^0.42.3":
   version "0.40.7"
   resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.40.7.tgz#5257d8d8aa0e794f8a75b9200d66f4dd276befda"
   integrity sha512-B438mTbURghYNDwZNpKwXm/2dIg1JldHHJ4XBa5CiZr1xIkbrIC9rAYWesavyGwxGiG/f5xOEdOahkRYDxg65g==
@@ -1495,15 +1495,10 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-awesome-phonenumber@^2.54.0:
+awesome-phonenumber@^2.54.0, awesome-phonenumber@^2.57.0:
   version "2.58.0"
   resolved "https://registry.yarnpkg.com/awesome-phonenumber/-/awesome-phonenumber-2.58.0.tgz#eaa788910b567abd6c1283025bcf491ac5b55d85"
   integrity sha512-rsbIn7Htq/QqUfJ7E53oGiGnLca5SUJEshg8zG5h9WK+fTxoGA12/NDKC5eCvkK2eaP8gR/RVA1yuf0Arib7vg==
-
-awesome-phonenumber@^2.57.0:
-  version "2.57.0"
-  resolved "https://registry.yarnpkg.com/awesome-phonenumber/-/awesome-phonenumber-2.57.0.tgz#0d2986247553b0e3d97e459bb365a82c13a4f259"
-  integrity sha512-RWrCCQpnmkYeL3AGFdlUOpWkpkTauZm7FE9kgDz6xJG6PNUiiIm+rKI95wnre0TSV01PHvgFFwQZhDixPCM9ZA==
 
 axe-core@^4.0.2:
   version "4.3.3"
