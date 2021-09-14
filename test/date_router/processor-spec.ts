@@ -40,7 +40,17 @@ describe('date_router', () => {
         });
 
         const [slice] = await test.runSlice(data);
-        expect(slice.getMetadata('standard:route')).toEqual('2020-01-17');
+        expect(slice.getMetadata('standard:route')).toEqual('2020.01.17');
+    });
+
+    it('properly adds a daily parameter with no delimiter', async () => {
+        const test = await makeTest({
+            resolution: DateResolution.daily,
+            date_delimiter: ''
+        });
+
+        const [slice] = await test.runSlice(data);
+        expect(slice.getMetadata('standard:route')).toEqual('20200117');
     });
 
     it('properly adds a daily parameter with fields', async () => {
@@ -50,7 +60,19 @@ describe('date_router', () => {
         });
 
         const [slice] = await test.runSlice(data);
-        expect(slice.getMetadata('standard:route')).toEqual('year_2020-month_01-day_17');
+        expect(slice.getMetadata('standard:route')).toEqual('year_2020.month_01.day_17');
+    });
+
+    it('properly adds a daily parameter with fields and no date_unit_delimiter', async () => {
+        const test = await makeTest({
+            resolution: DateResolution.daily,
+            include_date_units: true,
+            date_delimiter: '-',
+            date_unit_delimiter: ''
+        });
+
+        const [slice] = await test.runSlice(data);
+        expect(slice.getMetadata('standard:route')).toEqual('year2020-month01-day17');
     });
 
     it('properly adds a weekly parameter', async () => {
@@ -59,12 +81,13 @@ describe('date_router', () => {
         });
 
         const [slice] = await test.runSlice(data);
-        expect(slice.getMetadata('standard:route')).toEqual('2020-02');
+        expect(slice.getMetadata('standard:route')).toEqual('2020.02');
     });
 
     it('properly adds a weekly parameter for weeks greater than 10', async () => {
         const test = await makeTest({
-            resolution: DateResolution.weekly
+            resolution: DateResolution.weekly,
+            date_delimiter: '-'
         });
 
         data[0].date = '2021-08-22T19:21:52.159Z';
@@ -76,7 +99,8 @@ describe('date_router', () => {
     it('properly adds a weekly parameter with fields', async () => {
         const test = await makeTest({
             resolution: DateResolution.weekly,
-            include_date_units: true
+            include_date_units: true,
+            date_delimiter: '-'
         });
 
         const [slice] = await test.runSlice(data);
@@ -108,38 +132,39 @@ describe('date_router', () => {
         });
 
         const slice = await test.runSlice(data);
-        expect(slice[0].getMetadata('standard:route')).toEqual('2020-01');
+        expect(slice[0].getMetadata('standard:route')).toEqual('2020.01');
     });
 
     it('properly adds a monthly parameter with fields', async () => {
         const test = await makeTest({
             resolution: DateResolution.monthly,
-            include_date_units: true
+            include_date_units: true,
+            date_delimiter: '-'
         });
 
         const slice = await test.runSlice(data);
         expect(slice[0].getMetadata('standard:route')).toEqual('year_2020-month_01');
     });
 
-    it('properly adds a monthly parameter with another field_delimiter', async () => {
+    it('properly adds a monthly parameter with another date_delimiter', async () => {
         const test = await makeTest({
             resolution: DateResolution.monthly,
-            field_delimiter: '.'
+            date_delimiter: '.'
         });
 
         const slice = await test.runSlice(data);
         expect(slice[0].getMetadata('standard:route')).toEqual('2020.01');
     });
 
-    it('properly adds a monthly parameter with another field_delimiter with fields', async () => {
+    it('properly adds a monthly parameter with another date_delimiter with fields', async () => {
         const test = await makeTest({
             resolution: DateResolution.monthly,
-            field_delimiter: ' > ',
+            date_delimiter: '.',
             include_date_units: true
         });
 
         const slice = await test.runSlice(data);
-        expect(slice[0].getMetadata('standard:route')).toEqual('year_2020 > month_01');
+        expect(slice[0].getMetadata('standard:route')).toEqual('year_2020.month_01');
     });
 
     it('properly adds a yearly parameter', async () => {
@@ -161,24 +186,24 @@ describe('date_router', () => {
         expect(slice[0].getMetadata('standard:route')).toEqual('year_2020');
     });
 
-    it('properly does not add a yearly parameter with another value_delimiter if include_date_units is set to true', async () => {
+    it('properly does not add a yearly parameter with another date_unit_delimiter if include_date_units is set to true', async () => {
         const test = await makeTest({
             resolution: DateResolution.yearly,
-            value_delimiter: '&'
+            date_unit_delimiter: '/'
         });
 
         const slice = await test.runSlice(data);
         expect(slice[0].getMetadata('standard:route')).toEqual('2020');
     });
 
-    it('properly adds a yearly parameter with another value_delimiter with fields', async () => {
+    it('properly adds a yearly parameter with another date_unit_delimiter with fields', async () => {
         const test = await makeTest({
             resolution: DateResolution.yearly,
-            value_delimiter: '&',
+            date_unit_delimiter: '/',
             include_date_units: true
         });
 
         const slice = await test.runSlice(data);
-        expect(slice[0].getMetadata('standard:route')).toEqual('year&2020');
+        expect(slice[0].getMetadata('standard:route')).toEqual('year/2020');
     });
 });

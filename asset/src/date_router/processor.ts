@@ -20,7 +20,7 @@ export default class DateRouter extends MapProcessor<DateRouterConfig> {
 
         record.setMetadata(
             'standard:route',
-            indexParts.join(this.opConfig.field_delimiter)
+            indexParts.join(this.opConfig.date_delimiter)
         );
     }
 
@@ -93,7 +93,7 @@ export default class DateRouter extends MapProcessor<DateRouterConfig> {
     }
 
     private _joinValue(key: string, value: string | number) {
-        if (this.opConfig.include_date_units) return `${key}${this.opConfig.value_delimiter}${value}`;
+        if (this.opConfig.include_date_units) return `${key}${this.opConfig.date_unit_delimiter}${value}`;
         return `${value}`;
     }
 }
