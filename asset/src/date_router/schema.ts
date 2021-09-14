@@ -1,6 +1,14 @@
 import { ConvictSchema } from '@terascope/job-components';
 import { DateRouterConfig, DateResolution } from './interfaces';
 
+const validDelimiters = [
+    '-',
+    '_',
+    '.',
+    '/',
+    ''
+];
+
 export default class Schema extends ConvictSchema<DateRouterConfig> {
     build(): Record<string, any> {
         return {
@@ -14,15 +22,15 @@ export default class Schema extends ConvictSchema<DateRouterConfig> {
                 default: DateResolution.daily,
                 format: Object.keys(DateResolution)
             },
-            field_delimiter: {
-                doc: 'separator between field/value combinations - default "-"',
-                default: '-',
-                format: 'optional_String'
+            date_delimiter: {
+                doc: 'separator between the date parts, ie year, month, date',
+                default: '.',
+                format: (value: string) => this.validateDelimiter(value)
             },
-            value_delimiter: {
-                doc: 'separator between the field name and the value - default "_"',
+            date_unit_delimiter: {
+                doc: 'separator between the date unit and the date value, only used if include_date_units is true.  Defaults to "_"',
                 default: '_',
-                format: 'optional_String'
+                format: (value: string) => this.validateDelimiter(value)
             },
             include_date_units: {
                 doc: 'determines if the date unit (year, month, day) should be included in final output',
@@ -30,5 +38,11 @@ export default class Schema extends ConvictSchema<DateRouterConfig> {
                 format: 'Boolean'
             }
         };
+    }
+
+    validateDelimiter(value: string): void {
+        if (!validDelimiters.includes(value)) {
+            throw Error(`Delimiter must be one of ${validDelimiters.join(',')}, value was ${value}`);
+        }
     }
 }

@@ -1,21 +1,16 @@
 # date_router
 
-The `date_router` processor will tag the incoming records with the `standard:route` metadata which is used by the [routed_sender](./routed_sender.md) processor to dynamically routes records to different locations.
-
-This will enable time series based routing for the routed_sender
-
-To use this processor, it is required that the record has a field with an appropriate date value that will be used to determine its destination index.
-
+The `date_router` enables time series based routing by the [routed_sender](./routed_sender.md).   It uses a date field on the incoming record, as specified by the job config, to annotate a record's `standard:route` metatdata with a time based route.   The `standard:route` metadata is then read by the the routed_sender and used to determine the route for each record.
 
 ## Usage
 
-### Enable time series indexing by year, month and date
-Here is an example of using the processor to annotate records by year, month and date and dynamically send it to different indicies in elasticsearch. The way the operation is configured will check the created field, and format the date accordingly
+### Example of time series routing with daily resolution using Elasticsearch 
+This teraslice job would write the record with `created: 2021-09-14` to the index `example-index-2021.09.14`.
 
 Example Job
 ```json
 {
-    "name" : "testing",
+    "name" : "example",
     "workers" : 1,
     "slicers" : 1,
     "lifecycle" : "once",
@@ -26,7 +21,7 @@ Example Job
     "apis": [
         {
             "_name": "elasticsearch_sender_api",
-            "index": "other_index",
+            "index": "example-index",
             "size": 1000
         }
     ],
@@ -39,39 +34,94 @@ Example Job
             "_op": "date_router",
             "field": "created",
             "resolution": "daily",
-            "field_delimiter": "-",
-            "value_delimiter": "_"
+            "date_delimiter": "."
         },
         {
             "_op": "routed_sender",
             "api_name": "elasticsearch_sender_api",
             "routing": {
-                "**": "default"
+                "**": "ELASTICSEARCH_CONNECTION"
             }
         }
     ]
 }
 ```
-Here is an example of data and the resulting metadata generated from it based on the job above.
 
-``` javascript
-const data = [{
-    created: '2020-01-17T19:21:52.159Z',
-    text: 'test data'
-}];
+View of the metadata for a record processed with the above job config:
+```javascript
+// incoming doc
+const doc = {
+    foo: 'bar',
+    created: '2021-09-14T19:21:52.159Z'
+}
 
-const results = await processor.run(data);
-
-results[0].getMetadata('standard:route') === `2020-01-17`;
+// post date_router process
+doc.getMetadata('standard:route') // 2021.09.14
 ```
 
-### Example of changing the date resolution and delimiters
-In this example we show how we can change the resolution of the date and change the delimiters of the field and value to create another path, which will then be used by the routed_sender to send to a file.
+
+### Example of time series routing with weekly_epoch resolution using Elasticsearch 
+This teraslice job would write the record with `created: 2021-09-14` to the index `example-index-2697`.
 
 Example Job
 ```json
 {
-    "name" : "testing",
+    "name" : "example",
+    "workers" : 1,
+    "slicers" : 1,
+    "lifecycle" : "once",
+    "assets" : [
+        "standard",
+        "elasticsearch"
+    ],
+    "apis": [
+        {
+            "_name": "elasticsearch_sender_api",
+            "index": "example-index",
+            "size": 1000
+        }
+    ],
+    "operations" : [
+        {
+            "_op": "data_generator",
+            "size": 10000
+        },
+        {
+            "_op": "date_router",
+            "field": "created",
+            "resolution": "weekly_epoch"
+        },
+        {
+            "_op": "routed_sender",
+            "api_name": "elasticsearch_sender_api",
+            "routing": {
+                "**": "ELASTICSEARCH_CONNECTION"
+            }
+        }
+    ]
+}
+```
+
+View of the metadata for a record processed with the above job config:
+```javascript
+// incoming doc
+const doc = {
+    foo: 'bar',
+    created: '2021-09-14T19:21:52.159Z'
+}
+
+// post date_router process
+doc.getMetadata('standard:route') // 2697
+```
+
+
+### Example of time series routing with monthly resolution using a file system 
+This example writes to a file location.  A record with `created: 2021-08-21` will be saved to the path and file `/example/path/2021_08`
+
+Example Job
+```json
+{
+    "name" : "example",
     "workers" : 1,
     "slicers" : 1,
     "lifecycle" : "once",
@@ -82,7 +132,7 @@ Example Job
     "apis": [
         {
             "_name": "file_sender_api",
-            "path": "/app/data/",
+            "path": "/example/path/",
             "format": "tsv",
             "file_per_slice": true
         }
@@ -96,49 +146,52 @@ Example Job
             "_op": "date_router",
             "field": "created",
             "resolution": "monthly",
-            "field_delimiter": "."
+            "date_delimiter": "_"
         },
         {
             "_op": "routed_sender",
             "api_name": "file_sender_api",
             "routing": {
-                "**": "default"
+                "**": "FILE_CONNECTION"
             }
         }
     ]
 }
 ```
-Here is an example of what will be returned from the processor
-``` javascript
-const data = [{
-    created: '2020-01-17T19:21:52.159Z',
-    text: 'test data'
-}];
 
-const results = await processor.run(data);
+View of the metadata for a record processed with the above job config:
+```javascript
+// incoming doc
+const doc = {
+    foo: 'bar',
+    created: '2021-08-21T19:21:52.159Z'
+}
 
-results[0].getMetadata('standard:route') === `2020.01`;
+// post date_router process
+doc.getMetadata('standard:route') // 2021_08
 ```
 
-### Enable time series indexing by year, month and date including date units
-Here is an example of using the processor to annotate records by year, month and date attached with its unit name, and dynamically send it to different indicies in elasticsearch. The way the operation is configured will check the created field, and format the date accordingly
+
+### Example of time series routing with daily resolution and date units using a file system
+This example also writes to a file location but includes the date units in the route .   Note that "`/`" is used as the date_delimiter to create file paths based on the year and month.  A record with `created: 2021-08-21` will be saved to the path and file `/example/path/year_2021/month_08/day_21`. 
 
 Example Job
 ```json
 {
-    "name" : "testing",
+    "name" : "example",
     "workers" : 1,
     "slicers" : 1,
     "lifecycle" : "once",
     "assets" : [
         "standard",
-        "elasticsearch"
+        "file"
     ],
     "apis": [
         {
-            "_name": "elasticsearch_sender_api",
-            "index": "other_index",
-            "size": 1000
+            "_name": "file_sender_api",
+            "path": "/example/path/",
+            "format": "tsv",
+            "file_per_slice": true
         }
     ],
     "operations" : [
@@ -149,41 +202,41 @@ Example Job
         {
             "_op": "date_router",
             "field": "created",
-            "resolution": "monthly",
-            "field_delimiter": " > ",
-            "value_delimiter": ":",
-            "include_date_units": "true"
+            "resolution": "daily",
+            "date_delimiter": "/",
+            "include_date_units": true,
+            "date_unit_delimiter": "_"
         },
         {
             "_op": "routed_sender",
-            "api_name": "elasticsearch_sender_api",
+            "api_name": "file_sender_api",
             "routing": {
-                "**": "default"
+                "**": "FILE_CONNECTION"
             }
         }
     ]
 }
 ```
-Here is an example of data and the resulting metadata generated from it based on the job above.
 
-``` javascript
-const data = [{
-    created: '2020-01-17T19:21:52.159Z',
-    text: 'test data'
-}];
+View of the metadata for a record processed with the above job config:
+```javascript
+// incoming doc
+const doc = {
+    foo: 'bar',
+    created: '2021-08-21T19:21:52.159Z'
+}
 
-const results = await processor.run(data);
-
-results[0].getMetadata('standard:route') === `year:2020 > month:01`;
+// post date_router process
+doc.getMetadata('standard:route') // year_2021/month_08/day_21
 ```
 
 
 ## Parameters
 | Configuration | Description | Type |  Notes |
 | --------- | -------- | ------ | ------ |
-| _op | Name of operation, it must reflect the exact name of the file | String | required |
-| field | Which field in each data record contains the date to use for time series | String | required |
-| resolution | Type of time series data, may be set to `daily`, `monthly`, or `yearly` | String | optional, defaults to `daily` |
-| field_delimiter | separator between field/value combinations | String | optional, defaults to `-` |
-| value_delimiter | separator between the field name and the value | String | optional, defaults to `_` |
+| _op | routed_sender | String | required |
+| field | Name of field that will be used for the time series routing, must be a date field | String | required |
+| resolution | The unit of time that a record will be routed by, options are `daily`, `monthly`, `yearly`, `weekly`, or `weekly_epoch (weeks since 1/1/1970)` | String | optional, defaults to `daily` |
+| date_delimiter | Separator between the date parts in the route, limited to the characters `".", "-", "_", "/" or "" (no delimiter)` | String | optional, defaults to `.` |
 | include_date_units | Determines if the date unit (year, month, day) should be included in final output | Boolean | optional, defaults to false |
+| date_unit_delimiter | Separator between the date units and their values, limited to the characters `".", "-", "_", "/" or "" (no delimiter)`| String | optional, defaults to `_` |

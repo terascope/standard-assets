@@ -30,14 +30,17 @@ describe('date_router schema', () => {
         expect(schema).toBeDefined();
         expect(schema.field).toEqual('test');
         expect(schema.resolution).toEqual(DateResolution.daily);
-        expect(schema.field_delimiter).toEqual('-');
-        expect(schema.value_delimiter).toEqual('_');
+        expect(schema.date_delimiter).toEqual('.');
+        expect(schema.date_unit_delimiter).toEqual('_');
     });
 
     it('should throw with bad values', async () => {
         await expect(makeSchema({})).toReject();
         await expect(makeSchema({ field: 'test', resolution: 1234 })).toReject();
-        await expect(makeSchema({ field: 'test', field_delimiter: 1234 })).toReject();
-        await expect(makeSchema({ field: 'test', value_delimiter: 1234 })).toReject();
+        await expect(makeSchema({ field: 'test', date_delimiter: 1234 })).toReject();
+        await expect(makeSchema({ field: 'test', date_unit_delimiter: 1234 })).toReject();
+        await expect(makeSchema({ field: 'test', date_delimiter: ':' })).toReject();
+        await expect(makeSchema({ field: 'test', date_unit_delimiter: '*' })).toReject();
+        await expect(makeSchema({ field: 'test', date_unit_delimiter: ' ' })).toReject();
     });
 });
