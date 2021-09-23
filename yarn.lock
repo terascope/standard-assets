@@ -698,12 +698,12 @@
     progress "^2.0.3"
     regenerator-runtime "^0.13.5"
 
-"@terascope/job-components@^0.54.5":
-  version "0.54.5"
-  resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.54.5.tgz#59fe7c6ee4dfbd6e45d0c47033e1342e53c2e62e"
-  integrity sha512-Q3P7Qq0hphVPZax3B/O/vIG+9ZIbNFAJK0l2+EBy8VlICd/OvVL5UWOwsfcEKLcA76J2HisIvjli9mcwJ6LWbA==
+"@terascope/job-components@^0.54.7":
+  version "0.54.7"
+  resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.54.7.tgz#f0886a9285ed101abdde57ad7e32cd2daa3d1eab"
+  integrity sha512-YyuYxo7+/65VxvLeo91tpqouZI9bNnjXIUEDa5NxtF53kXKK+hp0abuEu4QhMXGO6TX4p/tN282cyVN+tomZhQ==
   dependencies:
-    "@terascope/utils" "^0.42.5"
+    "@terascope/utils" "^0.42.7"
     convict "^4.4.1"
     datemath-parser "^1.0.6"
     uuid "^8.3.2"
@@ -720,7 +720,7 @@
   resolved "https://registry.yarnpkg.com/@terascope/types/-/types-0.10.2.tgz#022cbd6c75b036f4af4366244cc0589ca93f6535"
   integrity sha512-SFZosbIyGtjiB/Wa32pIgycahZMIqrvZ73iVWhHyWFs7WQGJvHZDX1pPm6Wb91Pxa/+6s9yS8L6IueXnkyJZAQ==
 
-"@terascope/utils@^0.40.2", "@terascope/utils@^0.42.5", "@terascope/utils@^0.42.6":
+"@terascope/utils@^0.40.2", "@terascope/utils@^0.42.5", "@terascope/utils@^0.42.6", "@terascope/utils@^0.42.7":
   version "0.40.7"
   resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.40.7.tgz#5257d8d8aa0e794f8a75b9200d66f4dd276befda"
   integrity sha512-B438mTbURghYNDwZNpKwXm/2dIg1JldHHJ4XBa5CiZr1xIkbrIC9rAYWesavyGwxGiG/f5xOEdOahkRYDxg65g==
@@ -1495,7 +1495,12 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-awesome-phonenumber@^2.54.0, awesome-phonenumber@^2.59.0:
+awesome-phonenumber@^2.54.0:
+  version "2.60.0"
+  resolved "https://registry.yarnpkg.com/awesome-phonenumber/-/awesome-phonenumber-2.60.0.tgz#376962fa7b30e1df33d6025a35b669742d299a1f"
+  integrity sha512-cSNn413suxJ0SXKKGNb8v0vWRe2a9aj0RYp/VJDO0ea2c8oPL/9mCTTMWekJ44ABNogqwpFEYzJcqseZfg5BfA==
+
+awesome-phonenumber@^2.59.0:
   version "2.59.0"
   resolved "https://registry.yarnpkg.com/awesome-phonenumber/-/awesome-phonenumber-2.59.0.tgz#9a45f08167d92b1c177cbe2a3df313f8b19d8ebe"
   integrity sha512-ySAF+Xe0M1NWvj8FMYcgsMMWGuFJAH1DJL9T/juFfozV6bOe0IifP50W+MdyBMQI2rQsNm5mNXBwdVGuwATkmQ==
