@@ -637,35 +637,38 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@terascope/data-mate@^0.34.7":
-  version "0.34.7"
-  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.34.7.tgz#f23013a3e7f34d93342556618279161fbc733851"
-  integrity sha512-IQhNmfeVyvYh02abx9InwA090Cqm9EEgJXxI+2Cb/tyHlK0E0XviuBQQLrTUphjSkjly1uxB8FFD6M5YolsYBg==
+"@terascope/data-mate@^0.34.9":
+  version "0.34.9"
+  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.34.9.tgz#09ea254adcbc8fca0eaf46ef3df99cac06e68324"
+  integrity sha512-DP3SWjp2arWlThLutrhAwb/38qRySO/GMixAl94UcpGEjDg82DgLfjJce5eaFdiSjujYMgKaKwrUFimlNf045w==
   dependencies:
-    "@terascope/data-types" "^0.32.6"
-    "@terascope/types" "^0.10.1"
-    "@terascope/utils" "^0.42.5"
-    date-fns "^2.23.0"
+    "@terascope/data-types" "^0.32.8"
+    "@terascope/types" "^0.10.2"
+    "@terascope/utils" "^0.42.7"
+    "@types/validator" "^13.6.3"
+    awesome-phonenumber "^2.59.0"
+    date-fns "^2.24.0"
     ip-bigint "^3.0.3"
     ip6addr "^0.2.3"
     ipaddr.js "^2.0.1"
     is-cidr "^4.0.2"
     is-ip "^3.1.0"
     jexl "^2.2.2"
+    lodash "^4.17.21"
     mnemonist "^0.38.3"
     uuid "^8.3.2"
     valid-url "^1.0.9"
     validator "^13.6.0"
-    xlucene-parser "^0.40.5"
+    xlucene-parser "^0.40.7"
 
-"@terascope/data-types@^0.32.6":
-  version "0.32.6"
-  resolved "https://registry.yarnpkg.com/@terascope/data-types/-/data-types-0.32.6.tgz#8e8167d2a098f1c09de774e19db636333882cb22"
-  integrity sha512-DTvoX/Mr0A8D1MtrPZ9VxjQUUhCVWhgpJ021Tz1aeojGLdBJKF2SpPgb+8RWN0yHPJBphECC54UshQ8cQQARjA==
+"@terascope/data-types@^0.32.8":
+  version "0.32.8"
+  resolved "https://registry.yarnpkg.com/@terascope/data-types/-/data-types-0.32.8.tgz#726a230e8bc10ad68d58431921f48f952d3a9b1e"
+  integrity sha512-43i64urN3K0T+3blQ1V+g13QQgb547vbiVxbwUd+puTAJbIegtD0LlcqBepK5OMkW5bh/rTX1shfCSJdrAaLEQ==
   dependencies:
-    "@terascope/types" "^0.10.1"
-    "@terascope/utils" "^0.42.5"
-    graphql "^15.5.0"
+    "@terascope/types" "^0.10.2"
+    "@terascope/utils" "^0.42.7"
+    graphql "^14.7.0"
     lodash "^4.17.21"
     yargs "^17.1.1"
 
@@ -715,12 +718,12 @@
   dependencies:
     bluebird "^3.7.2"
 
-"@terascope/types@^0.10.1":
+"@terascope/types@^0.10.1", "@terascope/types@^0.10.2":
   version "0.10.2"
   resolved "https://registry.yarnpkg.com/@terascope/types/-/types-0.10.2.tgz#022cbd6c75b036f4af4366244cc0589ca93f6535"
   integrity sha512-SFZosbIyGtjiB/Wa32pIgycahZMIqrvZ73iVWhHyWFs7WQGJvHZDX1pPm6Wb91Pxa/+6s9yS8L6IueXnkyJZAQ==
 
-"@terascope/utils@^0.40.2", "@terascope/utils@^0.42.5", "@terascope/utils@^0.42.6":
+"@terascope/utils@^0.40.2", "@terascope/utils@^0.42.5", "@terascope/utils@^0.42.6", "@terascope/utils@^0.42.7":
   version "0.40.7"
   resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.40.7.tgz#5257d8d8aa0e794f8a75b9200d66f4dd276befda"
   integrity sha512-B438mTbURghYNDwZNpKwXm/2dIg1JldHHJ4XBa5CiZr1xIkbrIC9rAYWesavyGwxGiG/f5xOEdOahkRYDxg65g==
@@ -1150,6 +1153,11 @@
   resolved "https://registry.yarnpkg.com/@types/timsort/-/timsort-0.3.0.tgz#f93fd394b89b5119e22e19ae2349f5a85f185d4b"
   integrity sha512-SFjNmiiq4uCs9eXvxbaJMa8pnmlepV8dT2p0nCfdRL1h/UU7ZQFsnCLvtXRHTb3rnyILpQz4Kh8JoTqvDdgxYw==
 
+"@types/validator@^13.6.3":
+  version "13.6.3"
+  resolved "https://registry.yarnpkg.com/@types/validator/-/validator-13.6.3.tgz#31ca2e997bf13a0fffca30a25747d5b9f7dbb7de"
+  integrity sha512-fWG42pMJOL4jKsDDZZREnXLjc3UE0R8LOJfARWYg6U966rxDT7TYejYzLnUF5cvSObGg34nd0+H2wHHU5Omdfw==
+
 "@types/yargs-parser@*":
   version "20.2.1"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-20.2.1.tgz#3b9ce2489919d9e4fea439b76916abc34b2df129"
@@ -1495,7 +1503,12 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-awesome-phonenumber@^2.54.0, awesome-phonenumber@^2.59.0:
+awesome-phonenumber@^2.54.0:
+  version "2.60.0"
+  resolved "https://registry.yarnpkg.com/awesome-phonenumber/-/awesome-phonenumber-2.60.0.tgz#376962fa7b30e1df33d6025a35b669742d299a1f"
+  integrity sha512-cSNn413suxJ0SXKKGNb8v0vWRe2a9aj0RYp/VJDO0ea2c8oPL/9mCTTMWekJ44ABNogqwpFEYzJcqseZfg5BfA==
+
+awesome-phonenumber@^2.59.0:
   version "2.59.0"
   resolved "https://registry.yarnpkg.com/awesome-phonenumber/-/awesome-phonenumber-2.59.0.tgz#9a45f08167d92b1c177cbe2a3df313f8b19d8ebe"
   integrity sha512-ySAF+Xe0M1NWvj8FMYcgsMMWGuFJAH1DJL9T/juFfozV6bOe0IifP50W+MdyBMQI2rQsNm5mNXBwdVGuwATkmQ==
@@ -2091,7 +2104,7 @@ date-fns-tz@^1.1.5:
   resolved "https://registry.yarnpkg.com/date-fns-tz/-/date-fns-tz-1.1.6.tgz#93cbf354e2aeb2cd312ffa32e462c1943cf20a8e"
   integrity sha512-nyy+URfFI3KUY7udEJozcoftju+KduaqkVfwyTIE0traBiVye09QnyWKLZK7drRr5h9B7sPJITmQnS3U6YOdQg==
 
-date-fns@^2.23.0:
+date-fns@^2.23.0, date-fns@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.24.0.tgz#7d86dc0d93c87b76b63d213b4413337cfd1c105d"
   integrity sha512-6ujwvwgPID6zbI0o7UbURi2vlLDR9uP26+tW6Lg+Ji3w7dd0i3DOcjcClLjLPranT60SSEFBwdSyYwn/ZkPIuw==
@@ -3203,10 +3216,12 @@ graphlib@^2.1.8:
   dependencies:
     lodash "^4.17.15"
 
-graphql@^15.5.0:
-  version "15.5.1"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.5.1.tgz#f2f84415d8985e7b84731e7f3536f8bb9d383aad"
-  integrity sha512-FeTRX67T3LoE3LWAxxOlW2K3Bz+rMYAC18rRguK4wgXaTZMiJwSUwDmPFo3UadAKbzirKIg5Qy+sNJXbpPRnQw==
+graphql@^14.7.0:
+  version "14.7.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.7.0.tgz#7fa79a80a69be4a31c27dda824dc04dac2035a72"
+  integrity sha512-l0xWZpoPKpppFzMfvVyFmp9vLN7w/ZZJPefUicMCepfJeQ8sMcztloGYY9DfjVPo6tIUDzU5Hw3MUbIjj9AVVA==
+  dependencies:
+    iterall "^1.2.2"
 
 has-bigints@^1.0.1:
   version "1.0.1"
@@ -3765,6 +3780,11 @@ istanbul-reports@^3.0.2:
   dependencies:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
+
+iterall@^1.2.2:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.3.0.tgz#afcb08492e2915cbd8a0884eb93a8c94d0d72fea"
+  integrity sha512-QZ9qOMdF+QLHxy1QIpUHUU1D5pS2CG2P69LF6L6CPjPYA/XMOmKV3PZpawHoAjHNyB0swdVTRxdYT4tbBbxqwg==
 
 jest-changed-files@^27.1.1:
   version "27.1.1"
@@ -6115,14 +6135,14 @@ ts-jest@^27.0.5:
     semver "7.x"
     yargs-parser "20.x"
 
-ts-transforms@^0.63.7:
-  version "0.63.7"
-  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.63.7.tgz#e0865f552d50222339ff8899db85bc633b4f7c9d"
-  integrity sha512-kW8NuH09jQ5t8/7GrIo1YMa/tv21dRly12euuRgP97KKqiRjPzG0z8vvvpb9ls44y4oSyxY/BevxePM5wsbjxQ==
+ts-transforms@^0.63.9:
+  version "0.63.9"
+  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.63.9.tgz#0d7dd168cd024c9f214b41a48d5561cf3ff85b99"
+  integrity sha512-7lkywpMzM5FQPDr4EhWnceyKFLrSd8Fn/GnSttRAlJXu4/EMleCxtmv/f/pOj7nS3CeGeUZF3SSQc8up9HDKcQ==
   dependencies:
-    "@terascope/data-mate" "^0.34.7"
-    "@terascope/types" "^0.10.1"
-    "@terascope/utils" "^0.42.5"
+    "@terascope/data-mate" "^0.34.9"
+    "@terascope/types" "^0.10.2"
+    "@terascope/utils" "^0.42.7"
     awesome-phonenumber "^2.59.0"
     graphlib "^2.1.8"
     is-ip "^3.1.0"
@@ -6458,13 +6478,13 @@ ws@^7.4.6:
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.3.tgz#160835b63c7d97bfab418fc1b8a9fced2ac01a74"
   integrity sha512-kQ/dHIzuLrS6Je9+uv81ueZomEwH0qVYstcAQ4/Z93K8zeko9gtAbttJWzoC5ukqXY1PpoouV3+VSOqEAFt5wg==
 
-xlucene-parser@^0.40.5:
-  version "0.40.5"
-  resolved "https://registry.yarnpkg.com/xlucene-parser/-/xlucene-parser-0.40.5.tgz#2c90cae4855c1bfa5ce3bebef478d3c886cbb754"
-  integrity sha512-WG0dHDAs6XRIBfIk1YfDs5/2y/BHWhe1aQW2bqdHr7dTa0ST0wUkWoqqIi0hNVPFU4qnTxTc53Ujn2Puwdjk6A==
+xlucene-parser@^0.40.7:
+  version "0.40.7"
+  resolved "https://registry.yarnpkg.com/xlucene-parser/-/xlucene-parser-0.40.7.tgz#08fb8de766bd2fe6c6e50412c7c3816ff614adef"
+  integrity sha512-Xn2CJSn6UUw10g4C9Ywbn5jlCH+Yn6EwLU/VIhxlkJLTRMiN2bHjvTYLrDVcZqNBN3NaghRTPLMDq5mUCTMDkQ==
   dependencies:
-    "@terascope/types" "^0.10.1"
-    "@terascope/utils" "^0.42.5"
+    "@terascope/types" "^0.10.2"
+    "@terascope/utils" "^0.42.7"
     netmask "^2.0.2"
 
 xml-name-validator@^3.0.0:
