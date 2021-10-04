@@ -1498,7 +1498,12 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-awesome-phonenumber@^2.54.0, awesome-phonenumber@^2.59.0:
+awesome-phonenumber@^2.54.0:
+  version "2.62.1"
+  resolved "https://registry.yarnpkg.com/awesome-phonenumber/-/awesome-phonenumber-2.62.1.tgz#43b7d99f1b52aa5898899b62cc4ade4bacb88d70"
+  integrity sha512-oPke1mCiOO2EKloS+3lgWesfhIElqfsf2jitkPhcUC1+2u8rFYOtNtERKR2KByzTUoaDGRtu3odkj4fzX3BxRw==
+
+awesome-phonenumber@^2.59.0:
   version "2.62.0"
   resolved "https://registry.yarnpkg.com/awesome-phonenumber/-/awesome-phonenumber-2.62.0.tgz#5162be662f009d4ff030f7cb20f18dcad115e838"
   integrity sha512-PjfuNAcsQ3OeHrf3hMYSHwtGUXkkfb7ZW792MZZtXzRddRvKPnq3AFn0nfl+8e9aVHwr2WmexUrWhVYgsutlZg==
