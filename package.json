@@ -18,11 +18,11 @@
         "test:debug": "env DEBUG=\"${DEBUG:-*teraslice*}\" jest --detectOpenHandles --coverage=false --runInBand"
     },
     "resolutions": {
-        "@terascope/utils": "^0.40.2"
+        "@terascope/utils": "^0.43.0"
     },
     "devDependencies": {
         "@terascope/eslint-config": "^0.6.1",
-        "@terascope/job-components": "^0.54.7",
+        "@terascope/job-components": "^0.55.0",
         "@types/express": "^4.17.13",
         "@types/jest": "^27.0.2",
         "@types/json2csv": "^5.0.3",
@@ -30,10 +30,10 @@
         "@types/node-gzip": "^1.1.0",
         "@types/timsort": "^0.3.0",
         "axios": "^0.21.4",
-        "eslint": "^7.32.0",
+        "eslint": "^8.0.0",
         "jest": "^27.2.4",
         "jest-extended": "^0.11.5",
-        "teraslice-test-harness": "^0.28.1",
+        "teraslice-test-harness": "^0.28.2",
         "ts-jest": "^27.0.5",
         "typescript": "^4.4.3"
     },
