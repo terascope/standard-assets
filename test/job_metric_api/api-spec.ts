@@ -51,7 +51,7 @@ describe('job_metric_api', () => {
     });
 
     it('includes default metrics when default_metrics is true', async () => {
-        const response = await axios.get('http://localhost:3339/metrics');
+        const response = await axios.get<string>('http://localhost:3339/metrics');
         const responseOutput = response.data.split('\n');
         expect(responseOutput[0]).toEqual('# HELP process_cpu_user_seconds_total Total user CPU time spent in seconds.');
         expect(responseOutput[1]).toEqual('# TYPE process_cpu_user_seconds_total counter');

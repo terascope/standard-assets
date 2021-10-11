@@ -87,7 +87,7 @@ describe('job_metric_api', () => {
             );
         }
 
-        const response = await axios.get('http://localhost:3338/metrics');
+        const response = await axios.get<string>('http://localhost:3338/metrics');
         const responseOutput = response.data.split('\n');
         expect(responseOutput[0]).toEqual('# HELP teraslice_job_job_metric_example_cache_hits_total job_metric_example state storage cache hits');
         expect(responseOutput[1]).toEqual('# TYPE teraslice_job_job_metric_example_cache_hits_total counter');
