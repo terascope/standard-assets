@@ -15,13 +15,14 @@ if: NOT (branch = master AND type = push AND tag IS blank AND os = osx)
 cache:
   npm: false
   yarn: false
-before_script:
+before_install:
   # yarn doesn't exist in the base image for osx anymore, so this should fix it
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     npm install -g yarn
     else
     echo "* skipping install yarn for $TRAVIS_OS_NAME";
     fi
+before_script:
   - yarn build
   - yarn global add teraslice-cli
 script:
