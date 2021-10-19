@@ -17,6 +17,6 @@
         "mocker-data-generator": "^2.12.0",
         "prom-client": "^14.0.0",
         "timsort": "^0.3.0",
-        "ts-transforms": "^0.64.0"
+        "ts-transforms": "^0.64.1"
     }
 }
