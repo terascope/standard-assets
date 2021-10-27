@@ -6,7 +6,7 @@ import AccumulatorByKey from '../__lib/accumulator-key';
 
 export default class AccumulateByKey extends BatchProcessor<AccumulateByKeyConfig> {
     flushData = false;
-    accumulator: AccumulatorByKey
+    accumulator: AccumulatorByKey;
 
     constructor(
         context: WorkerContext, opConfig: AccumulateByKeyConfig, exConfig: ExecutionConfig
