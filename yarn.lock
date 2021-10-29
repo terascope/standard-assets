@@ -594,10 +594,10 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@terascope/data-mate@^0.35.2":
-  version "0.35.2"
-  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.35.2.tgz#6f2776daa06ab9f78c98923030e50e17c2c89951"
-  integrity sha512-9WMnFunxw/4WBpHOOR/v8AfmieYU95j0MdtrzUO3+CncjrkFCHKdKtfBZqfUUEBntCghixkmtW9wkg375YFHuQ==
+"@terascope/data-mate@^0.36.0":
+  version "0.36.0"
+  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.36.0.tgz#7ff8ad8f93873a1d7cb8f1c28943e30c0d08c196"
+  integrity sha512-449vGQWxeebiqr1n/RZqCu8eDW12VDik96LySSM+Ufm1Ub/2fceAeF52TO+s1gUal7HTpa8PReBBTR9hroVWfw==
   dependencies:
     "@terascope/data-types" "^0.33.1"
     "@terascope/types" "^0.10.2"
@@ -612,7 +612,7 @@
     is-ip "^3.1.0"
     jexl "^2.2.2"
     lodash "^4.17.21"
-    mnemonist "^0.38.4"
+    mnemonist "^0.38.5"
     uuid "^8.3.2"
     valid-url "^1.0.9"
     validator "^13.6.0"
@@ -4202,6 +4202,13 @@ mnemonist@^0.38.4:
   dependencies:
     obliterator "^1.6.1"
 
+mnemonist@^0.38.5:
+  version "0.38.5"
+  resolved "https://registry.yarnpkg.com/mnemonist/-/mnemonist-0.38.5.tgz#4adc7f4200491237fe0fa689ac0b86539685cade"
+  integrity sha512-bZTFT5rrPKtPJxj8KSV0WkPyNxl72vQepqqVUAW2ARUpUSF2qXMB6jZj7hW5/k7C1rtpzqbD/IIbJwLXUjCHeg==
+  dependencies:
+    obliterator "^2.0.0"
+
 mocker-data-generator@^2.12.0:
   version "2.12.0"
   resolved "https://registry.yarnpkg.com/mocker-data-generator/-/mocker-data-generator-2.12.0.tgz#12618f095371f6167bbec234a71fbc8f2755e9e9"
@@ -4377,6 +4384,11 @@ obliterator@^1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/obliterator/-/obliterator-1.6.1.tgz#dea03e8ab821f6c4d96a299e17aef6a3af994ef3"
   integrity sha512-9WXswnqINnnhOG/5SLimUlzuU1hFJUc8zkwyD59Sd+dPOMf05PmnYG/d6Q7HZ+KmgkZJa1PxRso6QdM3sTNHig==
+
+obliterator@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/obliterator/-/obliterator-2.0.0.tgz#fdff649d1131a1a90b51cc97c865b5560dcb3dfa"
+  integrity sha512-DJaXYKqe9Rs7c2+Xu08Knkt8P60rTeByyy7IWoXLqyc6ln9ph9NAo6ZbiylDpAshsygzBr81pZL5q6/dqi0RtQ==
 
 on-finished@~2.3.0:
   version "2.3.0"
@@ -5333,12 +5345,12 @@ ts-jest@^27.0.7:
     semver "7.x"
     yargs-parser "20.x"
 
-ts-transforms@^0.64.2:
-  version "0.64.2"
-  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.64.2.tgz#ec4a8846785f51a488a8e8b41ce96c1ed1302381"
-  integrity sha512-dNV+S+dpS2E6BWJmOOKrzRqXeAeSWkTiCcPSPlGOAY46H1L6tA1ItqfC4+JHIwEl6xGQ64uAE3tPDlnkiXX2mg==
+ts-transforms@^0.65.0:
+  version "0.65.0"
+  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.65.0.tgz#b30709f6e0cb6bfef929d2b03ce12779e333fec5"
+  integrity sha512-TK60kQ4lfJkcJcfIhdFjD7O9y3nOPcEwP2EPqcXM06zSSTuYT16WgcIvuj2jC3IFk5UwMhAOrf1DLWYEWh8IwQ==
   dependencies:
-    "@terascope/data-mate" "^0.35.2"
+    "@terascope/data-mate" "^0.36.0"
     "@terascope/types" "^0.10.2"
     "@terascope/utils" "^0.43.1"
     awesome-phonenumber "^2.64.0"
