@@ -1,2 +1,1 @@
-export * from './DataRouter';
-export * from './StorageRouter';
+export * from './routers';

@@ -23,18 +23,11 @@
     "author": "Terascope, LLC <info@terascope.io>",
     "license": "MIT",
     "dependencies": {
-        "@terascope/utils": "^0.43.0",
-        "csvtojson": "^2.0.10",
-        "fs-extra": "^10.0.0",
-        "json2csv": "5.0.6",
-        "lz4-asm": "^0.4.2",
-        "node-gzip": "^1.1.2"
+        "@terascope/utils": "^0.43.0"
     },
     "peerDependencies": {},
     "devDependencies": {
-        "@terascope/job-components": "^0.55.1",
         "@types/jest": "^27.0.2",
-        "aws-sdk": "^2.1016.0",
         "jest": "^27.3.1",
         "jest-extended": "^1.1.0",
         "jest-fixtures": "^0.6.0",

@@ -1,15 +1,10 @@
 import 'jest-extended';
 import {
-    StorageRouter,
-    DataRouter,
+    KeyRouter,
 } from '../src';
 
 describe('index', () => {
-    it('should export StorageRouter', () => {
-        expect(StorageRouter).toBeFunction();
-    });
-
-    it('should export DataRouter', () => {
-        expect(DataRouter).toBeFunction();
+    it('should export KeyRouter', () => {
+        expect(KeyRouter).toBeFunction();
     });
 });
