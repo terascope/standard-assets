@@ -5,7 +5,6 @@ import os from 'os';
 import {
     Gauge, Counter, Histogram, Summary
 } from 'prom-client';
-
 import { JobMetricAPIConfig, JobMetricsAPI, MetricList } from './interfaces';
 
 import {
@@ -54,11 +53,17 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
      * @return {void}
      */
     set(name: string, labels: Record<string, string>, value: number): void {
-        if (this.metricList[name].functions.has('set')) {
+        const metric = this.metricList[name];
+        if (!metric.functions || !metric.metric) {
+            throw new Error(`Metric ${name} is not setup`);
+        }
+        if (metric.functions.has('set')) {
             const labelValues = Object.keys(labels).map((key) => labels[key]);
-            this.metricList[name].metric.labels(...labelValues.concat(
+            const res = metric.metric.labels(...labelValues.concat(
                 Object.values(this.default_labels)
-            )).set(value);
+            ));
+            // @ts-expect-error FIXME the types are wrong here
+            res.set(value);
         } else {
             throw new Error(`set not available on ${name} metric`);
         }
@@ -72,11 +77,18 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
      * @return {void}
      */
     inc(name: string, labels: Record<string, string>, value = 1): void {
-        if (this.metricList[name].functions.has('inc')) {
+        const metric = this.metricList[name];
+        if (!metric.functions || !metric.metric) {
+            throw new Error(`Metric ${name} is not setup`);
+        }
+
+        if (metric.functions.has('inc')) {
             const labelValues = Object.keys(labels).map((key) => labels[key]);
-            this.metricList[name].metric.labels(...labelValues.concat(
+            const res = metric.metric.labels(...labelValues.concat(
                 Object.values(this.default_labels)
-            )).inc(value);
+            ));
+            // @ts-expect-error FIXME the types are wrong here
+            res.inc(value);
         } else {
             throw new Error(`inc not available on ${name} metric`);
         }
@@ -90,11 +102,19 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
      * @return {void}
      */
     dec(name: string, labels: Record<string, string>, value = 1): void {
-        if (this.metricList[name].functions.has('dec')) {
+        const metric = this.metricList[name];
+        if (!metric.functions || !metric.metric) {
+            throw new Error(`Metric ${name} is not setup`);
+        }
+
+        if (metric.functions.has('dec')) {
             const labelValues = Object.keys(labels).map((key) => labels[key]);
-            this.metricList[name].metric.labels(...labelValues.concat(
+            const res = metric.metric.labels(...labelValues.concat(
                 Object.values(this.default_labels)
-            )).dec(value);
+            ));
+
+            // @ts-expect-error FIXME the types are wrong here
+            res.dec(value);
         } else {
             throw new Error(`dec not available on ${name} metric`);
         }
@@ -108,11 +128,18 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
      * @return {void}
      */
     observe(name: string, labels: Record<string, string>, value: number): void {
-        if (this.metricList[name].functions.has('observe')) {
+        const metric = this.metricList[name];
+        if (!metric.functions || !metric.metric) {
+            throw new Error(`Metric ${name} is not setup`);
+        }
+
+        if (metric.functions.has('observe')) {
             const labelValues = Object.keys(labels).map((key) => labels[key]);
-            this.metricList[name].metric.labels(...labelValues.concat(
+            const res = metric.metric.labels(...labelValues.concat(
                 Object.values(this.default_labels)
-            )).observe(value);
+            ));
+            // @ts-expect-error FIXME the types are wrong here
+            res.observe(value);
         } else {
             throw new Error(`observe not available on ${name} metric`);
         }
@@ -203,6 +230,7 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
                 percentiles, maxAgeSeconds, ageBuckets,);
         }
     }
+
     private _createGaugeMetric(name: string, help: string,
         labelsNames: Array<string>): any {
         const gauge = new Gauge({
@@ -212,6 +240,7 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
         });
         return { name, metric: gauge, functions: new Set(['inc', 'dec', 'set']) };
     }
+
     private _createCounterMetric(name: string, help: string,
         labelsNames: Array<string>): any {
         const counter = new Counter({
@@ -221,6 +250,7 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
         });
         return { name, metric: counter, functions: new Set(['inc', 'dec']) };
     }
+
     private _createHistogramMetric(name: string, help: string, labelsNames: Array<string>,
         buckets: Array<number>): any {
         const histogram = new Histogram({
