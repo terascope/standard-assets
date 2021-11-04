@@ -54,8 +54,8 @@ describe('Hash Router Processor', () => {
         if (harness) await harness.shutdown();
     });
 
-    it('properly routes by buckets', async () => {
-        await makeTest({ buckets: 15 });
+    it('properly routes by partitions', async () => {
+        await makeTest({ partitions: 15 });
 
         const [slice1, slice2] = await harness.runSlice(data);
 
@@ -64,7 +64,7 @@ describe('Hash Router Processor', () => {
     });
 
     it('properly routes by key if no fields are specified', async () => {
-        await makeTest({ buckets: 15, fields: [] });
+        await makeTest({ partitions: 15, fields: [] });
 
         const [slice1, slice2] = await harness.runSlice(data);
 
@@ -73,7 +73,7 @@ describe('Hash Router Processor', () => {
     });
 
     it('properly routes by key if no fields is null', async () => {
-        await makeTest({ buckets: 15, fields: null });
+        await makeTest({ partitions: 15, fields: null });
 
         const [slice1, slice2] = await harness.runSlice(data);
 
