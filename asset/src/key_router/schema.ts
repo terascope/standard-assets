@@ -1,9 +1,9 @@
 import {
-    ConvictSchema, isNumber, ValidatedJobConfig, getOpConfig
+    ConvictSchema, isNumber, ValidatedJobConfig, getOpConfig, OpConfig
 } from '@terascope/job-components';
-import { KeyRouterConfig, FromOptions, CaseOptions } from './interfaces';
+import { KeyRouterConfig, KeyRouterFromOptions, KeyRouterCaseOptions } from '@terascope/standard-asset-apis';
 
-export default class Schema extends ConvictSchema<KeyRouterConfig> {
+export default class Schema extends ConvictSchema<KeyRouterConfig & OpConfig> {
     validateJob(job: ValidatedJobConfig): void {
         const op = getOpConfig(job, 'key_router') as KeyRouterConfig;
         if ((op.from && !op.use) || (!op.from && op.use)) {
@@ -27,7 +27,7 @@ export default class Schema extends ConvictSchema<KeyRouterConfig> {
                 default: undefined,
                 format: (val: any) => {
                     if (val !== undefined) {
-                        if (!Object.keys(FromOptions).includes(val)) {
+                        if (!Object.keys(KeyRouterFromOptions).includes(val)) {
                             throw new Error('Parameter "from" must set to either "beginning" or "end"');
                         }
                     }
@@ -35,8 +35,8 @@ export default class Schema extends ConvictSchema<KeyRouterConfig> {
             },
             case: {
                 doc: 'transform to apply to the values extracted from the key',
-                default: CaseOptions.preserve,
-                format: Object.keys(CaseOptions)
+                default: KeyRouterCaseOptions.preserve,
+                format: Object.keys(KeyRouterCaseOptions)
             }
         };
     }

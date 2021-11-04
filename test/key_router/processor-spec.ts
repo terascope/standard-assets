@@ -1,6 +1,6 @@
 import { DataEntity } from '@terascope/utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { FromOptions, CaseOptions } from '../../asset/src/key_router/interfaces';
+import { KeyRouterFromOptions, KeyRouterCaseOptions } from '@terascope/standard-asset-apis';
 
 describe('Key Router Processor', () => {
     let harness: WorkerTestHarness;
@@ -66,7 +66,7 @@ describe('Key Router Processor', () => {
     });
 
     it('can change key to lowercase case', async () => {
-        harness = await makeTest({ case: CaseOptions.lower });
+        harness = await makeTest({ case: KeyRouterCaseOptions.lower });
         const [slice1, slice2, slice3] = await harness.runSlice(data);
 
         expect(slice1.getMetadata('standard:route')).toEqual(key1.toLowerCase());
@@ -75,7 +75,7 @@ describe('Key Router Processor', () => {
     });
 
     it('can change key to uppercase case', async () => {
-        harness = await makeTest({ case: CaseOptions.upper });
+        harness = await makeTest({ case: KeyRouterCaseOptions.upper });
         const [slice1, slice2, slice3] = await harness.runSlice(data);
 
         expect(slice1.getMetadata('standard:route')).toEqual(key1.toUpperCase());
@@ -84,7 +84,7 @@ describe('Key Router Processor', () => {
     });
 
     it('can extract key from start', async () => {
-        harness = await makeTest({ from: FromOptions.beginning, use: 1 });
+        harness = await makeTest({ from: KeyRouterFromOptions.beginning, use: 1 });
         const slices = await harness.runSlice(data);
         const keys = [key1, key2, key3].map((key) => key.slice(0, 1));
 
@@ -95,7 +95,7 @@ describe('Key Router Processor', () => {
     });
 
     it('can extract key from end', async () => {
-        harness = await makeTest({ from: FromOptions.end, use: 1 });
+        harness = await makeTest({ from: KeyRouterFromOptions.end, use: 1 });
         const slices = await harness.runSlice(data);
         const keys = [key1, key2, key3].map((key) => key.slice(-1));
 

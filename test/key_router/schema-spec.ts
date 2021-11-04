@@ -1,7 +1,7 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
-import { KeyRouterConfig } from '../../asset/src/key_router/interfaces';
+import { KeyRouterConfig } from '@terascope/standard-asset-apis';
 
 describe('Key Router Schema', () => {
     let harness: WorkerTestHarness;
