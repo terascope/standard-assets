@@ -20,17 +20,16 @@ export default class Schema extends ConvictSchema<HashRouterConfig & OpConfig> {
                     }
                 }
             },
-            buckets: {
+            partitions: {
                 doc: 'Number of partitions to use with hashing',
                 default: null,
                 format: (val: unknown):void => {
                     if (isNumber(val)) {
-                        if (val <= 0) throw new Error('Parameter bucker is invalid, it must be set to a number > 0');
+                        if (val <= 0) throw new Error('Parameter partitions is invalid, it must be set to a number > 0');
                     } else {
-                        throw new Error(`Parameter buckets is invalid, it must be a number, received ${getTypeOf(val)}`);
+                        throw new Error(`Parameter partitions is invalid, it must be a number, received ${getTypeOf(val)}`);
                     }
                 }
-
             },
         };
     }

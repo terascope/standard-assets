@@ -5,9 +5,9 @@ import {
 } from '../../src';
 
 describe('HashRouter', () => {
-    it('should work with one no fields and 4 buckets', () => {
+    it('should work with one no fields and 4 partitions', () => {
         const router = new HashRouter({
-            buckets: 4,
+            partitions: 4,
         });
 
         const entity1 = new DataEntity({ foo: 'bar' });
@@ -21,9 +21,9 @@ describe('HashRouter', () => {
         ]).toEqual(['0', '3']);
     });
 
-    it('should work with one field and 4 buckets', () => {
+    it('should work with one field and 4 partitions', () => {
         const router = new HashRouter({
-            buckets: 4,
+            partitions: 4,
             fields: ['foo']
         });
 
@@ -43,8 +43,8 @@ describe('HashRouter', () => {
     it('should throw if given only no fields', () => {
         expect(() => {
             new HashRouter({
-                buckets: 'abc' as any
+                partitions: 'abc' as any
             });
-        }).toThrow('Expected buckets to be integer > 0, got "abc" (String)');
+        }).toThrow('Expected partitions to be integer > 0, got "abc" (String)');
     });
 });

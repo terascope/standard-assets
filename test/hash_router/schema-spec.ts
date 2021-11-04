@@ -28,14 +28,14 @@ describe('Hash Router Schema', () => {
 
     describe('when validating the schema', () => {
         it('should throw an error if `fields` is not an array of strings or null/undefined', async () => {
-            await expect(makeSchema({ fields: null as any, buckets: 1 })).toResolve();
-            await expect(makeSchema({ fields: undefined, buckets: 1 })).toResolve();
-            await expect(makeSchema({ fields: JSON.stringify('this ia a string') as any, buckets: 1 })).toReject();
-            await expect(makeSchema({ fields: 42 as any, buckets: 1 })).toReject();
-            await expect(makeSchema({ fields: [42] as any, buckets: 1 })).toReject();
+            await expect(makeSchema({ fields: null as any, partitions: 1 })).toResolve();
+            await expect(makeSchema({ fields: undefined, partitions: 1 })).toResolve();
+            await expect(makeSchema({ fields: JSON.stringify('this ia a string') as any, partitions: 1 })).toReject();
+            await expect(makeSchema({ fields: 42 as any, partitions: 1 })).toReject();
+            await expect(makeSchema({ fields: [42] as any, partitions: 1 })).toReject();
 
-            await expect(makeSchema({ fields: [], buckets: 1 })).toResolve();
-            await expect(makeSchema({ fields: ['someField'], buckets: 1 })).toResolve();
+            await expect(makeSchema({ fields: [], partitions: 1 })).toResolve();
+            await expect(makeSchema({ fields: ['someField'], partitions: 1 })).toResolve();
         });
 
         it('should throw an error if `buckets` is not a positive number', async () => {
