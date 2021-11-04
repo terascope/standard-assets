@@ -1,9 +1,9 @@
 import {
-    ConvictSchema, isString, isNumber, getTypeOf, isNotNil
+    ConvictSchema, isString, isNumber, getTypeOf, isNotNil, OpConfig
 } from '@terascope/job-components';
-import { HashRouterConfig } from './interfaces';
+import { HashRouterConfig } from '@terascope/standard-asset-apis';
 
-export default class Schema extends ConvictSchema<HashRouterConfig> {
+export default class Schema extends ConvictSchema<HashRouterConfig & OpConfig> {
     build(): Record<string, any> {
         return {
             fields: {

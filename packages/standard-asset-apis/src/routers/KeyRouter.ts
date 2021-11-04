@@ -16,7 +16,7 @@ export class KeyRouter implements I.Router {
         this.transformKey = (key) => caseFn(extractionFn(key));
     }
 
-    lookup(record: DataEntity): string|number {
+    lookup(record: DataEntity): string {
         return this.transformKey(String(record.getKey()));
     }
 }

@@ -10,7 +10,7 @@ export class FieldRouter implements I.Router {
     readonly valueDelimiter: string;
     readonly fieldDelimiter: string;
     readonly includeFieldNames: boolean;
-    readonly fields: (readonly string[])|(string[]);
+    readonly fields: readonly string[];
 
     constructor(config: FieldRouterConfig) {
         this.valueDelimiter = config.value_delimiter ?? '_';
@@ -19,11 +19,11 @@ export class FieldRouter implements I.Router {
         if (!config.fields?.length) {
             throw new Error('FieldRouter requires that at least one field');
         }
-        this.fields = config.fields;
+        this.fields = config.fields.slice();
     }
 
-    lookup(record: DataEntity): string|number {
-        return this.fields.flatMap((field) => {
+    lookup(record: DataEntity): string {
+        return this.fields.map((field) => {
             const fieldData = sanitize(toString(record[field]));
             if (this.includeFieldNames === true) {
                 return `${field}${this.valueDelimiter}${fieldData}`;

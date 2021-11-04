@@ -15,7 +15,6 @@
         "build:watch": "yarn build --watch"
     },
     "dependencies": {
-        "@sindresorhus/fnv1a": "^2.0.1",
         "@terascope/job-components": "^0.55.2",
         "@terascope/standard-asset-apis": "^0.1.0",
         "@terascope/utils": "^0.43.0",

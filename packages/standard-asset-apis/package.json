@@ -23,6 +23,7 @@
     "author": "Terascope, LLC <info@terascope.io>",
     "license": "MIT",
     "dependencies": {
+        "@sindresorhus/fnv1a": "^2.0.1",
         "@terascope/utils": "^0.43.0"
     },
     "devDependencies": {

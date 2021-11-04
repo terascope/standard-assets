@@ -3,48 +3,27 @@ import {
     DataEntity,
     WorkerContext,
     ExecutionConfig,
-    isEmpty,
-    toString
+    OpConfig
 } from '@terascope/job-components';
-import fnv1a from '@sindresorhus/fnv1a';
-import { HashRouterConfig } from './interfaces';
+import { HashRouter, HashRouterConfig } from '@terascope/standard-asset-apis';
 
-function makeHashFn(config: HashRouterConfig) {
-    if (isEmpty(config.fields)) return (record: DataEntity) => toString(record.getKey());
+export default class HashRouterProcessor extends MapProcessor<HashRouterConfig & OpConfig> {
+    router: HashRouter;
 
-    const fields = config.fields.slice();
-
-    return (record: DataEntity) => {
-        let hashString = '';
-
-        fields.forEach((field) => {
-            hashString += `${record[field]}`;
-        });
-
-        return hashString;
-    };
-}
-
-export default class HashRouter extends MapProcessor<HashRouterConfig> {
-    createHash: (record: DataEntity) => string;
-
-    constructor(context: WorkerContext, opConfig: HashRouterConfig, exConfig: ExecutionConfig) {
+    constructor(
+        context: WorkerContext,
+        opConfig: HashRouterConfig & OpConfig,
+        exConfig: ExecutionConfig
+    ) {
         super(context, opConfig, exConfig);
-        this.createHash = makeHashFn(opConfig);
-    }
-
-    addPath(record: DataEntity): void {
-        const hashStr = this.createHash(record);
-        const partition = fnv1a(hashStr) % this.opConfig.buckets;
-
-        record.setMetadata(
-            'standard:route',
-            `${partition}`
-        );
+        this.router = new HashRouter(opConfig);
     }
 
     map(record: DataEntity): DataEntity {
-        this.addPath(record);
+        record.setMetadata(
+            'standard:route',
+            this.router.lookup(record)
+        );
         return record;
     }
 }

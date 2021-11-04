@@ -13,5 +13,5 @@ export interface Router {
      * route to use, which usually string|number with meaning to the
      * application (like where to write the record to)
     */
-    lookup(record: DataEntity<Record<string, unknown>>): string|number;
+    lookup(record: DataEntity<Record<string, unknown>>): string;
 }
