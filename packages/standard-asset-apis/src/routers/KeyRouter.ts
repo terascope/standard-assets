@@ -2,7 +2,8 @@ import { DataEntity } from '@terascope/utils';
 import * as I from './interfaces';
 
 /**
- * A key storage routing algorithm
+ * A routing algorithm that uses the record key
+ * with some optional transformations
 */
 export class KeyRouter implements I.Router {
     readonly kind = I.RouterKind.STORAGE;

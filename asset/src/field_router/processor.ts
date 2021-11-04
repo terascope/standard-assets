@@ -1,31 +1,25 @@
-import { MapProcessor, DataEntity, toString } from '@terascope/job-components';
-import { FieldRouterConfig } from './interfaces';
+import {
+    MapProcessor, DataEntity, OpConfig, WorkerContext, ExecutionConfig
+} from '@terascope/job-components';
+import { FieldRouterConfig, FieldRouter } from '@terascope/standard-asset-apis';
 
-function sanitize(str: string) {
-    return str.replace(/=/gi, '_').replace(/\//gi, '_');
-}
+export default class FieldRouterProcessor extends MapProcessor<FieldRouterConfig & OpConfig> {
+    router: FieldRouter;
 
-export default class FieldRouter extends MapProcessor<FieldRouterConfig> {
-    addPath(record: DataEntity): void {
-        const partitions: string[] = [];
-
-        this.opConfig.fields.forEach((field) => {
-            const fieldData = sanitize(toString(record[field]));
-            if (this.opConfig.include_field_names === true) {
-                partitions.push(`${field}${this.opConfig.value_delimiter}${fieldData}`);
-            } else {
-                partitions.push(`${fieldData}`);
-            }
-        });
-
-        record.setMetadata(
-            'standard:route',
-            partitions.join(this.opConfig.field_delimiter)
-        );
+    constructor(
+        context: WorkerContext,
+        opConfig: FieldRouterConfig & OpConfig,
+        exConfig: ExecutionConfig
+    ) {
+        super(context, opConfig, exConfig);
+        this.router = new FieldRouter(opConfig);
     }
 
     map(record: DataEntity): DataEntity {
-        this.addPath(record);
+        record.setMetadata(
+            'standard:route',
+            this.router.lookup(record),
+        );
         return record;
     }
 }
