@@ -1,69 +1,72 @@
-import Accumulate from '../src/accumulate/processor';
-import AccumulateSchema from '../src/accumulate/schema';
+import Accumulate from './accumulate/processor';
+import AccumulateSchema from './accumulate/schema';
 
-import AccumulateByKey from '../src/accumulate_by_key/processor';
-import AccumulateByKeySchema from '../src/accumulate_by_key/schema';
+import AccumulateByKey from './accumulate_by_key/processor';
+import AccumulateByKeySchema from './accumulate_by_key/schema';
 
-import DataGeneratorFetcher from '../src/data_generator/fetcher';
-import DataGeneratorSchema from '../src/data_generator/schema';
-import DataGeneratorSlicer from '../src/data_generator/slicer';
+import DataGeneratorFetcher from './data_generator/fetcher';
+import DataGeneratorSchema from './data_generator/schema';
+import DataGeneratorSlicer from './data_generator/slicer';
 
-import DataWindowToArray from '../src/data_window_to_array/processor';
-import DataWindowToArraySchema from '../src/data_window_to_array/schema';
+import DataWindowToArray from './data_window_to_array/processor';
+import DataWindowToArraySchema from './data_window_to_array/schema';
 
-import DateRouter from '../src/date_router/processor';
-import DateRouterSchema from '../src/date_router/schema';
+import DateRouter from './date_router/processor';
+import DateRouterSchema from './date_router/schema';
 
-import Dedupe from '../src/dedupe/processor';
-import DedupeSchema from '../src/dedupe/schema';
+import DebugRoutes from './debug_routes/processor';
+import DebugRoutesSchema from './debug_routes/schema';
 
-import Extraction from '../src/extraction/processor';
-import ExtractionSchema from '../src/extraction/schema';
+import Dedupe from './dedupe/processor';
+import DedupeSchema from './dedupe/schema';
 
-import FieldRouter from '../src/field_router/processor';
-import FieldRouterSchema from '../src/field_router/schema';
+import Extraction from './extraction/processor';
+import ExtractionSchema from './extraction/schema';
 
-import GroupBy from '../src/group_by/processor';
-import GroupBySchema from '../src/group_by/schema';
+import FieldRouter from './field_router/processor';
+import FieldRouterSchema from './field_router/schema';
 
-import HashRouter from '../src/hash_router/processor';
-import HashRouterSchema from '../src/hash_router/schema';
+import GroupBy from './group_by/processor';
+import GroupBySchema from './group_by/schema';
 
-import JobMetricApi from '../src/job_metric_api/api';
-import JobMetricSchema from '../src/job_metric_api/schema';
+import HashRouter from './hash_router/processor';
+import HashRouterSchema from './hash_router/schema';
 
-import KeyRouter from '../src/key_router/processor';
-import KeyRouterSchema from '../src/key_router/schema';
+import JobMetricApi from './job_metric_api/api';
+import JobMetricSchema from './job_metric_api/schema';
 
-import Match from '../src/match/processor';
-import MatchSchema from '../src/match/schema';
+import KeyRouter from './key_router/processor';
+import KeyRouterSchema from './key_router/schema';
 
-import Output from '../src/output/processor';
-import OutputSchema from '../src/output/schema';
+import Match from './match/processor';
+import MatchSchema from './match/schema';
 
-import PostProcess from '../src/post_process/processor';
-import PostProcessSchema from '../src/post_process/schema';
+import Output from './output/processor';
+import OutputSchema from './output/schema';
 
-import RemoveKey from '../src/remove_key/processor';
-import RemoveKeySchema from '../src/remove_key/schema';
+import PostProcess from './post_process/processor';
+import PostProcessSchema from './post_process/schema';
 
-import RoutedSender from '../src/routed_sender/processor';
-import RoutedSenderSchema from '../src/routed_sender/schema';
+import RemoveKey from './remove_key/processor';
+import RemoveKeySchema from './remove_key/schema';
 
-import Selection from '../src/selection/processor';
-import SelectionSchema from '../src/selection/schema';
+import RoutedSender from './routed_sender/processor';
+import RoutedSenderSchema from './routed_sender/schema';
 
-import SetKey from '../src/set_key/processor';
-import SetKeySchema from '../src/set_key/schema';
+import Selection from './selection/processor';
+import SelectionSchema from './selection/schema';
 
-import Sort from '../src/sort/processor';
-import SortSchema from '../src/sort/schema';
+import SetKey from './set_key/processor';
+import SetKeySchema from './set_key/schema';
 
-import Transform from '../src/transform/processor';
-import TransformSchema from '../src/transform/schema';
+import Sort from './sort/processor';
+import SortSchema from './sort/schema';
 
-import Window from '../src/window/processor';
-import WindowSchema from '../src/window/schema';
+import Transform from './transform/processor';
+import TransformSchema from './transform/schema';
+
+import Window from './window/processor';
+import WindowSchema from './window/schema';
 
 export const ASSETS = {
     accumulate: {
@@ -86,6 +89,10 @@ export const ASSETS = {
     date_router: {
         Processor: DateRouter,
         Schema: DateRouterSchema
+    },
+    debug_routes: {
+        Processor: DebugRoutes,
+        Schema: DebugRoutesSchema
     },
     dedupe: {
         Processor: Dedupe,
@@ -111,7 +118,6 @@ export const ASSETS = {
         Api: JobMetricApi,
         Schema: JobMetricSchema
     },
-
     key_router: {
         Processor: KeyRouter,
         Schema: KeyRouterSchema
