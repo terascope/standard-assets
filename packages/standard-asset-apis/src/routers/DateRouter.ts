@@ -131,7 +131,7 @@ export interface DateRouterConfig {
 
     /**
      * This is used determine how specific the date
-     * the date routing should be
+     * routing should be
      *
      * @default {DateResolution.daily}
     */

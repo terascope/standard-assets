@@ -38,13 +38,13 @@ describe('Hash Router Schema', () => {
             await expect(makeSchema({ fields: ['someField'], partitions: 1 })).toResolve();
         });
 
-        it('should throw an error if `buckets` is not a positive number', async () => {
-            await expect(makeSchema({ fields: null as any })).toReject();
-            await expect(makeSchema({ fields: undefined })).toReject();
-            await expect(makeSchema({ fields: JSON.stringify('this ia a string') as any })).toReject();
-            await expect(makeSchema({ fields: -42 as any })).toReject();
-            await expect(makeSchema({ fields: [] })).toReject();
-            await expect(makeSchema({ fields: [42 as any] })).toReject();
+        it('should throw an error if `partitions` is not a positive number', async () => {
+            await expect(makeSchema({ fields: ['someField'], partitions: null as any })).toReject();
+            await expect(makeSchema({ fields: ['someField'], partitions: undefined })).toReject();
+            await expect(makeSchema({ fields: ['someField'], partitions: JSON.stringify('this ia a string') as any })).toReject();
+            await expect(makeSchema({ fields: ['someField'], partitions: -42 as any })).toReject();
+            await expect(makeSchema({ fields: ['someField'], partitions: [] as any })).toReject();
+            await expect(makeSchema({ fields: ['someField'], partitions: [42 as any] as any })).toReject();
         });
     });
 });

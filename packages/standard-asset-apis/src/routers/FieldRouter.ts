@@ -45,7 +45,7 @@ export interface FieldRouterConfig {
     include_field_names?: boolean;
 
     /**
-     * This fields to use for the key, this must
+     * Fields to use for the key, this must
      * include at least one field
     */
     fields: (readonly string[])|(string[]);

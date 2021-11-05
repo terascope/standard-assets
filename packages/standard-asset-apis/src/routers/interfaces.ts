@@ -10,7 +10,7 @@ export interface Router {
 
     /**
      * When called this uses the routing algorithm to return the
-     * route to use, which usually string|number with meaning to the
+     * route to use, which usually is a string|number with meaning to the
      * application (like where to write the record to)
     */
     lookup(record: DataEntity<Record<string, unknown>>): string;

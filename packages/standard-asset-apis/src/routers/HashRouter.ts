@@ -38,12 +38,12 @@ export class HashRouter implements I.Router {
 
 export interface HashRouterConfig {
     /**
-     * The number of partitions to created based of the hash
+     * The number of partitions to be created based of the hash
     */
     partitions: number;
 
     /**
-     * This fields to use for the key, this must
+     * Fields to use for the key, this must
      * include at least one field. If this is not set,
      * the _key will be used
     */
