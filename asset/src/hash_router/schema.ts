@@ -1,9 +1,9 @@
 import {
-    ConvictSchema, isString, isNumber, getTypeOf, isNotNil
+    ConvictSchema, isString, isNumber, getTypeOf, isNotNil, OpConfig
 } from '@terascope/job-components';
-import { HashRouterConfig } from './interfaces';
+import { HashRouterConfig } from '@terascope/standard-asset-apis';
 
-export default class Schema extends ConvictSchema<HashRouterConfig> {
+export default class Schema extends ConvictSchema<HashRouterConfig & OpConfig> {
     build(): Record<string, any> {
         return {
             fields: {
@@ -20,17 +20,16 @@ export default class Schema extends ConvictSchema<HashRouterConfig> {
                     }
                 }
             },
-            buckets: {
+            partitions: {
                 doc: 'Number of partitions to use with hashing',
                 default: null,
                 format: (val: unknown):void => {
                     if (isNumber(val)) {
-                        if (val <= 0) throw new Error('Parameter bucker is invalid, it must be set to a number > 0');
+                        if (val <= 0) throw new Error('Parameter partitions is invalid, it must be set to a number > 0');
                     } else {
-                        throw new Error(`Parameter buckets is invalid, it must be a number, received ${getTypeOf(val)}`);
+                        throw new Error(`Parameter partitions is invalid, it must be a number, received ${getTypeOf(val)}`);
                     }
                 }
-
             },
         };
     }

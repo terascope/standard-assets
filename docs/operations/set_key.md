@@ -2,7 +2,7 @@
 
 This is a helper processor that can be used to set the `_key` metadata value for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
 
-For the processor to work, you need to specify a field (defaults to the `_id` field) that exists on the records and has a defined, non-nullable value.
+For the processor to work, you need to specify a field (defaults to the `_key` field) that exists on the records and has a defined, non-nullable value.
 
 
 ## Usage
@@ -53,7 +53,7 @@ results[3].getKey() === 4
 
 ## Parameters
 
-| Configuration | Description | Type |  Notes |
-| --------- | -------- | ------ | ------ |
-| _op | Name of operation, it must reflect the exact name of the file | String | required |
-| field | Field name of value used to set key | String | optional, defaults to `_id` |
+| Configuration | Description                                                   | Type   | Notes                        |
+| ------------- | ------------------------------------------------------------- | ------ | ---------------------------- |
+| _op           | Name of operation, it must reflect the exact name of the file | String | required                     |
+| field         | Field name of value used to set key                           | String | optional, defaults to `_key` |

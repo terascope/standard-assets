@@ -2,7 +2,7 @@
 
 The `hash_router` processor will tag the incoming records with the `standard:route` metadata which is used by the [routed_sender](./routed_sender.md) processor to dynamically routes records to different locations.
 
-This will enable routing based off of hashing the `fields` values or the `_key` metadata value if no `fields` are configured, and distributing that over the number of buckets configured. Thus your ending route will be a number representing the bucket it was assigned.
+This will enable routing based off of hashing the `fields` values or the `_key` metadata value if no `fields` are configured, and distributing that over the number of partitions configured. Thus your ending route will be a number representing the bucket it was assigned.
 
 The hashing algorithm used is [FNV-1a](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function)
 
@@ -40,7 +40,7 @@ Example Job
         {
             "_op": "hash_router",
             "fields": ["created", "uuid"],
-            "buckets": 15
+            "partitions": 15
         },
         {
             "_op": "routed_sender",
@@ -121,7 +121,7 @@ Example Job
         {
             "_op": "hash_router",
             "fields": ["created", "uuid"],
-            "buckets": 15
+            "partitions": 15
         },
         {
             "_op": "routed_sender",
@@ -170,8 +170,8 @@ results[1].getMetadata('standard:route') === '14';
 
 ## Parameters
 
-| Configuration | Description | Type |  Notes |
-| --------- | -------- | ------ | ------ |
-| _op | Name of operation, it must reflect the exact name of the file | String | required |
-| fields | Specifies fields to hash for partitioning. Must specify at least one field. | String[] | optional, defaults to using the _key metadata field |
-| buckets | Number of partitions to use with hashing | Number | required |
+| Configuration | Description                                                                 | Type     | Notes                                               |
+| ------------- | --------------------------------------------------------------------------- | -------- | --------------------------------------------------- |
+| _op           | Name of operation, it must reflect the exact name of the file               | String   | required                                            |
+| fields        | Specifies fields to hash for partitioning. Must specify at least one field. | String[] | optional, defaults to using the _key metadata field |
+| partitions    | Number of partitions to use with hashing                                    | Number   | required                                            |

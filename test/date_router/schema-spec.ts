@@ -1,14 +1,18 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { AnyObject } from '@terascope/job-components';
-import { DateRouterConfig, DateResolution } from '../../asset/src/date_router/interfaces';
+import { OpConfig } from '@terascope/job-components';
+import { DateRouterConfig, DateResolution } from '@terascope/standard-asset-apis';
 
 describe('date_router schema', () => {
     let harness: WorkerTestHarness;
     const name = 'date_router';
 
-    async function makeSchema(config: AnyObject = {}): Promise<DateRouterConfig> {
-        const opConfig = Object.assign({}, { _op: name }, config);
+    async function makeSchema(
+        config: Partial<DateRouterConfig> = {}
+    ): Promise<DateRouterConfig & OpConfig> {
+        const opConfig = Object.assign(
+            {}, { _op: name }, config as DateRouterConfig
+        );
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();
@@ -17,7 +21,7 @@ describe('date_router schema', () => {
             (testConfig) => testConfig._op === name
         );
 
-        return validConfig as DateRouterConfig;
+        return validConfig as DateRouterConfig & OpConfig;
     }
 
     afterEach(async () => {
@@ -36,9 +40,9 @@ describe('date_router schema', () => {
 
     it('should throw with bad values', async () => {
         await expect(makeSchema({})).toReject();
-        await expect(makeSchema({ field: 'test', resolution: 1234 })).toReject();
-        await expect(makeSchema({ field: 'test', date_delimiter: 1234 })).toReject();
-        await expect(makeSchema({ field: 'test', date_unit_delimiter: 1234 })).toReject();
+        await expect(makeSchema({ field: 'test', resolution: 1234 as any })).toReject();
+        await expect(makeSchema({ field: 'test', date_delimiter: 1234 as any })).toReject();
+        await expect(makeSchema({ field: 'test', date_unit_delimiter: 1234 as any })).toReject();
         await expect(makeSchema({ field: 'test', date_delimiter: ':' })).toReject();
         await expect(makeSchema({ field: 'test', date_unit_delimiter: '*' })).toReject();
         await expect(makeSchema({ field: 'test', date_unit_delimiter: ' ' })).toReject();

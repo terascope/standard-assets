@@ -50,7 +50,7 @@ Example rules located at `someAssetId:transformRules.txt`
 { "follow": "someTag", "post_process": "join", "target_field": "final", "delimiter": " " }
 
 { "source_field": "otherField", "target_field": "lastField", "other_match_required": true }
-{ "source_field": "_id", "target_field": "id", "other_match_required": true, "tag": "numberMe" }
+{ "source_field": "_key", "target_field": "id", "other_match_required": true, "tag": "numberMe" }
 { "follow": "numberMe", "post_process": "number" }
 
 { "selector": "location: geoBox( top_left: '33.906320, -112.758421' bottom_right: '32.813646,-111.058902')", "source_field": "location", "target_field": "loc" }
@@ -92,10 +92,10 @@ Example of the data and the expected results
 
 ```javascript
 const data = DataEntity.makeArray([
-    { some: 'data', field: 'hello', field2: 'world', _id: '1' },
-    { location: '33.435967,  -111.867710', _id: '2' },
-    { date, bytes: '1200000', _id: '3' },
-    { other: 'stuff', _id: '4' }
+    { some: 'data', field: 'hello', field2: 'world', _key: '1' },
+    { location: '33.435967,  -111.867710', _key: '2' },
+    { date, bytes: '1200000', _key: '3' },
+    { other: 'stuff', _key: '4' }
 ]);
 
 const results = await process.run(data);
@@ -109,10 +109,10 @@ results === [
 
 ## Parameters
 
-| Configuration | Description | Type |  Notes |
-| --------- | -------- | ------ | ------ |
-| _op | Name of operation, it must reflect the exact name of the file | String | required |
-| rules | an array of strings that are the locations where rule files. must be specified in "assetName:path" format | String[] | required |
-| plugins | an array of strings that are the locations where [plugins](https://terascope.github.io/teraslice/docs/packages/ts-transforms/plugins) reside. must be specified in "assetName:modulePath" format | Object[] | optional, defaults to [] |
-| type_config | a schema for the data being consumed. Set the keys to your data field names, with values set to this [enum](https://terascope.github.io/teraslice/docs/packages/types/api/enums/xlucenefieldtype) | Object | optional |
-| variables | An object containing any variables for the xlucene rules | Object | optional|
+| Configuration | Description                                                                                                                                                                                       | Type     | Notes                    |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------------ |
+| _op           | Name of operation, it must reflect the exact name of the file                                                                                                                                     | String   | required                 |
+| rules         | an array of strings that are the locations where rule files. must be specified in "assetName:path" format                                                                                         | String[] | required                 |
+| plugins       | an array of strings that are the locations where [plugins](https://terascope.github.io/teraslice/docs/packages/ts-transforms/plugins) reside. must be specified in "assetName:modulePath" format  | Object[] | optional, defaults to [] |
+| type_config   | a schema for the data being consumed. Set the keys to your data field names, with values set to this [enum](https://terascope.github.io/teraslice/docs/packages/types/api/enums/xlucenefieldtype) | Object   | optional                 |
+| variables     | An object containing any variables for the xlucene rules                                                                                                                                          | Object   | optional                 |

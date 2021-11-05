@@ -23,18 +23,26 @@ before_script:
   - yarn build
   - yarn global add teraslice-cli
 script:
-  - yarn test
+  - yarn test:all
   - yarn lint
   - teraslice-cli -v
   - teraslice-cli assets build
   - teraslice-cli assets build --bundle
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+before_deploy:
+  - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
 deploy:
-  provider: releases
-  api_key: $GITHUB_TOKEN
-  file_glob: true
-  file: build/*.zip
-  skip_cleanup: true
-  on:
-    tags: true
+  - provider: script
+    skip_cleanup: true
+    script: yarn publish:changed
+    on:
+      tags: true
+      condition: $TRAVIS_OS_NAME = linux
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    file_glob: true
+    file: build/*.zip
+    skip_cleanup: true
+    on:
+      tags: true

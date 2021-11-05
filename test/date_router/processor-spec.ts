@@ -1,6 +1,6 @@
 import { DataEntity, AnyObject } from '@terascope/utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { DateResolution } from '../../asset/src/date_router/interfaces';
+import { DateResolution } from '@terascope/standard-asset-apis';
 
 describe('date_router', () => {
     let harness: WorkerTestHarness;

@@ -1,3 +1,6 @@
+import type {
+    Gauge, Counter, Histogram, Summary
+} from 'prom-client';
 import {
     APIConfig
 } from '@terascope/job-components';
@@ -7,11 +10,11 @@ export interface JobMetricAPIConfig extends APIConfig {
     default_metrics: boolean
 }
 
-export interface MetricList {
+export type MetricList = Record<string, {
     readonly name?: string | undefined,
-    readonly metric?: unknown | undefined,
+    readonly metric?: Gauge<any> | Counter<any> | Histogram<any> | Summary<any> | undefined,
     readonly functions?: Set<string> | undefined
-}
+}>;
 
 export interface JobMetricsAPI {
     set: (name: string, labels: Record<string, string>, value: number) => void;

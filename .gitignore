@@ -20,4 +20,8 @@ build/
 # Dependency directory
 node_modules
 
+dist
 asset/dist
+packages/*/dist
+
+tsconfig.tsbuildinfo

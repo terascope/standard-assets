@@ -1,9 +1,11 @@
 'use strict';
 
+const path = require('path');
+
 module.exports = {
     verbose: true,
     testEnvironment: 'node',
-    setupFilesAfterEnv: ['jest-extended/all'],
+    setupFilesAfterEnv: ['jest-extended/all', '<rootDir>/test/test.setup.js'],
     collectCoverage: true,
     coverageReporters: ['json', 'lcov', 'text', 'html'],
     coverageDirectory: 'coverage',
@@ -20,6 +22,9 @@ module.exports = {
         '<rootDir>/test/**/*-spec.{ts,js}',
         '<rootDir>/test/*-spec.{ts,js}',
     ],
+    moduleNameMapper: {
+        '^@terascope/file-asset-apis$': path.join(__dirname, '/packages/standard-asset-apis/src/index.ts'),
+    },
     preset: 'ts-jest',
     globals: {
         'ts-jest': {

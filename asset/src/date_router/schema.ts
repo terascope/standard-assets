@@ -1,13 +1,5 @@
 import { ConvictSchema } from '@terascope/job-components';
-import { DateRouterConfig, DateResolution } from './interfaces';
-
-const validDelimiters = [
-    '-',
-    '_',
-    '.',
-    '/',
-    ''
-];
+import { DateRouterConfig, DateResolution, validDateDelimiters } from '@terascope/standard-asset-apis';
 
 export default class Schema extends ConvictSchema<DateRouterConfig> {
     build(): Record<string, any> {
@@ -41,8 +33,8 @@ export default class Schema extends ConvictSchema<DateRouterConfig> {
     }
 
     validateDelimiter(value: string): void {
-        if (!validDelimiters.includes(value)) {
-            throw Error(`Delimiter must be one of ${validDelimiters.join(',')}, value was ${value}`);
+        if (!validDateDelimiters.has(value)) {
+            throw Error(`Delimiter must be one of ${[...validDateDelimiters].join(',')}, value was ${value}`);
         }
     }
 }

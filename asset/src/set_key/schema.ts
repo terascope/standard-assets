@@ -6,7 +6,7 @@ export default class Schema extends ConvictSchema<SetKeyConfig> {
         return {
             field: {
                 doc: 'Field name of value used to set key',
-                default: '_id',
+                default: '_key',
                 format: 'required_String',
             }
         };

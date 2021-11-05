@@ -1,13 +1,12 @@
 # key_router
 
-The `field_router` processor will tag the incoming records with the `standard:route` metadata which is used by the [routed_sender](./routed_sender.md) processor to dynamically routes records to different locations.
+The `key_router` processor will tag the incoming records with the `standard:route` metadata which is used by the [routed_sender](./routed_sender.md) processor to dynamically routes records to different locations.
 
 This will enable routing based off of the `_key` metadata for routed_sender
 
 To use this processor, the `_key` must exists and must have valid chars that can be used for its destination, which is dependent on where you are sending it. For example, if sending it to elasticsearch, it must be lower cased and there are certain char restrictions.
 
 Please be aware of the constraints for the particular destination api you are using.
-
 
 ## Usage
 
@@ -164,9 +163,9 @@ results[1].getMetadata('standard:route') === 's';
 
 ## Parameters
 
-| Configuration | Description | Type |  Notes |
-| --------- | -------- | ------ | ------ |
-| _op | Name of operation, it must reflect the exact name of the file | String | required |
-| use | The number of characters to slice off the key and use as the routing value' | Number | optional, if used it must be used in conjunction with `from` |
-| from | Whether the characters are sliced from the `beginning` or `end` of the key | String | optional, if used it must be used in conjunction with `use` |
-| case | Transform to apply to the values extracted from the key, may be set to `preserve`, `lower`, or `upper`| String | optional, defaults to preserve |
+| Configuration | Description                                                                                            | Type   | Notes                                                        |
+| ------------- | ------------------------------------------------------------------------------------------------------ | ------ | ------------------------------------------------------------ |
+| _op           | Name of operation, it must reflect the exact name of the file                                          | String | required                                                     |
+| use           | The number of characters to slice off the key and use as the routing value'                            | Number | optional, if used it must be used in conjunction with `from` |
+| from          | Whether the characters are sliced from the `beginning` or `end` of the key                             | String | optional, if used it must be used in conjunction with `use`  |
+| case          | Transform to apply to the values extracted from the key, may be set to `preserve`, `lower`, or `upper` | String | optional, defaults to preserve                               |
