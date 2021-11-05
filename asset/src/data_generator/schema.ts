@@ -80,7 +80,7 @@ export default class Schema extends ConvictSchema<DataGenerator> {
                 format: String
             },
             set_id: {
-                doc: 'used to make an id on the data that will be used for the doc _id, values: base64url, hexadecimal, HEXADECIMAL',
+                doc: 'used to make an id on the data that will be used for the doc _key, values: base64url, hexadecimal, HEXADECIMAL',
                 default: null,
                 format: (val: unknown): void => {
                     if (isNotNil(val)) {

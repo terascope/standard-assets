@@ -51,11 +51,11 @@ describe('transform matches', () => {
 
         const data = DataEntity.makeArray([
             {
-                some: 'data', field: 'hello', field2: 'world', _id: '1'
+                some: 'data', field: 'hello', field2: 'world', _key: '1'
             },
-            { location: '33.435967,  -111.867710', _id: '2' },
-            { date, bytes: '1200000', _id: '3' },
-            { other: 'stuff', _id: '4' }
+            { location: '33.435967,  -111.867710', _key: '2' },
+            { date, bytes: '1200000', _key: '3' },
+            { other: 'stuff', _key: '4' }
         ]);
 
         const results = await test.runSlice(data);
