@@ -55,6 +55,7 @@ describe('Route Sender', () => {
     function getRouteData(routing: Map<string, InitializedRoute>, route: string) {
         const routeApi = routing.get(route);
         if (isEmpty(routeApi)) return false;
+
         const apiClient = routeApi?.sender as unknown as TestApi;
         // @ts-expect-error
         return apiClient.sendArgs[0];
@@ -63,6 +64,7 @@ describe('Route Sender', () => {
     function getRouteArgs(routing: Map<string, InitializedRoute>, route: string) {
         const routeApi = routing.get(route);
         if (isEmpty(routeApi)) return false;
+
         const apiClient = routeApi?.sender as unknown as TestApi;
         // @ts-expect-error
         return apiClient.routeArgs;
@@ -156,7 +158,7 @@ describe('Route Sender', () => {
         // this tests to make sure that the _key is being propagated correctly on the config
         for (const opKey of Object.keys(opConfig.routing)) {
             const keys = opKey.split(',').map((key) => key.trim());
-            keys.forEach((key) => expect(keyValues.includes(key)).toBeTrue());
+            expect(keyValues).toContainValues(keys);
         }
     });
 

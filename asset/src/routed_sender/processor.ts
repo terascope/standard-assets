@@ -56,6 +56,7 @@ export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderCon
                 route,
                 {
                     ...this.opConfig,
+                    _key: route,
                     connection,
                     tryFn: this.tryFn,
                     logger: this.logger

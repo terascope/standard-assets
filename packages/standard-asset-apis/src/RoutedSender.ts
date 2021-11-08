@@ -1,4 +1,6 @@
-import { DataEntity, pMap } from '@terascope/utils';
+import {
+    DataEntity, pMap, debugLogger, getLast
+} from '@terascope/utils';
 import type { RouteSenderAPI } from '@terascope/job-components';
 import EventEmitter, { once } from 'events';
 
@@ -50,6 +52,8 @@ export interface RoutedSenderOptions {
      */
     rejectRecord(record: DataEntity, error: unknown): void;
 }
+
+const logger = debugLogger('routed_sender');
 
 /**
  * This is used to route record to multiple destinations
@@ -115,13 +119,17 @@ export class RoutedSender {
         this.batchEndHook = options.batchEndHook;
         this.rejectRecord = options.rejectRecord;
 
+        if (this.batchSize <= 0) {
+            throw new Error(`Expect batch size to be >0, got ${this.batchSize}`);
+        }
+
         this.events.setMaxListeners(this.batchSize);
 
         for (const [keyset, connection] of Object.entries(routes)) {
             const keys = keyset.split(',');
 
             for (const key of keys) {
-                this.routesDefinitions.set(key, connection);
+                this.routesDefinitions.set(key.trim(), connection);
             }
         }
 
@@ -137,11 +145,14 @@ export class RoutedSender {
     async initializeRoute(route: string): Promise<void> {
         if (this.initializedRoutes.has(route)) return;
 
-        if (!this.initializingRoutes.has(route)) {
+        if (this.initializingRoutes.has(route)) {
+            logger.debug(`Waiting for sender api to be created for route:${route}`);
             await once(this.events, route);
             if (!this.initializedRoutes.has(route)) {
                 throw new Error(`Expected route "${route}" to have been initialized`);
             }
+            logger.debug(`Done waiting for sender api to be created for route:${route}`);
+            return;
         }
 
         this.initializingRoutes.add(route);
@@ -150,6 +161,7 @@ export class RoutedSender {
             if (!connection) {
                 throw new Error(`Missing route definition for "${route}"`);
             }
+            logger.info(`Creating sender api for route:${route}, connection:${connection}`);
             const sender = await this.createRouteSenderAPI(route, connection);
             this.initializedRoutes.set(route, { sender, batches: [] });
         } finally {
@@ -206,7 +218,12 @@ export class RoutedSender {
                 );
             }
         }, {
-            stopOnError: false,
+            stopOnError: true,
+            /**
+             * We can set this to a fixed size which
+             * prevent too many calls to initialize (which is the only async thing here really)
+            */
+            concurrency: this.routesDefinitions.size,
         });
     }
 
@@ -225,8 +242,11 @@ export class RoutedSender {
 
             await pMap(batches, async (batch) => {
                 this.batchStartHook && await this.batchStartHook(route, batch.length);
+
+                logger.info(`Sending ${batch.length} records to route ${route}`);
+
                 await routeConfig.sender.send(batch);
-                this.batchEndHook && this.batchEndHook(route);
+                this.batchEndHook && await this.batchEndHook(route);
             }, {
                 stopOnError: false,
                 concurrency: this.concurrencyPerStorage
@@ -252,11 +272,18 @@ export class RoutedSender {
 function addRecordToBatch(
     routeConfig: InitializedRoute,
     record: DataEntity,
-    _batchSize: number
+    batchSize: number
 ): void {
     if (!routeConfig.batches.length) {
-        routeConfig.batches = routeConfig.batches.concat([]);
+        routeConfig.batches = routeConfig.batches.concat([[]]);
     }
-    const lastIndex = routeConfig.batches.length - 1;
-    routeConfig.batches[lastIndex].push(record);
+
+    let currentBatch = getLast(routeConfig.batches)!;
+
+    if (currentBatch.length >= batchSize) {
+        currentBatch = [];
+        routeConfig.batches = routeConfig.batches.concat([currentBatch]);
+    }
+
+    currentBatch.push(record);
 }
