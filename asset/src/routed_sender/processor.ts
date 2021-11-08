@@ -6,16 +6,12 @@ import {
     APIFactoryRegistry
 } from '@terascope/job-components';
 import {
-    chunk, TSError, DataEntity, isEmpty, pMap, AnyObject, isNil
+    TSError, DataEntity, isEmpty, AnyObject
 } from '@terascope/utils';
+import { RoutedSender } from '@terascope/standard-asset-apis';
 import {
-    RouteSenderConfig, RouteDict, RoutingExecution, Endpoint
+    RouteSenderConfig
 } from './interfaces';
-
-interface SenderExecution {
-    client: RouteSenderAPI;
-    data: DataEntity[];
-}
 
 type SenderFactoryAPI = APIFactoryRegistry<RouteSenderAPI, AnyObject>
 
@@ -23,36 +19,24 @@ export type SenderFn = (
     fn: (msg: any) => DataEntity
 ) => (msg: any) => void
 
-export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
-    limit: number;
-    routeDict: RouteDict = new Map();
-    routingExecution: RoutingExecution = new Map();
-    concurrency: number;
+export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderConfig> {
+    routedSender: RoutedSender;
     api!: SenderFactoryAPI;
     tryFn: SenderFn;
 
     constructor(context: WorkerContext, opConfig: RouteSenderConfig, exConfig: ExecutionConfig) {
         super(context, opConfig, exConfig);
         const { routing, size, concurrency } = opConfig;
-        this.limit = size;
-        this.concurrency = concurrency;
 
         if (isEmpty(routing)) throw new TSError('Parameter routing must not be an empty object');
-
-        const keysets = Object.keys(routing);
-
-        if (keysets.includes('*') && keysets.includes('**')) throw new TSError('routing cannot specify "*" and "**"');
-
-        for (const keyset of keysets) {
-            const config = Object.assign({}, this.opConfig, { connection: routing[keyset] });
-            const keys = keyset.split(',');
-
-            for (const key of keys) {
-                this.routeDict.set(key, { ...config, _key: key });
-            }
-        }
-
         this.tryFn = this.tryRecord.bind(this) as SenderFn;
+
+        this.routedSender = new RoutedSender(routing, {
+            batchSize: size,
+            concurrencyPerStorage: concurrency,
+            createRouteSenderAPI: this.createRouteSenderAPI.bind(this),
+            rejectRecord: this.rejectRecord.bind(this),
+        });
     }
 
     async initialize(): Promise<void> {
@@ -61,103 +45,30 @@ export default class RoutedSender extends BatchProcessor<RouteSenderConfig> {
     }
 
     onSliceFailure(): void {
-        this._cleanupRouteExecution();
+        this.routedSender.clearBatches();
     }
 
-    private async createRoute(route: string) {
-        const config = this.routeDict.get(route);
-        if (isNil(config)) throw new Error(`Could not get config for route ${route}, please verify that this is in the routing`);
-
+    private async createRouteSenderAPI(route: string, connection: string) {
         let client = this.api.get(route);
 
-        if (isNil(client)) {
+        if (client == null) {
             client = await this.api.create(
                 route,
                 {
-                    ...config,
+                    ...this.opConfig,
+                    connection,
                     tryFn: this.tryFn,
                     logger: this.logger
                 }
             );
         }
 
-        this.routingExecution.set(route, { client, data: [] });
-    }
-
-    private formatRecords({ client, data }: SenderExecution) {
-        if (data.length === 0) return [];
-        return chunk(data, this.limit)
-            .map((chunkedData) => ({ client, data: chunkedData }));
-    }
-
-    async routeToDestinations(batch: DataEntity[]): Promise<void> {
-        for (const record of batch) {
-            const route = record.getMetadata('standard:route');
-            // if we have route, then use it, else make a topic if allowed.
-            // if not then check if a "*" is set, if not then use rejectRecord
-            if (this.routingExecution.has(route)) {
-                const routeConfig = this.routingExecution.get(route) as Endpoint;
-                routeConfig.data.push(record);
-            } else if (this.routeDict.has(route)) {
-                await this.createRoute(route);
-
-                const routeConfig = this.routingExecution.get(route) as Endpoint;
-                routeConfig.data.push(record);
-            } else if (this.routeDict.has('*')) {
-                if (!this.routingExecution.has('*')) {
-                    await this.createRoute('*');
-                }
-
-                const routeConfig = this.routingExecution.get('*') as Endpoint;
-                routeConfig.data.push(record);
-            } else if (this.routeDict.has('**')) {
-                if (!this.routingExecution.has('**')) {
-                    await this.createRoute('**');
-                }
-                const routeConfig = this.routingExecution.get('**') as Endpoint;
-
-                await routeConfig.client.verify(route);
-
-                routeConfig.data.push(record);
-            } else {
-                let error: TSError;
-
-                if (route == null) {
-                    error = new TSError('No route was specified in record metadata');
-                } else {
-                    error = new TSError(`Invalid connection route: ${route} was not found in routing`);
-                }
-
-                this.rejectRecord(record, error);
-            }
-        }
-
-        const chunkedSegments: SenderExecution[] = [];
-
-        for (const execution of this.routingExecution.values()) {
-            chunkedSegments.push(...this.formatRecords(execution));
-        }
-
-        await pMap(
-            chunkedSegments,
-            async ({ client, data }) => {
-                if (data.length === 0) return true;
-                return client.send(data);
-            },
-            { concurrency: this.concurrency }
-        );
-
-        this._cleanupRouteExecution();
-    }
-
-    private _cleanupRouteExecution() {
-        for (const config of this.routingExecution.values()) {
-            config.data = [];
-        }
+        return client;
     }
 
     async onBatch(batch: DataEntity[]): Promise<DataEntity[]> {
-        await this.routeToDestinations(batch);
+        await this.routedSender.route(batch);
+        await this.routedSender.send();
         return batch;
     }
 }

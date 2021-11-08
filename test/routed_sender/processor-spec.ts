@@ -2,9 +2,9 @@ import 'jest-extended';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { isEmpty, DataEntity, get } from '@terascope/job-components';
 import path from 'path';
+import { InitializedRoute } from '@terascope/standard-asset-apis';
 import TestApi from '../fixtures/someAssetId/test_api/api';
 import RoutedSender from '../../asset/src/routed_sender/processor';
-import { RoutingExecution } from '../../asset/src/routed_sender/interfaces';
 
 describe('Route Sender', () => {
     let harness: WorkerTestHarness;
@@ -52,36 +52,36 @@ describe('Route Sender', () => {
         return harness;
     }
 
-    function getRouteData(routing: RoutingExecution, route: string) {
+    function getRouteData(routing: Map<string, InitializedRoute>, route: string) {
         const routeApi = routing.get(route);
         if (isEmpty(routeApi)) return false;
-        const apiClient = routeApi?.client as unknown as TestApi;
+        const apiClient = routeApi?.sender as unknown as TestApi;
         // @ts-expect-error
         return apiClient.sendArgs[0];
     }
 
-    function getRouteArgs(routing: RoutingExecution, route: string) {
+    function getRouteArgs(routing: Map<string, InitializedRoute>, route: string) {
         const routeApi = routing.get(route);
         if (isEmpty(routeApi)) return false;
-        const apiClient = routeApi?.client as unknown as TestApi;
+        const apiClient = routeApi?.sender as unknown as TestApi;
         // @ts-expect-error
         return apiClient.routeArgs;
     }
 
-    function getRoutingKeys(routing: RoutingExecution): string[] {
+    function getRoutingKeys(routing: Map<string, InitializedRoute>): string[] {
         const results: string[] = [];
 
         for (const routeConfig of routing.values()) {
-            const config = get(routeConfig, 'client.configArgs[1]');
+            const config = get(routeConfig.sender, 'configArgs[1]');
             results.push(config._key);
         }
 
         return results;
     }
 
-    function getRoutingExecution(test: WorkerTestHarness): RoutingExecution {
+    function getRoutingExecution(test: WorkerTestHarness): Map<string, InitializedRoute> {
         const processor = test.getOperation<RoutedSender>('routed_sender');
-        return processor.routingExecution;
+        return processor.routedSender.initializedRoutes;
     }
 
     it('will throw if routing is misconfigured', async () => {
