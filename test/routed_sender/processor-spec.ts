@@ -1,10 +1,11 @@
 import 'jest-extended';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
-import { isEmpty, DataEntity, get } from '@terascope/job-components';
+import {
+    isEmpty, DataEntity, get, RouteSenderAPI
+} from '@terascope/job-components';
 import path from 'path';
 import TestApi from '../fixtures/someAssetId/test_api/api';
 import RoutedSender from '../../asset/src/routed_sender/processor';
-import { RoutingExecution } from '../../asset/src/routed_sender/interfaces';
 
 describe('Route Sender', () => {
     let harness: WorkerTestHarness;
@@ -52,36 +53,38 @@ describe('Route Sender', () => {
         return harness;
     }
 
-    function getRouteData(routing: RoutingExecution, route: string) {
-        const routeApi = routing.get(route);
-        if (isEmpty(routeApi)) return false;
-        const apiClient = routeApi?.client as unknown as TestApi;
+    function getRouteData(senders: Map<string, RouteSenderAPI>, route: string) {
+        const sender = senders.get(route);
+        if (isEmpty(sender)) return false;
+
+        const apiClient = sender as unknown as TestApi;
         // @ts-expect-error
         return apiClient.sendArgs[0];
     }
 
-    function getRouteArgs(routing: RoutingExecution, route: string) {
-        const routeApi = routing.get(route);
-        if (isEmpty(routeApi)) return false;
-        const apiClient = routeApi?.client as unknown as TestApi;
+    function getRouteArgs(senders: Map<string, RouteSenderAPI>, route: string) {
+        const sender = senders.get(route);
+        if (isEmpty(sender)) return false;
+
+        const apiClient = sender as unknown as TestApi;
         // @ts-expect-error
         return apiClient.routeArgs;
     }
 
-    function getRoutingKeys(routing: RoutingExecution): string[] {
+    function getRoutingKeys(senders: Map<string, RouteSenderAPI>): string[] {
         const results: string[] = [];
 
-        for (const routeConfig of routing.values()) {
-            const config = get(routeConfig, 'client.configArgs[1]');
+        for (const sender of senders.values()) {
+            const config = get(sender, 'configArgs[1]');
             results.push(config._key);
         }
 
         return results;
     }
 
-    function getRoutingExecution(test: WorkerTestHarness): RoutingExecution {
+    function getRoutingExecution(test: WorkerTestHarness): Map<string, RouteSenderAPI> {
         const processor = test.getOperation<RoutedSender>('routed_sender');
-        return processor.routingExecution;
+        return processor.routedSender.senders;
     }
 
     it('will throw if routing is misconfigured', async () => {
@@ -156,7 +159,7 @@ describe('Route Sender', () => {
         // this tests to make sure that the _key is being propagated correctly on the config
         for (const opKey of Object.keys(opConfig.routing)) {
             const keys = opKey.split(',').map((key) => key.trim());
-            keys.forEach((key) => expect(keyValues.includes(key)).toBeTrue());
+            expect(keyValues).toContainValues(keys);
         }
     });
 

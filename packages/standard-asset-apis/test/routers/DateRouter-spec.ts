@@ -15,6 +15,16 @@ describe('DateRouter', () => {
         expect(router.lookup(entity)).toEqual('1995.01.01');
     });
 
+    it('should work with a resolution of hourly', () => {
+        const router = new DateRouter({
+            field: 'date',
+            resolution: DateResolution.hourly
+        });
+
+        const entity = new DataEntity({ date: '1995-01-01T10:05:00.001Z' });
+        expect(router.lookup(entity)).toEqual('1995.01.01.10');
+    });
+
     it('should work with a resolution of daily', () => {
         const router = new DateRouter({
             field: 'date',
@@ -82,11 +92,11 @@ describe('DateRouter', () => {
             include_date_units: true,
             date_delimiter: '/',
             date_unit_delimiter: '-',
-            resolution: DateResolution.daily
+            resolution: DateResolution.hourly
         });
 
         const entity = new DataEntity({ date: '1995-01-01T10:05:00.001Z' });
-        expect(router.lookup(entity)).toEqual('year-1995/month-01/day-01');
+        expect(router.lookup(entity)).toEqual('year-1995/month-01/day-01/hour-10');
     });
 
     it('should throw if given an invalid date_delimiter', () => {

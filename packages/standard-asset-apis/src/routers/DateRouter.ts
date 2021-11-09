@@ -6,6 +6,7 @@ import * as I from './interfaces';
 const WEEK_IN_MS = 86400 * 7 * 1000;
 
 export enum DateResolution {
+    hourly = 'hourly',
     daily = 'daily',
     monthly = 'monthly',
     yearly = 'yearly',
@@ -79,7 +80,7 @@ export class DateRouter implements I.Router {
             return indexParts;
         }
 
-        const [year, month, day] = this._parseDate(date);
+        const [year, month, day, hour] = this._parseDate(date);
 
         this._addToIndex(indexParts, 'year', year);
         if (this.resolution === DateResolution.yearly) return indexParts;
@@ -93,7 +94,12 @@ export class DateRouter implements I.Router {
         if (this.resolution === DateResolution.monthly) return indexParts;
 
         this._addToIndex(indexParts, 'day', day);
-        return indexParts;
+        if (this.resolution === DateResolution.daily) return indexParts;
+
+        this._addToIndex(indexParts, 'hour', hour);
+        if (this.resolution === DateResolution.hourly) return indexParts;
+
+        throw new Error(`Unsupported date resolution "${this.resolution}"`);
     }
 
     private _getWeeksInEpoch(date: Date): number {
@@ -102,7 +108,7 @@ export class DateRouter implements I.Router {
     }
 
     private _parseDate(date: Date): string[] {
-        return date.toISOString().slice(0, 10).split('-');
+        return date.toISOString().slice(0, 14).split(/[-T\s:]/);
     }
 
     private _getWeeksInYear(date: Date, year: string): string | number {

@@ -1,4 +1,4 @@
-import { OpConfig, RouteSenderAPI } from '@terascope/job-components';
+import { OpConfig } from '@terascope/job-components';
 
 export interface ConnectionMapping {
     [key: string]: string;
@@ -10,11 +10,3 @@ export interface RouteSenderConfig extends OpConfig {
     api_name: string,
     concurrency: number
 }
-
-export interface Endpoint {
-    client: RouteSenderAPI;
-    data: any[];
-}
-
-export type RoutingExecution = Map <string, Endpoint>;
-export type RouteDict = Map<string, Record<string, any>>;
