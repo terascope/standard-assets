@@ -22,17 +22,16 @@ export interface RoutedSenderOptions {
     createRouteSenderAPI(route: string, connection: string): Promise<RouteSenderAPI>;
 
     /**
-     * This called before the first call to standard:route
-     * can be used to change te storage route for data routing
-     * which is implemented in the sender api
+     * This is called before the first call to standard:route
+     * can be used to change the standard:route for storage routing
     */
     storageRouteHook?(record: DataEntity): void|Promise<void>;
 
     /**
-      * This called after the standard:route is pulled from
-      * can be used to change te storage route for data routing
-      * which is implemented in the sender api
-     */
+     * This is called after the standard:route is pulled from the record
+     * metadata and can be used to change the standard:route for data routing
+     * (which is used within the route sender api implementations)
+    */
     dataRouteHook?(record: DataEntity): void|Promise<void>;
 
     /**
@@ -66,6 +65,10 @@ export class RoutedSender {
     readonly initializingRoutes = new Set<string>();
     readonly verifiedRoutes = new Set<string>();
     readonly initializedRoutes = new Map<string, InitializedRoute>();
+    /**
+     * This is used to notify when a async task is complement
+     * and a resource that needs atomic access
+    */
     readonly events = new EventEmitter();
 
     private _batchId = 0;
@@ -81,17 +84,16 @@ export class RoutedSender {
     createRouteSenderAPI: (route: string, connection: string) => Promise<RouteSenderAPI>;
 
     /**
-      * This called before the first call to standard:route
-      * can be used to change te storage route for data routing
-      * which is implemented in the sender api
-     */
+     * This is called before the first call to standard:route
+     * can be used to change the standard:route for storage routing
+    */
     storageRouteHook?: (record: DataEntity) => void|Promise<void>;
 
     /**
-     * This called after the standard:route is pulled from
-     * can be used to change te storage route for data routing
-     * which is implemented in the sender api
-     */
+     * This is called after the standard:route is pulled from the record
+     * metadata and can be used to change the standard:route for data routing
+     * (which is used within the route sender api implementations)
+    */
     dataRouteHook?: (record: DataEntity) => void|Promise<void>;
 
     /**
@@ -239,8 +241,10 @@ export class RoutedSender {
     */
     private async _verifyRoute(sender: RouteSenderAPI, route: string): Promise<void> {
         if (this.verifiedRoutes.has(route)) return;
-        await sender.verify(route);
+        // set this before calling verify since doing concurrency control is no longer needed
         this.verifiedRoutes.add(route);
+
+        await sender.verify(route);
     }
 
     /**
