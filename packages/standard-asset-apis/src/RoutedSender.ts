@@ -131,8 +131,6 @@ export class RoutedSender {
             throw new Error(`Expect batch size to be >0, got ${this.batchSize}`);
         }
 
-        this.events.setMaxListeners(this.batchSize);
-
         for (const [keyset, connection] of Object.entries(routes)) {
             const keys = keyset.split(',');
 
@@ -140,6 +138,8 @@ export class RoutedSender {
                 this.routesDefinitions.set(key.trim(), connection);
             }
         }
+
+        this.events.setMaxListeners(this.routesDefinitions.size * 2);
 
         if (this.routesDefinitions.has('*') && this.routesDefinitions.has('**')) {
             throw new Error('routing cannot specify "*" and "**"');
@@ -229,7 +229,7 @@ export class RoutedSender {
              * We can set this to a fixed size which
              * prevent too many calls to initialize (which is the only async thing here really)
             */
-            concurrency: this.routesDefinitions.size,
+            concurrency: this.routesDefinitions.size * 2,
         });
     }
 
