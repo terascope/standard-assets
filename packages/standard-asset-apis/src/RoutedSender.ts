@@ -38,12 +38,12 @@ export interface RoutedSenderOptions {
     /**
       * This can be used to track the batches start
      */
-    batchStartHook?(route: string, size: number): void|Promise<void>;
+    batchStartHook?(batchId: number, route: string, size: number): void|Promise<void>;
 
     /**
       * This can be used to track the batches end
      */
-    batchEndHook?(route: string): void|Promise<void>;
+    batchEndHook?(batchId: number, route: string): void|Promise<void>;
 
     /**
       * When a reject is missing the required route or metadata to be processed
@@ -56,13 +56,19 @@ export interface RoutedSenderOptions {
 const logger = debugLogger('routed_sender');
 
 /**
- * This is used to route record to multiple destinations
+ * This is used to route records to multiple storage backends
+ * and indices/topics/tables.
+ *
+ * Use this in conjunction with the routers
 */
 export class RoutedSender {
     readonly routesDefinitions = new Map<string, string>();
     readonly initializingRoutes = new Set<string>();
+    readonly verifiedRoutes = new Set<string>();
     readonly initializedRoutes = new Map<string, InitializedRoute>();
     readonly events = new EventEmitter();
+
+    private _batchId = 0;
 
     batchSize: number;
     concurrencyAllStorage: number;
@@ -91,12 +97,12 @@ export class RoutedSender {
     /**
      * This can be used to track the batches start
      */
-    batchStartHook?: (route: string, size: number) => void|Promise<void>;
+    batchStartHook?: (batchId: number, route: string, size: number) => void|Promise<void>;
 
     /**
      * This can be used to track the batches end
      */
-    batchEndHook?: (route: string) => void|Promise<void>;
+    batchEndHook?: (batchId: number, route: string) => void|Promise<void>;
 
     /**
      * When a reject is missing the required route or metadata to be processed
@@ -202,9 +208,7 @@ export class RoutedSender {
                 await this.initializeRoute('**');
 
                 const routeConfig = this.initializedRoutes.get('**')!;
-
-                await routeConfig.sender.verify(route);
-
+                await this._verifyRoute(routeConfig.sender, route);
                 addRecordToBatch(routeConfig, record, this.batchSize);
             } else if (route == null) {
                 this.rejectRecord(
@@ -228,6 +232,18 @@ export class RoutedSender {
     }
 
     /**
+     * This function ensures that the route is verified only once
+     * and is mainly only needed for dynamically created routes since
+     * some storage systems may require creating a resource before it
+     * can be written to
+    */
+    private async _verifyRoute(sender: RouteSenderAPI, route: string): Promise<void> {
+        if (this.verifiedRoutes.has(route)) return;
+        await sender.verify(route);
+        this.verifiedRoutes.add(route);
+    }
+
+    /**
      * Send the routed records to their destinations
      *
      * @todo improve concurrency so it won't double on already running queries
@@ -241,12 +257,13 @@ export class RoutedSender {
             routeConfig.batches = [];
 
             await pMap(batches, async (batch) => {
-                this.batchStartHook && await this.batchStartHook(route, batch.length);
+                const batchId = ++this._batchId;
+                this.batchStartHook && await this.batchStartHook(batchId, route, batch.length);
 
                 logger.info(`Sending ${batch.length} records to route ${route}`);
 
                 await routeConfig.sender.send(batch);
-                this.batchEndHook && await this.batchEndHook(route);
+                this.batchEndHook && await this.batchEndHook(batchId, route);
             }, {
                 stopOnError: false,
                 concurrency: this.concurrencyPerStorage
@@ -260,6 +277,8 @@ export class RoutedSender {
     clear(): void {
         this.initializingRoutes.clear();
         this.initializedRoutes.clear();
+        this.verifiedRoutes.clear();
+        this._batchId = 0;
     }
 
     clearBatches(): void {
