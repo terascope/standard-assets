@@ -139,7 +139,7 @@ export class RoutedSender {
             }
         }
 
-        this.events.setMaxListeners(this.routesDefinitions.size * 2);
+        this.events.setMaxListeners(this.routesDefinitions.size * 10);
 
         if (this.routesDefinitions.has('*') && this.routesDefinitions.has('**')) {
             throw new Error('routing cannot specify "*" and "**"');
@@ -210,7 +210,22 @@ export class RoutedSender {
                 await this.initializeRoute('**');
 
                 const routeConfig = this.initializedRoutes.get('**')!;
-                await this._verifyRoute(routeConfig.sender, route);
+
+                const dataRoute = record.getMetadata('standard:route');
+                if (!dataRoute) {
+                    this.rejectRecord(
+                        record,
+                        new Error('No data route was specified in record metadata')
+                    );
+                    return;
+                }
+
+                await this._verifyRoute(
+                    routeConfig.sender,
+                    // we need to use the data route here because
+                    // this will allow us to create the correct resource
+                    dataRoute
+                );
                 addRecordToBatch(routeConfig, record, this.batchSize);
             } else if (route == null) {
                 this.rejectRecord(
@@ -229,7 +244,7 @@ export class RoutedSender {
              * We can set this to a fixed size which
              * prevent too many calls to initialize (which is the only async thing here really)
             */
-            concurrency: this.routesDefinitions.size * 2,
+            concurrency: this.routesDefinitions.size * 10,
         });
     }
 

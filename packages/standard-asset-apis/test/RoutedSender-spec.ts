@@ -1,4 +1,4 @@
-import { DataEntity, RouteSenderAPI } from '@terascope/job-components';
+import { DataEntity, pDelay, RouteSenderAPI } from '@terascope/job-components';
 import 'jest-extended';
 import {
     RoutedSender
@@ -20,6 +20,7 @@ describe('RoutedSender', () => {
                 if (connection !== 'default') {
                     throw new Error('Expected connection to equal "default"');
                 }
+                await pDelay(10);
                 return { send, verify } as RouteSenderAPI;
             },
             rejectRecord(record, error) {
@@ -60,6 +61,7 @@ describe('RoutedSender', () => {
                 if (connection !== 'default') {
                     throw new Error('Expected connection to equal "default"');
                 }
+                await pDelay(10);
                 return { send, verify } as RouteSenderAPI;
             },
             rejectRecord(record, error) {
@@ -102,6 +104,7 @@ describe('RoutedSender', () => {
                 if (connection !== 'default') {
                     throw new Error('Expected connection to equal "default"');
                 }
+                await pDelay(10);
                 return { send, verify } as RouteSenderAPI;
             },
             rejectRecord(record, error) {
@@ -166,6 +169,7 @@ describe('RoutedSender', () => {
                 } else {
                     throw new Error(`Invalid combination of route:${route} connection:${connection}`);
                 }
+                await pDelay(10);
                 return { send, verify } as RouteSenderAPI;
             },
             rejectRecord(record, error) {
@@ -219,6 +223,7 @@ describe('RoutedSender', () => {
                 if (connection !== 'default') {
                     throw new Error('Expected connection to equal "default"');
                 }
+                await pDelay(10);
                 return { send, verify } as RouteSenderAPI;
             },
             rejectRecord(record, error) {
