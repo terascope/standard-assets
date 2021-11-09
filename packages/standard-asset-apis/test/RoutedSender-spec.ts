@@ -31,7 +31,13 @@ describe('RoutedSender', () => {
             new DataEntity({ foo: 1 }, { 'standard:route': 'foo1' }),
             new DataEntity({ foo: 2 }, { 'standard:route': 'foo2' }),
         ]);
+        expect(sender.queuedRecordCount).toBe(2);
+        expect(sender.hasQueuedRecords).toBeTrue();
+
         await sender.send();
+
+        expect(sender.queuedRecordCount).toBe(0);
+        expect(sender.hasQueuedRecords).toBeFalse();
 
         expect(send).toHaveBeenCalledTimes(1);
         expect(verify).toHaveBeenCalledTimes(2);
@@ -67,7 +73,66 @@ describe('RoutedSender', () => {
             new DataEntity({ foo: 3 }, { 'standard:route': 'foo1' }),
             new DataEntity({ foo: 4 }, { 'standard:route': 'foo2' }),
         ]);
+        expect(sender.queuedRecordCount).toBe(4);
+        expect(sender.hasQueuedRecords).toBeTrue();
+
         await sender.send();
+
+        expect(sender.queuedRecordCount).toBe(0);
+        expect(sender.hasQueuedRecords).toBeFalse();
+
+        expect(send).toHaveBeenCalledTimes(2);
+        expect(verify).toHaveBeenCalledTimes(2);
+        expect(verify).toHaveBeenNthCalledWith(1, 'foo1');
+        expect(verify).toHaveBeenNthCalledWith(2, 'foo2');
+    });
+
+    it('should be able to route records in multiple batches with a minPerBatch set to 2', async () => {
+        const send = jest.fn();
+        const verify = jest.fn();
+
+        const sender = new RoutedSender({
+            '**': 'default'
+        }, {
+            batchSize: 2,
+            async createRouteSenderAPI(route, connection) {
+                if (route !== '**') {
+                    throw new Error('Expected route to equal "**"');
+                }
+                if (connection !== 'default') {
+                    throw new Error('Expected connection to equal "default"');
+                }
+                return { send, verify } as RouteSenderAPI;
+            },
+            rejectRecord(record, error) {
+                throw error;
+            }
+        });
+
+        await sender.route([
+            new DataEntity({ foo: 1 }, { 'standard:route': 'foo1' }),
+            new DataEntity({ foo: 2 }, { 'standard:route': 'foo2' }),
+        ]);
+        expect(sender.queuedRecordCount).toBe(2);
+        expect(sender.hasQueuedRecords).toBeTrue();
+
+        await sender.send(2);
+
+        expect(sender.queuedRecordCount).toBe(2);
+        expect(sender.hasQueuedRecords).toBeTrue();
+
+        await sender.route([
+            new DataEntity({ foo: 3 }, { 'standard:route': 'foo1' }),
+            new DataEntity({ foo: 4 }, { 'standard:route': 'foo2' }),
+        ]);
+
+        expect(sender.queuedRecordCount).toBe(4);
+        expect(sender.hasQueuedRecords).toBeTrue();
+
+        await sender.send();
+
+        expect(sender.queuedRecordCount).toBe(0);
+        expect(sender.hasQueuedRecords).toBeFalse();
 
         expect(send).toHaveBeenCalledTimes(2);
         expect(verify).toHaveBeenCalledTimes(2);
@@ -117,7 +182,14 @@ describe('RoutedSender', () => {
             new DataEntity({ foo: 3 }, { 'standard:route': 'foo1' }),
             new DataEntity({ bar: 1 }, { 'standard:route': 'bar' }),
         ]);
+
+        expect(sender.queuedRecordCount).toBe(7);
+        expect(sender.hasQueuedRecords).toBeTrue();
+
         await sender.send();
+
+        expect(sender.queuedRecordCount).toBe(0);
+        expect(sender.hasQueuedRecords).toBeFalse();
 
         expect(send).toHaveBeenCalledTimes(4);
         expect(verify).toHaveBeenCalledTimes(0);
@@ -160,7 +232,14 @@ describe('RoutedSender', () => {
             new DataEntity({ foo: 3 }, { 'standard:route': 'foo1' }),
             new DataEntity({ foo: 4 }, { 'standard:route': 'foo2' }),
         ]);
+
+        expect(sender.queuedRecordCount).toBe(4);
+        expect(sender.hasQueuedRecords).toBeTrue();
+
         await sender.send();
+
+        expect(sender.queuedRecordCount).toBe(0);
+        expect(sender.hasQueuedRecords).toBeFalse();
 
         expect(send).toHaveBeenCalledTimes(2);
 

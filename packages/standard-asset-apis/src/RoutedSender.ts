@@ -244,19 +244,58 @@ export class RoutedSender {
     }
 
     /**
+     * A quick check to see if there are any queued records left
+     * to be processed
+    */
+    get hasQueuedRecords(): boolean {
+        for (const { batches } of this.initializedRoutes.values()) {
+            for (const batch of batches) {
+                if (batch.length) return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * The total number of queued records across all routes
+    */
+    get queuedRecordCount(): number {
+        let count = 0;
+        for (const { batches } of this.initializedRoutes.values()) {
+            for (const batch of batches) {
+                count += batch.length;
+            }
+        }
+        return count;
+    }
+
+    /**
      * Send the routed records to their destinations
      *
      * @todo improve concurrency so it won't double on already running queries
+     *
+     * @param minPerBatch this is inclusive minimum per batch of records, this
+     *                    is useful for not sending batches with of records
+     *                    with a small amount of records in within it
     */
-    async send(): Promise<void> {
+    async send(
+        minPerBatch = 0
+    ): Promise<void> {
         await pMap(this.initializedRoutes.entries(), async ([route, routeConfig]) => {
             if (!routeConfig.batches.length) return;
 
             // this will prevent records from being added the current batch
-            const batches = routeConfig.batches.map((batch) => batch.slice());
+            const { batches } = routeConfig;
             routeConfig.batches = [];
 
             await pMap(batches, async (batch) => {
+                if (batch.length <= minPerBatch) {
+                    batch.forEach((record) => {
+                        addRecordToBatch(routeConfig, record, this.batchSize);
+                    });
+                    return;
+                }
+
                 const batchId = ++this._batchId;
                 this.batchStartHook && await this.batchStartHook(batchId, route, batch.length);
 
