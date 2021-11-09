@@ -4,11 +4,7 @@ import {
 import type { RouteSenderAPI } from '@terascope/job-components';
 import EventEmitter, { once } from 'events';
 
-type BatchOfRecords = readonly (DataEntity[])[];
-export interface InitializedRoute {
-    readonly sender: RouteSenderAPI;
-    batches: BatchOfRecords;
-}
+export type BatchOfRecords = readonly (DataEntity[])[];
 
 export interface RoutedSenderOptions {
     batchSize: number;
@@ -62,9 +58,13 @@ const logger = debugLogger('routed_sender');
 */
 export class RoutedSender {
     readonly routesDefinitions = new Map<string, string>();
-    readonly initializingRoutes = new Set<string>();
+
     readonly verifiedRoutes = new Set<string>();
-    readonly initializedRoutes = new Map<string, InitializedRoute>();
+
+    readonly initializingSender = new Set<string>();
+    readonly senders = new Map<string, RouteSenderAPI>();
+    readonly allBatches = new Map<string, BatchOfRecords>();
+
     /**
      * This is used to notify when a async task is complement
      * and a resource that needs atomic access
@@ -139,8 +139,6 @@ export class RoutedSender {
             }
         }
 
-        this.events.setMaxListeners(this.routesDefinitions.size * 10);
-
         if (this.routesDefinitions.has('*') && this.routesDefinitions.has('**')) {
             throw new Error('routing cannot specify "*" and "**"');
         }
@@ -151,31 +149,37 @@ export class RoutedSender {
      * This is used to create multiple sender apis
     */
     async initializeRoute(route: string): Promise<void> {
-        if (this.initializedRoutes.has(route)) return;
+        if (this.senders.has(route) || this.initializingSender.has(route)) return;
 
-        if (this.initializingRoutes.has(route)) {
-            logger.debug(`Waiting for sender api to be created for route:${route}`);
-            await once(this.events, route);
-            if (!this.initializedRoutes.has(route)) {
-                throw new Error(`Expected route "${route}" to have been initialized`);
-            }
-            logger.debug(`Done waiting for sender api to be created for route:${route}`);
-            return;
-        }
-
-        this.initializingRoutes.add(route);
+        this.allBatches.set(route, []);
+        this.initializingSender.add(route);
         try {
             const connection = this.routesDefinitions.get(route);
             if (!connection) {
                 throw new Error(`Missing route definition for "${route}"`);
             }
+
             logger.info(`Creating sender api for route:${route}, connection:${connection}`);
             const sender = await this.createRouteSenderAPI(route, connection);
-            this.initializedRoutes.set(route, { sender, batches: [] });
+            this.senders.set(route, sender);
         } finally {
-            this.initializingRoutes.delete(route);
+            this.initializingSender.delete(route);
             this.events.emit(route);
         }
+    }
+
+    private async _waitForSender(route: string) {
+        if (this.initializingSender.has(route)) {
+            logger.debug(`Waiting for sender api to be created for route:${route}`);
+            await once(this.events, route);
+            logger.debug(`Done waiting for sender api to be created for route:${route}`);
+        }
+
+        const sender = this.senders.get(route);
+        if (!sender) {
+            throw new Error(`Expected route "${route}" to have been initialized`);
+        }
+        return sender;
     }
 
     /**
@@ -193,24 +197,23 @@ export class RoutedSender {
 
             // if we have route, then use it, else make a topic if allowed.
             // if not then check if a "*" is set, if not then use rejectRecord
-            if (this.initializedRoutes.has(route)) {
-                const routeConfig = this.initializedRoutes.get(route)!;
-                addRecordToBatch(routeConfig, record, this.batchSize);
-            } else if (this.routesDefinitions.has(route)) {
+            if (this.routesDefinitions.has(route)) {
                 await this.initializeRoute(route);
 
-                const routeConfig = this.initializedRoutes.get(route)!;
-                addRecordToBatch(routeConfig, record, this.batchSize);
+                const batches = this.allBatches.get(route)!;
+                this.allBatches.set(
+                    route,
+                    addRecordToBatch(batches, record, this.batchSize)
+                );
             } else if (this.routesDefinitions.has('*')) {
                 await this.initializeRoute('*');
 
-                const routeConfig = this.initializedRoutes.get('*')!;
-                addRecordToBatch(routeConfig, record, this.batchSize);
+                const batches = this.allBatches.get('*')!;
+                this.allBatches.set(
+                    '*',
+                    addRecordToBatch(batches, record, this.batchSize)
+                );
             } else if (this.routesDefinitions.has('**')) {
-                await this.initializeRoute('**');
-
-                const routeConfig = this.initializedRoutes.get('**')!;
-
                 const dataRoute = record.getMetadata('standard:route');
                 if (!dataRoute) {
                     this.rejectRecord(
@@ -220,13 +223,21 @@ export class RoutedSender {
                     return;
                 }
 
+                await this.initializeRoute('**');
+                const sender = await this._waitForSender('**');
+
                 await this._verifyRoute(
-                    routeConfig.sender,
+                    sender,
                     // we need to use the data route here because
                     // this will allow us to create the correct resource
                     dataRoute
                 );
-                addRecordToBatch(routeConfig, record, this.batchSize);
+
+                const batches = this.allBatches.get('**')!;
+                this.allBatches.set(
+                    '**',
+                    addRecordToBatch(batches, record, this.batchSize)
+                );
             } else if (route == null) {
                 this.rejectRecord(
                     record,
@@ -240,11 +251,6 @@ export class RoutedSender {
             }
         }, {
             stopOnError: true,
-            /**
-             * We can set this to a fixed size which
-             * prevent too many calls to initialize (which is the only async thing here really)
-            */
-            concurrency: this.routesDefinitions.size * 10,
         });
     }
 
@@ -267,7 +273,7 @@ export class RoutedSender {
      * to be processed
     */
     get hasQueuedRecords(): boolean {
-        for (const { batches } of this.initializedRoutes.values()) {
+        for (const batches of this.allBatches.values()) {
             for (const batch of batches) {
                 if (batch.length) return true;
             }
@@ -280,7 +286,7 @@ export class RoutedSender {
     */
     get queuedRecordCount(): number {
         let count = 0;
-        for (const { batches } of this.initializedRoutes.values()) {
+        for (const batches of this.allBatches.values()) {
             for (const batch of batches) {
                 count += batch.length;
             }
@@ -300,17 +306,20 @@ export class RoutedSender {
     async send(
         minPerBatch = 0
     ): Promise<void> {
-        await pMap(this.initializedRoutes.entries(), async ([route, routeConfig]) => {
-            if (!routeConfig.batches.length) return;
+        await pMap(this.allBatches.entries(), async ([route, batches]) => {
+            if (!batches.length) return;
 
-            // this will prevent records from being added the current batch
-            const { batches } = routeConfig;
-            routeConfig.batches = [];
+            this.allBatches.set(route, []);
 
             await pMap(batches, async (batch) => {
                 if (batch.length <= minPerBatch) {
                     batch.forEach((record) => {
-                        addRecordToBatch(routeConfig, record, this.batchSize);
+                        this.allBatches.set(
+                            route,
+                            addRecordToBatch(
+                                this.allBatches.get(route)!, record, this.batchSize
+                            )
+                        );
                     });
                     return;
                 }
@@ -320,7 +329,11 @@ export class RoutedSender {
 
                 logger.info(`Sending ${batch.length} records to route ${route}`);
 
-                await routeConfig.sender.send(batch);
+                const sender = this.senders.get(route);
+                if (!sender) throw new Error('No sender registered for route');
+
+                await sender.send(batch);
+
                 this.batchEndHook && await this.batchEndHook(batchId, route);
             }, {
                 stopOnError: false,
@@ -333,34 +346,33 @@ export class RoutedSender {
     }
 
     clear(): void {
-        this.initializingRoutes.clear();
-        this.initializedRoutes.clear();
+        this.initializingSender.clear();
+        this.senders.clear();
+        this.allBatches.clear();
         this.verifiedRoutes.clear();
         this._batchId = 0;
     }
 
     clearBatches(): void {
-        this.initializedRoutes.forEach((routeConfig) => {
-            routeConfig.batches = [];
-        });
+        this.allBatches.clear();
     }
 }
 
 function addRecordToBatch(
-    routeConfig: InitializedRoute,
+    batches: BatchOfRecords,
     record: DataEntity,
     batchSize: number
-): void {
-    if (!routeConfig.batches.length) {
-        routeConfig.batches = routeConfig.batches.concat([[]]);
+): BatchOfRecords {
+    if (!batches.length) {
+        return batches.concat([[record]]);
     }
 
-    let currentBatch = getLast(routeConfig.batches)!;
+    const currentBatch = getLast(batches)!;
 
     if (currentBatch.length >= batchSize) {
-        currentBatch = [];
-        routeConfig.batches = routeConfig.batches.concat([currentBatch]);
+        return batches.concat([[record]]);
     }
 
     currentBatch.push(record);
+    return batches;
 }
