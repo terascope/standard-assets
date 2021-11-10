@@ -1,5 +1,5 @@
 import {
-    DataEntity, pMap, debugLogger, getLast
+    DataEntity, pMap, debugLogger, getLast, isInteger
 } from '@terascope/utils';
 import type { RouteSenderAPI } from '@terascope/job-components';
 import EventEmitter, { once } from 'events';
@@ -186,7 +186,7 @@ export class RoutedSender {
      * This routes a list of records to internal batch queues
     */
     async route(
-        records: DataEntity[],
+        records: Iterable<DataEntity>,
     ): Promise<void> {
         await pMap(records, async (record) => {
             this.storageRouteHook && await this.storageRouteHook(record);
@@ -261,6 +261,8 @@ export class RoutedSender {
      * can be written to
     */
     private async _verifyRoute(sender: RouteSenderAPI, route: string): Promise<void> {
+        if (sender.verify == null) return;
+
         if (this.verifiedRoutes.has(route)) return;
         // set this before calling verify since doing concurrency control is no longer needed
         this.verifiedRoutes.add(route);
@@ -302,10 +304,14 @@ export class RoutedSender {
      * @param minPerBatch this is inclusive minimum per batch of records, this
      *                    is useful for not sending batches with of records
      *                    with a small amount of records in within it
+     *
+     * @returns the number of affected records
     */
     async send(
         minPerBatch = 0
-    ): Promise<void> {
+    ): Promise<number> {
+        let affectedRows = 0;
+
         await pMap(this.allBatches.entries(), async ([route, batches]) => {
             if (!batches.length) return;
 
@@ -332,7 +338,13 @@ export class RoutedSender {
                 const sender = this.senders.get(route);
                 if (!sender) throw new Error('No sender registered for route');
 
-                await sender.send(batch);
+                const result: unknown = await sender.send(batch);
+                if (isInteger(result)) {
+                    affectedRows += result;
+                } else {
+                    // we do this for backwards compatibility
+                    affectedRows += batch.length;
+                }
 
                 this.batchEndHook && await this.batchEndHook(batchId, route);
             }, {
@@ -343,6 +355,8 @@ export class RoutedSender {
             stopOnError: false,
             concurrency: this.concurrencyAllStorage
         });
+
+        return affectedRows;
     }
 
     clear(): void {
