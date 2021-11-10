@@ -2,6 +2,8 @@ import path from 'path';
 import { DataEntity, AnyObject } from '@terascope/utils';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 
+jest.setTimeout(10_000);
+
 describe('match phase', () => {
     let harness: WorkerTestHarness;
 
