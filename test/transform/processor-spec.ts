@@ -2,6 +2,8 @@ import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { DataEntity, AnyObject } from '@terascope/job-components';
 import path from 'path';
 
+jest.setTimeout(10_000);
+
 describe('transform matches', () => {
     const testAssetPath = path.join(__dirname, '../fixtures/someAssetId');
     const opPathName = path.join(__dirname, '../../asset/');

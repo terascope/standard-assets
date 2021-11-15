@@ -37,7 +37,7 @@ export interface RoutedSenderOptions {
     /**
       * This can be used to track the batches end
      */
-    batchEndHook?(batchId: number, route: string): void|Promise<void>;
+    batchEndHook?(batchId: number, route: string, affectedRows: number): void|Promise<void>;
 
     /**
       * When a reject is missing the required route or metadata to be processed
@@ -103,7 +103,7 @@ export class RoutedSender {
     /**
      * This can be used to track the batches end
      */
-    batchEndHook?: (batchId: number, route: string) => void|Promise<void>;
+    batchEndHook?: (batchId: number, route: string, affectedRows: number) => void|Promise<void>;
 
     /**
      * When a reject is missing the required route or metadata to be processed
@@ -338,14 +338,16 @@ export class RoutedSender {
                 if (!sender) throw new Error('No sender registered for route');
 
                 const result: unknown = await sender.send(batch);
+                let affectedBatchCount: number;
                 if (isInteger(result)) {
-                    affectedRows += result;
+                    affectedBatchCount = result;
                 } else {
                     // we do this for backwards compatibility
-                    affectedRows += batch.length;
+                    affectedBatchCount = batch.length;
                 }
+                affectedRows += affectedBatchCount;
 
-                this.batchEndHook && await this.batchEndHook(batchId, route);
+                this.batchEndHook && await this.batchEndHook(batchId, route, affectedBatchCount);
             }, {
                 stopOnError: false,
                 concurrency: this.concurrencyPerStorage

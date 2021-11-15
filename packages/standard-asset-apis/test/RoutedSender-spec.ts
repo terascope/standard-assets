@@ -257,8 +257,8 @@ describe('RoutedSender', () => {
         expect(batchStartHook).toHaveBeenNthCalledWith(2, 2, '**', 2);
 
         expect(batchEndHook).toHaveBeenCalledTimes(2);
-        expect(batchEndHook).toHaveBeenNthCalledWith(1, 1, '**');
-        expect(batchEndHook).toHaveBeenNthCalledWith(2, 2, '**');
+        expect(batchEndHook).toHaveBeenNthCalledWith(1, 1, '**', 2);
+        expect(batchEndHook).toHaveBeenNthCalledWith(2, 2, '**', 2);
 
         expect(dataRouteHook).toHaveBeenCalledTimes(4);
         expect(storageRouteHook).toHaveBeenCalledTimes(4);
