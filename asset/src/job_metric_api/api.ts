@@ -158,16 +158,19 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
         if (!(this.hasMetric(name))) {
             const fullname = this.prefix + name;
             if (type === 'gauge') {
-                this.metricList[name] = this._createGaugeMetric(fullname, help,
-                    labelsNames.concat(Object.keys(this.default_labels)));
+                this.metricList[name] = this._createGaugeMetric(
+                    fullname, help, labelsNames.concat(Object.keys(this.default_labels))
+                );
             }
             if (type === 'counter') {
-                this.metricList[name] = this._createCounterMetric(fullname, help,
-                    labelsNames.concat(Object.keys(this.default_labels)));
+                this.metricList[name] = this._createCounterMetric(
+                    fullname, help, labelsNames.concat(Object.keys(this.default_labels))
+                );
             }
             if (type === 'histogram') {
-                this.metricList[name] = this._createHistogramMetric(fullname, help,
-                    labelsNames.concat(Object.keys(this.default_labels)), buckets);
+                this.metricList[name] = this._createHistogramMetric(
+                    fullname, help, labelsNames.concat(Object.keys(this.default_labels)), buckets
+                );
             }
         } else {
             throw new Error(`metric ${name} already defined in metric list`);
@@ -225,9 +228,14 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
         percentiles: Array<number> = [0.01, 0.1, 0.9, 0.99]): void {
         if (!(name in this.metricList)) {
             const fullname = this.prefix + name;
-            this.metricList[name] = this._createSummaryMetric(fullname, help,
+            this.metricList[name] = this._createSummaryMetric(
+                fullname,
+                help,
                 labelsNames.concat(Object.keys(this.default_labels)),
-                percentiles, maxAgeSeconds, ageBuckets,);
+                percentiles,
+                maxAgeSeconds,
+                ageBuckets
+            );
         }
     }
 
