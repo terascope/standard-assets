@@ -15,7 +15,7 @@
         "build:watch": "yarn build --watch"
     },
     "dependencies": {
-        "@terascope/job-components": "^0.56.0",
+        "@terascope/job-components": "^0.56.1",
         "@terascope/standard-asset-apis": "^0.2.2",
         "@terascope/utils": "^0.44.1",
         "express": "^4.17.1",
