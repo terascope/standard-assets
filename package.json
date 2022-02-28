@@ -36,7 +36,7 @@
         "@types/timsort": "^0.3.0",
         "axios": "^0.25.0",
         "eslint": "^8.10.0",
-        "jest": "^27.5.0",
+        "jest": "^27.5.1",
         "jest-extended": "^2.0.0",
         "node-notifier": "^10.0.1",
         "teraslice-test-harness": "^0.28.2",
