@@ -27,7 +27,7 @@
         "@terascope/utils": "^0.44.1"
     },
     "devDependencies": {
-        "@types/jest": "^27.4.0",
+        "@types/jest": "^27.4.1",
         "jest": "^27.5.1",
         "jest-extended": "^2.0.0",
         "jest-fixtures": "^0.6.0",
