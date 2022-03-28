@@ -35,7 +35,7 @@
         "@types/node-gzip": "^1.1.0",
         "@types/timsort": "^0.3.0",
         "axios": "^0.26.0",
-        "eslint": "^8.10.0",
+        "eslint": "^8.12.0",
         "jest": "^27.5.1",
         "jest-extended": "^2.0.0",
         "node-notifier": "^10.0.1",
