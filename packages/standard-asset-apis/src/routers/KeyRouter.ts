@@ -49,12 +49,52 @@ export interface KeyRouterConfig {
      * @default {KeyRouterCaseOptions.preserve}
     */
     case?: KeyRouterCaseOptions;
+
+    /**
+     * @default false
+     */
+    suffix_use?: boolean;
+
+    /**
+     * @default ''
+     */
+    suffix_upper?: string;
+
+    /**
+     * @default ''
+     */
+    suffix_lower?: string;
+
+    /**
+     * @default ''
+     */
+    suffix_other?: string;
+
+    /**
+     * @default ''
+     */
+    suffix_number?: string;
+
 }
 
 function extraction(config: KeyRouterConfig): (key: string) => string {
+
+    // set suffix defaults
+    const suffixUpper = config.suffix_upper ?? '';
+    const suffixLower = config.suffix_lower ?? '';
+    const suffixOther = config.suffix_other ?? '';
+    const suffixNumber = config.suffix_number ?? '';
+    const suffixUse = config.suffix_use ?? false;
+
     if (config.use != null) {
         if (config.use === 0) {
             throw new RangeError('KeyRouter requires that at least one character is selected, use must be greater than 0');
+        }
+        if (config.use > 1 && config.case !== 'preserve' && suffixUse ) {
+            throw new RangeError('KeyRouter may clobber keys when changing case with more than one routing key');
+        }
+        if (config.use > 1 && config.case === 'preserve' && suffixUse ) {
+            throw new RangeError('KeyRouter with suffix_use:true only works with use:1');
         }
 
         if (config.from === KeyRouterFromOptions.end) {
@@ -63,6 +103,25 @@ function extraction(config: KeyRouterConfig): (key: string) => string {
         }
 
         const end = config.use;
+        /* Append a suffix to the routing key as defined suffix_upper, suffix_lower,
+         * suffix_number, and suffix_other when suffix_use is true
+        */
+        if (end === 1 && suffixUse) {
+            return (key) => {
+                const val = key.slice(0, end);
+                if (/[A-Z]/.test(val)) {
+                    return suffixUse ? `${val.toLowerCase()}${suffixUpper}`: val
+                } else if (/[a-z]/.test(val)) {
+                    return suffixUse ? `${val}${suffixLower}` : val
+                } else if (/[0-9]/.test(val)) {
+                    return suffixUse ? `${val}${suffixNumber}` : val
+                } else {
+                    return suffixUse ? `${val}${suffixOther}` : val
+                }
+            };
+
+        }
+
         return (key) => key.slice(0, end);
     }
 
