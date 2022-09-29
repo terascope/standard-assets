@@ -166,7 +166,7 @@ describe('KeyRouter', () => {
         expect(router.lookup(entity)).toEqual('0--n');
     });
 
-    it('should work with use 1 from the beginning and setting suffix for number', () => {
+    it('should work with use 1 from the beginning and setting suffix false for number', () => {
         const router = new KeyRouter({
             case: KeyRouterCaseOptions.preserve,
             use: 1,
@@ -181,7 +181,6 @@ describe('KeyRouter', () => {
         expect(router.lookup(entity)).toEqual('0');
     });
 
-
     it('should throw if given use of 0', () => {
         expect(() => {
             new KeyRouter({
@@ -190,7 +189,7 @@ describe('KeyRouter', () => {
         }).toThrow('KeyRouter requires that at least one character is selected, use must be greater than 0');
     });
 
-    it('should throw if given use greater than 1, not preserve case, and use suffix', () => {
+    it('should throw if given use greater than 1, lower case, and use suffix', () => {
         expect(() => {
             new KeyRouter({
                 use: 3,
@@ -200,7 +199,7 @@ describe('KeyRouter', () => {
             });
         }).toThrow('KeyRouter may clobber keys when changing case with more than one routing key');
     });
-    it('should throw if given use greater than 1, not preserve case, and use suffix', () => {
+    it('should throw if given use greater than 1, upper case, and use suffix', () => {
         expect(() => {
             new KeyRouter({
                 use: 3,
@@ -220,5 +219,4 @@ describe('KeyRouter', () => {
             });
         }).toThrow('KeyRouter with suffix_use:true only works with use:1');
     });
-
 });

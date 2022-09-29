@@ -78,7 +78,6 @@ export interface KeyRouterConfig {
 }
 
 function extraction(config: KeyRouterConfig): (key: string) => string {
-
     // set suffix defaults
     const suffixUpper = config.suffix_upper ?? '';
     const suffixLower = config.suffix_lower ?? '';
@@ -90,10 +89,10 @@ function extraction(config: KeyRouterConfig): (key: string) => string {
         if (config.use === 0) {
             throw new RangeError('KeyRouter requires that at least one character is selected, use must be greater than 0');
         }
-        if (config.use > 1 && config.case !== 'preserve' && suffixUse ) {
+        if (config.use > 1 && config.case !== 'preserve' && suffixUse) {
             throw new RangeError('KeyRouter may clobber keys when changing case with more than one routing key');
         }
-        if (config.use > 1 && config.case === 'preserve' && suffixUse ) {
+        if (config.use > 1 && config.case === 'preserve' && suffixUse) {
             throw new RangeError('KeyRouter with suffix_use:true only works with use:1');
         }
 
@@ -109,17 +108,18 @@ function extraction(config: KeyRouterConfig): (key: string) => string {
         if (end === 1 && suffixUse) {
             return (key) => {
                 const val = key.slice(0, end);
+                let routingKey: string;
                 if (/[A-Z]/.test(val)) {
-                    return suffixUse ? `${val.toLowerCase()}${suffixUpper}`: val
+                    routingKey = suffixUse ? `${val.toLowerCase()}${suffixUpper}` : val;
                 } else if (/[a-z]/.test(val)) {
-                    return suffixUse ? `${val}${suffixLower}` : val
+                    routingKey = suffixUse ? `${val}${suffixLower}` : val;
                 } else if (/[0-9]/.test(val)) {
-                    return suffixUse ? `${val}${suffixNumber}` : val
+                    routingKey = suffixUse ? `${val}${suffixNumber}` : val;
                 } else {
-                    return suffixUse ? `${val}${suffixOther}` : val
+                    routingKey = suffixUse ? `${val}${suffixOther}` : val;
                 }
+                return routingKey;
             };
-
         }
 
         return (key) => key.slice(0, end);
