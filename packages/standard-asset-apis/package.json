@@ -1,6 +1,6 @@
 {
     "name": "@terascope/standard-asset-apis",
-    "version": "0.2.3",
+    "version": "0.3.0",
     "description": "A common set of tools for data processing",
     "publishConfig": {
         "access": "public"

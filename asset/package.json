@@ -1,6 +1,6 @@
 {
     "name": "standard",
-    "version": "0.14.3",
+    "version": "0.15.0",
     "description": "Teraslice standard processor asset bundle",
     "license": "MIT",
     "private": true,
@@ -16,7 +16,7 @@
     },
     "dependencies": {
         "@terascope/job-components": "^0.56.1",
-        "@terascope/standard-asset-apis": "^0.2.3",
+        "@terascope/standard-asset-apis": "^0.3.0",
         "@terascope/utils": "^0.44.1",
         "express": "^4.17.3",
         "mocker-data-generator": "^2.12.0",
