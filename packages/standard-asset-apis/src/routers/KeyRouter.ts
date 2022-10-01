@@ -1,25 +1,7 @@
-import { DataEntity } from '@terascope/utils';
+import { DataEntity, debugLogger } from '@terascope/utils';
 import * as I from './interfaces';
 
-/**
- * A routing algorithm that uses the record key
- * with some optional transformations
-*/
-export class KeyRouter implements I.Router {
-    readonly kind = I.RouterKind.STORAGE;
-    readonly transformKey: (key: string) => string;
-
-    constructor(config: KeyRouterConfig) {
-        const extractionFn = extraction(config);
-        const caseFn = caseTransforms(config.case);
-
-        this.transformKey = (key) => caseFn(extractionFn(key));
-    }
-
-    lookup(record: DataEntity): string {
-        return this.transformKey(String(record.getKey()));
-    }
-}
+const logger = debugLogger('key_router');
 
 export enum KeyRouterCaseOptions {
     preserve = 'preserve',
@@ -77,65 +59,100 @@ export interface KeyRouterConfig {
 
 }
 
-function extraction(config: KeyRouterConfig): (key: string) => string {
-    // set suffix defaults
-    const suffixUpper = config.suffix_upper ?? '';
-    const suffixLower = config.suffix_lower ?? '';
-    const suffixOther = config.suffix_other ?? '';
-    const suffixNumber = config.suffix_number ?? '';
-    const suffixUse = config.suffix_use ?? false;
+/**
+ * A routing algorithm that uses the record key
+ * with some optional transformations
+*/
+export class KeyRouter implements I.Router {
+    readonly kind = I.RouterKind.STORAGE;
+    readonly transformKey: (key: string) => string;
+    readonly config: KeyRouterConfig;
+    suffixSize: number;
+    constructor(config: KeyRouterConfig) {
+        this.config = config;
+        // set defaults for suffix
+        this.config.suffix_upper = config.suffix_upper ?? '';
+        this.config.suffix_lower = config.suffix_lower ?? '';
+        this.config.suffix_other = config.suffix_other ?? '';
+        this.config.suffix_number = config.suffix_number ?? '';
+        this.config.suffix_use = config.suffix_use ?? false;
+        this.suffixSize = 0;
+        if (this.config.use != null) {
+            if (this.config.use > 1 && this.config.suffix_use) {
+                logger.warn('KeyRouter may clobber keys when changing case with more than one routing key');
+            }
+            if (this.config.suffix_use
+                && this.config.suffix_upper === ''
+                && this.config.suffix_lower === ''
+                && this.config.suffix_other === ''
+                && this.config.suffix_number === '') {
+                throw new Error('KeyRouter requires that at least one suffix_(upper/lower/other/number) value be specified');
+            }
+        }
 
-    if (config.use != null) {
-        if (config.use === 0) {
-            throw new RangeError('KeyRouter requires that at least one character is selected, use must be greater than 0');
-        }
-        if (config.use > 1 && config.case !== 'preserve' && suffixUse) {
-            throw new RangeError('KeyRouter may clobber keys when changing case with more than one routing key');
-        }
-        if (config.use > 1 && config.case === 'preserve' && suffixUse) {
-            throw new RangeError('KeyRouter with suffix_use:true only works with use:1');
+        const extractionFn = this.extraction();
+        const caseFn = this.caseTransforms(this.config.case);
+        // TODO with this order the suffix will be incorrect because the case gets coverted
+        // first, losing the original value of the routing key
+        // this.transformKey = (key) => this.addSuffix(caseFn((extractionFn(key))));
+
+        // TODO The ordrer case function converts the suffix to uppercase when using case upper
+        this.transformKey = (key) => caseFn(this.addSuffix((extractionFn(key))));
+    }
+
+    lookup(record: DataEntity): string {
+        return this.transformKey(String(record.getKey()));
+    }
+
+    private extraction(): (key: string) => string {
+        if (this.config.use != null) {
+            if (this.config.use === 0) {
+                throw new RangeError('KeyRouter requires that at least one character is selected, use must be greater than 0');
+            }
+
+            if (this.config.from === KeyRouterFromOptions.end) {
+                const start = -Math.abs(this.config.use);
+                return (key) => key.slice(start);
+            }
+
+            const end = this.config.use;
+
+            return (key) => key.slice(0, end);
         }
 
-        if (config.from === KeyRouterFromOptions.end) {
-            const start = -Math.abs(config.use);
-            return (key) => key.slice(start);
+        return (key) => key;
+    }
+
+    private caseTransforms(caseOption = KeyRouterCaseOptions.preserve): (key: string) => string {
+        if (caseOption === KeyRouterCaseOptions.lower) {
+            return (key) => key.toLowerCase();
         }
 
-        const end = config.use;
+        if (caseOption === KeyRouterCaseOptions.upper) {
+            return (key) => key.toUpperCase();
+        }
+
+        return (key) => key;
+    }
+
+    private addSuffix(key: string): string {
         /* Append a suffix to the routing key as defined suffix_upper, suffix_lower,
          * suffix_number, and suffix_other when suffix_use is true
-        */
-        if (end === 1 && suffixUse) {
-            return (key) => {
-                const val = key.slice(0, end);
-                let routingKey: string;
-                if (/[A-Z]/.test(val)) {
-                    routingKey = suffixUse ? `${val.toLowerCase()}${suffixUpper}` : val;
-                } else if (/[a-z]/.test(val)) {
-                    routingKey = suffixUse ? `${val}${suffixLower}` : val;
-                } else if (/[0-9]/.test(val)) {
-                    routingKey = suffixUse ? `${val}${suffixNumber}` : val;
-                } else {
-                    routingKey = suffixUse ? `${val}${suffixOther}` : val;
-                }
-                return routingKey;
-            };
+         */
+
+        if (this.config.use === 1 && this.config.suffix_use) {
+            let routingKey: string;
+            if (/[A-Z]/.test(key)) {
+                routingKey = `${key}${this.config.suffix_upper}`;
+            } else if (/[a-z]/.test(key)) {
+                routingKey = `${key}${this.config.suffix_lower}`;
+            } else if (/[0-9]/.test(key)) {
+                routingKey = `${key}${this.config.suffix_number}`;
+            } else {
+                routingKey = `${key}${this.config.suffix_other}`;
+            }
+            return routingKey;
         }
-
-        return (key) => key.slice(0, end);
+        return key;
     }
-
-    return (key) => key;
-}
-
-function caseTransforms(caseOption = KeyRouterCaseOptions.preserve): (key: string) => string {
-    if (caseOption === KeyRouterCaseOptions.lower) {
-        return (key) => key.toLowerCase();
-    }
-
-    if (caseOption === KeyRouterCaseOptions.upper) {
-        return (key) => key.toUpperCase();
-    }
-
-    return (key) => key;
 }
