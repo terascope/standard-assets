@@ -117,7 +117,7 @@ describe('KeyRouter', () => {
         const entity = new DataEntity({ foo: 'bar' });
         entity.setKey('Rm9vQmFy');
         expect(entity.getKey()).toEqual('Rm9vQmFy');
-        expect(router.lookup(entity)).toEqual('R--u');
+        expect(router.lookup(entity)).toEqual('R--U');
     });
 
     it('should work with use 1 from the beginning and not setting suffix for lowercase', () => {
