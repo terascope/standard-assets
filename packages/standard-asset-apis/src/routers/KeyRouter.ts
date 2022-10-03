@@ -92,11 +92,8 @@ export class KeyRouter implements I.Router {
 
         const extractionFn = this.extraction();
         const caseFn = this.caseTransforms(this.config.case);
-        // TODO with this order the suffix will be incorrect because the case gets coverted
-        // first, losing the original value of the routing key
-        // this.transformKey = (key) => this.addSuffix(caseFn((extractionFn(key))));
 
-        // TODO The ordrer case function converts the suffix to uppercase when using case upper
+        // With this order the case function converts the suffix to uppercase when using case upper
         this.transformKey = (key) => caseFn(this.addSuffix((extractionFn(key))));
     }
 
