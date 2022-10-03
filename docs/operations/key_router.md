@@ -87,7 +87,7 @@ results[1].getMetadata('standard:route') === 'secondkey';
 ### Use a partial of _key value
 Here is an example of creating a route from part of the `_key` value
 
-Example Job
+Example Job:
 
 ```json
 {
@@ -128,6 +128,52 @@ Example Job
 
 ```
 
+### Add Suffix Example
+
+Example:
+```json
+{
+    "name" : "testing",
+    "workers" : 1,
+    "slicers" : 1,
+    "lifecycle" : "once",
+    "assets" : [
+        "standard",
+        "elasticsearch"
+    ],
+    "apis": [
+         {
+            "_name": "elasticsearch_sender_api",
+            "index": "other_index",
+            "size": 1000
+        }
+    ],
+    "operations" : [
+        {
+            "_op": "test-reader",
+        },
+        {
+            "_op": "key_router",
+            "use:": 1,
+            "from": "beginning",
+            "case": "lower",
+            "suffix_use": true,
+            "suffix_upper": "--u",
+            "suffix_lower": "--l",
+            "suffix_number": "--n",
+            "suffix_other": "--c"
+        },
+        {
+            "_op": "routed_sender",
+            "api_name": "elasticsearch_sender_api",
+            "routing": {
+                "**": "default"
+            }
+        }
+    ]
+}
+```
+
 Here is an example of data and the resulting metadata generated from it based on the job above.
 
 ```javascript
@@ -160,12 +206,16 @@ results[0].getMetadata('standard:route') === 'f';
 results[1].getMetadata('standard:route') === 's';
 ```
 
-
 ## Parameters
 
-| Configuration | Description                                                                                            | Type   | Notes                                                        |
-| ------------- | ------------------------------------------------------------------------------------------------------ | ------ | ------------------------------------------------------------ |
-| _op           | Name of operation, it must reflect the exact name of the file                                          | String | required                                                     |
-| use           | The number of characters to slice off the key and use as the routing value'                            | Number | optional, if used it must be used in conjunction with `from` |
-| from          | Whether the characters are sliced from the `beginning` or `end` of the key                             | String | optional, if used it must be used in conjunction with `use`  |
-| case          | Transform to apply to the values extracted from the key, may be set to `preserve`, `lower`, or `upper` | String | optional, defaults to preserve                               |
+| Configuration | Description                                                                                             | Type    | Notes                                                        |
+| ------------- | ------------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------ |
+| _op           | Name of operation, it must reflect the exact name of the file                                           | String  | required                                                     |
+| use           | The number of characters to slice off the key and use as the routing value'                             | Number  | optional, if used it must be used in conjunction with `from` |
+| from          | Whether the characters are sliced from the `beginning` or `end` of the key                              | String  | optional, if used it must be used in conjunction with `use`  |
+| case          | Transform to apply to the values extracted from the key, may be set to `preserve`, `lower`, or `upper`  | String  | optional, defaults to preserve                               |
+| suffix_use    | Append a suffix to the extracted value.  The extracted value and be from the `beginning` or `end`.  The value of the suffix can be altered by using `case`.  When using with Elasticsearch the use `"case": "lower"`.  When using with `use` greater than one there is a risk of clobbering the case of the extracted values. | Boolean | optional, defaults to false requires at list one suffix_(upper/lower/number/other) |
+| suffix_upper  | Suffix value to be appended to the extracted value when the value is an upper case letter.              | String  | optional, defaults to `''`                                   |
+| suffix_lower  | Suffix value to be appended to the extracted value when the value is a lower case letter.               | String  | optional, defaults to `''`                                   |
+| suffix_number | Suffix value to be appended to the extracted value when the value is a number.                          | String  | optional, defaults to `''`                                   |
+| suffix_other  | Suffix value to be appended to the extracted value when the value is a neither letter or number.        | String  | optional, defaults to `''`                                   |
