@@ -1,5 +1,6 @@
 import {
-    DataEntity, getTypeOf, isInteger, toString
+    DataEntity, getTypeOf, isInteger,
+    toString
 } from '@terascope/utils';
 import fnv1a from '@sindresorhus/fnv1a';
 import * as I from './interfaces';
@@ -26,6 +27,7 @@ export class HashRouter implements I.Router {
             if (!this.fields.length) {
                 return String(record.getKey());
             }
+
             return this.fields.map((field) => toString(record[field])).join('');
         };
     }
