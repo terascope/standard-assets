@@ -1,6 +1,6 @@
 {
     "name": "standard-assets-bundle",
-    "version": "0.16.0",
+    "version": "0.17.0",
     "description": "Teraslice standard processor asset bundle",
     "private": true,
     "workspaces": [
@@ -45,6 +45,5 @@
     },
     "engines": {
         "node": ">=14.17.0"
-    },
-    "dependencies": {}
+    }
 }
