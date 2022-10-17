@@ -21,9 +21,9 @@
         "express": "^4.18.1",
         "mocker-data-generator": "^2.12.0",
         "prom-client": "^14.1.0",
+        "short-unique-id": "^4.4.4",
         "timsort": "^0.3.0",
-        "ts-transforms": "^0.68.0",
-        "short-unique-id": "^4.4.4"
+        "ts-transforms": "^0.68.0"
     },
     "repository": {
         "type": "git",
