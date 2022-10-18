@@ -15,7 +15,7 @@ import { UniqueIdOpConfig } from './interfaces';
  * uses https://www.npmjs.com/package/short-unique-id to build the id
  */
 
-export default class AddUniqueId extends MapProcessor<OpConfig> {
+export default class AddShortId extends MapProcessor<OpConfig> {
     uniqueId: ShortUniqueId;
 
     constructor(context: WorkerContext, opConfig: UniqueIdOpConfig, exConfig: ExecutionConfig) {
