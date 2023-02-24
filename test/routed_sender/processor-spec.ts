@@ -76,7 +76,7 @@ describe('Route Sender', () => {
 
         for (const sender of senders.values()) {
             const config = get(sender, 'configArgs[1]');
-            results.push(config._key);
+            results.push((config as any)._key);
         }
 
         return results;

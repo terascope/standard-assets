@@ -53,6 +53,19 @@ describe('date_router', () => {
         expect(slice.getMetadata('standard:route')).toEqual('20200117');
     });
 
+    it('properly uses system time for the date', async () => {
+        const test = await makeTest({
+            resolution: DateResolution.daily,
+            field: '__clock_time'
+        });
+
+        const [slice] = await test.runSlice(data);
+        const [year, month, day] = new Date().toISOString().split('-');
+        const [date] = day.split('T');
+
+        expect(slice.getMetadata('standard:route')).toEqual(`${year}.${month}.${date}`);
+    });
+
     it('properly adds a daily parameter with fields', async () => {
         const test = await makeTest({
             resolution: DateResolution.daily,

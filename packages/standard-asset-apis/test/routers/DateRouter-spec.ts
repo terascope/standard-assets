@@ -8,11 +8,26 @@ import {
 describe('DateRouter', () => {
     it('should work with the default daily', () => {
         const router = new DateRouter({
-            field: 'date'
+            field: 'date',
         });
 
         const entity = new DataEntity({ date: '1995-01-01T10:05:00.001Z' });
         expect(router.lookup(entity)).toEqual('1995.01.01');
+    });
+
+    it('should use system time when this option is set to true', () => {
+        const router = new DateRouter({
+            field: '__clock_time',
+            resolution: DateResolution.hourly
+        });
+
+        const entity = new DataEntity({ date: '1995-01-01T10:05:00.001Z' });
+
+        const [year, month, day] = new Date().toISOString().split('-');
+        const [date, time] = day.split('T');
+        const [hour] = time.split(':');
+
+        expect(router.lookup(entity)).toEqual(`${year}.${month}.${date}.${hour}`);
     });
 
     it('should work with a resolution of hourly', () => {
