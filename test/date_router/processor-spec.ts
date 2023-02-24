@@ -56,7 +56,8 @@ describe('date_router', () => {
     it('properly uses system time for the date', async () => {
         const test = await makeTest({
             resolution: DateResolution.daily,
-            field: '__clock_time'
+            field: 'date',
+            use_clock_time: true
         });
 
         const [slice] = await test.runSlice(data);

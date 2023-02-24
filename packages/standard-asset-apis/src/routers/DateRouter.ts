@@ -41,7 +41,7 @@ export class DateRouter implements I.Router {
     constructor(config: DateRouterConfig) {
         this.field = config.field;
         this.resolution = config.resolution ?? DateResolution.daily;
-        this.timeValueFunc = config.field === '__clock_time' ? this._getSystemTime : this._getDateValue;
+        this.timeValueFunc = config.use_clock_time ? this._getSystemTime : this._getDateValue;
 
         this.dateDelimiter = config.date_delimiter ?? '.';
         if (!validDateDelimiters.has(this.dateDelimiter)) {
@@ -141,6 +141,11 @@ export interface DateRouterConfig {
      * This is the primary date field on the record
     */
     field: string;
+
+    /**
+     * Option to use system time for the time value, overrides field value
+     */
+    use_clock_time?: boolean;
 
     /**
      * This is used determine how specific the date

@@ -17,7 +17,8 @@ describe('DateRouter', () => {
 
     it('should use system time when this option is set to true', () => {
         const router = new DateRouter({
-            field: '__clock_time',
+            field: 'date',
+            use_clock_time: true,
             resolution: DateResolution.hourly
         });
 
