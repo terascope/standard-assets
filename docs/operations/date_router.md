@@ -4,7 +4,7 @@ The `date_router` enables time series based routing by the [routed_sender](./rou
 
 ## Usage
 
-### Example of time series routing with daily resolution using Elasticsearch 
+### Example of time series routing with daily resolution using Elasticsearch
 This teraslice job would write the record with `created: 2021-09-14` to the index `example-index-2021.09.14`.
 
 Example Job
@@ -60,7 +60,7 @@ doc.getMetadata('standard:route') // 2021.09.14
 ```
 
 
-### Example of time series routing with weekly_epoch resolution using Elasticsearch 
+### Example of time series routing with weekly_epoch resolution using Elasticsearch
 This teraslice job would write the record with `created: 2021-09-14` to the index `example-index-2697`.
 
 Example Job
@@ -115,7 +115,7 @@ doc.getMetadata('standard:route') // 2697
 ```
 
 
-### Example of time series routing with monthly resolution using a file system 
+### Example of time series routing with monthly resolution using a file system
 This example writes to a file location.  A record with `created: 2021-08-21` will be saved to the path and file `/example/path/2021_08`
 
 Example Job
@@ -173,7 +173,7 @@ doc.getMetadata('standard:route') // 2021_08
 
 
 ### Example of time series routing with daily resolution and date units using a file system
-This example also writes to a file location but includes the date units in the route .   Note that "`/`" is used as the date_delimiter to create file paths based on the year and month.  A record with `created: 2021-08-21` will be saved to the path and file `/example/path/year_2021/month_08/day_21`. 
+This example also writes to a file location but includes the date units in the route .   Note that "`/`" is used as the date_delimiter to create file paths based on the year and month.  A record with `created: 2021-08-21` will be saved to the path and file `/example/path/year_2021/month_08/day_21`.
 
 Example Job
 ```json
@@ -236,6 +236,7 @@ doc.getMetadata('standard:route') // year_2021/month_08/day_21
 | --------- | -------- | ------ | ------ |
 | _op | routed_sender | String | required |
 | field | Name of field that will be used for the time series routing, must be a date field | String | required |
+| use_clock_time | Uses system time for the series routing instead of pulling the date from the incoming data, overrides the `field` setting | Boolean | optional, defaults to false |
 | resolution | The unit of time that a record will be routed by, options are `daily`, `monthly`, `yearly`, `weekly`, or `weekly_epoch (weeks since 1/1/1970)` | String | optional, defaults to `daily` |
 | date_delimiter | Separator between the date parts in the route, limited to the characters `".", "-", "_", "/" or "" (no delimiter)` | String | optional, defaults to `.` |
 | include_date_units | Determines if the date unit (year, month, day) should be included in final output | Boolean | optional, defaults to false |
