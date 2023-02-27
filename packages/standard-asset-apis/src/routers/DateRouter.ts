@@ -41,7 +41,7 @@ export class DateRouter implements I.Router {
     constructor(config: DateRouterConfig) {
         this.field = config.field;
         this.resolution = config.resolution ?? DateResolution.daily;
-        this.timeValueFunc = config.use_clock_time ? this._getSystemTime : this._getDateValue;
+        this.timeValueFunc = config.use_clock_time ? this._getSystemTime : this._getRecordDateValue;
 
         this.dateDelimiter = config.date_delimiter ?? '.';
         if (!validDateDelimiters.has(this.dateDelimiter)) {
@@ -60,7 +60,7 @@ export class DateRouter implements I.Router {
         return this._createIndexParts(date).join(this.dateDelimiter);
     }
 
-    private _getDateValue(record: DataEntity): Date {
+    private _getRecordDateValue(record: DataEntity): Date {
         const date = getValidDate(record[this.field]);
 
         if (date === false) {
