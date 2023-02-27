@@ -15,7 +15,7 @@ describe('DateRouter', () => {
         expect(router.lookup(entity)).toEqual('1995.01.01');
     });
 
-    it('should use system time when this option is set to true', () => {
+    it('should use clock time when this option is set to true', () => {
         const router = new DateRouter({
             field: 'date',
             use_clock_time: true,

@@ -53,7 +53,7 @@ describe('date_router', () => {
         expect(slice.getMetadata('standard:route')).toEqual('20200117');
     });
 
-    it('properly uses system time for the date', async () => {
+    it('properly uses clock time for the date when set to true', async () => {
         const test = await makeTest({
             resolution: DateResolution.daily,
             field: 'date',
