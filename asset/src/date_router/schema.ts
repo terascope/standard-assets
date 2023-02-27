@@ -9,6 +9,11 @@ export default class Schema extends ConvictSchema<DateRouterConfig> {
                 default: null,
                 format: 'required_String'
             },
+            use_clock_time: {
+                doc: 'Use clock time for date value, overrides the field value',
+                default: false,
+                format: 'Boolean'
+            },
             resolution: {
                 doc: 'Type of time series data: yearly, monthly, weekly, weekly_epoch, or daily.  Weekly_epoch is weeks since start of epoch time, Jan 1, 1970.',
                 default: DateResolution.daily,

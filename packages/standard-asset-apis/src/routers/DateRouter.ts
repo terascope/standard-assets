@@ -22,6 +22,9 @@ export const validDateDelimiters: ReadonlySet<string> = new Set([
     ''
 ]);
 
+type GetDateValue = (record: DataEntity) => Date;
+type GetSystemTime = () => Date;
+
 /**
  * A routing algorithm that uses a date strings
  * to route the data to different partitions
@@ -33,10 +36,12 @@ export class DateRouter implements I.Router {
     readonly dateDelimiter: string;
     readonly includeDateUnits: boolean;
     readonly dateUnitDelimiter: string;
+    timeValueFunc: GetDateValue | GetSystemTime;
 
     constructor(config: DateRouterConfig) {
         this.field = config.field;
         this.resolution = config.resolution ?? DateResolution.daily;
+        this.timeValueFunc = config.use_clock_time ? this._getSystemTime : this._getRecordDateValue;
 
         this.dateDelimiter = config.date_delimiter ?? '.';
         if (!validDateDelimiters.has(this.dateDelimiter)) {
@@ -51,17 +56,15 @@ export class DateRouter implements I.Router {
     }
 
     lookup(record: DataEntity): string {
-        const date = this._getDateValue(record);
+        const date = this.timeValueFunc(record);
         return this._createIndexParts(date).join(this.dateDelimiter);
     }
 
-    private _getDateValue(record: DataEntity): Date {
-        const value = record[this.field];
-
-        const date = getValidDate(value);
+    private _getRecordDateValue(record: DataEntity): Date {
+        const date = getValidDate(record[this.field]);
 
         if (date === false) {
-            throw new TSError(`Could not convert value ${value} to a date`, {
+            throw new TSError(`Could not convert value ${record[this.field]} to a date`, {
                 context: {
                     record
                 }
@@ -69,6 +72,10 @@ export class DateRouter implements I.Router {
         }
 
         return date;
+    }
+
+    private _getSystemTime() {
+        return new Date();
     }
 
     private _createIndexParts(date: Date): string[] {
@@ -134,6 +141,11 @@ export interface DateRouterConfig {
      * This is the primary date field on the record
     */
     field: string;
+
+    /**
+     * Option to use system time for the time value, overrides field value
+     */
+    use_clock_time?: boolean;
 
     /**
      * This is used determine how specific the date
