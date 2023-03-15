@@ -90,7 +90,7 @@ describe('key', () => {
         ]);
     });
 
-    fit('should only use specified fields to generate the key and add to every doc', async () => {
+    it('should only use specified fields to generate the key and add to every doc', async () => {
         const test = await makeTest({ key_fields: ['age'] });
 
         const results = await test.runSlice(testData);
