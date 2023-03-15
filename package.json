@@ -1,6 +1,6 @@
 {
     "name": "standard-assets-bundle",
-    "version": "0.18.0",
+    "version": "0.19.0",
     "description": "Teraslice standard processor asset bundle",
     "private": true,
     "workspaces": [
