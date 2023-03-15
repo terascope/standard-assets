@@ -22,12 +22,12 @@ export default class AddKey extends BatchProcessor {
             return this.handleDataWindows(data as DataWindow[]);
         }
 
-        return this._keyDocs(data);
+        return this.keyDocs(data);
     }
 
-    _keyDocs(data: DataEntity[]) {
+    private keyDocs(data: DataEntity[]) {
         return data.reduce((keyed: DataEntity[], doc) => {
-            const values = this._getValues(doc, this._getKeyFields(doc));
+            const values = this.getValues(doc, this.getKeyFields(doc));
 
             if (values.length >= this.opConfig.minimum_field_count) {
                 const key = this.createKey(values);
@@ -49,8 +49,8 @@ export default class AddKey extends BatchProcessor {
         }, []);
     }
 
-    _getKeyFields(doc: DataEntity) {
-        if (this.opConfig.invert_key_fields) return this._invertKeyProperties(doc);
+    private getKeyFields(doc: DataEntity) {
+        if (this.opConfig.invert_key_fields) return this.invertKeyProperties(doc);
 
         if (this.opConfig.key_fields.length) {
             return this.opConfig.key_fields;
@@ -59,7 +59,7 @@ export default class AddKey extends BatchProcessor {
         return Object.keys(doc).sort();
     }
 
-    _invertKeyProperties(doc: DataEntity) {
+    private invertKeyProperties(doc: DataEntity) {
         return Object.keys(doc).reduce((keyProperties: string[], property) => {
             if (!this.opConfig.key_fields.includes(property)) {
                 keyProperties.push(property);
@@ -69,9 +69,9 @@ export default class AddKey extends BatchProcessor {
         }, []).sort();
     }
 
-    _getValues(doc: DataEntity, keyFields: string[]) {
+    private getValues(doc: DataEntity, keyFields: string[]) {
         return keyFields.reduce((values: unknown[], field) => {
-            const value = this._getValue(doc, field);
+            const value = this.getValue(doc, field);
 
             if (value != null) {
                 if ((Array.isArray(value) || isObjectEntity(value)) && isEmpty(value)) {
@@ -84,7 +84,7 @@ export default class AddKey extends BatchProcessor {
         }, []);
     }
 
-    _getValue(doc: DataEntity, field: string) {
+    private getValue(doc: DataEntity, field: string) {
         const fieldValue = get(doc, field);
 
         if (this.opConfig.truncate_location && this.opConfig.truncate_location.includes(field)) {
@@ -178,7 +178,7 @@ export default class AddKey extends BatchProcessor {
 
     private handleDataWindows(data: DataWindow[]) {
         for (const dataWindow of data) {
-            dataWindow.dataArray = this._keyDocs(dataWindow.asArray());
+            dataWindow.dataArray = this.keyDocs(dataWindow.asArray());
         }
 
         return data;
