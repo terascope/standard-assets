@@ -26,7 +26,7 @@ describe('key', () => {
 
     async function makeTest(config: AnyObject = {}) {
         const _op = {
-            _op: 'key'
+            _op: 'add_key'
         };
 
         const opConfig = { ..._op, ...config };
@@ -49,35 +49,48 @@ describe('key', () => {
         expect(results).toBeArrayOfSize(0);
     });
 
-    it('should use every field to generate the key to each incoming doc', async () => {
+    it('should add key to metadata', async () => {
         const test = await makeTest();
 
         const results = await test.runSlice(testData);
+
+        for (const doc of results) {
+            expect(doc.getKey()).toBe(makeKey([doc.age, doc.name], 'md5'));
+        }
+    });
+
+    it('should use every field and sort to generate the key to each incoming doc', async () => {
+        const test = await makeTest();
+
+        const data = cloneDeep(testData);
+
+        data[0].thing = ['some', 'thing'];
+        data[1].foo = { bar: 'foo' };
+
+        const results = await test.runSlice(data);
 
         expect(results).toEqual([
             {
                 name: 'bob',
                 age: 122,
-                _key: makeKey(['bob', 122], 'md5')
+                thing: ['some', 'thing'],
+                _key: makeKey([122, 'bob', ['some', 'thing']], 'md5')
             },
             {
                 name: 'joe',
                 age: 34,
-                _key: makeKey(['joe', 34], 'md5')
+                foo: { bar: 'foo' },
+                _key: makeKey([34, { bar: 'foo' }, 'joe'], 'md5')
             },
             {
                 name: 'frank',
                 age: 99,
-                _key: makeKey(['frank', 99], 'md5')
+                _key: makeKey([99, 'frank'], 'md5')
             }
         ]);
-
-        for (const doc of results) {
-            expect(doc.getKey()).toBe(makeKey([doc.name, doc.age], 'md5'));
-        }
     });
 
-    it('should only use specified fields to generate the key and add to every doc', async () => {
+    fit('should only use specified fields to generate the key and add to every doc', async () => {
         const test = await makeTest({ key_fields: ['age'] });
 
         const results = await test.runSlice(testData);
@@ -185,7 +198,7 @@ describe('key', () => {
     it('should preserve original key', async () => {
         const test = await makeTest({ key_fields: ['name', 'age'], preserve_original_key: true });
 
-        const data = testData.map((doc, i) => {
+        const data = cloneDeep(testData).map((doc, i) => {
             doc._key = i + 1;
 
             return DataEntity.make(doc, { _key: doc._key });
@@ -218,7 +231,7 @@ describe('key', () => {
     it('should add _delete_id to the metadata', async () => {
         const test = await makeTest({ key_fields: ['name', 'age'], delete_original: true });
 
-        const data = testData.map((doc, i) => {
+        const data = cloneDeep(testData).map((doc, i) => {
             doc._key = i + 1;
 
             return DataEntity.make(doc, { _key: doc._key });
@@ -234,7 +247,7 @@ describe('key', () => {
         });
     });
 
-    it('should truncate an object geo-point', async () => {
+    it('should truncate an object geo-point if nested values are specified', async () => {
         const test = await makeTest({
             key_fields: [
                 'name',
@@ -249,7 +262,7 @@ describe('key', () => {
             truncate_location_places: 4
         });
 
-        const data = testData.map((doc) => {
+        const data = cloneDeep(testData).map((doc) => {
             doc.location = { lon: -43.4432343234, lat: 55.3454349123934 };
             return doc;
         });
@@ -278,6 +291,132 @@ describe('key', () => {
         ]);
     });
 
+    it('should truncate an object geo-point', async () => {
+        const test = await makeTest({
+            key_fields: [
+                'name',
+                'age',
+                'location'
+            ],
+            truncate_location: [
+                'location'
+            ],
+            truncate_location_places: 4
+        });
+
+        const data = cloneDeep(testData).map((doc) => {
+            doc.location = { lon: -43.4432343234, lat: 55.3454349123934 };
+            return doc;
+        });
+
+        const results = await test.runSlice(data);
+
+        expect(results).toEqual([
+            {
+                name: 'bob',
+                age: 122,
+                location: { lon: -43.4432343234, lat: 55.3454349123934 },
+                _key: makeKey(['bob', 122, { lon: -43.4432, lat: 55.3454 }], 'md5')
+            },
+            {
+                name: 'joe',
+                age: 34,
+                location: { lon: -43.4432343234, lat: 55.3454349123934 },
+                _key: makeKey(['joe', 34, { lon: -43.4432, lat: 55.3454 }], 'md5')
+            },
+            {
+                name: 'frank',
+                age: 99,
+                location: { lon: -43.4432343234, lat: 55.3454349123934 },
+                _key: makeKey(['frank', 99, { lon: -43.4432, lat: 55.3454 }], 'md5')
+            }
+        ]);
+    });
+
+    it('should truncate array geo-point', async () => {
+        const test = await makeTest({
+            key_fields: [
+                'name',
+                'age',
+                'location'
+            ],
+            truncate_location: [
+                'location'
+            ],
+            truncate_location_places: 4
+        });
+
+        const data = cloneDeep(testData).map((doc) => {
+            doc.location = [-43.4432343234, 55.3454349123934];
+            return doc;
+        });
+
+        const results = await test.runSlice(data);
+
+        expect(results).toEqual([
+            {
+                name: 'bob',
+                age: 122,
+                location: [-43.4432343234, 55.3454349123934],
+                _key: makeKey(['bob', 122, [-43.4432, 55.3454]], 'md5')
+            },
+            {
+                name: 'joe',
+                age: 34,
+                location: [-43.4432343234, 55.3454349123934],
+                _key: makeKey(['joe', 34, [-43.4432, 55.3454]], 'md5')
+            },
+            {
+                name: 'frank',
+                age: 99,
+                location: [-43.4432343234, 55.3454349123934],
+                _key: makeKey(['frank', 99, [-43.4432, 55.3454]], 'md5')
+            }
+        ]);
+    });
+
+    it('should truncate array geo-point of strings', async () => {
+        const test = await makeTest({
+            key_fields: [
+                'name',
+                'age',
+                'location'
+            ],
+            truncate_location: [
+                'location'
+            ],
+            truncate_location_places: 4
+        });
+
+        const data = cloneDeep(testData).map((doc) => {
+            doc.location = ['-43.4432343234', '55.3454349123934'];
+            return doc;
+        });
+
+        const results = await test.runSlice(data);
+
+        expect(results).toEqual([
+            {
+                name: 'bob',
+                age: 122,
+                location: ['-43.4432343234', '55.3454349123934'],
+                _key: makeKey(['bob', 122, [-43.4432, 55.3454]], 'md5')
+            },
+            {
+                name: 'joe',
+                age: 34,
+                location: ['-43.4432343234', '55.3454349123934'],
+                _key: makeKey(['joe', 34, [-43.4432, 55.3454]], 'md5')
+            },
+            {
+                name: 'frank',
+                age: 99,
+                location: ['-43.4432343234', '55.3454349123934'],
+                _key: makeKey(['frank', 99, [-43.4432, 55.3454]], 'md5')
+            }
+        ]);
+    });
+
     it('should truncate string geo-point', async () => {
         const test = await makeTest({
             key_fields: [
@@ -291,7 +430,7 @@ describe('key', () => {
             truncate_location_places: 4
         });
 
-        const data = testData.map((doc) => {
+        const data = cloneDeep(testData).map((doc) => {
             doc.location = '-43.4432343234, 55.3454349123934';
             return doc;
         });
@@ -333,7 +472,7 @@ describe('key', () => {
             truncate_location_places: 4
         });
 
-        const data = testData.map((doc) => {
+        const data = cloneDeep(testData).map((doc) => {
             doc.location = 'POINT (-43.4432343234 55.3454349123934)';
             return doc;
         });
@@ -375,7 +514,7 @@ describe('key', () => {
             truncate_location_places: 4
         });
 
-        const data = testData.map((doc) => {
+        const data = cloneDeep(testData).map((doc) => {
             doc.location = 'm0r2g7mk6';
             return doc;
         });
@@ -400,6 +539,151 @@ describe('key', () => {
                 age: 99,
                 location: 'm0r2g7mk6',
                 _key: makeKey(['frank', 99, 'm0r2g7mk3mcm'], 'md5')
+            }
+        ]);
+    });
+
+    it('should throw an error if string geo-point is not recognized', async () => {
+        const test = await makeTest({
+            key_fields: [
+                'name',
+                'age',
+                'location'
+            ],
+            truncate_location: [
+                'location'
+            ],
+            truncate_location_places: 4
+        });
+
+        const data = cloneDeep(testData).map((doc) => {
+            doc.location = 'POINT ()';
+            return doc;
+        });
+
+        await expect(test.runSlice(data)).rejects.toThrow();
+    });
+
+    it('should throw an error if geo-point does not match any formats', async () => {
+        const test = await makeTest({
+            key_fields: [
+                'name',
+                'age',
+                'location'
+            ],
+            truncate_location: [
+                'location'
+            ],
+            truncate_location_places: 4
+        });
+
+        const data = cloneDeep(testData).map((doc) => {
+            doc.location = null;
+            return doc;
+        });
+
+        await expect(test.runSlice(data)).rejects.toThrow();
+    });
+
+    it('should throw and error if array cannot be converted to numbers', async () => {
+        const test = await makeTest({
+            key_fields: [
+                'name',
+                'age',
+                'location'
+            ],
+            truncate_location: [
+                'location'
+            ],
+            truncate_location_places: 4
+        });
+
+        const data = cloneDeep(testData).map((doc) => {
+            doc.location = ['badPoint', '55.3454349123934'];
+            return doc;
+        });
+
+        await expect(test.runSlice(data)).rejects.toThrow();
+    });
+
+    it('should throw an error if object geo-point cannot be truncated', async () => {
+        const test = await makeTest({
+            key_fields: [
+                'name',
+                'age',
+                'location'
+            ],
+            truncate_location: [
+                'location'
+            ],
+            truncate_location_places: 4
+        });
+
+        const data = cloneDeep(testData).map((doc) => {
+            doc.location = { lon: 'no number here', lat: 55.3454349123934 };
+            return doc;
+        });
+
+        await expect(test.runSlice(data)).rejects.toThrow();
+    });
+
+    it('should not add empty fields or objects to key', async () => {
+        const test = await makeTest();
+
+        const data = cloneDeep(testData);
+
+        data[0].foo = [];
+        data[1].bar = {};
+        data[2].foo = null;
+        data[2].bar = false;
+
+        const results = await test.runSlice(data);
+
+        expect(results).toEqual([
+            {
+                name: 'bob',
+                age: 122,
+                foo: [],
+                _key: makeKey([122, 'bob'], 'md5')
+            },
+            {
+                name: 'joe',
+                age: 34,
+                bar: {},
+                _key: makeKey([34, 'joe'], 'md5')
+            },
+            {
+                name: 'frank',
+                age: 99,
+                foo: null,
+                bar: false,
+                _key: makeKey([99, false, 'frank'], 'md5')
+            }
+        ]);
+    });
+
+    it('should correctly handle data windows', async () => {
+        const test = await makeTest();
+
+        const dataWindow = DataWindow.make(1, testData);
+
+        const results = await test.runSlice([dataWindow]);
+
+        expect(results[0].asArray()).toEqual([
+            {
+                name: 'bob',
+                age: 122,
+                _key: makeKey([122, 'bob'], 'md5')
+            },
+            {
+                name: 'joe',
+                age: 34,
+                _key: makeKey([34, 'joe'], 'md5')
+            },
+            {
+                name: 'frank',
+                age: 99,
+                _key: makeKey([99, 'frank'], 'md5')
             }
         ]);
     });

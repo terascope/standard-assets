@@ -1,10 +1,8 @@
 import { ConvictSchema, OpConfig } from '@terascope/job-components';
 
 const ALGOS = [
-    'hex',
     'md4',
     'md5',
-    'md5-sha1',
     'sha1',
     'sha256',
     'sha512',

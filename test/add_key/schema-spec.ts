@@ -1,13 +1,12 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { AnyObject } from '@terascope/job-components';
-import { GroupByConfig } from '../../asset/src/group_by/interfaces';
+import { AnyObject, OpConfig } from '@terascope/job-components';
 
-describe('group_by schema', () => {
+describe('add_key schema', () => {
     let harness: WorkerTestHarness;
-    const name = 'group_by';
+    const name = 'add_key';
 
-    async function makeSchema(config: AnyObject = {}): Promise<GroupByConfig> {
+    async function makeSchema(config: AnyObject = {}): Promise<OpConfig> {
         const opConfig = Object.assign({}, { _op: name }, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
@@ -17,7 +16,7 @@ describe('group_by schema', () => {
             (testConfig) => testConfig._op === name
         );
 
-        return validConfig as GroupByConfig;
+        return validConfig as OpConfig;
     }
 
     afterEach(async () => {
@@ -26,8 +25,8 @@ describe('group_by schema', () => {
 
     it('should expect to be properly configured', async () => {
         await expect(makeSchema({})).toResolve();
-        await expect(makeSchema({ field: 'test' })).toResolve();
-        await expect(makeSchema({ field: [12341234] })).toReject();
-        await expect(makeSchema({ field: 12341234 })).toReject();
+        await expect(makeSchema({ key_name: 'test' })).toResolve();
+        await expect(makeSchema({ hash_algorithm: 'sha256' })).toResolve();
+        await expect(makeSchema({ hash_algorithm: 'none' })).toReject();
     });
 });

@@ -4,6 +4,9 @@ import AccumulateSchema from './accumulate/schema';
 import AccumulateByKey from './accumulate_by_key/processor';
 import AccumulateByKeySchema from './accumulate_by_key/schema';
 
+import AddKey from './add_key/processor';
+import AddKeySchema from './add_key/schema';
+
 import AddShortId from './add_short_id/processor';
 import AddShortIdSchema from './add_short_id/schema';
 
@@ -83,6 +86,10 @@ export const ASSETS = {
     add_short_id: {
         Processor: AddShortId,
         Schema: AddShortIdSchema
+    },
+    add_key: {
+        Processor: AddKey,
+        Schema: AddKeySchema
     },
     data_generator: {
         Fetcher: DataGeneratorFetcher,
