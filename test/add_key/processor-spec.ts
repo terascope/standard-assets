@@ -1,6 +1,5 @@
 /* eslint-disable jest/no-focused-tests */
 import 'jest-extended';
-import crypto from 'crypto';
 import { cloneDeep } from '@terascope/utils';
 import { DataEntity, AnyObject } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
@@ -54,9 +53,9 @@ describe('key', () => {
 
         const results = await test.runSlice(testData);
 
-        for (const doc of results) {
-            expect(doc.getKey()).toBe(makeKey([doc.age, doc.name], 'md5'));
-        }
+        expect(results[0].getKey()).toBe('ctzV5v3kRQAAEUJfEZt7nA');
+        expect(results[1].getKey()).toBe('3VR8R2rXctzyMfW8XQsJFg');
+        expect(results[2].getKey()).toBe('dopYygLk3RiI6_L6-VhydQ');
     });
 
     it('should use every field and sort to generate the key to each incoming doc', async () => {
@@ -74,18 +73,18 @@ describe('key', () => {
                 name: 'bob',
                 age: 122,
                 thing: ['some', 'thing'],
-                _key: makeKey([122, 'bob', ['some', 'thing']], 'md5')
+                _key: 'spEib0qesWj68-lFBXD_Aw'
             },
             {
                 name: 'joe',
                 age: 34,
                 foo: { bar: 'foo' },
-                _key: makeKey([34, { bar: 'foo' }, 'joe'], 'md5')
+                _key: 'PBHKh3MmS9T0IjwvlEIXYw'
             },
             {
                 name: 'frank',
                 age: 99,
-                _key: makeKey([99, 'frank'], 'md5')
+                _key: 'dopYygLk3RiI6_L6-VhydQ'
             }
         ]);
     });
@@ -99,23 +98,19 @@ describe('key', () => {
             {
                 name: 'bob',
                 age: 122,
-                _key: makeKey([122], 'md5')
+                _key: 'oKCA9C5vE7Oi3xM_BzCV3Q'
             },
             {
                 name: 'joe',
                 age: 34,
-                _key: makeKey([34], 'md5')
+                _key: '42mFPfdm-kTh7Q_2E_VjvQ'
             },
             {
                 name: 'frank',
                 age: 99,
-                _key: makeKey([99], 'md5')
+                _key: 'rGJ6scy9ti7JbnAvB_ZCWw'
             }
         ]);
-
-        for (const doc of results) {
-            expect(doc.getKey()).toBe(makeKey([doc.age], 'md5'));
-        }
     });
 
     it('should only use non-specified fields to generate the key and add to every doc if invert is true', async () => {
@@ -127,23 +122,19 @@ describe('key', () => {
             {
                 name: 'bob',
                 age: 122,
-                _key: makeKey(['bob'], 'md5')
+                _key: 'n51RvHDvIcpcFPMHmAop2A'
             },
             {
                 name: 'joe',
                 age: 34,
-                _key: makeKey(['joe'], 'md5')
+                _key: 'j_MkifkvM0FmlL6P3C1MIg'
             },
             {
                 name: 'frank',
                 age: 99,
-                _key: makeKey(['frank'], 'md5')
+                _key: 'JiU8UHQfqpwuK4Nnc8af5g'
             }
         ]);
-
-        for (const doc of results) {
-            expect(doc.getKey()).toBe(makeKey([doc.name], 'md5'));
-        }
     });
 
     it('should only specified hash algo', async () => {
@@ -155,23 +146,19 @@ describe('key', () => {
             {
                 name: 'bob',
                 age: 122,
-                _key: makeKey(['bob'], 'sha256')
+                _key: 'gbY32PzSxtpjWeaWMROhFw3nleS3JbhNHgtM_Z7FjOk'
             },
             {
                 name: 'joe',
                 age: 34,
-                _key: makeKey(['joe'], 'sha256')
+                _key: 'eGdcwXYIE3LEOrqz6p-3DHQ4HrAtxuk_ttRNFh2m7rM'
             },
             {
                 name: 'frank',
                 age: 99,
-                _key: makeKey(['frank'], 'sha256')
+                _key: 'd2RvWk8xZmN2J6vpmOehRw_nLYtDDwZ9r6hiY_HyP5Q'
             }
         ]);
-
-        for (const doc of results) {
-            expect(doc.getKey()).toBe(makeKey([doc.name], 'sha256'));
-        }
     });
 
     it('should not return docs that do not meet the minimum key value requirements', async () => {
@@ -190,7 +177,7 @@ describe('key', () => {
             {
                 name: 'frank',
                 age: 99,
-                _key: makeKey(['frank', 99], 'md5')
+                _key: 'S5nHugeGpGAeLbBeDNBLJA'
             }
         ]);
     });
@@ -211,19 +198,19 @@ describe('key', () => {
                 name: 'bob',
                 age: 122,
                 _original_key: 1,
-                _key: makeKey(['bob', 122], 'md5')
+                _key: 'e6467-UbK9pmMAcFO0xGgQ'
             },
             {
                 name: 'joe',
                 age: 34,
                 _original_key: 2,
-                _key: makeKey(['joe', 34], 'md5')
+                _key: 'wP5XmV4WDEHWREmpN7YRAQ'
             },
             {
                 name: 'frank',
                 age: 99,
                 _original_key: 3,
-                _key: makeKey(['frank', 99], 'md5')
+                _key: 'S5nHugeGpGAeLbBeDNBLJA'
             }
         ]);
     });
@@ -239,12 +226,13 @@ describe('key', () => {
 
         const results = await test.runSlice(data);
 
-        results.forEach((doc, i) => {
-            const meta = doc.getMetadata();
+        expect(results[0].getMetadata()._delete_id).toBe(1);
+        expect(results[1].getMetadata()._delete_id).toBe(2);
+        expect(results[2].getMetadata()._delete_id).toBe(3);
 
-            expect(meta._key).toBe(makeKey([doc.name, doc.age], 'md5'));
-            expect(meta._delete_id).toBe(i + 1);
-        });
+        expect(results[0].getKey()).toBe('e6467-UbK9pmMAcFO0xGgQ');
+        expect(results[1].getKey()).toBe('wP5XmV4WDEHWREmpN7YRAQ');
+        expect(results[2].getKey()).toBe('S5nHugeGpGAeLbBeDNBLJA');
     });
 
     it('should truncate an object geo-point if nested values are specified', async () => {
@@ -274,19 +262,19 @@ describe('key', () => {
                 name: 'bob',
                 age: 122,
                 location: { lon: -43.4432343234, lat: 55.3454349123934 },
-                _key: makeKey(['bob', 122, -43.4432, 55.3454], 'md5')
+                _key: 'VXO_m8MSO2eQh2yRPBrFHw'
             },
             {
                 name: 'joe',
                 age: 34,
                 location: { lon: -43.4432343234, lat: 55.3454349123934 },
-                _key: makeKey(['joe', 34, -43.4432, 55.3454], 'md5')
+                _key: 'LupNL69izNwDtTOJ-1Ax2w'
             },
             {
                 name: 'frank',
                 age: 99,
                 location: { lon: -43.4432343234, lat: 55.3454349123934 },
-                _key: makeKey(['frank', 99, -43.4432, 55.3454], 'md5')
+                _key: 'tUY_80h-KwJpUNL_SteHHQ'
             }
         ]);
     });
@@ -316,19 +304,19 @@ describe('key', () => {
                 name: 'bob',
                 age: 122,
                 location: { lon: -43.4432343234, lat: 55.3454349123934 },
-                _key: makeKey(['bob', 122, { lon: -43.4432, lat: 55.3454 }], 'md5')
+                _key: 'ZmAUz-JlmID_QphbR9g9Rg'
             },
             {
                 name: 'joe',
                 age: 34,
                 location: { lon: -43.4432343234, lat: 55.3454349123934 },
-                _key: makeKey(['joe', 34, { lon: -43.4432, lat: 55.3454 }], 'md5')
+                _key: 'wwwfql7nsI-1P9td81Vm9A'
             },
             {
                 name: 'frank',
                 age: 99,
                 location: { lon: -43.4432343234, lat: 55.3454349123934 },
-                _key: makeKey(['frank', 99, { lon: -43.4432, lat: 55.3454 }], 'md5')
+                _key: 'LMKX1DswmPrKDq9SiG25nQ'
             }
         ]);
     });
@@ -358,19 +346,19 @@ describe('key', () => {
                 name: 'bob',
                 age: 122,
                 location: [-43.4432343234, 55.3454349123934],
-                _key: makeKey(['bob', 122, [-43.4432, 55.3454]], 'md5')
+                _key: 'fdHmQuMtkkSnMEai3BQEEw'
             },
             {
                 name: 'joe',
                 age: 34,
                 location: [-43.4432343234, 55.3454349123934],
-                _key: makeKey(['joe', 34, [-43.4432, 55.3454]], 'md5')
+                _key: '38N4tH3xNbTjC3-Spe3vdA'
             },
             {
                 name: 'frank',
                 age: 99,
                 location: [-43.4432343234, 55.3454349123934],
-                _key: makeKey(['frank', 99, [-43.4432, 55.3454]], 'md5')
+                _key: 'YPLpPggl-xPF_TDEa50CCA'
             }
         ]);
     });
@@ -400,19 +388,19 @@ describe('key', () => {
                 name: 'bob',
                 age: 122,
                 location: ['-43.4432343234', '55.3454349123934'],
-                _key: makeKey(['bob', 122, [-43.4432, 55.3454]], 'md5')
+                _key: 'fdHmQuMtkkSnMEai3BQEEw'
             },
             {
                 name: 'joe',
                 age: 34,
                 location: ['-43.4432343234', '55.3454349123934'],
-                _key: makeKey(['joe', 34, [-43.4432, 55.3454]], 'md5')
+                _key: '38N4tH3xNbTjC3-Spe3vdA'
             },
             {
                 name: 'frank',
                 age: 99,
                 location: ['-43.4432343234', '55.3454349123934'],
-                _key: makeKey(['frank', 99, [-43.4432, 55.3454]], 'md5')
+                _key: 'YPLpPggl-xPF_TDEa50CCA'
             }
         ]);
     });
@@ -442,19 +430,19 @@ describe('key', () => {
                 name: 'bob',
                 age: 122,
                 location: '-43.4432343234, 55.3454349123934',
-                _key: makeKey(['bob', 122, '-43.4432, 55.3454'], 'md5')
+                _key: 'llbTgbr2KUXHEOmhq7g8Qw'
             },
             {
                 name: 'joe',
                 age: 34,
                 location: '-43.4432343234, 55.3454349123934',
-                _key: makeKey(['joe', 34, '-43.4432, 55.3454'], 'md5')
+                _key: 'YbCqBl6R7CsJXbzEbWs6sg'
             },
             {
                 name: 'frank',
                 age: 99,
                 location: '-43.4432343234, 55.3454349123934',
-                _key: makeKey(['frank', 99, '-43.4432, 55.3454'], 'md5')
+                _key: 'IjlFcIaARAbF-a1KkqfYFw'
             }
         ]);
     });
@@ -484,19 +472,19 @@ describe('key', () => {
                 name: 'bob',
                 age: 122,
                 location: 'POINT (-43.4432343234 55.3454349123934)',
-                _key: makeKey(['bob', 122, 'POINT (-43.4432 55.3454)'], 'md5')
+                _key: '5Rstpm4Md5CSTzAciU2W9g'
             },
             {
                 name: 'joe',
                 age: 34,
                 location: 'POINT (-43.4432343234 55.3454349123934)',
-                _key: makeKey(['joe', 34, 'POINT (-43.4432 55.3454)'], 'md5')
+                _key: 'qL9URXRqqmu5DFYYKGw14Q'
             },
             {
                 name: 'frank',
                 age: 99,
                 location: 'POINT (-43.4432343234 55.3454349123934)',
-                _key: makeKey(['frank', 99, 'POINT (-43.4432 55.3454)'], 'md5')
+                _key: '1f0Pue0bf4LmpMQxZ8Pi-w'
             }
         ]);
     });
@@ -526,19 +514,19 @@ describe('key', () => {
                 name: 'bob',
                 age: 122,
                 location: 'm0r2g7mk6',
-                _key: makeKey(['bob', 122, 'm0r2g7mk3mcm'], 'md5')
+                _key: 'bKD4DiLbjo7q45c5-xSpAQ'
             },
             {
                 name: 'joe',
                 age: 34,
                 location: 'm0r2g7mk6',
-                _key: makeKey(['joe', 34, 'm0r2g7mk3mcm'], 'md5')
+                _key: 'RWDSU0Xw2ZYnJvzLGTEn-w'
             },
             {
                 name: 'frank',
                 age: 99,
                 location: 'm0r2g7mk6',
-                _key: makeKey(['frank', 99, 'm0r2g7mk3mcm'], 'md5')
+                _key: 'K5YQXB9bY-UWn8NaEXyZBw'
             }
         ]);
     });
@@ -644,20 +632,20 @@ describe('key', () => {
                 name: 'bob',
                 age: 122,
                 foo: [],
-                _key: makeKey([122, 'bob'], 'md5')
+                _key: 'ctzV5v3kRQAAEUJfEZt7nA'
             },
             {
                 name: 'joe',
                 age: 34,
                 bar: {},
-                _key: makeKey([34, 'joe'], 'md5')
+                _key: '3VR8R2rXctzyMfW8XQsJFg'
             },
             {
                 name: 'frank',
                 age: 99,
                 foo: null,
                 bar: false,
-                _key: makeKey([99, false, 'frank'], 'md5')
+                _key: 'jmv4RTJMm7Z7vkKXeOuS7Q'
             }
         ]);
     });
@@ -673,32 +661,18 @@ describe('key', () => {
             {
                 name: 'bob',
                 age: 122,
-                _key: makeKey([122, 'bob'], 'md5')
+                _key: 'ctzV5v3kRQAAEUJfEZt7nA'
             },
             {
                 name: 'joe',
                 age: 34,
-                _key: makeKey([34, 'joe'], 'md5')
+                _key: '3VR8R2rXctzyMfW8XQsJFg'
             },
             {
                 name: 'frank',
                 age: 99,
-                _key: makeKey([99, 'frank'], 'md5')
+                _key: 'dopYygLk3RiI6_L6-VhydQ'
             }
         ]);
     });
 });
-
-function makeKey(values: unknown[], algo: string) {
-    const shasum = crypto.createHash(algo);
-
-    let key = '';
-
-    values.forEach((value) => {
-        key += value;
-    });
-
-    shasum.update(key);
-
-    return shasum.digest('base64').replace(/=*$/g, '').replace(/\//g, '_').replace(/\+/g, '-');
-}
