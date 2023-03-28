@@ -3,7 +3,7 @@ import { DataEntity, cloneDeep, AnyObject } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import DataWindow from '../../asset/src/__lib/data-window';
 
-describe('copy_property should', () => {
+describe('copy_field should', () => {
     let harness: WorkerTestHarness;
     let data: AnyObject[];
 
@@ -26,7 +26,7 @@ describe('copy_property should', () => {
 
     async function makeTest(config: AnyObject = {}) {
         const _op = {
-            _op: 'copy_property',
+            _op: 'copy_field',
             source: 'name',
             destination: 'name_again'
         };

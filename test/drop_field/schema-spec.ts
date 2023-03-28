@@ -2,9 +2,9 @@ import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject, OpConfig } from '@terascope/job-components';
 
-describe('copy_property schema', () => {
+describe('drop_field schema', () => {
     let harness: WorkerTestHarness;
-    const name = 'copy_property';
+    const name = 'drop_field';
 
     async function makeSchema(config: AnyObject = {}): Promise<OpConfig> {
         const opConfig = Object.assign({}, { _op: name }, config);

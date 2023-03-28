@@ -1,14 +1,13 @@
-# copy_property
+# copy_field
 
-This is a helper processor that can be used to copy the `source` property value to a destination `property` for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
+This is a helper processor that can be used to copy the source field value to a destination field for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
 
 For the processor to work, you need to specify a `source` and `destination` field.
 
-
 ## Usage
 
-### Copy a property value to another property
-Here is an example of copying a property.
+### Copy a field value to another field
+Here is an example of copying a field.
 
 Example Job
 
@@ -26,7 +25,7 @@ Example Job
             "_op": "test-reader"
         },
         {
-            "_op": "copy_property",
+            "_op": "copy_field",
             "source": "name",
             "destination": "name_again"
         }

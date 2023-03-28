@@ -6,24 +6,24 @@ import {
 import { get, set } from '@terascope/utils';
 import DataWindow from '../__lib/data-window';
 
-export default class CopyProperty extends MapProcessor<OpConfig> {
+export default class CopyField extends MapProcessor<OpConfig> {
     map(doc: DataEntity): DataEntity {
         if (doc instanceof DataWindow) {
             doc.dataArray = doc.asArray()
                 .map((item: DataEntity) => {
-                    this.copyProperty(item);
+                    this.copyField(item);
                     return item;
                 });
 
             return doc;
         }
 
-        this.copyProperty(doc);
+        this.copyField(doc);
 
         return doc;
     }
 
-    private copyProperty(doc: DataEntity) {
+    private copyField(doc: DataEntity) {
         const sourceValue = get(doc, this.opConfig.source);
 
         if (sourceValue != null) {
