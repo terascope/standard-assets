@@ -101,6 +101,39 @@ describe('drop_field should', () => {
         ]);
     });
 
+    it('handle a more complex regex', async () => {
+        const config = { field: 'email', regex: '/^\\w+\\@\\w+\\.com$/i', invert: true };
+
+        const test = await makeTest(config);
+
+        const testData = cloneDeep(data);
+
+        testData[0].email = 'example@gmail.com';
+        testData[1].email = 'bademailaddress';
+        testData[2].email = '--buried@email.com--';
+
+        const results = await test.runSlice(testData);
+
+        expect(results).toEqual([
+            {
+                id: 1,
+                name: 'joE',
+                age: 29,
+                email: 'example@gmail.com'
+            },
+            {
+                id: 2,
+                name: 'mOe',
+                age: 42
+            },
+            {
+                id: 3,
+                age: 87,
+                name: 'Randy'
+            }
+        ]);
+    });
+
     it('drop fields that pass validation', async () => {
         const config = {
             field: 'age',
