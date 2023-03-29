@@ -72,48 +72,22 @@ describe('drop_field should', () => {
         ]);
     });
 
-    it('return data with field dropped that match regex', async () => {
-        const config = {
-            drop_method: 'regex',
-            method_args: '/.?oe/i'
-        };
+    it('return data window with source field copied to destination field for each record', async () => {
+        const testWindow = [
+            DataWindow.make('1', [{ id: 1, name: 'joe', age: 22 }, { id: 2, name: 'moe', age: 21 }, { id: 3, name: 'randy', age: 24 }]),
+            DataWindow.make('2', [{ id: 4, name: 'floe', age: 32 }, { id: 5, name: 'noe', age: 34 }, { id: 6, name: 'blandy', age: 35 }])
+        ];
+        const test = await makeTest();
 
-        const test = await makeTest(config);
-        const results = await test.runSlice(cloneDeep(data)) as DataEntity[];
+        const results = await test.runSlice(testWindow) as DataEntity[];
 
-        expect(results).toEqual([
-            {
-                id: 1,
-                age: 29
-            },
-            {
-                id: 2,
-                age: 42
-            },
-            {
-                id: 3,
-                name: 'randy',
-                age: 87
-            }
-        ]);
+        results.forEach((doc) => expect(DataEntity.isDataEntity(doc)).toBe(true));
+
+        expect(results[0].asArray()[0]).toEqual({ id: 1, age: 22 });
+        expect(results[0].asArray()[1]).toEqual({ id: 2, age: 21 });
+        expect(results[0].asArray()[2]).toEqual({ id: 3, age: 24 });
+        expect(results[1].asArray()[0]).toEqual({ id: 4, age: 32 });
+        expect(results[1].asArray()[1]).toEqual({ id: 5, age: 34 });
+        expect(results[1].asArray()[2]).toEqual({ id: 6, age: 35 });
     });
-
-    // it('return data window with specified field dropped', async () => {
-    //     const testWindow = [
-    //         DataWindow.make('1', [{ id: 1, name: 'joe' }, { id: 2, name: 'moe' }, { id: 3, name: 'randy' }]),
-    //         DataWindow.make('2', [{ id: 4, name: 'floe' }, { id: 5, name: 'noe' }, { id: 6, name: 'blandy' }])
-    //     ];
-    //     const test = await makeTest();
-
-    //     const results = await test.runSlice(testWindow) as DataEntity[];
-
-    //     results.forEach((doc) => expect(DataEntity.isDataEntity(doc)).toBe(true));
-
-    //     expect(results[0].asArray()[0].name_again).toBe('joe');
-    //     expect(results[0].asArray()[1].name_again).toBe('moe');
-    //     expect(results[0].asArray()[2].name_again).toBe('randy');
-    //     expect(results[1].asArray()[0].name_again).toBe('floe');
-    //     expect(results[1].asArray()[1].name_again).toBe('noe');
-    //     expect(results[1].asArray()[2].name_again).toBe('blandy');
-    // });
 });

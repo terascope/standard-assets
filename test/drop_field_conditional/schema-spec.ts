@@ -24,6 +24,7 @@ describe('drop_field schema', () => {
     });
 
     it('should expect to be properly configured', async () => {
-        await expect(makeSchema({})).toReject();
+        await expect(makeSchema({ source: 'some_source' })).toReject();
+        await expect(makeSchema({ destination: 'some_destination' })).toReject();
     });
 });
