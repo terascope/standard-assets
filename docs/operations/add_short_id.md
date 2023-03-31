@@ -1,6 +1,6 @@
 # add_short_id
 
-This is a helper processor that adds a unique short id to a [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).  Useful for when a full UUID is overkill.
+The `add_shore_id` processor adds a unique short id to a [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).  Useful for when a full UUID is overkill.
 
 
 ## Usage

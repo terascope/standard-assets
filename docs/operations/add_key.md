@@ -1,6 +1,6 @@
 # add_key
 
-This is a helper processor that adds a deterministic key derived from the properties of the [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or items in a [DataWindow](../entity/data-window.md).  It adds the key to both the incoming document and its metadata. Used for indexing or re-indexing data. 
+The `add_key` processor adds a deterministic key derived from the properties of the [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or items in a [DataWindow](../entity/data-window.md).  It adds the key to both the incoming document and its metadata. Used for indexing or re-indexing data. 
 
 
 ## Usage

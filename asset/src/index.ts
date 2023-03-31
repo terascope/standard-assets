@@ -10,6 +10,9 @@ import AddKeySchema from './add_key/schema';
 import AddShortId from './add_short_id/processor';
 import AddShortIdSchema from './add_short_id/schema';
 
+import CopyField from './copy_field/processor';
+import CopyFieldSchema from './copy_field/schema';
+
 import DataGeneratorFetcher from './data_generator/fetcher';
 import DataGeneratorSchema from './data_generator/schema';
 import DataGeneratorSlicer from './data_generator/slicer';
@@ -25,6 +28,12 @@ import DebugRoutesSchema from './debug_routes/schema';
 
 import Dedupe from './dedupe/processor';
 import DedupeSchema from './dedupe/schema';
+
+import DropField from './drop_field/processor';
+import DropFieldSchema from './drop_field/schema';
+
+import DropFieldConditional from './drop_field_conditional/processor';
+import DropFieldConditionalSchema from './drop_field_conditional/schema';
 
 import Extraction from './extraction/processor';
 import ExtractionSchema from './extraction/schema';
@@ -62,6 +71,9 @@ import RoutedSenderSchema from './routed_sender/schema';
 import Selection from './selection/processor';
 import SelectionSchema from './selection/schema';
 
+import SetField from './set_field/processor';
+import SetFieldSchema from './set_field/schema';
+
 import SetKey from './set_key/processor';
 import SetKeySchema from './set_key/schema';
 
@@ -91,6 +103,10 @@ export const ASSETS = {
         Processor: AddKey,
         Schema: AddKeySchema
     },
+    copy_field: {
+        Processor: CopyField,
+        Schema: CopyFieldSchema
+    },
     data_generator: {
         Fetcher: DataGeneratorFetcher,
         Schema: DataGeneratorSchema,
@@ -111,6 +127,14 @@ export const ASSETS = {
     dedupe: {
         Processor: Dedupe,
         Schema: DedupeSchema
+    },
+    drop_field: {
+        Processor: DropField,
+        Schema: DropFieldSchema
+    },
+    drop_field_conditional: {
+        Processor: DropFieldConditional,
+        Schema: DropFieldConditionalSchema
     },
     extraction: {
         Processor: Extraction,
@@ -159,6 +183,10 @@ export const ASSETS = {
     selection: {
         Processor: Selection,
         Schema: SelectionSchema
+    },
+    set_field: {
+        Processor: SetField,
+        Schema: SetFieldSchema
     },
     set_key: {
         Processor: SetKey,

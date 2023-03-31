@@ -1,6 +1,6 @@
 # copy_field
 
-This is a helper processor that can be used to copy the source field value to a destination field for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
+This `copy_field` processor copies the source field value to a destination field for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
 
 For the processor to work, you need to specify a `source` and `destination` field.
 
