@@ -6,9 +6,8 @@ The `add_shore_id` processor adds a unique short id to a [DataEntity](https://te
 ## Usage
 
 ### Add a unique id to a record
-Here is an example of using this processor to add a unique id to a record
 
-Example Job
+Example of a job using the `add_short_id` processor
 
 ```json
 {

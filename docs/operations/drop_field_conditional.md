@@ -1,15 +1,12 @@
 # drop_field
 
-This `drop_field_conditional` processor drops a field from a [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md) based on the specified conditions.
-
-The conditions can be either matching a regex or passing a data-mate [Field Validation](https://terascope.github.io/teraslice/docs/packages/data-mate/overview#Field-Validations) function.  There is also an `invert` option to drop fields that don't match a regex or don't pass the validation function.
+The `drop_field_conditional` processor drops a field from [DataEntities](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindows](../entity/data-window.md) based on the specified conditions.  The conditions can be either a regex or a [Field Validation](https://terascope.github.io/teraslice/docs/packages/data-mate/overview#Field-Validations) function.  There is also an `invert` option to drop fields that don't match a regex or don't pass the validation function.  Only a regex or a validation can be specified, if both are configured the job will throw an error.
 
 ## Usage
 
 ### Conditionally Drop a field from a document
-Here is an example.
 
-Example Job with a regex
+Example of a job using the `drop_field_conditional` processor and a regex configured
 
 ```json
 {
@@ -33,7 +30,8 @@ Example Job with a regex
 }
 
 ```
-Example of the data and the expected results
+
+Output of example job
 
 ```javascript
 const data = [
@@ -51,7 +49,7 @@ DataEntity.make({ otherField: 3  }),
 DataEntity.make({ name: 'ron', otherField: 4  }),
 ```
 
-Example Job with a function
+Example of a job using a [Field Validation](https://terascope.github.io/teraslice/docs/packages/data-mate/overview#Field-Validations) function
 
 ```json
 {
@@ -76,25 +74,26 @@ Example Job with a function
 }
 
 ```
-Example of the data and the expected results
+
+Output of example job
 
 ```javascript
 const data = [
     DataEntity.make({ name: 'lilly', otherField: 1 }),
-    DataEntity.make({ name: 'willy', otherField: 2  }),
-    DataEntity.make({ name: 'billy', otherField: 3  }),
-    DataEntity.make({ name: 'ron', otherField: 4  }),
+    DataEntity.make({ name: 'willy', otherField: 2 }),
+    DataEntity.make({ name: 'billy', otherField: 3 }),
+    DataEntity.make({ name: 'ron', otherField: 4 }),
 ]
 
 const results = await processor.run(data);
 
 DataEntity.make({ name: 'lilly', otherField: 1 }),
-DataEntity.make({ name: 'willy', otherField: 2  }),
+DataEntity.make({ name: 'willy', otherField: 2 }),
 DataEntity.make({ name: 'billy' }),
-DataEntity.make({ name: 'ron', otherField: 4  }),
+DataEntity.make({ name: 'ron', otherField: 4 }),
 ```
 
-Example Job with a function and invert true
+Example Job with a [Field Validation](https://terascope.github.io/teraslice/docs/packages/data-mate/overview#Field-Validations) function and invert set to `true`
 
 ```json
 {
@@ -120,7 +119,8 @@ Example Job with a function and invert true
 }
 
 ```
-Example of the data and the expected results
+
+Output of example job
 
 ```javascript
 const data = [
@@ -143,9 +143,9 @@ DataEntity.make({ name: 'ron' }),
 | Configuration | Description                                                   | Type   | Notes                        |
 | ------------- | ------------------------------------------------------------- | ------ | ---------------------------- |
 | _op  | Name of operation, it must reflect the exact name of the file | String | required                     |
-| field | Name of field to remove from document | required, no default |
-| regex | regex value to match to field value | regex must in format `/REGEX/FLAGS`, with beginning and ending `/`.  Flags are optional.  For details see [javascript regex's](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#writing_a_regular_expression_pattern) for more details |
+| field | Name of field to remove | required, no default |
+| regex | regex value to check with field values | regex must be in format `/REGEX/FLAGS`, with beginning and ending `/`.  Flags are optional.  For more details see [javascript regex's](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#writing_a_regular_expression_pattern) |
 | validation_method | Name of validation method to apply to field value | see [Field Validations](https://terascope.github.io/teraslice/docs/packages/data-mate/overview#field-validations) for list of available functions |
-| validation_args | some validations accept args | optional |
-| invert | When set to true, the processor drops fields that return `false` from the regex or validation method | defaults to `false` |
+| validation_args | some validations require args | optional |
+| invert | When set to `true`, the processor drops the value if it doesn't match the regex or if it doesn't pass the validation | defaults to `false` |
 

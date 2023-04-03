@@ -1,15 +1,14 @@
 # sort
 
-This is a helper processor that is used sort the data by a given field that has numbers or strings as values. This will sort Objects, DataEntities or [DataWindows](../entity/data-window.md).
+The `sort` processor sorts the data by a given field that has numbers or strings as values. This will sort Objects, DataEntities or [DataWindows](../entity/data-window.md).
 
-For this processor to work, the fields specified should have non-nullable defined values that you are sorting
 
 ## Usage
 
 ### Simple number sorting
-This is an example of a simple sort on number values
 
-Example Job
+Example of a job that uses the `sort` processor sorting on number values
+
 ```json
 {
     "name" : "testing",
@@ -32,7 +31,7 @@ Example Job
 
 ```
 
-Here is a representation of what the processor will do with the configuration listed in the job above
+Output of example job
 
 ```javascript
 
@@ -78,9 +77,9 @@ results === [
 ```
 
 ### Simple date sorting
-This is an example of a simple sort on date values
 
-Example Job
+Example of a job that uses the `sort` processor sorting on date values
+
 ```json
 {
     "name" : "testing",
@@ -103,7 +102,7 @@ Example Job
 
 ```
 
-Here is a representation of what the processor will do with the configuration listed in the job above
+Output of example job
 
 ```javascript
 
@@ -149,9 +148,9 @@ results === [
 ```
 
 ### Sort DataWindows by descending values
-This is an example of a sorting DataWindows by desc
 
-Example Job
+Example of a job sorting on DataWindows by desc
+
 ```json
 {
     "name" : "testing",
@@ -174,7 +173,7 @@ Example Job
 }
 ```
 
-Here is a representation of what the processor will do with the configuration listed in the job above
+Output of example job
 
 ```javascript
 

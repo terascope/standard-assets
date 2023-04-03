@@ -5,10 +5,9 @@ The `add_key` processor adds a deterministic key derived from the properties of 
 
 ## Usage
 
-### Add a deterministic key to a record
-Here is an example of this processor with a typical configuration
+### Add a key to a record
 
-Example Job
+Example of a job using the `add_key` processor
 
 ```json
 {

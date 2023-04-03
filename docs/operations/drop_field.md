@@ -6,9 +6,8 @@ This `drop_field` processor drops a field from a [DataEntity](https://terascope.
 ## Usage
 
 ### Drop a field from a document
-Here is an example of dropping a field.
 
-Example Job
+Example of a job using the `drop_field` processor
 
 ```json
 {
@@ -31,7 +30,7 @@ Example Job
 }
 
 ```
-Example of the data and the expected results
+Output from example job
 
 ```javascript
 const data = [
@@ -54,5 +53,5 @@ DataEntity.make({ otherField: 4  }),
 | Configuration | Description                                                   | Type   | Notes                        |
 | ------------- | ------------------------------------------------------------- | ------ | ---------------------------- |
 | _op  | Name of operation, it must reflect the exact name of the file | String | required                     |
-| field | Name of field to remove from document | required, no default |
+| field | Name of field to remove | required, no default |
 

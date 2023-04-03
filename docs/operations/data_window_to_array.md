@@ -1,16 +1,13 @@
 # data_window_to_array
 
-The `data_window_to_array` is a helper processor that is used to convert [DataWindows](../entity/data-window.md) to a flattened array of all results of the DataWindows.
-
-To use this processor, the input must be an array of DataWindow objects
+The `data_window_to_array` processor converts arrays of [DataWindows](../entity/data-window.md) to a flattened array of [DataEntities](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity).  The input must be an array of DataWindows.
 
 ## Usage
 
 ### Convert DataWindows to an array of data
-Here is an example us using `data_window_to_array` to convert DataWindows back to a flattened array
 
-Example Job
-```json
+Example of a job using the `data_window_to_array` processor
+ ```json
 {
     "name" : "testing",
     "workers" : 1,
@@ -37,7 +34,7 @@ Example Job
     ]
 }
 ```
-Here is an example of a list of DataWindows being converted by the processor
+Output from the example job
 ```javascript
 const dataWindowList = [
     { dataArray: [{ id: 1 }, { id: 2 }, { id: 3 }] },

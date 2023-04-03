@@ -1,15 +1,12 @@
 # copy_field
 
-This `copy_field` processor copies the source field value to a destination field for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
-
-For the processor to work, you need to specify a `source` and `destination` field.
+The `copy_field` processor copies the source field value to a destination field for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
 
 ## Usage
 
 ### Copy a field value to another field
-Here is an example of copying a field.
 
-Example Job
+Example of a job using the `copy_field` processor
 
 ```json
 {

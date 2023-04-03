@@ -1,18 +1,11 @@
 # window
 
-This processor is used to gather data within a certain frame and return a [DataWindow](../entity/data-window.md) representing that frame.
-
-You would want to use this over [accumulate](./accumulate.md) and [accumulate_by_id](./accumulate_by_id.md) you you wanted well defined date based windows instead of counting the amount of empty slices.
-
-This can be configured to have [tumbling windows](https://ci.apache.org/projects/flink/flink-docs-release-1.8/dev/stream/operators/windows.html#tumbling-windows) or [sliding windows](https://ci.apache.org/projects/flink/flink-docs-release-1.8/dev/stream/operators/windows.html#sliding-windows)
-
-The timing can either be set to `clock` (which tracks by server time) or set to `event` which is based off of the time set on the record at what is configured at `time_field`
+This processor is used to gather data within a certain frame and return a [DataWindow](../entity/data-window.md) representing that frame.  This is similar to [accumulate](./accumulate.md) and [accumulate_by_id](./accumulate_by_id.md) except it doesn't wait for empty slices to release data and instead accumulates and releases data based on time windows.  The processor can be configured to gather data by either [tumbling windows](https://ci.apache.org/projects/flink/flink-docs-release-1.8/dev/stream/operators/windows.html#tumbling-windows) or [sliding windows](https://ci.apache.org/projects/flink/flink-docs-release-1.8/dev/stream/operators/windows.html#sliding-windows).  The timing can either be set to use `clock` (which tracks by server time) or `event` which is based off of a field value in the data.
 
 ## Usage
 ### Tumbling window
-This is an example of a tumbling window that has a duration of 7 seconds. This is also configured to have an event_window_expiration of 10 seconds of server time so it will return a window if that time has passed.
 
-Example Job
+Example of a job using the `window` processor and using a tumbling window with a duration of 7 seconds. This has an `event_window_expiration` setting of 10 seconds.  So if 10 seconds passes with no new incoming data, it will return a window based on what it has.
 
 ```json
 {
@@ -39,10 +32,10 @@ Example Job
 }
 
 ```
-Here is a representation of what the processor will do with the configuration listed in the job above
+Output of the example job
 
 ```javascript
-// for the example, each record is one second apart
+// each record is one second apart
 const data = [
     { time: '2020-08-18T21:04:00.000Z' },
     { time: '2020-08-18T21:04:01.000Z' },
@@ -55,20 +48,22 @@ const data = [
     { time: '2020-08-18T21:04:08.000Z' }
 ];
 
-// first three seconds
+// first three records are only 3 seconds apart
 results = await process.run(data.slice(0, 3))
 
+// no return data expected
 results === [];
 
-// six seconds, still not at 7 second threshold
+// the next 3 records are only six seconds apart
 results = await process.run(data.slice(3, 6))
 
+// no results expected
 results === [];
 
-// 7 second threshold, we return a DataWindow
+// the next records span 9 second from the first one
 results = await process.run(data.slice(6, 9))
 
-// only 7 seconds worth of records are returned, the rest are kept for next window
+// 7 seconds worth of records are returned, the rest are kept for the next window
 results === {
     dataArray: [
         { time: '2020-08-18T21:04:00.000Z' },
@@ -82,16 +77,18 @@ results === {
     ]
 };
 
+// no new incoming data
 results = await process.run([]);
 
 results === [];
 
 
-// we wait for the event_window_expiration timer
+// we wait 10 seconds for the event_window_expiration timer to expire
 await pDelay(10000);
 
 results = await process.run([])
 
+// get the rest of the data
 results === {
     dataArray: [
         { time: '2020-08-18T21:04:08.000Z' }
@@ -101,9 +98,8 @@ results === {
 ```
 
 ### Sliding window
-This is an example of a sliding window that has a duration of 3 seconds. The sliding_window_interval is 2 seconds. This is also configured to have an event_window_expiration of 10 seconds of server time so it will return a window if that time has passed.
 
-Example Job
+Example of a job with a sliding window. The sliding_window_interval is 2 seconds.  This has an `event_window_expiration` setting of 10 seconds.  So if 10 seconds passes with no new incoming data, it will return a window based on what it has.
 
 ```json
 {
@@ -131,10 +127,10 @@ Example Job
 }
 
 ```
-Here is a representation of what the processor will do with the configuration listed in the job above
+Output of the example job
 
 ```javascript
-// for the example, each record is one second apart
+// each record is one second apart
 const data = [
     { time: '2020-08-18T21:04:00.000Z' },
     { time: '2020-08-18T21:04:01.000Z' },
@@ -148,11 +144,10 @@ const data = [
     { time: '2020-08-18T21:04:09.000Z' }
 ];
 
-// first three seconds
 results = await process.run(data)
 
-// each DataWindow encompasses 3 seconds as configured
-// but there are 2 second difference from the start of each DataWindow
+// each DataWindow encompasses 3 seconds
+// there is a 2 second difference for the start of each DataWindow 
 results === [
     {
         dataArray: [
@@ -180,7 +175,7 @@ results === [
     }
 ];
 
-// six seconds, still not at 7 second threshold
+// no new data
 results = await process.run([]
 
 results === [];
@@ -189,7 +184,7 @@ results === [];
 await pDelay(10000);
 
 results = await process.run([])
-
+// once the event_window_expiration passes it pushes out whatever the current window has collected
 results === {
     dataArray: [
         { time: '2020-08-18T21:04:06.000Z' },
