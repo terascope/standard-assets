@@ -10,7 +10,7 @@ export default class Schema extends ConvictSchema<DateRouterConfig> {
                 format: 'required_String'
             },
             destination: {
-                doc: 'Name of field where to source will be copied to',
+                doc: 'Destination of copied field',
                 default: null,
                 format: 'required_String'
             }
