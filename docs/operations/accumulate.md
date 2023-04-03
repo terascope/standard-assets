@@ -2,8 +2,6 @@
 
 The `accumulate` processor is used to gather and accumulate data over time.  It returns the results when the specified number of empty slices has been processed.  The returned entity is the accumulated data in a single [DataWindow](../entity/data-window.md).
 
-DataWindows are a special [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) that encloses an array of data-entities.
-
 `NOTE`: The processor can potentially cause memory errors because it will continue to hold data in memory until it gets the specified number of empty slices or the job is stopped.
 
 ## Usage

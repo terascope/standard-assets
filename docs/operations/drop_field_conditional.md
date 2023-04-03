@@ -68,7 +68,7 @@ Example of a job using a [Field Validation](https://terascope.github.io/teraslic
             "_op": "drop_field_conditional",
             "field": "name",
             "validation_method": "inNumberRange",
-            "validation_args": { "min": 2, "max": 4, }
+            "validation_args": { "min": 2, "max": 4 }
         }
     ]
 }
@@ -112,7 +112,7 @@ Example Job with a [Field Validation](https://terascope.github.io/teraslice/docs
             "_op": "drop_field_conditional",
             "field": "name",
             "validation_method": "inNumberRange",
-            "validation_args": { "min": 2, "max": 4, },
+            "validation_args": { "min": 2, "max": 4 },
             "invert": true
         }
     ]

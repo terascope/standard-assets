@@ -1,6 +1,6 @@
 # sort
 
-The `sort` processor sorts the data by a given field that has numbers or strings as values. This will sort Objects, DataEntities or [DataWindows](../entity/data-window.md).
+The `sort` processor sorts the data by a given field that has numbers, dates, or strings as values. This will sort [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindows](../entity/data-window.md).
 
 
 ## Usage

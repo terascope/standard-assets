@@ -76,12 +76,12 @@ export default class Schema extends ConvictSchema<OpConfig> {
                 format: '*'
             },
             validation_args: {
-                doc: 'Args for regex and validation method',
+                doc: 'Args validation method',
                 default: null,
                 format: '*'
             },
             invert: {
-                doc: 'Keeps fields whose value returns true from the regex of validation method',
+                doc: 'Keeps fields whose value returns true from the regex or validation method',
                 default: false,
                 format: 'Boolean'
             }

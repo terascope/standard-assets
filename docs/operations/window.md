@@ -1,11 +1,13 @@
 # window
 
-This processor is used to gather data within a certain frame and return a [DataWindow](../entity/data-window.md) representing that frame.  This is similar to [accumulate](./accumulate.md) and [accumulate_by_id](./accumulate_by_id.md) except it doesn't wait for empty slices to release data and instead accumulates and releases data based on time windows.  The processor can be configured to gather data by either [tumbling windows](https://ci.apache.org/projects/flink/flink-docs-release-1.8/dev/stream/operators/windows.html#tumbling-windows) or [sliding windows](https://ci.apache.org/projects/flink/flink-docs-release-1.8/dev/stream/operators/windows.html#sliding-windows).  The timing can either be set to use `clock` (which tracks by server time) or `event` which is based off of a field value in the data.
+This processor is used to gather data within a certain time frame and return a [DataWindow](../entity/data-window.md) representing that time window.  This is similar to [accumulate](./accumulate.md) except it doesn't wait for empty slices to release the data and instead accumulates and releases data based on a time window.  
+
+The processor can be configured to gather data by either [tumbling windows](https://ci.apache.org/projects/flink/flink-docs-release-1.8/dev/stream/operators/windows.html#tumbling-windows) or [sliding windows](https://ci.apache.org/projects/flink/flink-docs-release-1.8/dev/stream/operators/windows.html#sliding-windows).  The window duration can either be set to track the window duration by server time or base the window off of a date field value in the data.
 
 ## Usage
 ### Tumbling window
 
-Example of a job using the `window` processor and using a tumbling window with a duration of 7 seconds. This has an `event_window_expiration` setting of 10 seconds.  So if 10 seconds passes with no new incoming data, it will return a window based on what it has.
+Example of a job using the `window` processor and using a tumbling window with a duration of 7 seconds. This has an `event_window_expiration` setting of 10 seconds.  Once 10 seconds passes with no new incoming data, it will return a window based on whatever documents have been accumulated.
 
 ```json
 {
@@ -99,7 +101,7 @@ results === {
 
 ### Sliding window
 
-Example of a job with a sliding window. The sliding_window_interval is 2 seconds.  This has an `event_window_expiration` setting of 10 seconds.  So if 10 seconds passes with no new incoming data, it will return a window based on what it has.
+Example of a job with a sliding window. The sliding_window_interval is 2 seconds.  This has an `event_window_expiration` setting of 10 seconds.  Once 10 seconds passes with no new incoming data, it will return a window based on whatever documents have been accumulated.
 
 ```json
 {

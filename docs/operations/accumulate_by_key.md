@@ -2,8 +2,6 @@
 
 The `accumulate_by_key` processor is used to gather and accumulate data over time.  It returns the results when the specified number of empty slices has been processed.  The processor then returns an array of multiple [DataWindows](../entity/data-window.md) with each DataWindow containing records that have the same `_key` metadata value.
 
-DataWindows are a special [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity)  that encloses an array of data-entities.
-
 For this processor to work, the `_key` metadata value of the records must be set.
 
 `NOTE`: The processor can potentially cause memory errors because it will continue to hold data in memory until it gets the specified number of empty slices or the job is stopped.

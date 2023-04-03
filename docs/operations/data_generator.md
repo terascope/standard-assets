@@ -1,6 +1,6 @@
 # data_generator
 
-A reader like processor that generates sample data. The default data generator creates randomized data fitting the format listed below or it can use a custom schema from the [mocker-data-generator](https://github.com/danibram/mocker-data-generator) package to create custom data.
+A reader like processor that generates sample data. The default data generator creates randomized data fitting the format listed below.  It can also use a custom schema using the [mocker-data-generator](https://github.com/danibram/mocker-data-generator) package to create custom data.
 
 ## Usage
 
@@ -51,9 +51,9 @@ results[0] === {
 ```
 
 ### Generate custom data within a date range
-This is an example of using a custom schema to generate records with dates between `2015-08-01T10:33:09.356Z` and `2015-12-30T20:33:09.356Z`
 
-Example Job
+Example of a job using custom schema to generate records with dates between `2015-08-01T10:33:09.356Z` and `2015-12-30T20:33:09.356Z`
+
 ```json
 {
     "name" : "testing",
@@ -113,9 +113,9 @@ results[0] === {
 ```
 
 ### Stress Test and persistent mode
-In this example job the `data_generator` generates a persistent slice of 10,000 records for all 50 workers until the job is shutdown. This is useful for stress testing systems and down stream processes.
 
-Example Job
+Example of a job using the `data_generator` to generate a persistent slice of 10,000 records for all 50 workers until the job is shutdown. This is useful for stress testing systems and down stream processes.
+
 ```json
 {
     "name" : "testing",
