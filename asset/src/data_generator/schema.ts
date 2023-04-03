@@ -29,7 +29,7 @@ export default class Schema extends ConvictSchema<DataGenerator> {
     build(): AnyObject {
         return {
             json_schema: {
-                doc: 'file path to custom data schema',
+                doc: 'File path to custom data schema',
                 default: null,
                 format: 'optional_String'
             },
