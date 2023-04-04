@@ -72,6 +72,23 @@ describe('drop_field should', () => {
         ]);
     });
 
+    it('return data with specified field array dropped', async () => {
+        const test = await makeTest({ field: ['age', 'name'] });
+        const results = await test.runSlice(cloneDeep(data)) as DataEntity[];
+
+        expect(results).toEqual([
+            {
+                id: 1
+            },
+            {
+                id: 2
+            },
+            {
+                id: 3
+            }
+        ]);
+    });
+
     it('return data window with source field copied to destination field for each record', async () => {
         const testWindow = [
             DataWindow.make('1', [{ id: 1, name: 'joe', age: 22 }, { id: 2, name: 'moe', age: 21 }, { id: 3, name: 'randy', age: 24 }]),

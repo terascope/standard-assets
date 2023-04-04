@@ -1,7 +1,7 @@
 import {
     MapProcessor,
     OpConfig,
-    DataEntity,
+    DataEntity
 } from '@terascope/job-components';
 import DataWindow from '../__lib/data-window';
 
@@ -26,6 +26,11 @@ export default class DropField extends MapProcessor<OpConfig> {
     }
 
     private dropField(doc: DataEntity) {
+        if (Array.isArray(this.opConfig.field)) {
+            this.opConfig.field.forEach((f) => delete doc[f]);
+            return;
+        }
+
         delete doc[this.opConfig.field];
     }
 }

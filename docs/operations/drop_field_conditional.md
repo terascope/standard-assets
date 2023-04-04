@@ -35,18 +35,18 @@ Output of example job
 
 ```javascript
 const data = [
-    DataEntity.make({ name: 'lilly', otherField: 1 }),
-    DataEntity.make({ name: 'willy', otherField: 2  }),
-    DataEntity.make({ name: 'billy', otherField: 3  }),
-    DataEntity.make({ name: 'ron', otherField: 4  }),
+    DataEntity.make({ name: 'lilly', number_field: 1 }),
+    DataEntity.make({ name: 'willy', number_field: 2  }),
+    DataEntity.make({ name: 'billy', number_field: 3  }),
+    DataEntity.make({ name: 'ron', number_field: 4  }),
 ]
 
 const results = await processor.run(data);
 
-DataEntity.make({ otherField: 1 }),
-DataEntity.make({ otherField: 2  }),
-DataEntity.make({ otherField: 3  }),
-DataEntity.make({ name: 'ron', otherField: 4  }),
+DataEntity.make({ number_field: 1 }),
+DataEntity.make({ number_field: 2  }),
+DataEntity.make({ number_field: 3  }),
+DataEntity.make({ name: 'ron', number_field: 4  }),
 ```
 
 Example of a job using a [Field Validation](https://terascope.github.io/teraslice/docs/packages/data-mate/overview#Field-Validations) function
@@ -66,7 +66,7 @@ Example of a job using a [Field Validation](https://terascope.github.io/teraslic
         },
         {
             "_op": "drop_field_conditional",
-            "field": "name",
+            "field": "number_field",
             "validation_method": "inNumberRange",
             "validation_args": { "min": 2, "max": 4 }
         }
@@ -79,18 +79,18 @@ Output of example job
 
 ```javascript
 const data = [
-    DataEntity.make({ name: 'lilly', otherField: 1 }),
-    DataEntity.make({ name: 'willy', otherField: 2 }),
-    DataEntity.make({ name: 'billy', otherField: 3 }),
-    DataEntity.make({ name: 'ron', otherField: 4 }),
+    DataEntity.make({ name: 'lilly', number_field: 1 }),
+    DataEntity.make({ name: 'willy', number_field: 2 }),
+    DataEntity.make({ name: 'billy', number_field: 3 }),
+    DataEntity.make({ name: 'ron', number_field: 4 }),
 ]
 
 const results = await processor.run(data);
 
-DataEntity.make({ name: 'lilly', otherField: 1 }),
-DataEntity.make({ name: 'willy', otherField: 2 }),
+DataEntity.make({ name: 'lilly', number_field: 1 }),
+DataEntity.make({ name: 'willy', number_field: 2 }),
 DataEntity.make({ name: 'billy' }),
-DataEntity.make({ name: 'ron', otherField: 4 }),
+DataEntity.make({ name: 'ron', number_field: 4 }),
 ```
 
 Example Job with a [Field Validation](https://terascope.github.io/teraslice/docs/packages/data-mate/overview#Field-Validations) function and invert set to `true`
@@ -110,7 +110,7 @@ Example Job with a [Field Validation](https://terascope.github.io/teraslice/docs
         },
         {
             "_op": "drop_field_conditional",
-            "field": "name",
+            "field": "number_field",
             "validation_method": "inNumberRange",
             "validation_args": { "min": 2, "max": 4 },
             "invert": true
@@ -124,17 +124,17 @@ Output of example job
 
 ```javascript
 const data = [
-    DataEntity.make({ name: 'lilly', otherField: 1 }),
-    DataEntity.make({ name: 'willy', otherField: 2  }),
-    DataEntity.make({ name: 'billy', otherField: 3  }),
-    DataEntity.make({ name: 'ron', otherField: 4  }),
+    DataEntity.make({ name: 'lilly', number_field: 1 }),
+    DataEntity.make({ name: 'willy', number_field: 2  }),
+    DataEntity.make({ name: 'billy', number_field: 3  }),
+    DataEntity.make({ name: 'ron', number_field: 4  }),
 ]
 
 const results = await processor.run(data);
 
 DataEntity.make({ name: 'lilly' }),
 DataEntity.make({ name: 'willy' }),
-DataEntity.make({ name: 'billy', otherField: 3 }),
+DataEntity.make({ name: 'billy', number_field: 3 }),
 DataEntity.make({ name: 'ron' }),
 ```
 

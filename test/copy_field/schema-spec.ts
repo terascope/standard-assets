@@ -26,5 +26,9 @@ describe('copy_field schema', () => {
     it('should expect to be properly configured', async () => {
         await expect(makeSchema({ source: 'some_source' })).toReject();
         await expect(makeSchema({ destination: 'some_destination' })).toReject();
+        await expect(makeSchema({ source: 'some_source', destination: 'some_destination' })).toResolve();
+        await expect(makeSchema({ source: 'some_source', destination: 'some_destination', delete_source: true })).toResolve();
+        await expect(makeSchema({ destination: true, source: 'field' })).toReject();
+        await expect(makeSchema({ destination: 'true', source: 1234 })).toReject();
     });
 });

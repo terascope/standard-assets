@@ -72,6 +72,26 @@ describe('copy_field should', () => {
         ]);
     });
 
+    it('return data with source field copied to destination field and source field removed', async () => {
+        const test = await makeTest({ source: 'name', destination: 'first_name', delete_source: true });
+        const results = await test.runSlice(cloneDeep(data)) as DataEntity[];
+
+        expect(results).toEqual([
+            {
+                id: 1,
+                first_name: 'joe'
+            },
+            {
+                id: 2,
+                first_name: 'moe'
+            },
+            {
+                id: 3,
+                first_name: 'randy'
+            }
+        ]);
+    });
+
     it('return data window with source field copied to destination field for each record', async () => {
         const testWindow = [
             DataWindow.make('1', [{ id: 1, name: 'joe' }, { id: 2, name: 'moe' }, { id: 3, name: 'randy' }]),

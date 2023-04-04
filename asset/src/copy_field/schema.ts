@@ -5,14 +5,19 @@ export default class Schema extends ConvictSchema<DateRouterConfig> {
     build(): Record<string, any> {
         return {
             source: {
-                doc: 'Source of the value to copy',
+                doc: 'Name of the field to copy value from',
                 default: null,
                 format: 'required_String'
             },
             destination: {
-                doc: 'Destination of copied field',
+                doc: 'Name of the field that copied value is written to',
                 default: null,
                 format: 'required_String'
+            },
+            delete_source: {
+                doc: 'Option to delete the source field',
+                default: false,
+                format: 'Boolean'
             }
         };
     }
