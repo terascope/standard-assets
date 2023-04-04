@@ -52,6 +52,7 @@ DataEntity.make({ name: 'dilly', name_again: 'dilly', otherField: 4  }),
 
 | Configuration | Description                                                   | Type   | Notes                        |
 | ------------- | ------------------------------------------------------------- | ------ | ---------------------------- |
-| _op           | Name of operation, it must reflect the exact name of the file | String | required                     |
+| _op           | Name of operation, it must reflect the exact name of the file | String | required |
 | source         | Name of field to copy the value from | required, no default |
 | destination    | Name of field to copy the value to | required, no default |
+| delete_source  | Option to delete the source field once the value is copied to the destination field| optional, defaults to `false` |
