@@ -1,17 +1,14 @@
 # accumulate
 
-The `accumulate` processor is used to gather and accumulate data over time, only to return results when a certain amount of slices generating zero results have been reached in which it will return an array of a single [DataWindow](../entity/data-window.md) which encapsulates all the data of that window.
+The `accumulate` processor is used to gather and accumulate data over time.  It returns the results when the specified number of empty slices has been processed.  The returned entity is the accumulated data in a single [DataWindow](../entity/data-window.md).
 
-DataWindows are a special [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity)  that encloses an array of data-entities.
-
-`NOTE`: Be careful as the window can grow rather large if this is not flushed which only happens when there are slices with zero records.
+`NOTE`: The processor can potentially cause memory errors because it will continue to hold data in memory until it gets the specified number of empty slices or the job is stopped.
 
 ## Usage
 
-### Accumulate data
-This is an example of of a job that will accumulate records and will only flush when there are three empty slices from from the reader `test-reader` or if the job is shutting down
+### Accumulate data by key
 
-Example Job
+Example of a job using the `accumulate` processor
 
 ```json
 {

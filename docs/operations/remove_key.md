@@ -1,14 +1,13 @@
 # remove_key
 
-This is a helper processor to remove the `_key` metadata value for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
+This processor removes the `_key` metadata value for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
 
 
 ## Usage
 
 ### Remove the _key of records
-Here is an example of using this processor to remove the `_key` metadata value
 
-Example Job
+Example of a job using the `remove_key` processor
 
 ```json
 {
@@ -30,7 +29,7 @@ Example Job
 }
 ```
 
-Here is a representation of what the processor will do with the configuration listed in the job above
+Output of example job
 
 ```javascript
 const data = [

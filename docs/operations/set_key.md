@@ -1,16 +1,13 @@
 # set_key
 
-This is a helper processor that can be used to set the `_key` metadata value for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
-
-For the processor to work, you need to specify a field (defaults to the `_key` field) that exists on the records and has a defined, non-nullable value.
+The `set_key` processor is used to set the `_key` metadata value for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md). 
 
 
 ## Usage
 
 ### Set the _key metadata from a field value
-Here is an example of setting the `_key` metadata value from a field
 
-Example Job
+Example of a job that uses `set_key` processor
 
 ```json
 {
@@ -33,7 +30,7 @@ Example Job
 }
 
 ```
-Example of the data and the expected results of the extraction phase, the metadata is what is set by the selection processor
+Output of example job
 
 ```javascript
 const data = [

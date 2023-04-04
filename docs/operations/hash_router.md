@@ -1,19 +1,12 @@
 # hash_router
 
-The `hash_router` processor will tag the incoming records with the `standard:route` metadata which is used by the [routed_sender](./routed_sender.md) processor to dynamically routes records to different locations.
-
-This will enable routing based off of hashing the `fields` values or the `_key` metadata value if no `fields` are configured, and distributing that over the number of partitions configured. Thus your ending route will be a number representing the bucket it was assigned.
-
-The hashing algorithm used is [FNV-1a](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function)
-
-To use this processor, the `fields` specified need to exist on the records and have values that are hashable, or the `_key` metadata value must be set and be a hashable value.
+The `hash_router` enables routing based off of hashing either the `fields` values or the `_key` metadata value.  It distributes the records equally over the number of partitions configured by adding the `standard:route` metadata to each record which is used by the [routed_sender](./routed_sender.md) processor to dynamically route records.  The hashing algorithm used is [FNV-1a](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function).  This processor requires either the `fields` to be specified or the `_key` metadata value to be set.
 
 ## Usage
 
 ### Determine bucket route of hashed values by fields
-This is an example of how to configure and use this processor. The job below generates some data, creates a hash from the created and uuid fields and then assigns it a destination bucket from the hash, and sends it to elasticsearch.
 
-Example Job
+Example of a job using the `hash_router` with `fields` configured and writing the data to Elasticsearch.  This configuration specifies 15 partitions, so each record will be routed to one of the 15 partitions depending the resulting hash value.  
 
 ```json
 {
@@ -53,7 +46,7 @@ Example Job
 }
 ```
 
-Here is an example of data and the resulting metadata generated from it based on the job above.
+Output of the example job
 
 ```javascript
 
@@ -88,9 +81,8 @@ results[1].getMetadata('standard:route') === '8';
 ```
 
 ### Determine bucket route of hashed values by _key
-This is an example of how to configure and use this processor. The job below generates some data, sets the `_key` value using the `uuid` field of the record, then hashes it and assigns it a bucket that will be used by the routed_sender
 
-Example Job
+Example of a job using the `hash_router` that uses the `_key` metadata value to determine the route.  In this example the `uuid` is set as the `_key` which is then used by the `hash_router` to assign the records to one of the 15 partitions.
 
 ```json
 {
@@ -115,12 +107,11 @@ Example Job
             "size": 10000
         },
         {
-            "_op": "set_id",
+            "_op": "set_key",
             "field": "uuid"
         },
         {
             "_op": "hash_router",
-            "fields": ["created", "uuid"],
             "partitions": 15
         },
         {
@@ -134,7 +125,7 @@ Example Job
 }
 ```
 
-Here is an example of data and the resulting metadata generated from it based on the job above.
+Output of the example job
 
 ```javascript
 
@@ -143,27 +134,29 @@ const data = [
         {
             date: '2020-01-17T19:21:52.159Z',
             field1: 'val1.1',
-            field2: 'val1.2'
+            field2: 'val1.2',
+            uuid: 'd0fd71ae-18db-41c6-b14f-e9fa40dc2566'
         },
         {
-            _key: someId1
+            _key: 'd0fd71ae-18db-41c6-b14f-e9fa40dc2566'
         }
     ),
     DataEntity.make(
         {
             date: '2020-01-17T19:21:52.159Z',
             field1: 'val2.1',
-            field2: 'val2.2'
+            field2: 'val2.2',
+            uuid: '530ff04c-c673-4f75-b001-a341a16f64a3'
         },
         {
-            _key: someId2
+            _key: '530ff04c-c673-4f75-b001-a341a16f64a3'
         }
     ),
 ];
 
 const results = await processor.run(data);
 
-results[0].getMetadata('standard:route') === '0';
+results[0].getMetadata('standard:route') === '1';
 results[1].getMetadata('standard:route') === '14';
 
 ```
@@ -173,5 +166,5 @@ results[1].getMetadata('standard:route') === '14';
 | Configuration | Description                                                                 | Type     | Notes                                               |
 | ------------- | --------------------------------------------------------------------------- | -------- | --------------------------------------------------- |
 | _op           | Name of operation, it must reflect the exact name of the file               | String   | required                                            |
-| fields        | Specifies fields to hash for partitioning. Must specify at least one field. | String[] | optional, defaults to using the _key metadata field |
+| fields        | Specifies fields to hash for partitioning | String[] | optional, defaults to using the _key metadata field |
 | partitions    | Number of partitions to use with hashing                                    | Number   | required                                            |

@@ -1,13 +1,13 @@
 # data_generator
 
-This is a reader that is used to generate sample data. You may use the default data generator which creates randomized data fitting the format listed below or you may create your own custom schema using the [mocker-data-generator](https://github.com/danibram/mocker-data-generator) package to create data to whatever schema you desire.
+A reader like processor that generates sample data. The default data generator creates randomized data fitting the data format in the examples.  The processor can also create customized data records if provided a schema that works with the [mocker-data-generator](https://github.com/danibram/mocker-data-generator) package, see the examples below for details.
 
 ## Usage
 
 ### Generate data
-This is an example of the default data it generates
 
-Example Job
+Example of jobs using the `data_generator` processor
+
 ```json
 {
     "name" : "testing",
@@ -29,7 +29,7 @@ Example Job
 }
 ```
 
-Here is a representation of what the processor will do with the configuration listed in the job above
+Output of the example job
 
 ```javascript
 const slice = { count: 1000 }
@@ -50,10 +50,10 @@ results[0] === {
 }
 ```
 
-### Generate custom data and generate a date from within a range
-This is an example of using a custom schema to generate records with dates between `2015-08-01T10:33:09.356Z` and `2015-12-30T20:33:09.356Z`
+### Generate custom data within a date range
 
-Example Job
+Example of a job using custom schema to generate records with dates between `2015-08-01T10:33:09.356Z` and `2015-12-30T20:33:09.356Z`
+
 ```json
 {
     "name" : "testing",
@@ -95,7 +95,7 @@ export default const schema = {
 }
 ```
 
-Here is a representation of what the processor will do with the configuration listed in the job and schema above
+Example output from the above job:
 
 ```javascript
 const slice = { count: 2 }
@@ -112,16 +112,16 @@ results[0] === {
 }
 ```
 
-### Stress Test a cluster in persistent mode
-In this example the data_generator can act as a high volume out hose, generating a persistent slice of 10000 for all 50 workers until the job is shutdown. This is useful if you need to test and try to overwhelm services.
+### Stress Test and persistent mode
 
-Example Job
+Example of a job using the `data_generator` to generate a persistent slice of 10,000 records for all 50 workers until the job is shutdown. This is useful for stress testing systems and down stream processes.
+
 ```json
 {
     "name" : "testing",
     "workers" : 50,
     "slicers" : 1,
-    "lifecycle" : "once",
+    "lifecycle" : "persistent",
     "assets" : [
         "standard"
     ],
@@ -138,7 +138,7 @@ Example Job
 }
 ```
 
-Here is a representation of what the processor will do with the configuration listed in the job above
+Example output from the above job:
 
 ```javascript
 const slice = { count: 1000 }
@@ -161,32 +161,30 @@ results[0] === {
 
 ## Parameters
 
-| Configuration | Description                                                                                                                                                                                                                               | Type    | Notes                                                                                                                                                                                                                                      |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| _op           | Name of operation, it must reflect the exact name of the file                                                                                                                                                                             | String  | required                                                                                                                                                                                                                                   |
-| size          | If lifecycle is set to "once", then size is the total number of documents that the generator will make. If lifecycle is set to "persistent", then this generator will will constantly stream  data in chunks as big as the size indicated | Number  | required                                                                                                                                                                                                                                   |
-| json_schema   | File path to where custom schema is located                                                                                                                                                                                               | String  | optional, the schema must be exported Node style "module.exports = schema"                                                                                                                                                                 |
-| format        | specify any provided formats listed in /lib/utils/data_utils for the generator                                                                                                                                                            | String  | optional, defaults to "dateNow"                                                                                                                                                                                                            |
-| start         | start of date range                                                                                                                                                                                                                       | String  | optional, only used with format isoBetween or utcBetween, defaults to Thu Jan 01 1970 00:00:00 GMT-0700 (MST)                                                                                                                              |
-| end           | end of date range                                                                                                                                                                                                                         | String  | optional, only used with format isoBetween or utcBetween, defaults to new Date()                                                                                                                                                           |
-| stress_test   | If set to true, it will attempt to send non unique documents following your schema as fast as it can, originally used to help determine cluster write performance                                                                         | Boolean | optional, defaults to false                                                                                                                                                                                                                |
-| date_key      | Use this to indicate which key of your schema you would like to use a format listed below, `if this is set, it will remove the "created" field on the default schema`                                                                     | String  | optional, defaults to created                                                                                                                                                                                                              |
-| set_id        | used to make an id on the data that will be used for the doc \_key for elasticsearch, values: base64url, hexadecimal, HEXADECIMAL                                                                                                         | String  | optional, if used, then index selector needs to have id_field set to "id"                                                                                                                                                                  |
-| id_start_key  | set if you would like to force the first part of the ID to a certain character, adds a regex to the front                                                                                                                                 | Sting   | optional, must be used in tandem with set_id id_start_key is essentially regex, if you set it to "a", then the first character of the id will be "a", can also set ranges [a-f] or randomly alternate between b and a if its set to "[ab]" |
+| Configuration | Description | Type | Notes |
+| ------------- | ------------| -----| ------|
+| _op           | Name of operation, it must reflect the exact name of the file | String  | required |
+| size          | If job `lifecycle` is set to `once`, then size is the total number of generated documents. If job `lifecycle` is set to `persistent`, then the generator will constantly stream data in chunks equal to the size | Number | required |
+| json_schema   | File path to custom schema | String  | optional, the schema must be exported Node style `module.exports = schema` |
+| format        | Format of date in the timestamp field, options are `dateNow`, `utcDate`, `utcBetween`, `isoBetween`.  See advanced configuration section for more details | String  | optional, defaults to `dateNow` |
+| start         | Start of date range | String  | optional, only used with format `isoBetween` or `utcBetween`, defaults to Thu Jan 01 1970 00:00:00 GMT-0700 (MST) |
+| end           | End of date range | String  | optional, only used with format `isoBetween` or `utcBetween`, defaults to new Date() |
+| stress_test   | If set to true, it will send non-unique documents following your schema as fast as possible.  Helpful to determine downstream performance limits or constraints | Boolean | optional, defaults to false |
+| date_key      | Name of they date field.  If set, it will remove the `created` field on the default schema. | String  | optional, defaults to created |
+| set_id        | Sets an `id` field on each record whose value is formatted according the the option given. The options are `base64url`, `hexadecimal`, `HEXADECIMAL` | String  | optional, it does not set any metadata fields, ie `_key`.  See the `set_key` processor on how to set the `_key` in the metadata. |
+| id_start_key  | Set if you would like to force the first part of the `id` to a certain character or set of characters | Sting | optional, must be used in tandem with `set_id`.  `id_start_key` is essentially a regex. If you set it to "a", then the first character of the id will be "a", can also set ranges [a-f] or randomly alternate between b and a if its set to "[ab]" |
 
 ## Advanced Configuration
 
-### Description of formats available
-There are two categories of formats, ones that return the current date at which the function runs, or one that returns a date within a given range. Note for the non-range category, technically if the job takes 5 minutes to run, you will have dates ranging from the time you started the job up until the time it finished, so its still a range but not as one that spans hours, days weeks etc.
-
+### Description of date formats and time range options
 
 | Format     | Description                                                                             |
 | ---------- | --------------------------------------------------------------------------------------- |
-| dateNow    | will create a new date in "2016-01-19T13:48:08.426-07:00" format, preserving local time |
-| utcDate    | will create a new utc date e.g "2016-01-19T20:48:08.426Z"                               |
-| utcBetween | similar to utcDate, but uses `start` and `end` keys in the job config to specify range  |
-| isoBetween | similar to dateNow, but uses `start` and `end` keys in the job config to specify range  |
+| dateNow    | Formats dates in the `ISO8601` specification, ie `2016-01-19T13:48:08.426-07:00`, preserving local time. Values will be the current date and time. |
+| isoBetween | Uses the `ISO8601` format, but date and time values are constrained by the `start` and `end` config settings. |
+| utcDate    | Formats dates in the `UTC` specification, ie "2016-01-19T20:48:08.426Z". Values will be the current date and time. |
+| utcBetween | Uses the `UTC` format, but date and time values are constrained by the `start` and `end` config settings. |
 
 
 ### persistent mode
- The data generator will continually stream data, the "size" key" switches from the total number of documents created to how big each slice when processed
+ The data generator will continually stream data.  In this mode the `size` value applies to the number of documents generated per slice instead of the total number of documents created as it does in `once` mode.

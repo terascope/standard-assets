@@ -1,17 +1,12 @@
 # group_by
 
-This processor can be used to group records by a `field` or the `_key` metadata if no field is specified.
-
-It will return an array of [DataWindow](../entity/data-window.md) which is a special [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity)  that encloses an array of data-entities.
-
-For this processor to work, the field values needs to be set or the `_key` metadata value of the records must be set.
+This processor groups records by a `field` or the `_key` metadata if no field is specified.  It returns an array of [DataWindows](../entity/data-window.md).  This processor requires either the field values or the `_key` metadata value to be set.
 
 ## Usage
 
 ### Grouping data based off of fields
-Here is an example of returning DataWindows by their `name` field
 
-Example Job
+Example of a job using the `group_by` processor that groups the records by the `name` field
 
 ```json
 {
@@ -34,7 +29,7 @@ Example Job
 }
 ```
 
-Here is a representation of what the processor will do with the configuration listed in the job above
+Output of the example job
 
 ```javascript
 const data = const data = [
@@ -56,9 +51,8 @@ results === [
 ```
 
 ### Grouping data based off of their _key value
-By omitting the `field` parameter, we can group by the `_key` metadata value
 
-Example Job
+Example of a job using the `_key` metadata value
 
 ```json
 {
@@ -80,7 +74,7 @@ Example Job
 }
 ```
 
-Here is a representation of what the processor will do with the configuration listed in the job above
+Output of the example job
 
 ```javascript
 const data = [
@@ -105,4 +99,4 @@ results === [
 | Configuration | Description                                                   | Type   | Notes                                              |
 | ------------- | ------------------------------------------------------------- | ------ | -------------------------------------------------- |
 | _op           | Name of operation, it must reflect the exact name of the file | String | required                                           |
-| field         | field to group records on                                     | String | optional, defaults to metadata value set at '_key' |
+| field         | field to group records on                                     | String | optional, defaults to `_key` metadata value |

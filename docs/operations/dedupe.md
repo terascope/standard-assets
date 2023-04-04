@@ -1,19 +1,12 @@
 # dedupe
 
-This is helper processor that is used to dedupe an array of records or an array of [DataWindow](../entity/data-window.md) by a given field.
-
-If no field is configured then it will attempt to dedupe based off the `_key` metadata property.
-
-This dedupe processor can also keep track of dates that it is deduping so that the resulting record has either the `oldest` or `newest` date for the field based on how you configure the `adjust_time` parameter.
-
-For this processor to work, the `field` value needs to be set or the `_key` metadata value of the records must be set.
+The `dedupe` processor is used to dedupe an array of [DataEntities](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or an array of [DataWindows](../entity/data-window.md) by a given field.  If no field is configured then it will attempt to dedupe based off the `_key` metadata property.  This processor can also track dates of duplicate records so that the resulting unique record has either the `oldest` or `newest` date for the date field based on the `adjust_time` parameter. 
 
 ## Usage
 
-### Dedupe records based on a set field
-This is an example of deduping records based off a given field
+### Dedupe records based on a field
 
-Example Job
+Example of a job using the `dedupe` processor
 ```json
 {
     "name" : "testing",
@@ -35,7 +28,7 @@ Example Job
 }
 ```
 
-Here is a representation of what the processor will do with the configuration listed in the job above
+Output from example job
 
 ```javascript
 const data = [
@@ -57,9 +50,8 @@ results === [
 ```
 
 ### Dedupe records based on the _key metadata
-This is an example of deduping records based off the `_key` metadata
 
-Example Job
+Example of a job using the `_key` in the metadata
 ```json
 {
     "name" : "testing",
@@ -80,7 +72,7 @@ Example Job
 }
 ```
 
-Here is a representation of what the processor will do with the configuration listed in the job above
+Output from example job
 
 ```javascript
 const data = [
@@ -102,10 +94,9 @@ results === [
 ```
 
 
-### Dedupe records based on the _key metadata
-This is an example of deduping records based off the name field, and will also keep track of the `oldest` date of the `first_seen` field and keep track of the `newest` date of the `last_seen` field and return them on the final deduped record.
+### Dedupe records and track time
 
-Example Job
+Example of a job using the `dedupe` processor and tracking the `oldest` date of the `first_seen` field as well as the `newest` date of the `last_seen` field.
 ```json
 {
     "name" : "testing",
@@ -131,7 +122,7 @@ Example Job
 }
 ```
 
-Here is a representation of what the processor will do with the configuration listed in the job above
+Output of example job
 
 ```javascript
 const data = [
@@ -232,5 +223,5 @@ results === [
 | Configuration | Description | Type |  Notes |
 | --------- | -------- | ------ | ------ |
 | _op | Name of operation, it must reflect the exact name of the file | String | required |
-| field | field to dedupe records on | String | optional, defaults to metadata value set at '_key' |
-| adjust_time | Requires an array of objects with `field` and `preference` properties, it will keep track of date values. Preference should be set to `oldest` or `newest`. | Object[] | optional, defaults to [] |
+| field | field to dedupe records on | String | optional, defaults to `_key` metadata value |
+| adjust_time | Requires an array of objects with `field` and `preference` properties. Preference should be set to `oldest` or `newest`. | Array of Objects | optional, defaults to [] |
