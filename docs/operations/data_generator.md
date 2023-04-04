@@ -1,6 +1,6 @@
 # data_generator
 
-A reader like processor that generates sample data. The default data generator creates randomized data fitting the format listed below.  It can also use a custom schema using the [mocker-data-generator](https://github.com/danibram/mocker-data-generator) package to create custom data.
+A reader like processor that generates sample data. The default data generator creates randomized data fitting the data format in the examples.  The processor can also create customized data records if provided a schema that works with the [mocker-data-generator](https://github.com/danibram/mocker-data-generator) package, see the examples below for details.
 
 ## Usage
 
