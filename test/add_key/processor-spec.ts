@@ -279,6 +279,53 @@ describe('key', () => {
         ]);
     });
 
+    it('should truncate an object geo-point with nested values as strings', async () => {
+        const test = await makeTest({
+            key_fields: [
+                'name',
+                'age',
+                'location.lon',
+                'location.lat'
+            ],
+            truncate_location: [
+                'location.lon',
+                'location.lat'
+            ],
+            truncate_location_places: 4
+        });
+
+        const data = cloneDeep(testData).map((doc) => {
+            doc.location = {
+                lat: '-25.4780706',
+                lon: '-49.2919064'
+            };
+            return doc;
+        });
+
+        const results = await test.runSlice(data);
+
+        expect(results).toEqual([
+            {
+                name: 'bob',
+                age: 122,
+                location: { lon: '-49.2919064', lat: '-25.4780706' },
+                _key: 'bGRK8gj0BhxxDa5g3oLZxA'
+            },
+            {
+                name: 'joe',
+                age: 34,
+                location: { lon: '-49.2919064', lat: '-25.4780706' },
+                _key: 'BX4BsXq-Sf_vNx_GAcqBUQ'
+            },
+            {
+                name: 'frank',
+                age: 99,
+                location: { lon: '-49.2919064', lat: '-25.4780706' },
+                _key: 'jVR0y0kYIf9ba_xrG4gfJA'
+            }
+        ]);
+    });
+
     it('should truncate an object geo-point', async () => {
         const test = await makeTest({
             key_fields: [

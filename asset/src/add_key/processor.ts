@@ -7,7 +7,6 @@ import {
     get,
     isObjectEntity,
     isEmpty,
-    isNumber,
     isNumberLike,
     isString,
     toNumber,
@@ -100,10 +99,10 @@ export default class AddKey extends BatchProcessor {
 
         if (Array.isArray(value)) return this.truncateArrayGeoPoint(value);
 
-        if (isString(value)) return this.truncateStringGeoPoint(value);
-
         // if listing nested lat, lon separately like location.lat
-        if (isNumber(value)) return this.truncate(value);
+        if (isNumberLike(value)) return this.truncate(toNumber(value));
+
+        if (isString(value)) return this.truncateStringGeoPoint(value);
 
         throw new Error(`could not truncate location with value ${value}`);
     }
