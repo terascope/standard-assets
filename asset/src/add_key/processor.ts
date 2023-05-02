@@ -86,7 +86,9 @@ export default class AddKey extends BatchProcessor {
     private getValue(doc: DataEntity, field: string) {
         const fieldValue = get(doc, field);
 
-        if (this.opConfig.truncate_location && this.opConfig.truncate_location.includes(field)) {
+        if (this.opConfig.truncate_location
+            && this.opConfig.truncate_location.includes(field)
+            && fieldValue != null) {
             return this.truncateLocation(fieldValue);
         }
 

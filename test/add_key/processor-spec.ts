@@ -326,6 +326,42 @@ describe('key', () => {
         ]);
     });
 
+    fit('should handle truncate if location is missing or undefined', async () => {
+        const test = await makeTest({
+            key_fields: [
+                'name',
+                'age',
+                'location.lon',
+                'location.lat'
+            ],
+            truncate_location: [
+                'location.lon',
+                'location.lat'
+            ],
+            truncate_location_places: 4
+        });
+
+        const results = await test.runSlice(cloneDeep(testData));
+
+        expect(results).toEqual([
+            {
+                name: 'bob',
+                age: 122,
+                _key: 'e6467-UbK9pmMAcFO0xGgQ'
+            },
+            {
+                name: 'joe',
+                age: 34,
+                _key: 'wP5XmV4WDEHWREmpN7YRAQ'
+            },
+            {
+                name: 'frank',
+                age: 99,
+                _key: 'S5nHugeGpGAeLbBeDNBLJA'
+            }
+        ]);
+    });
+
     it('should truncate an object geo-point', async () => {
         const test = await makeTest({
             key_fields: [
