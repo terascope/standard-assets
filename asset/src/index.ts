@@ -13,6 +13,9 @@ import AddShortIdSchema from './add_short_id/schema';
 import CopyField from './copy_field/processor';
 import CopyFieldSchema from './copy_field/schema';
 
+import CountByField from './count_by_field/processor';
+import CountByFieldSchema from './count_by_field/schema';
+
 import DataGeneratorFetcher from './data_generator/fetcher';
 import DataGeneratorSchema from './data_generator/schema';
 import DataGeneratorSlicer from './data_generator/slicer';
@@ -107,6 +110,10 @@ export const ASSETS = {
         Processor: CopyField,
         Schema: CopyFieldSchema
     },
+    count_by_field: {
+        Processor: CountByField,
+        Schema: CountByFieldSchema
+    },
     data_generator: {
         Fetcher: DataGeneratorFetcher,
         Schema: DataGeneratorSchema,
@@ -153,7 +160,7 @@ export const ASSETS = {
         Schema: HashRouterSchema
     },
     job_metric_api: {
-        Api: JobMetricApi,
+        API: JobMetricApi,
         Schema: JobMetricSchema
     },
     key_router: {

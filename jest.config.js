@@ -11,6 +11,7 @@ module.exports = {
     coverageDirectory: 'coverage',
     collectCoverageFrom: [
         '<rootDir>/asset/**/*.ts',
+        '!<rootDir>/asset/src/index.ts',
         '!<rootDir>/packages/*/**/*.ts',
         '!<rootDir>/packages/*/test/**',
         '!<rootDir>/**/coverage/**',
@@ -27,11 +28,14 @@ module.exports = {
     },
     preset: 'ts-jest',
     globals: {
-        'ts-jest': {
-            tsconfig: './tsconfig.json',
-            diagnostics: true,
-        },
         ignoreDirectories: ['dist'],
         availableExtensions: ['.js', '.ts']
-    }
+    },
+    transform: {
+        testMatch: [
+            'ts-jest', {
+                tsconfig: './tsconfig.json',
+                diagnostics: true,
+            },],
+    },
 };

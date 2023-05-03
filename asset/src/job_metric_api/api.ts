@@ -7,16 +7,15 @@ import {
 } from 'prom-client';
 import { JobMetricAPIConfig, JobMetricsAPI, MetricList } from './interfaces';
 
-import {
-    createExporter, shutdownExporter, deleteMetricFromExporter, CloseExporter
-} from './exporter';
+import Exporter from './exporter';
 
 export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
     readonly metricList!: MetricList;
 
     default_labels!: Record<string, string>;
     prefix: string;
-    private metricExporter!: CloseExporter;
+    private metricExporter!: any;
+    private api!: JobMetricsAPI;
 
     constructor(
         workerContext: WorkerContext,
@@ -122,8 +121,7 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
     /**
      * [observe value, used by summary metric type]
      * @param  {string} name [metric name]
-     * @param  {Record<string, string>} labels [list of labels and labels values]
-     * @param  {Array<string>} labelValues [list of label values]
+     * @param  {Array<string, string>} labels [list of labels and labels values]
      * @param  {number} value [metric value]
      * @return {void}
      */
@@ -147,15 +145,16 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
 
     /**
      * [addMetric (define) new metric]
-     * @param  {'gauge' | 'counter' | 'histogram'} name [metric name]
+     * @param  {string} name [metric name]
      * @param  {string} help [metric help]
      * @param  {Array<string>} labelsNames [list of label names]
-     * @param  {string} type [metric type, gauge, counter, histogram, or summary]
+     * @param  {'gauge' | 'counter' | 'histogram'} type [gauge,counter,histogram,or summary]
+     * @param  {Array<number>} buckets [default buckets]
      * @return {void}
      */
-    async addMetric(name: 'gauge' | 'counter' | 'histogram', help: string, labelsNames: Array<string>,
-        type: string, buckets: Array<number> = [0.1, 5, 15, 50, 100, 500]): Promise<void> {
-        if (!(this.hasMetric(name))) {
+    async addMetric(name: string, help: string, labelsNames: Array<string>,
+        type: 'gauge' | 'counter' | 'histogram', buckets: Array<number> = [0.1, 5, 15, 50, 100, 500]): Promise<void> {
+        if (!this.hasMetric(name)) {
             const fullname = this.prefix + name;
             if (type === 'gauge') {
                 this.metricList[name] = this._createGaugeMetric(
@@ -173,7 +172,7 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
                 );
             }
         } else {
-            throw new Error(`metric ${name} already defined in metric list`);
+            this.logger.info(`metric ${name} already defined in metric list`);
         }
     }
 
@@ -199,7 +198,7 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
         if (this.hasMetric(name)) {
             deleted = delete this.metricList[name];
             try {
-                deleteMetricFromExporter(fullname);
+                this.metricExporter.deleteMetric(fullname);
             } catch (err) {
                 deleted = false;
                 throw new Error(`unable to delete metric ${fullname} from exporter`);
@@ -286,13 +285,14 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
     async createAPI(): Promise<JobMetricsAPI> {
         try {
             if (!this.metricExporter) {
-                this.metricExporter = await createExporter(this.apiConfig);
+                this.metricExporter = new Exporter();
+                this.metricExporter.create(this.apiConfig);
             }
         } catch (err) {
             this.logger.info('job_metric_api exporter already running');
             this.logger.error(err);
         }
-        return {
+        this.api = {
             set: this.set.bind(this),
             addMetric: this.addMetric.bind(this),
             hasMetric: this.hasMetric.bind(this),
@@ -302,14 +302,15 @@ export default class Metrics extends OperationAPI<JobMetricAPIConfig> {
             dec: this.dec.bind(this),
             observe: this.observe.bind(this),
         };
+        return this.api;
     }
 
     async shutdown(): Promise<void> {
         this.logger.info('job_metric_api exporter shutdown');
         try {
-            await shutdownExporter(this.metricExporter);
+            await this.metricExporter.shutdown();
         } catch (err) {
-            this.logger.error(err);
+            this.logger.error(`shutting down metric exporter ${err}`);
         }
     }
 }
