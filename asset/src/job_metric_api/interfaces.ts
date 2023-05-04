@@ -21,8 +21,8 @@ export interface JobMetricsAPI {
     inc: (name: string, labelValues: Record<string, string>, value: number) => void;
     dec: (name: string, labelValues: Record<string, string>, value: number) => void;
     observe: (name: string, labelValues: Record<string, string>, value: number) => void;
-    addMetric: (name: 'gauge' | 'counter' | 'histogram', help: string, labelNames: Array<string>, type: string,
-        buckets: Array<number>) => Promise<void>;
+    addMetric: (name: string, help: string, labelNames: Array<string>, type: 'gauge' | 'counter' | 'histogram',
+        buckets?: Array<number>) => Promise<void>;
     addSummary: (name: string, help: string, labelNames: Array<string>,
         ageBuckets: number, maxAgeSeconds: number,
         percentiles: Array<number>) => void;
