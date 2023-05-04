@@ -1,18 +1,11 @@
 import {
-    MapProcessor, DataEntity, WorkerContext, ExecutionConfig
+    MapProcessor, DataEntity
 } from '@terascope/job-components';
 import { CountByFieldConfig } from './interfaces';
 import { JobMetricsAPI } from '../job_metric_api/interfaces';
 
 export default class CountByField extends MapProcessor<CountByFieldConfig> {
     private metrics!: JobMetricsAPI;
-    private opName!: string;
-    static metrics: any;
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    constructor(context: WorkerContext, opConfig: CountByFieldConfig,
-        exConfig: ExecutionConfig) {
-        super(context, opConfig, exConfig);
-    }
 
     async initialize(): Promise<void> {
         if (this.opConfig.collect_metrics) {
