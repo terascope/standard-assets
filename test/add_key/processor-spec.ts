@@ -326,7 +326,7 @@ describe('key', () => {
         ]);
     });
 
-    fit('should handle truncate if location is missing or undefined', async () => {
+    it('should handle truncate if location is missing or undefined', async () => {
         const test = await makeTest({
             key_fields: [
                 'name',
@@ -649,7 +649,7 @@ describe('key', () => {
         });
 
         const data = cloneDeep(testData).map((doc) => {
-            doc.location = null;
+            doc.location = 'bad format';
             return doc;
         });
 

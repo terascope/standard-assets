@@ -10,7 +10,8 @@ import {
     isNumberLike,
     isString,
     toNumber,
-    geoHash
+    geoHash,
+    setPrecision
 } from '@terascope/utils';
 import crypto from 'crypto';
 import DataWindow from '../__lib/data-window';
@@ -97,14 +98,22 @@ export default class AddKey extends BatchProcessor {
 
     private truncateLocation(value: unknown) {
         // supports geo-points defined here https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-point.html
-        if (isObjectEntity(value)) return this.truncateObjectGeoPoint(value as AnyObject);
+        if (isObjectEntity(value)) {
+            return this.truncateObjectGeoPoint(value as AnyObject);
+        }
 
-        if (Array.isArray(value)) return this.truncateArrayGeoPoint(value);
+        if (Array.isArray(value)) {
+            return this.truncateArrayGeoPoint(value);
+        }
 
         // if listing nested lat, lon separately like location.lat
-        if (isNumberLike(value)) return this.truncate(toNumber(value));
+        if (isNumberLike(value)) {
+            return this.truncate(toNumber(value));
+        }
 
-        if (isString(value)) return this.truncateStringGeoPoint(value);
+        if (isString(value)) {
+            return this.truncateStringGeoPoint(value);
+        }
 
         throw new Error(`could not truncate location with value ${value}`);
     }
@@ -160,11 +169,11 @@ export default class AddKey extends BatchProcessor {
     }
 
     private truncate(value: number) {
-        // eslint-disable-next-line no-restricted-properties, prefer-exponentiation-operator
-        const numPower = Math.pow(10, this.opConfig.truncate_location_places);
-
-        // eslint-disable-next-line no-bitwise
-        return ~~(value * numPower) / numPower;
+        return setPrecision(
+            value,
+            this.opConfig.truncate_location_places,
+            true
+        );
     }
 
     private addKey(doc: DataEntity, key: string) {
