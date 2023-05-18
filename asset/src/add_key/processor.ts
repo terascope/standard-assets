@@ -7,7 +7,6 @@ import {
     get,
     isObjectEntity,
     isEmpty,
-    isNumberLike,
     isString,
     toNumber,
     geoHash,
@@ -90,7 +89,11 @@ export default class AddKey extends BatchProcessor {
         if (this.opConfig.truncate_location
             && this.opConfig.truncate_location.includes(field)
             && fieldValue != null) {
-            return this.truncateLocation(fieldValue);
+            try {
+                return this.truncateLocation(fieldValue);
+            } catch (e) {
+                this.rejectRecord(doc, e as Error);
+            }
         }
 
         return fieldValue;
@@ -107,7 +110,7 @@ export default class AddKey extends BatchProcessor {
         }
 
         // if listing nested lat, lon separately like location.lat
-        if (isNumberLike(value)) {
+        if (this.isLatOrLon(value)) {
             return this.truncate(toNumber(value));
         }
 
@@ -121,18 +124,18 @@ export default class AddKey extends BatchProcessor {
     private truncateObjectGeoPoint(value: AnyObject): { lat: number, lon: number } {
         const { lat, lon } = value as AnyObject;
 
-        if (lat != null && lon != null && isNumberLike(lat) && isNumberLike(lon)) {
+        if (this.validCoordinates(lat, lon)) {
             return { lat: this.truncate(toNumber(lat)), lon: this.truncate(toNumber(lon)) };
         }
 
-        throw new Error(`could truncate location ${value}`);
+        throw new Error(`could not truncate object geo-point ${value}`);
     }
 
     private truncateArrayGeoPoint(value: unknown[]): number[] {
         return value.map((i) => {
-            if (isNumberLike(i)) return this.truncate(toNumber(i));
+            if (this.isLatOrLon(i)) return this.truncate(toNumber(i));
 
-            throw new Error(`could truncate location ${value}`);
+            throw new Error(`could truncate array geo-point ${value}`);
         });
     }
 
@@ -144,7 +147,11 @@ export default class AddKey extends BatchProcessor {
             if (matches) {
                 const [lon, lat] = matches[0].split(' ');
 
-                return `POINT (${this.truncate(toNumber(lon))} ${this.truncate(toNumber(lat))})`;
+                if (this.validCoordinates(lat, lon)) {
+                    return `POINT (${this.truncate(toNumber(lon))} ${this.truncate(toNumber(lat))})`;
+                }
+
+                throw new Error(`could not truncate string geo point ${value}`);
             }
         }
 
@@ -152,7 +159,11 @@ export default class AddKey extends BatchProcessor {
         if (value.includes(',')) {
             const [lat, lon] = value.split(',');
 
-            return `${this.truncate(toNumber(lat))}, ${this.truncate(toNumber(lon))}`;
+            if (this.validCoordinates(lat, lon)) {
+                return `${this.truncate(toNumber(lat))}, ${this.truncate(toNumber(lon))}`;
+            }
+
+            throw new Error(`could not truncate string geo point ${value}`);
         }
 
         // geohash
@@ -164,11 +175,19 @@ export default class AddKey extends BatchProcessor {
                 this.truncate(toNumber(lon))
             );
         } catch (e) {
-            throw new Error(`could not truncate location ${value}`);
+            throw new Error(`could not truncate geohash location ${value}`);
         }
     }
 
-    private truncate(value: number) {
+    private validCoordinates(lat: unknown, lon: unknown) {
+        return this.isLatOrLon(lat) && this.isLatOrLon(lon);
+    }
+
+    private isLatOrLon(value: unknown) {
+        return value != null && !isNaN(toNumber(value));
+    }
+
+    private truncate(value: number | string) {
         return setPrecision(
             value,
             this.opConfig.truncate_location_places,

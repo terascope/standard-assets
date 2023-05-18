@@ -326,6 +326,41 @@ describe('key', () => {
         ]);
     });
 
+    it('should handle truncation for coordinates in exponential notation', async () => {
+        const test = await makeTest({
+            key_fields: [
+                'name',
+                'age',
+                'location.lon',
+                'location.lat'
+            ],
+            truncate_location: [
+                'location.lon',
+                'location.lat'
+            ],
+            truncate_location_places: 4
+        });
+
+        const data = cloneDeep(testData).slice(0, 1).map((doc) => {
+            doc.location = {
+                lat: '6.92585216287241E-4',
+                lon: '51.54196872959797'
+            };
+            return doc;
+        });
+
+        const results = await test.runSlice(data);
+
+        expect(results).toEqual([
+            {
+                name: 'bob',
+                age: 122,
+                location: { lon: '51.54196872959797', lat: '6.92585216287241E-4' },
+                _key: 't-SDCScAl0NR6N81ulut4g'
+            }
+        ]);
+    });
+
     it('should handle truncate if location is missing or undefined', async () => {
         const test = await makeTest({
             key_fields: [
