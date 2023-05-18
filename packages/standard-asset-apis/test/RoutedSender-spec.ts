@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { DataEntity, pDelay, RouteSenderAPI } from '@terascope/utils';
 import 'jest-extended';
 import {

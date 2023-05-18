@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 // eslint-disable-next-line import/no-import-module-exports
 import { DataArray } from './interfaces';
 
