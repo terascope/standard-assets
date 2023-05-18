@@ -235,6 +235,41 @@ describe('key', () => {
         expect(results[2].getKey()).toBe('S5nHugeGpGAeLbBeDNBLJA');
     });
 
+    it('should truncate an object geo-point if is geoJSON point', async () => {
+        const test = await makeTest({
+            key_fields: [
+                'name',
+                'age',
+                'location'
+            ],
+            truncate_location: [
+                'location',
+            ],
+            truncate_location_places: 4
+        });
+
+        const data = cloneDeep(testData[0]);
+
+        data.location = {
+            type: 'Point',
+            coordinates: [-43.4432343234, 55.3454349123934]
+        };
+
+        const results = await test.runSlice([data]);
+
+        expect(results).toEqual([
+            {
+                name: 'bob',
+                age: 122,
+                location: {
+                    type: 'Point',
+                    coordinates: [-43.4432343234, 55.3454349123934]
+                },
+                _key: 'ZmAUz-JlmID_QphbR9g9Rg'
+            }
+        ]);
+    });
+
     it('should truncate an object geo-point if nested values are specified', async () => {
         const test = await makeTest({
             key_fields: [
@@ -275,6 +310,124 @@ describe('key', () => {
                 age: 99,
                 location: { lon: -43.4432343234, lat: 55.3454349123934 },
                 _key: 'tUY_80h-KwJpUNL_SteHHQ'
+            }
+        ]);
+    });
+
+    it('should truncate an object geo-point with nested values as strings', async () => {
+        const test = await makeTest({
+            key_fields: [
+                'name',
+                'age',
+                'location.lon',
+                'location.lat'
+            ],
+            truncate_location: [
+                'location.lon',
+                'location.lat'
+            ],
+            truncate_location_places: 4
+        });
+
+        const data = cloneDeep(testData).map((doc) => {
+            doc.location = {
+                lat: '-25.4780706',
+                lon: '-49.2919064'
+            };
+            return doc;
+        });
+
+        const results = await test.runSlice(data);
+
+        expect(results).toEqual([
+            {
+                name: 'bob',
+                age: 122,
+                location: { lon: '-49.2919064', lat: '-25.4780706' },
+                _key: 'bGRK8gj0BhxxDa5g3oLZxA'
+            },
+            {
+                name: 'joe',
+                age: 34,
+                location: { lon: '-49.2919064', lat: '-25.4780706' },
+                _key: 'BX4BsXq-Sf_vNx_GAcqBUQ'
+            },
+            {
+                name: 'frank',
+                age: 99,
+                location: { lon: '-49.2919064', lat: '-25.4780706' },
+                _key: 'jVR0y0kYIf9ba_xrG4gfJA'
+            }
+        ]);
+    });
+
+    it('should handle truncation for coordinates in exponential notation', async () => {
+        const test = await makeTest({
+            key_fields: [
+                'name',
+                'age',
+                'location.lon',
+                'location.lat'
+            ],
+            truncate_location: [
+                'location.lon',
+                'location.lat'
+            ],
+            truncate_location_places: 4
+        });
+
+        const data = cloneDeep(testData).slice(0, 1).map((doc) => {
+            doc.location = {
+                lat: '6.92585216287241E-4',
+                lon: '51.54196872959797'
+            };
+            return doc;
+        });
+
+        const results = await test.runSlice(data);
+
+        expect(results).toEqual([
+            {
+                name: 'bob',
+                age: 122,
+                location: { lon: '51.54196872959797', lat: '6.92585216287241E-4' },
+                _key: 't-SDCScAl0NR6N81ulut4g'
+            }
+        ]);
+    });
+
+    it('should handle truncate if location is missing or undefined', async () => {
+        const test = await makeTest({
+            key_fields: [
+                'name',
+                'age',
+                'location.lon',
+                'location.lat'
+            ],
+            truncate_location: [
+                'location.lon',
+                'location.lat'
+            ],
+            truncate_location_places: 4
+        });
+
+        const results = await test.runSlice(cloneDeep(testData));
+
+        expect(results).toEqual([
+            {
+                name: 'bob',
+                age: 122,
+                _key: 'e6467-UbK9pmMAcFO0xGgQ'
+            },
+            {
+                name: 'joe',
+                age: 34,
+                _key: 'wP5XmV4WDEHWREmpN7YRAQ'
+            },
+            {
+                name: 'frank',
+                age: 99,
+                _key: 'S5nHugeGpGAeLbBeDNBLJA'
             }
         ]);
     });
@@ -566,7 +719,7 @@ describe('key', () => {
         });
 
         const data = cloneDeep(testData).map((doc) => {
-            doc.location = null;
+            doc.location = 'bad format';
             return doc;
         });
 
