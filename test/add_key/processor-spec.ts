@@ -235,6 +235,41 @@ describe('key', () => {
         expect(results[2].getKey()).toBe('S5nHugeGpGAeLbBeDNBLJA');
     });
 
+    it('should truncate an object geo-point if is geoJSON point', async () => {
+        const test = await makeTest({
+            key_fields: [
+                'name',
+                'age',
+                'location'
+            ],
+            truncate_location: [
+                'location',
+            ],
+            truncate_location_places: 4
+        });
+
+        const data = cloneDeep(testData[0]);
+
+        data.location = {
+            type: 'Point',
+            coordinates: [-43.4432343234, 55.3454349123934]
+        };
+
+        const results = await test.runSlice([data]);
+
+        expect(results).toEqual([
+            {
+                name: 'bob',
+                age: 122,
+                location: {
+                    type: 'Point',
+                    coordinates: [-43.4432343234, 55.3454349123934]
+                },
+                _key: 'ZmAUz-JlmID_QphbR9g9Rg'
+            }
+        ]);
+    });
+
     it('should truncate an object geo-point if nested values are specified', async () => {
         const test = await makeTest({
             key_fields: [

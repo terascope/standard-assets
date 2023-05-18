@@ -10,8 +10,14 @@ import {
     isString,
     toNumber,
     geoHash,
-    setPrecision
+    setPrecision,
+    isGeoShapePoint
 } from '@terascope/utils';
+import {
+    GeoShapePoint,
+    GeoShapeType
+} from '@terascope/types';
+
 import crypto from 'crypto';
 import DataWindow from '../__lib/data-window';
 
@@ -101,7 +107,11 @@ export default class AddKey extends BatchProcessor {
 
     private truncateLocation(value: unknown) {
         // supports geo-points defined here https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-point.html
-        if (isObjectEntity(value)) {
+        if (isGeoShapePoint(value)) {
+            return this.truncateGeoJSONPoint(value);
+        }
+
+        if (this.isGeoPointObject(value as AnyObject)) {
             return this.truncateObjectGeoPoint(value as AnyObject);
         }
 
@@ -109,7 +119,7 @@ export default class AddKey extends BatchProcessor {
             return this.truncateArrayGeoPoint(value);
         }
 
-        // if listing nested lat, lon separately like location.lat
+        // if truncating nested lat, lon values independently
         if (this.isLatOrLon(value)) {
             return this.truncate(toNumber(value));
         }
@@ -121,17 +131,42 @@ export default class AddKey extends BatchProcessor {
         throw new Error(`could not truncate location with value ${value}`);
     }
 
+    private truncateGeoJSONPoint(value: GeoShapePoint): GeoShapePoint {
+        // eg, { "type": "Point", "coordinates": [-71.34, 41.12] }
+        const [lon, lat] = value.coordinates;
+
+        if (this.validCoordinates(lat, lon)) {
+            return {
+                type: GeoShapeType.Point,
+                coordinates: [
+                    this.truncate(toNumber(lon)),
+                    this.truncate(toNumber(lat))
+                ]
+            };
+        }
+
+        throw new Error(`could not truncate GeoJSON point ${value}`);
+    }
+
+    private isGeoPointObject(value: AnyObject) {
+        const { lat, lon } = value;
+
+        return this.validCoordinates(lat, lon);
+    }
+
     private truncateObjectGeoPoint(value: AnyObject): { lat: number, lon: number } {
+        // eg, { "lat": 41.12, "lon": -71.34 }
         const { lat, lon } = value as AnyObject;
 
         if (this.validCoordinates(lat, lon)) {
             return { lat: this.truncate(toNumber(lat)), lon: this.truncate(toNumber(lon)) };
         }
 
-        throw new Error(`could not truncate object geo-point ${value}`);
+        throw new Error(`could not truncate geo-point ${value}`);
     }
 
     private truncateArrayGeoPoint(value: unknown[]): number[] {
+        // eg,  [ -71.34, 41.12 ]
         return value.map((i) => {
             if (this.isLatOrLon(i)) return this.truncate(toNumber(i));
 
@@ -155,7 +190,7 @@ export default class AddKey extends BatchProcessor {
             }
         }
 
-        // number string
+        // number string, "41.12,-71.34"
         if (value.includes(',')) {
             const [lat, lon] = value.split(',');
 
@@ -166,7 +201,7 @@ export default class AddKey extends BatchProcessor {
             throw new Error(`could not truncate string geo point ${value}`);
         }
 
-        // geohash
+        // geohash, drm3btev3e86
         try {
             const { lat, lon } = geoHash.decode(value);
 
