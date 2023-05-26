@@ -768,7 +768,7 @@ describe('key', () => {
         await expect(test.runSlice(data)).rejects.toThrow();
     });
 
-    it('should handle nested objects', async () => {
+    it('should handle nested objects and consistently key objects in different order but same values', async () => {
         const test = await makeTest();
 
         const data = [
