@@ -265,7 +265,7 @@ describe('key', () => {
                     type: 'Point',
                     coordinates: [-43.4432343234, 55.3454349123934]
                 },
-                _key: 'IrdfuF85T_LtdHhR7Adygw'
+                _key: 'a7GxwT2WporvqjXqvWSYRw'
             }
         ]);
     });
@@ -771,13 +771,32 @@ describe('key', () => {
     it('should handle nested objects', async () => {
         const test = await makeTest();
 
-        const data = [...new Array(2)].map((_, i) => {
-            const doc = cloneDeep(testData[0]);
-            doc.nested = { count: i, foozer: { barzer: i + 1, a: i + 2 } };
-            return doc;
-        });
-
-        data.push(cloneDeep(data[1]));
+        const data = [
+            {
+                name: 'bob',
+                age: 122,
+                nested: {
+                    count: 0,
+                    foozer: { barzer: 1, a: 2 }
+                }
+            },
+            {
+                name: 'bob',
+                age: 122,
+                nested: {
+                    count: 1,
+                    foozer: { barzer: 2, a: 3 }
+                }
+            },
+            {
+                name: 'bob',
+                age: 122,
+                nested: {
+                    foozer: { a: 3, barzer: 2 },
+                    count: 1
+                }
+            }
+        ];
 
         const results = await test.runSlice(data);
 
@@ -789,7 +808,7 @@ describe('key', () => {
                     count: 0,
                     foozer: { barzer: 1, a: 2 }
                 },
-                _key: 'QZn_-frM86gS2XActJl_NA'
+                _key: 'GfQnm6MUyVlVhjgKcMPdFw'
             },
             {
                 name: 'bob',
@@ -798,7 +817,7 @@ describe('key', () => {
                     count: 1,
                     foozer: { barzer: 2, a: 3 }
                 },
-                _key: 'mgz6lLWKJQpFyiYbwQoi2Q'
+                _key: '4WD27_nHjw8Si3W33j3yaA'
             },
             {
                 name: 'bob',
@@ -807,7 +826,7 @@ describe('key', () => {
                     foozer: { a: 3, barzer: 2 },
                     count: 1
                 },
-                _key: 'mgz6lLWKJQpFyiYbwQoi2Q'
+                _key: '4WD27_nHjw8Si3W33j3yaA'
             }
         ]);
     });

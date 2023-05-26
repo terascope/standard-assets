@@ -12,7 +12,8 @@ import {
     geoHash,
     setPrecision,
     isGeoShapePoint,
-    isPlainObject
+    isPlainObject,
+    flatten
 } from '@terascope/utils';
 import {
     GeoShapePoint,
@@ -268,9 +269,14 @@ export default class AddKey extends BatchProcessor {
     }
 
     private formatInnerObject(value: AnyObject): string {
-        return JSON.stringify(value).replace(/"|{|}/g, '')
+        const prepped = JSON.stringify(value)
             .split(',')
+            .map((x) => x.split('{'));
+
+        return flatten(prepped)
+            .filter((x) => x.length)
             .sort()
-            .join('');
+            .join('')
+            .replace(/"|}/g, '');
     }
 }
