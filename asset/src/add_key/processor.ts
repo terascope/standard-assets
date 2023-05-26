@@ -11,7 +11,9 @@ import {
     toNumber,
     geoHash,
     setPrecision,
-    isGeoShapePoint
+    isGeoShapePoint,
+    isPlainObject,
+    flatten
 } from '@terascope/utils';
 import {
     GeoShapePoint,
@@ -251,14 +253,30 @@ export default class AddKey extends BatchProcessor {
     private createKey(keyValues: unknown[]) {
         const shasum = crypto.createHash(this.opConfig.hash_algorithm);
 
-        let key = '';
+        const key = keyValues
+            .map((value) => {
+                if (isPlainObject(value)) {
+                    return this.formatInnerObject(value as AnyObject);
+                }
 
-        keyValues.forEach((field) => {
-            key += field;
-        });
+                return value;
+            })
+            .join('');
 
         shasum.update(key);
 
         return shasum.digest('base64').replace(/=*$/g, '').replace(/\//g, '_').replace(/\+/g, '-');
+    }
+
+    private formatInnerObject(value: AnyObject): string {
+        const prepped = JSON.stringify(value)
+            .split(',')
+            .map((x) => x.split('{'));
+
+        return flatten(prepped)
+            .filter((x) => x.length)
+            .sort()
+            .join('')
+            .replace(/"|}/g, '');
     }
 }

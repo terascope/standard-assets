@@ -79,7 +79,7 @@ describe('key', () => {
                 name: 'joe',
                 age: 34,
                 foo: { bar: 'foo' },
-                _key: 'PBHKh3MmS9T0IjwvlEIXYw'
+                _key: 's_Az1xDGGOSRaVzbq1lk2Q'
             },
             {
                 name: 'frank',
@@ -265,7 +265,7 @@ describe('key', () => {
                     type: 'Point',
                     coordinates: [-43.4432343234, 55.3454349123934]
                 },
-                _key: 'ZmAUz-JlmID_QphbR9g9Rg'
+                _key: 'a7GxwT2WporvqjXqvWSYRw'
             }
         ]);
     });
@@ -457,19 +457,19 @@ describe('key', () => {
                 name: 'bob',
                 age: 122,
                 location: { lon: -43.4432343234, lat: 55.3454349123934 },
-                _key: 'ZmAUz-JlmID_QphbR9g9Rg'
+                _key: 'LvKzh7sFNReVjg405KP3eA'
             },
             {
                 name: 'joe',
                 age: 34,
                 location: { lon: -43.4432343234, lat: 55.3454349123934 },
-                _key: 'wwwfql7nsI-1P9td81Vm9A'
+                _key: 'yHNFJ-PUzlfbPzHgIrtjRg'
             },
             {
                 name: 'frank',
                 age: 99,
                 location: { lon: -43.4432343234, lat: 55.3454349123934 },
-                _key: 'LMKX1DswmPrKDq9SiG25nQ'
+                _key: 'dcTNShWJziZp7QKDNRUmjg'
             }
         ]);
     });
@@ -766,6 +766,69 @@ describe('key', () => {
         });
 
         await expect(test.runSlice(data)).rejects.toThrow();
+    });
+
+    it('should handle nested objects and consistently key objects in different order but same values', async () => {
+        const test = await makeTest();
+
+        const data = [
+            {
+                name: 'bob',
+                age: 122,
+                nested: {
+                    count: 0,
+                    foozer: { barzer: 1, a: 2 }
+                }
+            },
+            {
+                name: 'bob',
+                age: 122,
+                nested: {
+                    count: 1,
+                    foozer: { barzer: 2, a: 3 }
+                }
+            },
+            {
+                name: 'bob',
+                age: 122,
+                nested: {
+                    foozer: { a: 3, barzer: 2 },
+                    count: 1
+                }
+            }
+        ];
+
+        const results = await test.runSlice(data);
+
+        expect(results).toEqual([
+            {
+                name: 'bob',
+                age: 122,
+                nested: {
+                    count: 0,
+                    foozer: { barzer: 1, a: 2 }
+                },
+                _key: 'GfQnm6MUyVlVhjgKcMPdFw'
+            },
+            {
+                name: 'bob',
+                age: 122,
+                nested: {
+                    count: 1,
+                    foozer: { barzer: 2, a: 3 }
+                },
+                _key: '4WD27_nHjw8Si3W33j3yaA'
+            },
+            {
+                name: 'bob',
+                age: 122,
+                nested: {
+                    foozer: { a: 3, barzer: 2 },
+                    count: 1
+                },
+                _key: '4WD27_nHjw8Si3W33j3yaA'
+            }
+        ]);
     });
 
     it('should not add empty fields or objects to key', async () => {
