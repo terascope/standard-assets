@@ -79,7 +79,7 @@ describe('key', () => {
                 name: 'joe',
                 age: 34,
                 foo: { bar: 'foo' },
-                _key: 'PBHKh3MmS9T0IjwvlEIXYw'
+                _key: 's_Az1xDGGOSRaVzbq1lk2Q'
             },
             {
                 name: 'frank',
@@ -265,7 +265,7 @@ describe('key', () => {
                     type: 'Point',
                     coordinates: [-43.4432343234, 55.3454349123934]
                 },
-                _key: 'ZmAUz-JlmID_QphbR9g9Rg'
+                _key: 'IrdfuF85T_LtdHhR7Adygw'
             }
         ]);
     });
@@ -457,19 +457,19 @@ describe('key', () => {
                 name: 'bob',
                 age: 122,
                 location: { lon: -43.4432343234, lat: 55.3454349123934 },
-                _key: 'ZmAUz-JlmID_QphbR9g9Rg'
+                _key: 'LvKzh7sFNReVjg405KP3eA'
             },
             {
                 name: 'joe',
                 age: 34,
                 location: { lon: -43.4432343234, lat: 55.3454349123934 },
-                _key: 'wwwfql7nsI-1P9td81Vm9A'
+                _key: 'yHNFJ-PUzlfbPzHgIrtjRg'
             },
             {
                 name: 'frank',
                 age: 99,
                 location: { lon: -43.4432343234, lat: 55.3454349123934 },
-                _key: 'LMKX1DswmPrKDq9SiG25nQ'
+                _key: 'dcTNShWJziZp7QKDNRUmjg'
             }
         ]);
     });
@@ -766,6 +766,50 @@ describe('key', () => {
         });
 
         await expect(test.runSlice(data)).rejects.toThrow();
+    });
+
+    it('should handle nested objects', async () => {
+        const test = await makeTest();
+
+        const data = [...new Array(2)].map((_, i) => {
+            const doc = cloneDeep(testData[0]);
+            doc.nested = { count: i, foozer: { barzer: i + 1, a: i + 2 } };
+            return doc;
+        });
+
+        data.push(cloneDeep(data[1]));
+
+        const results = await test.runSlice(data);
+
+        expect(results).toEqual([
+            {
+                name: 'bob',
+                age: 122,
+                nested: {
+                    count: 0,
+                    foozer: { barzer: 1, a: 2 }
+                },
+                _key: 'QZn_-frM86gS2XActJl_NA'
+            },
+            {
+                name: 'bob',
+                age: 122,
+                nested: {
+                    count: 1,
+                    foozer: { barzer: 2, a: 3 }
+                },
+                _key: 'mgz6lLWKJQpFyiYbwQoi2Q'
+            },
+            {
+                name: 'bob',
+                age: 122,
+                nested: {
+                    foozer: { a: 3, barzer: 2 },
+                    count: 1
+                },
+                _key: 'mgz6lLWKJQpFyiYbwQoi2Q'
+            }
+        ]);
     });
 
     it('should not add empty fields or objects to key', async () => {
