@@ -1,6 +1,6 @@
 {
     "name": "standard-assets-bundle",
-    "version": "0.21.2",
+    "version": "0.22.0",
     "description": "Teraslice standard processor asset bundle",
     "private": true,
     "workspaces": [
@@ -24,7 +24,7 @@
     "devDependencies": {
         "@terascope/eslint-config": "^0.7.1",
         "@terascope/job-components": "^0.58.5",
-        "@terascope/standard-asset-apis": "^0.5.0",
+        "@terascope/standard-asset-apis": "^0.6.0",
         "@types/express": "^4.17.17",
         "@types/jest": "^29.5.2",
         "@types/json2csv": "^5.0.3",
