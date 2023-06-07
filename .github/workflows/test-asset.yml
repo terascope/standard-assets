@@ -1,0 +1,13 @@
+name: Test Teraslice Asset
+run-name: ${{ github.actor }} is testing the Teraslice Asset
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  call-asset-test-workflow:
+    uses: terascope/workflows/.github/workflows/asset-test.yml@42e888b5058dd6d66d93707331ccf9a1e9315734
+    secrets: inherit
