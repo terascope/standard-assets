@@ -16,37 +16,37 @@ teraslice-cli assets deploy <cluster-alias> --build
 ```
 
 ## Operations
- * [accumulate](./docs/operations/accumulate.md)
- * [accumulate_by_key](./docs/operations/accumulate_by_key.md)
- * [window](./docs/operations/window.md)
- * [data_window_to_array](./docs/operations/data_window_to_array.md)
 
- * [data_generator](./docs/operations/data_generator.md)
- * [dedupe](./docs/operations/dedupe.md)
- * [group_by](./docs/operations/group_by.md)
- * [remove_key](./docs/operations/remove_key.md)
- * [set_key](./docs/operations/set_key.md)
- * [sort](./docs/operations/sort.md)
+* [accumulate](./docs/operations/accumulate.md)
+* [accumulate_by_key](./docs/operations/accumulate_by_key.md)
+* [window](./docs/operations/window.md)
+* [data_window_to_array](./docs/operations/data_window_to_array.md)
 
- * [date_router](./docs/operations/date_router.md)
- * [hash_router](./docs/operations/hash_router.md)
- * [field_router](./docs/operations/field_router.md)
- * [key_router](./docs/operations/key_router.md)
+* [data_generator](./docs/operations/data_generator.md)
+* [dedupe](./docs/operations/dedupe.md)
+* [group_by](./docs/operations/group_by.md)
+* [remove_key](./docs/operations/remove_key.md)
+* [set_key](./docs/operations/set_key.md)
+* [sort](./docs/operations/sort.md)
 
- * [routed_sender](./docs/operations/routed_sender.md)
+* [date_router](./docs/operations/date_router.md)
+* [hash_router](./docs/operations/hash_router.md)
+* [field_router](./docs/operations/field_router.md)
+* [key_router](./docs/operations/key_router.md)
 
- * [selection](./docs/operations/selection.md)
- * [extraction](./docs/operations/extraction.md)
- * [post_process](./docs/operations/post_process.md)
- * [output](./docs/operations/output.md)
+* [routed_sender](./docs/operations/routed_sender.md)
 
- * [match](./docs/operations/match.md)
- * [transform](./docs/operations/transform.md)
+* [selection](./docs/operations/selection.md)
+* [extraction](./docs/operations/extraction.md)
+* [post_process](./docs/operations/post_process.md)
+* [output](./docs/operations/output.md)
+
+* [match](./docs/operations/match.md)
+* [transform](./docs/operations/transform.md)
 
 ## Entities
- * [data-window](./docs/entity/data-window.md)
 
-
+* [data-window](./docs/entity/data-window.md)
 
 ## Contributing
 
