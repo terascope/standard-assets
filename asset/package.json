@@ -20,7 +20,7 @@
         "@terascope/utils": "^0.45.5",
         "@types/express": "^4.17.17",
         "express": "^4.18.2",
-        "mocker-data-generator": "^2.12.0",
+        "mocker-data-generator": "^3.0.3",
         "prom-client": "^14.2.0",
         "short-unique-id": "^4.4.4",
         "timsort": "^0.3.0",
