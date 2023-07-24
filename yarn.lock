@@ -728,12 +728,12 @@
     progress "^2.0.3"
     yargs "^17.2.1"
 
-"@terascope/job-components@^0.58.5":
-  version "0.58.5"
-  resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.58.5.tgz#28dff6fc81be4ca9ed6b7e64366bb45ac08b335d"
-  integrity sha512-mqbWxujKkB+LAz5KiiZBPLxjkPSi3JH0ZGH/5Fm+7oRY9HmcA7QHs4Ytfvi4haX0x66jUVUkAF3KBtJhsVOcOQ==
+"@terascope/job-components@^0.59.0":
+  version "0.59.0"
+  resolved "https://registry.yarnpkg.com/@terascope/job-components/-/job-components-0.59.0.tgz#f09b1c81f388beee822064a67427bc259a534b47"
+  integrity sha512-0bfLAzlQoWZEtKiymIhp9duEM8JGKWF7LXyoU67N1nQehs8PJ/quWuBYfCEcr9Oa0d4ba458u5gRTBefxRRdeg==
   dependencies:
-    "@terascope/utils" "^0.45.5"
+    "@terascope/utils" "^0.46.0"
     convict "^6.2.4"
     convict-format-with-moment "^6.2.0"
     convict-format-with-validator "^6.2.0"
@@ -778,6 +778,47 @@
     datemath-parser "^1.0.6"
     debug "^4.3.4"
     geo-tz "^7.0.6"
+    ip-bigint "^3.0.3"
+    ip6addr "^0.2.5"
+    ipaddr.js "^2.0.1"
+    is-cidr "^4.0.2"
+    is-ip "^3.1.0"
+    is-plain-object "^5.0.0"
+    js-string-escape "^1.0.1"
+    kind-of "^6.0.3"
+    latlon-geohash "^1.1.0"
+    lodash "^4.17.21"
+    mnemonist "^0.39.5"
+    p-map "^4.0.0"
+    shallow-clone "^3.0.1"
+    validator "^13.9.0"
+
+"@terascope/utils@^0.46.0":
+  version "0.46.0"
+  resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.46.0.tgz#949ecbad7a1f678ad84861a6cde45d812f29dade"
+  integrity sha512-shgYj0I57nZ2sT0v5zoQwD+KnHSFXn1quYrGGzH2RAdl2UFz9fibfkVC4nM+bmkT9ptuzEBjyqEXnD/L027jdQ==
+  dependencies:
+    "@terascope/types" "^0.11.2"
+    "@turf/bbox" "^6.4.0"
+    "@turf/bbox-polygon" "^6.4.0"
+    "@turf/boolean-contains" "^6.4.0"
+    "@turf/boolean-disjoint" "^6.4.0"
+    "@turf/boolean-equal" "^6.4.0"
+    "@turf/boolean-intersects" "^6.4.0"
+    "@turf/boolean-point-in-polygon" "^6.4.0"
+    "@turf/boolean-within" "^6.4.0"
+    "@turf/circle" "^6.4.0"
+    "@turf/helpers" "^6.2.0"
+    "@turf/invariant" "^6.2.0"
+    "@turf/line-to-polygon" "^6.4.0"
+    "@types/lodash" "^4.14.195"
+    "@types/validator" "^13.7.17"
+    awesome-phonenumber "^2.70.0"
+    date-fns "^2.30.0"
+    date-fns-tz "^1.3.7"
+    datemath-parser "^1.0.6"
+    debug "^4.3.4"
+    geo-tz "^7.0.7"
     ip-bigint "^3.0.3"
     ip6addr "^0.2.5"
     ipaddr.js "^2.0.1"
@@ -1110,7 +1151,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/lodash@^4.14.191":
+"@types/lodash@^4.14.191", "@types/lodash@^4.14.195":
   version "4.14.195"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.195.tgz#bafc975b252eb6cea78882ce8a7b6bf22a6de632"
   integrity sha512-Hwx9EUgdwf2GLarOjQp5ZH8ZmblzcbTBC2wtQWNKARBSxM9ezRIAUpeDTgoQRAFB0+8CNWXVA9+MaSOzOF3nPg==
@@ -1194,6 +1235,11 @@
   version "13.7.15"
   resolved "https://registry.yarnpkg.com/@types/validator/-/validator-13.7.15.tgz#408c99d1b5f0eecc78109c11f896f72d1f026a10"
   integrity sha512-yeinDVQunb03AEP8luErFcyf/7Lf7AzKCD0NXfgVoGCCQDNpZET8Jgq74oBgqKld3hafLbfzt/3inUdQvaFeXQ==
+
+"@types/validator@^13.7.17":
+  version "13.7.17"
+  resolved "https://registry.yarnpkg.com/@types/validator/-/validator-13.7.17.tgz#0a6d1510395065171e3378a4afc587a3aefa7cc1"
+  integrity sha512-aqayTNmeWrZcvnG2MG9eGYI6b7S5fl+yKgPs6bAjOTwPS316R5SxBGKvtSExfyoJU7pIeHJfsHI0Ji41RVMkvQ==
 
 "@types/yargs-parser@*":
   version "21.0.0"
@@ -1984,7 +2030,7 @@ date-fns-tz@^1.3.7:
   resolved "https://registry.yarnpkg.com/date-fns-tz/-/date-fns-tz-1.3.8.tgz#083e3a4e1f19b7857fa0c18deea6c2bc46ded7b9"
   integrity sha512-qwNXUFtMHTTU6CFSFjoJ80W8Fzzp24LntbjFFBgL/faqds4e5mo9mftoRLgr3Vi1trISsg4awSpYVsOQCRnapQ==
 
-date-fns@^2.29.3:
+date-fns@^2.29.3, date-fns@^2.30.0:
   version "2.30.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
   integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
@@ -2901,7 +2947,7 @@ gensync@^1.0.0-beta.2:
   resolved "https://registry.yarnpkg.com/gensync/-/gensync-1.0.0-beta.2.tgz#32a6ee76c3d7f52d46b2b1ae5d93fea8580a25e0"
   integrity sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==
 
-geo-tz@^7.0.6:
+geo-tz@^7.0.6, geo-tz@^7.0.7:
   version "7.0.7"
   resolved "https://registry.yarnpkg.com/geo-tz/-/geo-tz-7.0.7.tgz#cb0a3ff632f2eadb6b262f1976cf881ff8b5a4ba"
   integrity sha512-Aq0sRSO1y4w62D5muRqzDmN4SWfFYnt703BLiqiHAvunlwsJs4qd3Fkl1pKSUa0bwuBmPFxIA8M1E+ilg2PSjw==
