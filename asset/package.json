@@ -1,18 +1,23 @@
 {
     "name": "standard",
+    "displayName": "Asset",
     "version": "0.22.1",
-    "description": "Teraslice standard processor asset bundle",
-    "license": "MIT",
     "private": true,
+    "description": "Teraslice standard processor asset bundle",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/terascope/standard-assets.git"
+    },
+    "license": "MIT",
     "workspaces": {
         "nohoist": [
             "**"
         ]
     },
     "scripts": {
-        "test": "yarn --cwd ../ test",
         "build": "tsc --project tsconfig.json",
-        "build:watch": "yarn build --watch"
+        "build:watch": "yarn build --watch",
+        "test": "yarn --cwd ../ test"
     },
     "dependencies": {
         "@terascope/job-components": "^0.59.0",
@@ -26,8 +31,9 @@
         "timsort": "^0.3.0",
         "ts-transforms": "^0.71.0"
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/terascope/standard-assets.git"
-    }
+    "engines": {
+        "node": ">=14.17.0",
+        "yarn": ">=1.16.0"
+    },
+    "terascope": {}
 }
