@@ -51,8 +51,11 @@
     },
     "terascope": {
         "root": true,
+        "testSuite": "unit",
         "tests": {
-            "suites": {}
+            "suites": {
+                "unit": []
+            }
         }
     }
 }
