@@ -2,11 +2,15 @@ import {
     Fetcher, WorkerContext, ExecutionConfig, TSError, AnyObject
 } from '@terascope/job-components';
 import mocker from 'mocker-data-generator';
+import { faker } from '@faker-js/faker';
+import Randexp from 'randexp';
+import Chance from 'chance';
 import path from 'path';
 import { existsSync } from 'fs';
 import { DataGenerator, CounterResults } from './interfaces';
 import defaultSchema from './data-schema';
 
+const chance = new Chance();
 export default class DataGeneratorFetcher extends Fetcher<DataGenerator> {
     dataSchema: AnyObject;
 
@@ -21,6 +25,9 @@ export default class DataGeneratorFetcher extends Fetcher<DataGenerator> {
 
         if (this.opConfig.stress_test) {
             return mocker()
+                .addGenerator('faker', faker)
+                .addGenerator('chance', chance)
+                .addGenerator('randexp', Randexp, (Generator, input) => new Generator(input).gen())
                 .schema('schema', this.dataSchema, 1)
                 .build()
                 .then((dataObj) => {
@@ -35,6 +42,9 @@ export default class DataGeneratorFetcher extends Fetcher<DataGenerator> {
         }
 
         return mocker()
+            .addGenerator('faker', faker)
+            .addGenerator('chance', chance)
+            .addGenerator('randexp', Randexp, (Generator, input) => new Generator(input).gen())
             .schema('schema', this.dataSchema, count)
             .build()
             .then((dataObj) => dataObj.schema)
