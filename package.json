@@ -25,7 +25,7 @@
         "test:watch": "jest --coverage=false --notify --watch --onlyChanged"
     },
     "devDependencies": {
-        "@terascope/eslint-config": "^0.7.1",
+        "@terascope/eslint-config": "^0.8.0",
         "@terascope/job-components": "^0.64.0",
         "@terascope/scripts": "0.59.0",
         "@terascope/standard-asset-apis": "^0.6.1",
