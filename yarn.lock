@@ -1324,10 +1324,10 @@
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.2.tgz#01284dde9ef4e6d8cef6422798d9a3ad18a66f8b"
   integrity sha512-g7CK9nHdwjK2n0ymT2CW698FuWJRIx+RP6embAzZ2Qi8/ilIrA1Imt2LVSeHUzKvpoi7BhmmQcXz95eS0f2JXw==
 
-"@types/timsort@^0.3.0":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@types/timsort/-/timsort-0.3.2.tgz#51e3142efc722c6c928d820a9dfe1a9d43d4f206"
-  integrity sha512-g45MpvWYphmcnhk72NLWA4pDExTE5lNpAFQ8wN0qU9Ar/KN6aGBENq5Jw8hd7nhtFaSwkA1teir9Jgpsfs1rxA==
+"@types/timsort@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@types/timsort/-/timsort-0.3.3.tgz#c0fbc55340b01f3426530a79a7fbc81567f56029"
+  integrity sha512-2pT/gAirKjCe0L1PCvO4ArPhYgyVfjCuKoFhU6NIIvN2+HzwJXQvakww1nzkJrujI8/R43/bfls+AErF+6xrIg==
 
 "@types/validator@^13.7.17":
   version "13.7.17"
