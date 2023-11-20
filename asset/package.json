@@ -20,7 +20,7 @@
         "test": "yarn --cwd ../ test"
     },
     "dependencies": {
-        "@faker-js/faker": "^8.2.0",
+        "@faker-js/faker": "^8.3.1",
         "@terascope/job-components": "^0.64.0",
         "@terascope/standard-asset-apis": "^0.6.2",
         "@terascope/utils": "^0.51.0",
