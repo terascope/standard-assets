@@ -20,7 +20,7 @@
         "test:watch": "jest --coverage=false --notify --watch --onlyChanged"
     },
     "dependencies": {
-        "@sindresorhus/fnv1a": "^2.0.1",
+        "@sindresorhus/fnv1a": "^3.1.0",
         "@terascope/utils": "^0.51.0"
     },
     "devDependencies": {
