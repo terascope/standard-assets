@@ -1,5 +1,5 @@
 import {
-    DataEntity, pMap, debugLogger, getLast, isInteger, RouteSenderAPI
+    DataEntity, pMap, getLast, isInteger, RouteSenderAPI, Logger
 } from '@terascope/utils';
 import EventEmitter, { once } from 'events';
 
@@ -47,8 +47,6 @@ export interface RoutedSenderOptions {
     rejectRecord(record: DataEntity, error: unknown): void;
 }
 
-const logger = debugLogger('routed_sender');
-
 /**
  * This is used to route records to multiple storage backends
  * and indices/topics/tables.
@@ -75,6 +73,7 @@ export class RoutedSender {
     batchSize: number;
     concurrencyAllStorage: number;
     concurrencyPerStorage: number;
+    logger: Logger;
 
     /**
      * This is used to create a sender apis for a particular and must be implemented
@@ -111,11 +110,12 @@ export class RoutedSender {
      * because this logic may vary depending on where/how it is being used
      */
     rejectRecord: (record: DataEntity, error: unknown) => void;
-
     constructor(
+        logger: Logger,
         routes: Record<string, string>,
         options: RoutedSenderOptions
     ) {
+        this.logger = logger;
         this.batchSize = options.batchSize;
         this.concurrencyAllStorage = options.concurrencyAllStorage ?? Infinity;
         this.concurrencyPerStorage = options.concurrencyPerStorage ?? 10;
@@ -143,6 +143,13 @@ export class RoutedSender {
         }
     }
 
+    async initialize() {
+        // best to initialize the catch all route before anything else
+        if (this.routesDefinitions.has('**')) {
+            await this.initializeRoute('**');
+        }
+    }
+
     /**
      * This is called once per route for the lifetime of this instance.
      * This is used to create multiple sender apis
@@ -152,13 +159,14 @@ export class RoutedSender {
 
         this.allBatches.set(route, []);
         this.initializingSender.add(route);
+
         try {
             const connection = this.routesDefinitions.get(route);
             if (!connection) {
                 throw new Error(`Missing route definition for "${route}"`);
             }
 
-            logger.info(`Creating sender api for route:${route}, connection:${connection}`);
+            this.logger.info(`Creating sender api for route:${route}, connection:${connection}`);
             const sender = await this.createRouteSenderAPI(route, connection);
             this.senders.set(route, sender);
         } finally {
@@ -169,9 +177,9 @@ export class RoutedSender {
 
     private async _waitForSender(route: string) {
         if (this.initializingSender.has(route)) {
-            logger.debug(`Waiting for sender api to be created for route:${route}`);
+            this.logger.debug(`Waiting for sender api to be created for route:${route}`);
             await once(this.events, route);
-            logger.debug(`Done waiting for sender api to be created for route:${route}`);
+            this.logger.debug(`Done waiting for sender api to be created for route:${route}`);
         }
 
         const sender = this.senders.get(route);
@@ -185,7 +193,7 @@ export class RoutedSender {
      * This routes a list of records to internal batch queues
     */
     async route(
-        records: Iterable<DataEntity>,
+        records: Iterable<DataEntity>
     ): Promise<void> {
         await pMap(records, async (record) => {
             this.storageRouteHook && await this.storageRouteHook(record);
@@ -200,6 +208,7 @@ export class RoutedSender {
                 await this.initializeRoute(route);
 
                 const batches = this.allBatches.get(route)!;
+
                 this.allBatches.set(
                     route,
                     addRecordToBatch(batches, record, this.batchSize)
@@ -222,7 +231,7 @@ export class RoutedSender {
                     return;
                 }
 
-                await this.initializeRoute('**');
+                // ensure route is initialized
                 const sender = await this._waitForSender('**');
 
                 await this._verifyRoute(
@@ -233,6 +242,7 @@ export class RoutedSender {
                 );
 
                 const batches = this.allBatches.get('**')!;
+
                 this.allBatches.set(
                     '**',
                     addRecordToBatch(batches, record, this.batchSize)
@@ -332,7 +342,7 @@ export class RoutedSender {
                 const batchId = ++this._batchId;
                 this.batchStartHook && await this.batchStartHook(batchId, route, batch.length);
 
-                logger.info(`Sending ${batch.length} records to route ${route}`);
+                this.logger.debug(`Sending ${batch.length} records to route ${route}`);
 
                 const sender = this.senders.get(route);
                 if (!sender) throw new Error('No sender registered for route');

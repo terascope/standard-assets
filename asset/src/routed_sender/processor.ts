@@ -31,17 +31,21 @@ export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderCon
         if (isEmpty(routing)) throw new TSError('Parameter routing must not be an empty object');
         this.tryFn = this.tryRecord.bind(this) as SenderFn;
 
-        this.routedSender = new RoutedSender(routing, {
-            batchSize: size,
-            concurrencyPerStorage: concurrency,
-            createRouteSenderAPI: this.createRouteSenderAPI.bind(this),
-            rejectRecord: this.rejectRecord.bind(this),
-        });
+        this.routedSender = new RoutedSender(
+            this.logger,
+            routing,
+            {
+                batchSize: size,
+                concurrencyPerStorage: concurrency,
+                createRouteSenderAPI: this.createRouteSenderAPI.bind(this),
+                rejectRecord: this.rejectRecord.bind(this),
+            });
     }
 
     async initialize(): Promise<void> {
         await super.initialize();
         this.api = await this.createAPI(this.opConfig.api_name);
+        await this.routedSender.initialize();
     }
 
     onSliceFailure(): void {
@@ -50,6 +54,10 @@ export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderCon
 
     private async createRouteSenderAPI(route: string, connection: string) {
         let client = this.api.get(route);
+
+        this.logger.info('debugging sender route: client in api', client);
+
+        this.logger.info('debugging get client', client);
 
         if (client == null) {
             client = await this.api.create(
@@ -69,6 +77,7 @@ export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderCon
 
     async onBatch(batch: DataEntity[]): Promise<DataEntity[]> {
         await this.routedSender.route(batch);
+
         await this.routedSender.send();
         return batch;
     }

@@ -65,7 +65,7 @@ export default class Schema extends ConvictSchema<RouteSenderConfig> {
                     if (!isNumber(val)) throw new Error(`Invalid parameter concurrency, must be a number, was given ${getTypeOf(val)}`);
                     if (val < 0) throw new Error('Invalid parameter concurrency, it must be a positive integer greater than zero');
                 }
-            },
+            }
         };
     }
 }
