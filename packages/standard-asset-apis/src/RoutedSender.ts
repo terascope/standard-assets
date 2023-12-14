@@ -231,7 +231,6 @@ export class RoutedSender {
                     return;
                 }
 
-                // ensure route is initialized
                 const sender = await this._waitForSender('**');
 
                 await this._verifyRoute(
