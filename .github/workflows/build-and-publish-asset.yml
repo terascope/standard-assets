@@ -1,0 +1,11 @@
+name: Build and Publish Teraslice Asset
+run-name: ${{ github.actor }} is building and publishing the Teraslice Asset
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  call-asset-build:
+    uses: terascope/workflows/.github/workflows/asset-build-and-publish.yml@2b69deef97171811097c074fe1e11da4edf7d7b0
+    secrets: inherit
