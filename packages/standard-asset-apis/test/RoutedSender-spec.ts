@@ -21,7 +21,6 @@ describe('RoutedSender', () => {
         const verify = jest.fn();
 
         const sender = new RoutedSender(
-            logger,
             {
                 '**': 'default'
             },
@@ -40,7 +39,9 @@ describe('RoutedSender', () => {
                 rejectRecord(record, error) {
                     throw error;
                 }
-            });
+            },
+            logger
+        );
 
         await sender.initialize();
 
@@ -67,10 +68,7 @@ describe('RoutedSender', () => {
         const verify = jest.fn();
 
         const sender = new RoutedSender(
-            logger,
-            {
-                '**': 'default'
-            },
+            { '**': 'default' },
             {
                 batchSize: 2,
                 async createRouteSenderAPI(route, connection) {
@@ -86,7 +84,9 @@ describe('RoutedSender', () => {
                 rejectRecord(record, error) {
                     throw error;
                 }
-            });
+            },
+            logger
+        );
 
         await sender.initialize();
         await sender.route([
@@ -114,10 +114,7 @@ describe('RoutedSender', () => {
         const verify = jest.fn();
 
         const sender = new RoutedSender(
-            logger,
-            {
-                '**': 'default'
-            },
+            { '**': 'default' },
             {
                 batchSize: 2,
                 async createRouteSenderAPI(route, connection) {
@@ -133,7 +130,9 @@ describe('RoutedSender', () => {
                 rejectRecord(record, error) {
                     throw error;
                 }
-            });
+            },
+            logger
+        );
         await sender.initialize();
         await sender.route([
             new DataEntity({ foo: 1 }, { 'standard:route': 'foo1' }),
@@ -171,7 +170,6 @@ describe('RoutedSender', () => {
         const verify = jest.fn();
 
         const sender = new RoutedSender(
-            logger,
             {
                 'foo1,foo2': 'foo',
                 bar: 'bar',
@@ -201,7 +199,9 @@ describe('RoutedSender', () => {
                 rejectRecord(record, error) {
                     throw error;
                 }
-            });
+            },
+            logger
+        );
 
         await sender.initialize();
 
@@ -237,10 +237,7 @@ describe('RoutedSender', () => {
         const storageRouteHook = jest.fn();
 
         const sender = new RoutedSender(
-            logger,
-            {
-                '**': 'default'
-            },
+            { '**': 'default' },
             {
                 batchSize: 2,
                 storageRouteHook,
@@ -260,7 +257,9 @@ describe('RoutedSender', () => {
                 rejectRecord(record, error) {
                     throw error;
                 }
-            });
+            },
+            logger
+        );
 
         await sender.initialize();
         await sender.route([

@@ -111,9 +111,9 @@ export class RoutedSender {
      */
     rejectRecord: (record: DataEntity, error: unknown) => void;
     constructor(
-        logger: Logger,
         routes: Record<string, string>,
-        options: RoutedSenderOptions
+        options: RoutedSenderOptions,
+        logger: Logger,
     ) {
         this.logger = logger;
         this.batchSize = options.batchSize;

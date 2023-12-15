@@ -32,14 +32,15 @@ export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderCon
         this.tryFn = this.tryRecord.bind(this) as SenderFn;
 
         this.routedSender = new RoutedSender(
-            this.logger,
             routing,
             {
                 batchSize: size,
                 concurrencyPerStorage: concurrency,
                 createRouteSenderAPI: this.createRouteSenderAPI.bind(this),
                 rejectRecord: this.rejectRecord.bind(this),
-            });
+            },
+            this.logger
+        );
     }
 
     async initialize(): Promise<void> {
