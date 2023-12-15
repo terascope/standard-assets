@@ -3,17 +3,14 @@ import {
     DataEntity,
     pDelay,
     RouteSenderAPI,
-    Logger
+    debugLogger
 } from '@terascope/utils';
 import 'jest-extended';
 import {
     RoutedSender
 } from '../src';
 
-const logger: any = {
-    info: () => {},
-    debug: () => {}
-} as Logger;
+const logger = debugLogger('routed-sender-test');
 
 describe('RoutedSender', () => {
     it('should be able to route records', async () => {
