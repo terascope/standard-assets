@@ -1,33 +1,46 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { DataEntity, pDelay, RouteSenderAPI } from '@terascope/utils';
+import {
+    DataEntity,
+    pDelay,
+    RouteSenderAPI,
+    debugLogger
+} from '@terascope/utils';
 import 'jest-extended';
 import {
     RoutedSender
 } from '../src';
+
+const logger = debugLogger('routed-sender-test');
 
 describe('RoutedSender', () => {
     it('should be able to route records', async () => {
         const send = jest.fn();
         const verify = jest.fn();
 
-        const sender = new RoutedSender({
-            '**': 'default'
-        }, {
-            batchSize: 10,
-            async createRouteSenderAPI(route, connection) {
-                if (route !== '**') {
-                    throw new Error('Expected route to equal "**"');
-                }
-                if (connection !== 'default') {
-                    throw new Error('Expected connection to equal "default"');
-                }
-                await pDelay(10);
-                return { send, verify } as RouteSenderAPI;
+        const sender = new RoutedSender(
+            {
+                '**': 'default'
             },
-            rejectRecord(record, error) {
-                throw error;
-            }
-        });
+            {
+                batchSize: 10,
+                async createRouteSenderAPI(route, connection) {
+                    if (route !== '**') {
+                        throw new Error('Expected route to equal "**"');
+                    }
+                    if (connection !== 'default') {
+                        throw new Error('Expected connection to equal "default"');
+                    }
+                    await pDelay(10);
+                    return { send, verify } as RouteSenderAPI;
+                },
+                rejectRecord(record, error) {
+                    throw error;
+                }
+            },
+            logger
+        );
+
+        await sender.initialize();
 
         await sender.route([
             new DataEntity({ foo: 1 }, { 'standard:route': 'foo1' }),
@@ -51,25 +64,28 @@ describe('RoutedSender', () => {
         const send = jest.fn();
         const verify = jest.fn();
 
-        const sender = new RoutedSender({
-            '**': 'default'
-        }, {
-            batchSize: 2,
-            async createRouteSenderAPI(route, connection) {
-                if (route !== '**') {
-                    throw new Error('Expected route to equal "**"');
+        const sender = new RoutedSender(
+            { '**': 'default' },
+            {
+                batchSize: 2,
+                async createRouteSenderAPI(route, connection) {
+                    if (route !== '**') {
+                        throw new Error('Expected route to equal "**"');
+                    }
+                    if (connection !== 'default') {
+                        throw new Error('Expected connection to equal "default"');
+                    }
+                    await pDelay(10);
+                    return { send, verify } as RouteSenderAPI;
+                },
+                rejectRecord(record, error) {
+                    throw error;
                 }
-                if (connection !== 'default') {
-                    throw new Error('Expected connection to equal "default"');
-                }
-                await pDelay(10);
-                return { send, verify } as RouteSenderAPI;
             },
-            rejectRecord(record, error) {
-                throw error;
-            }
-        });
+            logger
+        );
 
+        await sender.initialize();
         await sender.route([
             new DataEntity({ foo: 1 }, { 'standard:route': 'foo1' }),
             new DataEntity({ foo: 2 }, { 'standard:route': 'foo2' }),
@@ -94,25 +110,27 @@ describe('RoutedSender', () => {
         const send = jest.fn();
         const verify = jest.fn();
 
-        const sender = new RoutedSender({
-            '**': 'default'
-        }, {
-            batchSize: 2,
-            async createRouteSenderAPI(route, connection) {
-                if (route !== '**') {
-                    throw new Error('Expected route to equal "**"');
+        const sender = new RoutedSender(
+            { '**': 'default' },
+            {
+                batchSize: 2,
+                async createRouteSenderAPI(route, connection) {
+                    if (route !== '**') {
+                        throw new Error('Expected route to equal "**"');
+                    }
+                    if (connection !== 'default') {
+                        throw new Error('Expected connection to equal "default"');
+                    }
+                    await pDelay(10);
+                    return { send, verify } as RouteSenderAPI;
+                },
+                rejectRecord(record, error) {
+                    throw error;
                 }
-                if (connection !== 'default') {
-                    throw new Error('Expected connection to equal "default"');
-                }
-                await pDelay(10);
-                return { send, verify } as RouteSenderAPI;
             },
-            rejectRecord(record, error) {
-                throw error;
-            }
-        });
-
+            logger
+        );
+        await sender.initialize();
         await sender.route([
             new DataEntity({ foo: 1 }, { 'standard:route': 'foo1' }),
             new DataEntity({ foo: 2 }, { 'standard:route': 'foo2' }),
@@ -148,35 +166,41 @@ describe('RoutedSender', () => {
         const send = jest.fn();
         const verify = jest.fn();
 
-        const sender = new RoutedSender({
-            'foo1,foo2': 'foo',
-            bar: 'bar',
-            '*': 'default'
-        }, {
-            batchSize: 2,
-            async createRouteSenderAPI(route, connection) {
-                if (route === 'foo1' || route === 'foo2') {
-                    if (connection !== 'foo') {
-                        throw new Error(`Expected connection to equal "foo" for route "${route}"`);
-                    }
-                } else if (route === 'bar') {
-                    if (connection !== 'bar') {
-                        throw new Error(`Expected connection to equal "bar" for route "${route}"`);
-                    }
-                } else if (route === '*') {
-                    if (connection !== 'default') {
-                        throw new Error(`Expected connection to equal "default" for route "${route}"`);
-                    }
-                } else {
-                    throw new Error(`Invalid combination of route:${route} connection:${connection}`);
-                }
-                await pDelay(10);
-                return { send, verify } as RouteSenderAPI;
+        const sender = new RoutedSender(
+            {
+                'foo1,foo2': 'foo',
+                bar: 'bar',
+                '*': 'default'
             },
-            rejectRecord(record, error) {
-                throw error;
-            }
-        });
+            {
+                batchSize: 2,
+                async createRouteSenderAPI(route, connection) {
+                    if (route === 'foo1' || route === 'foo2') {
+                        if (connection !== 'foo') {
+                            throw new Error(`Expected connection to equal "foo" for route "${route}"`);
+                        }
+                    } else if (route === 'bar') {
+                        if (connection !== 'bar') {
+                            throw new Error(`Expected connection to equal "bar" for route "${route}"`);
+                        }
+                    } else if (route === '*') {
+                        if (connection !== 'default') {
+                            throw new Error(`Expected connection to equal "default" for route "${route}"`);
+                        }
+                    } else {
+                        throw new Error(`Invalid combination of route:${route} connection:${connection}`);
+                    }
+                    await pDelay(10);
+                    return { send, verify } as RouteSenderAPI;
+                },
+                rejectRecord(record, error) {
+                    throw error;
+                }
+            },
+            logger
+        );
+
+        await sender.initialize();
 
         await sender.route([
             new DataEntity({ foo: 1 }, { 'standard:route': 'foo1' }),
@@ -209,29 +233,32 @@ describe('RoutedSender', () => {
         const dataRouteHook = jest.fn();
         const storageRouteHook = jest.fn();
 
-        const sender = new RoutedSender({
-            '**': 'default'
-        }, {
-            batchSize: 2,
-            storageRouteHook,
-            dataRouteHook,
-            batchStartHook,
-            batchEndHook,
-            async createRouteSenderAPI(route, connection) {
-                if (route !== '**') {
-                    throw new Error('Expected route to equal "**"');
+        const sender = new RoutedSender(
+            { '**': 'default' },
+            {
+                batchSize: 2,
+                storageRouteHook,
+                dataRouteHook,
+                batchStartHook,
+                batchEndHook,
+                async createRouteSenderAPI(route, connection) {
+                    if (route !== '**') {
+                        throw new Error('Expected route to equal "**"');
+                    }
+                    if (connection !== 'default') {
+                        throw new Error('Expected connection to equal "default"');
+                    }
+                    await pDelay(10);
+                    return { send, verify } as RouteSenderAPI;
+                },
+                rejectRecord(record, error) {
+                    throw error;
                 }
-                if (connection !== 'default') {
-                    throw new Error('Expected connection to equal "default"');
-                }
-                await pDelay(10);
-                return { send, verify } as RouteSenderAPI;
             },
-            rejectRecord(record, error) {
-                throw error;
-            }
-        });
+            logger
+        );
 
+        await sender.initialize();
         await sender.route([
             new DataEntity({ foo: 1 }, { 'standard:route': 'foo1' }),
             new DataEntity({ foo: 2 }, { 'standard:route': 'foo2' }),
