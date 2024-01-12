@@ -10,7 +10,3 @@ updates:
     assignees:
       - busma13
       - sotojn
-    ignore:
-      - dependency-name: '@types/node'
-        versions:
-          - '> 14.14.37'
