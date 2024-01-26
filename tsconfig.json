@@ -21,10 +21,7 @@
             "./node_modules/@types"
         ]
     },
-    "include": [
-        "test",
-        "./test/script/test_scripts/**.py"
-    ],
+    "include": ["test"],
     "references": [
         {
             "path": "packages/standard-asset-apis"
