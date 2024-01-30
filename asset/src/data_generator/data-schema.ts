@@ -97,7 +97,7 @@ export default function getSchema(opConfig: DataGenerator, otherSchema: AnyObjec
     const dateKey = opConfig.date_key || 'created';
     const startDate = opConfig.start ? moment(opConfig.start) : moment(0); // 01 January, 1970 UTC
     const endDate = opConfig.end ? moment(opConfig.end) : moment();
-    const schema = isEmpty(otherSchema) ? nativeSchema : otherSchema;
+    const schema: AnyObject = isEmpty(otherSchema) ? nativeSchema : otherSchema;
     const start = startDate.valueOf();
     const end = endDate.valueOf();
     const diff = end - start;
