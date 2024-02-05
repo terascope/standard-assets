@@ -30,7 +30,7 @@
         "@terascope/scripts": "0.68.0",
         "@terascope/standard-asset-apis": "^0.7.1",
         "@types/express": "^4.17.19",
-        "@types/jest": "^29.5.10",
+        "@types/jest": "^29.5.12",
         "@types/json2csv": "^5.0.7",
         "@types/node": "^18.14.2",
         "@types/node-gzip": "^1.1.0",
