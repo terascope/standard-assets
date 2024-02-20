@@ -83,6 +83,9 @@ import SetKeySchema from './set_key/schema';
 import Sort from './sort/processor';
 import SortSchema from './sort/schema';
 
+import Stdout from './stdout/processor';
+import StdoutSchema from './stdout/schema';
+
 import Transform from './transform/processor';
 import TransformSchema from './transform/schema';
 
@@ -202,6 +205,10 @@ export const ASSETS = {
     sort: {
         Processor: Sort,
         Schema: SortSchema
+    },
+    stdout: {
+        Processor: Stdout,
+        Schema: StdoutSchema
     },
     transform: {
         Processor: Transform,
