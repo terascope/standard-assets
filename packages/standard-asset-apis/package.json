@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "@sindresorhus/fnv1a": "^2.0.1",
-        "@terascope/utils": "^0.54.0"
+        "@terascope/utils": "^0.55.0"
     },
     "devDependencies": {
         "@types/jest": "^29.5.12",
