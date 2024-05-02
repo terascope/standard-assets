@@ -1,6 +1,6 @@
 # count_by_field
 
-> Teraslice processor count a field using prometheus metrics.
+> Teraslice processor to count a field using prometheus metrics.
 
 ## Parameters
 
@@ -28,6 +28,15 @@ This is an example of counting a field in a record based off a given field
         "standard:0.21.0",
         "kafka:3.2.4"
     ],
+    "prom_metrics_enabled": true,
+    "prom_metrics_port": 3333,
+    "prom_metrics_add_default": false,
+    "external_ports": [
+        {
+            "name": "metrics",
+            "port": 3333
+        }
+    ],
     "labels": {
         "scrape-target": "true"
     },
@@ -51,6 +60,7 @@ This is an example of counting a field in a record based off a given field
     ]
 }
 ```
+**NOTE:** `prom_metrics_enabled` must be set to true, either in the job or in the `terafoundation` config, for the metrics to be exported.
 
 ### Example Metrics
 
