@@ -50,9 +50,6 @@ import GroupBySchema from './group_by/schema';
 import HashRouter from './hash_router/processor';
 import HashRouterSchema from './hash_router/schema';
 
-import JobMetricApi from './job_metric_api/api';
-import JobMetricSchema from './job_metric_api/schema';
-
 import KeyRouter from './key_router/processor';
 import KeyRouterSchema from './key_router/schema';
 
@@ -161,10 +158,6 @@ export const ASSETS = {
     hash_router: {
         Processor: HashRouter,
         Schema: HashRouterSchema
-    },
-    job_metric_api: {
-        API: JobMetricApi,
-        Schema: JobMetricSchema
     },
     key_router: {
         Processor: KeyRouter,

@@ -6,6 +6,5 @@ export interface CountByField {
 
 export interface CountByFieldConfig extends OpConfig {
     field: string;
-    metric_api_name: string;
     collect_metrics: boolean;
 }

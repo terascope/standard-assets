@@ -2,15 +2,12 @@ import 'jest-extended';
 import { DataEntity, cloneDeep, AnyObject } from '@terascope/job-components';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import path from 'path';
-import axios from 'axios';
 
 describe('count_by_field processor', () => {
     let harness: WorkerTestHarness;
     let data: AnyObject[];
 
     beforeEach(async () => {
-        jest.resetAllMocks();
-
         data = [
             {
                 node_id: 100,
@@ -30,15 +27,11 @@ describe('count_by_field processor', () => {
         ];
     });
 
-    async function makeTest(testConfig : AnyObject = {}) {
+    async function makeTest(testConfig: AnyObject = {}) {
         const jobWithCollectMetrics = newTestJobConfig({
-            apis: [
-                {
-                    _name: 'job_metric_api',
-                    default_metrics: testConfig.default_metrics,
-                    port: testConfig.port
-                }
-            ],
+            prom_metrics_enabled: true,
+            prom_metrics_port: testConfig.port,
+            prom_metrics_add_default: testConfig.default_metrics,
             operations: [
                 {
                     _op: 'test-reader',
@@ -47,14 +40,12 @@ describe('count_by_field processor', () => {
 
                 {
                     _op: 'count_by_field',
-                    metric_api_name: 'job_metric_api',
                     field: 'node_id',
                     collect_metrics: testConfig.collect_metrics
 
                 },
                 {
                     _op: 'count_by_field',
-                    metric_api_name: 'job_metric_api',
                     field: 'ip',
                     collect_metrics: testConfig.collect_metrics
 
@@ -65,10 +56,9 @@ describe('count_by_field processor', () => {
             ]
         });
 
-        jest.restoreAllMocks();
-
         harness = new WorkerTestHarness(jobWithCollectMetrics, {
-            assetDir: path.join(__dirname, '../../asset')
+            assetDir: path.join(__dirname, '../../asset'),
+            cluster_manager_type: 'kubernetes'
         });
 
         await harness.initialize();
@@ -77,12 +67,12 @@ describe('count_by_field processor', () => {
     }
 
     afterEach(async () => {
-        jest.resetAllMocks();
+        await harness.context.apis.foundation.promMetrics.shutdown();
         await harness.shutdown();
         await harness.flush();
     });
     afterAll(async () => {
-        jest.resetAllMocks();
+        await harness.context.apis.foundation.promMetrics.shutdown();
         await harness.shutdown();
         await harness.flush();
     });
@@ -110,11 +100,8 @@ describe('count_by_field processor', () => {
         const results = await test.runSlice(cloneDeep(data)) as DataEntity[];
 
         expect(results).toBeArrayOfSize(4);
-        const response = await axios.get<string>(`http://localhost:${testConfig.port}/metrics`);
-        const responseOutput = response.data.split('\n');
-        expect(responseOutput.length).toEqual(2);
-        expect(responseOutput[0]).toEqual('');
-        expect(responseOutput[1]).toEqual('');
+        const response = test.context.mockPromMetrics?.count_by_field_count_total;
+        expect(response).toBe(undefined);
     });
 
     it('should include metrics when collect metrics is true', async () => {
@@ -131,44 +118,18 @@ describe('count_by_field processor', () => {
             expect(DataEntity.isDataEntity(doc)).toBe(true);
         });
         expect(results).toBeArrayOfSize(4);
-        const metricName = 'teraslice_job_count_by_field_count_total';
 
-        const response = await axios.get<string>(`http://localhost:${testConfig.port}/metrics`);
-        const responseOutput = response.data.split('\n');
-        expect(responseOutput[0]).toEqual('# HELP teraslice_job_count_by_field_count_total count_by_field value field count');
-        // node_id 100 count
-        expect(responseOutput[2].slice(-1)).toEqual('1');
-        expect(
-            responseOutput[2].split(metricName)[1].replace(
-                '{', '').replace('}', '').split(',')[0].split('=')).toEqual(
-            ['value', '"100"']);
-        expect(responseOutput[2].split(metricName)[1].replace(
-            '{', '').replace('}', '').split(',')[1].split('=')).toEqual(
-            ['field', '"node_id"']);
+        const metricName = 'count_by_field_count_total';
 
-        // node_id 101 count
-        expect(responseOutput[3].slice(-1)).toEqual('2');
-        // node_id undefined count
-        expect(responseOutput[4].slice(-1)).toEqual('1');
-        expect(
-            responseOutput[4].split(metricName)[1].replace(
-                '{', '').replace('}', '').split(',')[0].split('=')).toEqual(
-            ['value', '"undefined"']);
-        expect(responseOutput[4].split(metricName)[1].replace(
-            '{', '').replace('}', '').split(',')[1].split('=')).toEqual(
-            ['field', '"node_id"']);
-        expect(responseOutput[5].slice(-1)).toEqual('1');
-        expect(responseOutput[6].slice(-1)).toEqual('1');
-        expect(responseOutput[7].slice(-1)).toEqual('1');
-        expect(responseOutput[8].slice(-1)).toEqual('1');
-        expect(
-            responseOutput[8].split(metricName)[1].replace(
-                '{', '').replace('}', '').split(',')[0].split('=')).toEqual(
-            ['value', '"192.168.0.3"']);
-        expect(responseOutput[8].split(metricName)[1].replace(
-            '{', '').replace('}', '').split(',')[1].split('=')).toEqual(
-            ['field', '"ip"']);
-        expect(responseOutput[9]).toEqual('');
-        expect(responseOutput.length).toEqual(10);
+        const response = test.context.mockPromMetrics?.[metricName];
+
+        expect(response?.name).toEqual(metricName);
+        expect(response?.labels['field:node_id,op_name:count_by_field,value:100,'].value).toEqual(1);
+        expect(response?.labels['field:node_id,op_name:count_by_field,value:101,'].value).toEqual(2);
+        expect(response?.labels['field:node_id,op_name:count_by_field,value:undefined,'].value).toEqual(1);
+        expect(response?.labels['field:ip,op_name:count_by_field,value:192.168.0.2,'].value).toEqual(1);
+        expect(response?.labels['field:ip,op_name:count_by_field,value:192.168.0.3,'].value).toEqual(1);
+        expect(response?.labels['field:ip,op_name:count_by_field,value:192.168.0.4,'].value).toEqual(1);
+        expect(response?.labels['field:ip,op_name:count_by_field,value:192.168.0.5,'].value).toEqual(1);
     });
 });
