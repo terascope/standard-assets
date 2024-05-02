@@ -25,3 +25,6 @@ asset/dist
 packages/*/dist
 
 tsconfig.tsbuildinfo
+
+# developer tools
+.vscode/*
