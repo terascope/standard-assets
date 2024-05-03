@@ -1,6 +1,6 @@
-# Job Metric API
+# count_by_field
 
-> Teraslice processor count a field using prometheus metrics.
+> Teraslice processor to count a field using prometheus metrics.
 
 ## Parameters
 
@@ -9,7 +9,6 @@
 | _op              | Name of operation           | String  | n/a              | required  |
 | collect_metrics  | enable metric collection    | Boolean | false            |           |
 | field            | Field to count              | String  | null             | required  |
-| metric_api_name  | Name of the metric api      | String  | `job_metric_api` |           |
 
 ## Usage
 
@@ -29,13 +28,9 @@ This is an example of counting a field in a record based off a given field
         "standard:0.21.0",
         "kafka:3.2.4"
     ],
-    "apis": [
-        {
-            "_name": "job_metric_api",
-            "default_metrics": false,
-            "port": 3333
-        }
-    ],
+    "prom_metrics_enabled": true,
+    "prom_metrics_port": 3333,
+    "prom_metrics_add_default": false,
     "external_ports": [
         {
             "name": "metrics",
@@ -56,7 +51,6 @@ This is an example of counting a field in a record based off a given field
         },
         {
             "_op": "count_by_field",
-            "metric_api_name": "job_metric_api",
             "field": "test_id",
             "collect_metrics": true
         },
@@ -66,6 +60,7 @@ This is an example of counting a field in a record based off a given field
     ]
 }
 ```
+**NOTE:** `prom_metrics_enabled` must be set to true, either in the job or in the `terafoundation` config, for the metrics to be exported.
 
 ### Example Metrics
 

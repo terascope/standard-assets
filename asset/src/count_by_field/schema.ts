@@ -9,11 +9,6 @@ export default class Schema extends ConvictSchema<CountByFieldConfig> {
                 default: null,
                 format: 'required_String'
             },
-            metric_api_name: {
-                doc: 'Name of the metric api',
-                default: 'job_metric_api',
-                format: 'String'
-            },
             collect_metrics: {
                 doc: 'enable metric collection',
                 default: false,

@@ -31,7 +31,6 @@ describe('count_by_field schema', () => {
             _op: 'count_by_field',
             collect_metrics: false,
             field: 'node_id',
-            metric_api_name: 'job_metric_api',
         });
         expect(await makeSchema({ field: 'node_id' })).toStrictEqual({
             _dead_letter_action: 'throw',
@@ -39,7 +38,6 @@ describe('count_by_field schema', () => {
             _op: 'count_by_field',
             collect_metrics: false,
             field: 'node_id',
-            metric_api_name: 'job_metric_api',
         });
         await expect(makeSchema({ field: 12341234 })).toReject();
         await expect(makeSchema({ field: { node_id: '1234' } })).toReject();
