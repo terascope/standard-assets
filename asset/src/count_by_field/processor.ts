@@ -6,31 +6,34 @@ import { CountByFieldConfig } from './interfaces';
 type Counters = {
     [valueAsString: string]: {
         countSinceLastInc: number;
+        field: string;
     };
 }
 export default class CountByField extends MapProcessor<CountByFieldConfig> {
-    counters: Counters = {};
+    static counters: Counters = {};
     async initialize(): Promise<void> {
-        const { opConfig, counters } = this;
+        const { opConfig, context } = this;
         if (opConfig.collect_metrics) {
+            const defaultLabels = context.apis.foundation.promMetrics.getDefaultLabels();
             const name = `${this.opConfig._op}_count_total`;
             const help = `${this.opConfig._op} value field count`;
-            const labelNames = ['value', 'value_type', 'field', 'op_name'];
+            const labelNames = [...Object.keys(defaultLabels), 'value', 'field', 'op_name'];
             await this.context.apis.foundation.promMetrics.addCounter(
                 name,
                 help,
                 labelNames,
                 function collect() {
-                    for (const [valueAsString, countObj] of Object.entries(counters)) {
+                    for (const [valueAsString, obj] of Object.entries(CountByField.counters)) {
                         this.inc(
                             {
                                 value: valueAsString,
-                                field: opConfig.field,
-                                op_name: opConfig._op
+                                field: obj.field,
+                                op_name: opConfig._op,
+                                ...defaultLabels
                             },
-                            countObj.countSinceLastInc
+                            obj.countSinceLastInc
                         );
-                        counters[valueAsString].countSinceLastInc = 0;
+                        CountByField.counters[valueAsString].countSinceLastInc = 0;
                     }
                 }
             );
@@ -45,13 +48,14 @@ export default class CountByField extends MapProcessor<CountByFieldConfig> {
             // to be seen as the same key. "6" !== 6
             const valueAsString: string = JSON.stringify(value);
 
-            if (!this.counters[valueAsString]) {
-                this.counters[valueAsString] = {
-                    countSinceLastInc: 0
+            if (!CountByField.counters[valueAsString]) {
+                CountByField.counters[valueAsString] = {
+                    countSinceLastInc: 0,
+                    field: this.opConfig.field
                 };
             }
 
-            this.counters[valueAsString].countSinceLastInc += 1;
+            CountByField.counters[valueAsString].countSinceLastInc += 1;
         }
         return doc;
     }
