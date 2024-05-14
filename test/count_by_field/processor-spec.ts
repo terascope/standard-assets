@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import 'jest-extended';
 import { DataEntity, cloneDeep, AnyObject } from '@terascope/job-components';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
@@ -110,8 +111,8 @@ describe('count_by_field processor', () => {
         const test = await makeTest(testConfig);
 
         const results = await test.runSlice(cloneDeep(data)) as DataEntity[];
-
         expect(results).toBeArrayOfSize(4);
+
         const metrics = await test.context.apis.scrapePromMetrics();
         expect(metrics).toBe('');
     });
@@ -130,38 +131,40 @@ describe('count_by_field processor', () => {
             expect(DataEntity.isDataEntity(doc)).toBe(true);
         });
         expect(results).toBeArrayOfSize(4);
-        const metrics = await test.context.apis.scrapePromMetrics();
+
+        const metrics:string = await test.context.apis.scrapePromMetrics();
+
         const nodeIdLines = metrics.split('\n').filter((line:string) => line.includes('node_id'));
         expect(nodeIdLines.length).toBe(3);
+
         expect(nodeIdLines[0].split(' ')[0])
-            // eslint-disable-next-line no-useless-escape
             .toBe('teraslice_worker_count_by_field_count_total{value="100",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(nodeIdLines[0].split(' ')[1]).toBe('1');
+
         expect(nodeIdLines[1].split(' ')[0])
-            // eslint-disable-next-line no-useless-escape
             .toBe('teraslice_worker_count_by_field_count_total{value="101",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(nodeIdLines[1].split(' ')[1]).toBe('2');
+
         expect(nodeIdLines[2].split(' ')[0])
-            // eslint-disable-next-line no-useless-escape
             .toBe('teraslice_worker_count_by_field_count_total{value="undefined",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(nodeIdLines[2].split(' ')[1]).toBe('1');
 
         const ipLines = metrics.split('\n').filter((line:string) => line.includes('ip'));
         expect(ipLines.length).toBe(4);
+
         expect(ipLines[0].split(' ')[0])
-            // eslint-disable-next-line no-useless-escape
             .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.4\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(ipLines[0].split(' ')[1]).toBe('1');
+
         expect(ipLines[1].split(' ')[0])
-            // eslint-disable-next-line no-useless-escape
             .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.5\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(ipLines[1].split(' ')[1]).toBe('1');
+
         expect(ipLines[2].split(' ')[0])
-            // eslint-disable-next-line no-useless-escape
             .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.2\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(ipLines[2].split(' ')[1]).toBe('1');
+
         expect(ipLines[3].split(' ')[0])
-            // eslint-disable-next-line no-useless-escape
             .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.3\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(ipLines[3].split(' ')[1]).toBe('1');
     });
@@ -211,38 +214,46 @@ describe('count_by_field processor', () => {
         });
         expect(results).toBeArrayOfSize(7);
 
-        const metrics = await test.context.apis.scrapePromMetrics();
+        const metrics:string = await test.context.apis.scrapePromMetrics();
         const nodeIdLines = metrics.split('\n').filter((line:string) => line.includes('node_id'));
         expect(nodeIdLines.length).toBe(5);
+
         expect(nodeIdLines[0].split(' ')[0])
-            // eslint-disable-next-line no-useless-escape
             .toBe('teraslice_worker_count_by_field_count_total{value="100",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(nodeIdLines[0].split(' ')[1]).toBe('1');
+
         expect(nodeIdLines[1].split(' ')[0])
-            // eslint-disable-next-line no-useless-escape
             .toBe('teraslice_worker_count_by_field_count_total{value="101",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(nodeIdLines[1].split(' ')[1]).toBe('2');
+
         expect(nodeIdLines[2].split(' ')[0])
-            // eslint-disable-next-line no-useless-escape
             .toBe('teraslice_worker_count_by_field_count_total{value="undefined",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(nodeIdLines[2].split(' ')[1]).toBe('1');
 
+        expect(nodeIdLines[3].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="\\\"100\\\"",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(nodeIdLines[3].split(' ')[1]).toBe('1');
+
+        expect(nodeIdLines[4].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="\\\"101\\\"",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(nodeIdLines[4].split(' ')[1]).toBe('2');
+
         const ipLines = metrics.split('\n').filter((line:string) => line.includes('ip'));
         expect(ipLines.length).toBe(4);
+
         expect(ipLines[0].split(' ')[0])
-            // eslint-disable-next-line no-useless-escape
             .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.4\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(ipLines[0].split(' ')[1]).toBe('2');
+
         expect(ipLines[1].split(' ')[0])
-            // eslint-disable-next-line no-useless-escape
             .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.5\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(ipLines[1].split(' ')[1]).toBe('2');
+
         expect(ipLines[2].split(' ')[0])
-            // eslint-disable-next-line no-useless-escape
             .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.2\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(ipLines[2].split(' ')[1]).toBe('2');
+
         expect(ipLines[3].split(' ')[0])
-            // eslint-disable-next-line no-useless-escape
             .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.3\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(ipLines[3].split(' ')[1]).toBe('1');
     });
