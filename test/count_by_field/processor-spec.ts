@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import 'jest-extended';
 import { DataEntity, cloneDeep, AnyObject } from '@terascope/job-components';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
@@ -29,9 +30,9 @@ describe('count_by_field processor', () => {
 
     async function makeTest(testConfig: AnyObject = {}) {
         const jobWithCollectMetrics = newTestJobConfig({
-            prom_metrics_enabled: true,
-            prom_metrics_port: testConfig.port,
-            prom_metrics_add_default: testConfig.default_metrics,
+            prom_metrics_enabled: testConfig.job_prom_metrics_enabled,
+            prom_metrics_port: testConfig.job_prom_metrics_port,
+            prom_metrics_add_default: testConfig.job_prom_metrics_add_default,
             operations: [
                 {
                     _op: 'test-reader',
@@ -41,13 +42,13 @@ describe('count_by_field processor', () => {
                 {
                     _op: 'count_by_field',
                     field: 'node_id',
-                    collect_metrics: testConfig.collect_metrics
+                    collect_metrics: testConfig.job_prom_metrics_enabled
 
                 },
                 {
                     _op: 'count_by_field',
                     field: 'ip',
-                    collect_metrics: testConfig.collect_metrics
+                    collect_metrics: testConfig.job_prom_metrics_enabled
 
                 },
                 {
@@ -61,17 +62,29 @@ describe('count_by_field processor', () => {
             cluster_manager_type: 'kubernetes'
         });
 
+        await harness.context.apis.foundation.promMetrics.init({
+            assignment: 'worker',
+            logger: harness.context.logger,
+            tf_prom_metrics_enabled: false,
+            tf_prom_metrics_port: 3333,
+            tf_prom_metrics_add_default: true,
+            job_prom_metrics_enabled: testConfig.job_prom_metrics_enabled,
+            job_prom_metrics_port: testConfig.job_prom_metrics_port,
+            job_prom_metrics_add_default: testConfig.job_prom_metrics_add_default,
+        });
         await harness.initialize();
 
         return harness;
     }
 
     afterEach(async () => {
+        await harness.context.apis.foundation.promMetrics.deleteMetric('count_by_field_count_total');
         await harness.context.apis.foundation.promMetrics.shutdown();
         await harness.shutdown();
         await harness.flush();
     });
     afterAll(async () => {
+        await harness.context.apis.foundation.promMetrics.deleteMetric('count_by_field_count_total');
         await harness.context.apis.foundation.promMetrics.shutdown();
         await harness.shutdown();
         await harness.flush();
@@ -79,9 +92,9 @@ describe('count_by_field processor', () => {
 
     it('should generate an empty result if no input data', async () => {
         const testConfig = {
-            port: 3350,
-            collect_metrics: false,
-            default_metrics: false
+            job_prom_metrics_port: 3350,
+            job_prom_metrics_enabled: false,
+            job_prom_metrics_add_default: false
         };
         const test = await makeTest(testConfig);
         const results = await test.runSlice([]);
@@ -91,24 +104,24 @@ describe('count_by_field processor', () => {
 
     it('should just pass doc when collect metrics is false', async () => {
         const testConfig = {
-            port: 3351,
-            collect_metrics: false,
-            default_metrics: false
+            job_prom_metrics_port: 3351,
+            job_prom_metrics_enabled: false,
+            job_prom_metrics_add_default: false
         };
         const test = await makeTest(testConfig);
 
         const results = await test.runSlice(cloneDeep(data)) as DataEntity[];
-
         expect(results).toBeArrayOfSize(4);
-        const response = test.context.mockPromMetrics?.count_by_field_count_total;
-        expect(response).toBe(undefined);
+
+        const metrics = await test.context.apis.scrapePromMetrics();
+        expect(metrics).toBe('');
     });
 
     it('should include metrics when collect metrics is true', async () => {
         const testConfig = {
-            port: 3353,
-            collect_metrics: true,
-            default_metrics: false
+            job_prom_metrics_port: 3353,
+            job_prom_metrics_enabled: true,
+            job_prom_metrics_add_default: false
         };
         const test = await makeTest(testConfig);
 
@@ -119,17 +132,129 @@ describe('count_by_field processor', () => {
         });
         expect(results).toBeArrayOfSize(4);
 
-        const metricName = 'count_by_field_count_total';
+        const metrics:string = await test.context.apis.scrapePromMetrics();
 
-        const response = test.context.mockPromMetrics?.[metricName];
+        const nodeIdLines = metrics.split('\n').filter((line:string) => line.includes('node_id'));
+        expect(nodeIdLines.length).toBe(3);
 
-        expect(response?.name).toEqual(metricName);
-        expect(response?.labels['field:node_id,op_name:count_by_field,value:100,'].value).toEqual(1);
-        expect(response?.labels['field:node_id,op_name:count_by_field,value:101,'].value).toEqual(2);
-        expect(response?.labels['field:node_id,op_name:count_by_field,value:undefined,'].value).toEqual(1);
-        expect(response?.labels['field:ip,op_name:count_by_field,value:192.168.0.2,'].value).toEqual(1);
-        expect(response?.labels['field:ip,op_name:count_by_field,value:192.168.0.3,'].value).toEqual(1);
-        expect(response?.labels['field:ip,op_name:count_by_field,value:192.168.0.4,'].value).toEqual(1);
-        expect(response?.labels['field:ip,op_name:count_by_field,value:192.168.0.5,'].value).toEqual(1);
+        expect(nodeIdLines[0].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="100",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(nodeIdLines[0].split(' ')[1]).toBe('1');
+
+        expect(nodeIdLines[1].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="101",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(nodeIdLines[1].split(' ')[1]).toBe('2');
+
+        expect(nodeIdLines[2].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="undefined",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(nodeIdLines[2].split(' ')[1]).toBe('1');
+
+        const ipLines = metrics.split('\n').filter((line:string) => line.includes('ip'));
+        expect(ipLines.length).toBe(4);
+
+        expect(ipLines[0].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.4\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(ipLines[0].split(' ')[1]).toBe('1');
+
+        expect(ipLines[1].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.5\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(ipLines[1].split(' ')[1]).toBe('1');
+
+        expect(ipLines[2].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.2\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(ipLines[2].split(' ')[1]).toBe('1');
+
+        expect(ipLines[3].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.3\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(ipLines[3].split(' ')[1]).toBe('1');
+    });
+
+    it('should differentiate between same value with different type', async () => {
+        data = [
+            {
+                node_id: 100,
+                ip: '192.168.0.4'
+            },
+            {
+                node_id: '100',
+                ip: '192.168.0.4'
+            },
+            {
+                node_id: 101,
+                ip: '192.168.0.5'
+            },
+            {
+                node_id: 101,
+                ip: '192.168.0.2'
+            },
+            {
+                node_id: '101',
+                ip: '192.168.0.5'
+            },
+            {
+                node_id: '101',
+                ip: '192.168.0.2'
+            },
+            {
+                ip: '192.168.0.3'
+            }
+        ];
+
+        const testConfig = {
+            job_prom_metrics_port: 3353,
+            job_prom_metrics_enabled: true,
+            job_prom_metrics_add_default: false
+        };
+        const test = await makeTest(testConfig);
+
+        const results = await test.runSlice(cloneDeep(data)) as DataEntity[];
+
+        results.forEach((doc) => {
+            expect(DataEntity.isDataEntity(doc)).toBe(true);
+        });
+        expect(results).toBeArrayOfSize(7);
+
+        const metrics:string = await test.context.apis.scrapePromMetrics();
+        const nodeIdLines = metrics.split('\n').filter((line:string) => line.includes('node_id'));
+        expect(nodeIdLines.length).toBe(5);
+
+        expect(nodeIdLines[0].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="100",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(nodeIdLines[0].split(' ')[1]).toBe('1');
+
+        expect(nodeIdLines[1].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="101",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(nodeIdLines[1].split(' ')[1]).toBe('2');
+
+        expect(nodeIdLines[2].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="undefined",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(nodeIdLines[2].split(' ')[1]).toBe('1');
+
+        expect(nodeIdLines[3].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="\\\"100\\\"",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(nodeIdLines[3].split(' ')[1]).toBe('1');
+
+        expect(nodeIdLines[4].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="\\\"101\\\"",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(nodeIdLines[4].split(' ')[1]).toBe('2');
+
+        const ipLines = metrics.split('\n').filter((line:string) => line.includes('ip'));
+        expect(ipLines.length).toBe(4);
+
+        expect(ipLines[0].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.4\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(ipLines[0].split(' ')[1]).toBe('2');
+
+        expect(ipLines[1].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.5\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(ipLines[1].split(' ')[1]).toBe('2');
+
+        expect(ipLines[2].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.2\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(ipLines[2].split(' ')[1]).toBe('2');
+
+        expect(ipLines[3].split(' ')[0])
+            .toBe('teraslice_worker_count_by_field_count_total{value="\\\"192.168.0.3\\\"",field="ip",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
+        expect(ipLines[3].split(' ')[1]).toBe('1');
     });
 });
