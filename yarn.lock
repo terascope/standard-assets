@@ -894,19 +894,19 @@
   dependencies:
     bluebird "^3.7.2"
 
-"@terascope/types@^0.17.1":
-  version "0.17.1"
-  resolved "https://registry.yarnpkg.com/@terascope/types/-/types-0.17.1.tgz#7e82d5478cdc7a13ab940f36f985fd918318fbbc"
-  integrity sha512-hVVbwocV19EUY2xNo4c2eRd0i3a3+dmaJlRHHocsI/0cjxRl3jpivla62vEkMDrCqydvTis1kv2+5LmH23+c1A==
+"@terascope/types@^0.17.1", "@terascope/types@^0.17.2":
+  version "0.17.2"
+  resolved "https://registry.yarnpkg.com/@terascope/types/-/types-0.17.2.tgz#0e8d13c1249dccb0ccf63e691e253337645a205d"
+  integrity sha512-GzbxIVjFiViiULc7XK0EiAgT5yubwi2VXvp0wC3ygigTNIsqugncPub2ChpiqTx2JlVGVGJrXPSvPgPTJphYqw==
   dependencies:
     prom-client "^15.1.2"
 
-"@terascope/utils@^0.59.1":
-  version "0.59.1"
-  resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.59.1.tgz#372f960c5c0fc250ed0c481be20bbd49ed6937bb"
-  integrity sha512-lIfRdTQ9nBwBDWM1VnLOjkarPWltZ2RmLvXpxPbma6Kl890mAOzdQyjXx8vi5QEgaApvVT7Ady19bTcJImD5Cw==
+"@terascope/utils@^0.59.1", "@terascope/utils@^0.59.2":
+  version "0.59.2"
+  resolved "https://registry.yarnpkg.com/@terascope/utils/-/utils-0.59.2.tgz#0c987c2d307a19abe7e41036c162bc382df741a6"
+  integrity sha512-CYEfVt7PkkKFdpnnMf0sXfd6dYQdK3SsrKkCuupYvk3nPyP5q1eRzyzX4IS1/KrG3yVsqTKNHLrx8gR/UHUPOw==
   dependencies:
-    "@terascope/types" "^0.17.1"
+    "@terascope/types" "^0.17.2"
     "@turf/bbox" "^6.4.0"
     "@turf/bbox-polygon" "^6.4.0"
     "@turf/boolean-contains" "^6.4.0"
@@ -6839,15 +6839,10 @@ valid-url@^1.0.9:
   resolved "https://registry.yarnpkg.com/valid-url/-/valid-url-1.0.9.tgz#1c14479b40f1397a75782f115e4086447433a200"
   integrity sha512-QQDsV8OnSf5Uc30CKSwG9lnhMPe6exHtTXLRYX8uMwKENy640pU+2BgBL0LRbDh/eYRahNCS7aewCx0wf3NYVA==
 
-validator@^13.11.0:
+validator@^13.11.0, validator@^13.6.0:
   version "13.12.0"
   resolved "https://registry.yarnpkg.com/validator/-/validator-13.12.0.tgz#7d78e76ba85504da3fee4fd1922b385914d4b35f"
   integrity sha512-c1Q0mCiPlgdTVVVIJIrBuxNicYE+t/7oKeI9MWLj3fh/uq2Pxh/3eeWbVZ4OcGW1TUf53At0njHw5SMdA3tmMg==
-
-validator@^13.6.0:
-  version "13.11.0"
-  resolved "https://registry.yarnpkg.com/validator/-/validator-13.11.0.tgz#23ab3fd59290c61248364eabf4067f04955fbb1b"
-  integrity sha512-Ii+sehpSfZy+At5nPdnyMhx78fEoPDkR2XW/zimHEL3MyGJQOCQ7WeP20jPYRz7ZCpcKLB21NxuXHF3bxjStBQ==
 
 vary@~1.1.2:
   version "1.1.2"
