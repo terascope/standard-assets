@@ -1,7 +1,7 @@
 {
     "name": "standard",
     "displayName": "Asset",
-    "version": "0.25.0",
+    "version": "0.25.1",
     "private": true,
     "description": "Teraslice standard processor asset bundle",
     "repository": {
@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "@faker-js/faker": "^8.4.1",
-        "@terascope/job-components": "^0.74.2",
+        "@terascope/job-components": "^0.75.0",
         "@terascope/standard-asset-apis": "^0.7.2",
         "@terascope/utils": "^0.59.1",
         "@types/chance": "^1.1.4",
