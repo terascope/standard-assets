@@ -1,5 +1,5 @@
 import {
-    MapProcessor, DataEntity
+    MapProcessor, DataEntity, isPromAvailable
 } from '@terascope/job-components';
 import { CountByFieldConfig } from './interfaces';
 
@@ -13,7 +13,7 @@ export default class CountByField extends MapProcessor<CountByFieldConfig> {
     static counters: Counters = {};
     async initialize(): Promise<void> {
         const { opConfig, context } = this;
-        if (opConfig.collect_metrics) {
+        if (opConfig.collect_metrics && isPromAvailable(context)) {
             const defaultLabels = context.apis.foundation.promMetrics.getDefaultLabels();
             const name = `${this.opConfig._op}_count_total`;
             const help = `${this.opConfig._op} value field count`;
