@@ -43,4 +43,7 @@ export default {
             useESM: true
         }]
     },
+    setupFiles: [
+        "<rootDir>/test/test.setup.js"
+    ]
 };

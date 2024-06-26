@@ -2,8 +2,6 @@ import path from 'node:path';
 import { DataEntity, AnyObject } from '@terascope/utils';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { fileURLToPath } from 'node:url';
-import { jest } from '@jest/globals';
-
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 jest.setTimeout(10_000);
