@@ -1,11 +1,11 @@
-'use strict';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const path = require('path');
-
-module.exports = {
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+export default {
     verbose: true,
     testEnvironment: 'node',
-    setupFilesAfterEnv: ['jest-extended/all', '<rootDir>/test/test.setup.js'],
+    setupFilesAfterEnv: ['jest-extended/all'],
     collectCoverage: true,
     coverageReporters: ['json', 'lcov', 'text', 'html'],
     coverageDirectory: 'coverage',
@@ -22,20 +22,25 @@ module.exports = {
     testMatch: [
         '<rootDir>/test/**/*-spec.{ts,js}',
         '<rootDir>/test/*-spec.{ts,js}',
+
+        // '<rootDir>/test/routed_sender/schema-spec.{ts,js}',
+        // '<rootDir>/test/data-generator/fetcher-spec.{ts,js}',
+
     ],
     moduleNameMapper: {
-        '^@terascope/file-asset-apis$': path.join(__dirname, '/packages/standard-asset-apis/src/index.ts'),
+        '^@terascope/standard-asset-apis$': path.join(dirname, '/packages/standard-asset-apis/src/index.ts'),
+        '^(\\.{1,2}/.*)\\.js$': '$1',
     },
     preset: 'ts-jest',
+    extensionsToTreatAsEsm: ['.ts'],
     globals: {
         ignoreDirectories: ['dist'],
-        availableExtensions: ['.js', '.ts']
+        availableExtensions: ['.js', '.ts', '.mjs']
     },
     transform: {
-        testMatch: [
-            'ts-jest', {
-                tsconfig: './tsconfig.json',
-                diagnostics: true,
-            },],
+        '\\.[jt]sx?$': ['ts-jest', {
+            isolatedModules: true,
+            useESM: true
+        }]
     },
 };
