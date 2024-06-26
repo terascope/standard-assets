@@ -6,6 +6,7 @@
     "homepage": "https://github.com/terascope/standard-assets",
     "repository": "git@github.com:terascope/standard-assets.git",
     "license": "MIT",
+    "type": "module",
     "author": "Terascope, LLC <info@terascope.io>",
     "main": "dist/src/index.js",
     "typings": "dist/src/index.d.ts",
@@ -21,7 +22,7 @@
     },
     "dependencies": {
         "@sindresorhus/fnv1a": "^2.0.1",
-        "@terascope/utils": "^0.59.1"
+        "@terascope/utils": "^0.59.3"
     },
     "devDependencies": {
         "@types/jest": "^29.5.12",
