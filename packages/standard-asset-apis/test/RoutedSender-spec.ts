@@ -5,7 +5,7 @@ import {
     debugLogger
 } from '@terascope/utils';
 import 'jest-extended';
-import { jest } from '@jest/globals';
+// import { jest } from '@jest/globals';
 import {
     RoutedSender
 } from '../src/index.js';
