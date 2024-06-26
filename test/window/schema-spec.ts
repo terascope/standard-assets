@@ -1,7 +1,7 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
-import { WindowConfig, TimeSetting, WindowType } from '../../asset/src/window/interfaces';
+import { WindowConfig, TimeSetting, WindowType } from '../../asset/src/window/interfaces.js';
 
 describe('window Schema', () => {
     let harness: WorkerTestHarness;

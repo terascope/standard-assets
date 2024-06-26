@@ -1,7 +1,7 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
-import { PhaseConfig } from '../../asset/src/transform/interfaces';
+import { PhaseConfig } from '../../asset/src/transform/interfaces.js';
 
 describe('post_process Schema', () => {
     let harness: WorkerTestHarness;

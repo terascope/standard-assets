@@ -2,13 +2,16 @@
 import 'jest-extended';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
-import path from 'path';
-import { RouteSenderConfig } from '../../asset/src/routed_sender/interfaces';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { RouteSenderConfig } from '../../asset/src/routed_sender/interfaces.js';
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe('routed_sender Schema', () => {
     let harness: WorkerTestHarness;
-    const testAssetPath = path.join(__dirname, '../fixtures/someAssetId');
-    const opPathName = path.join(__dirname, '../../asset/');
+    const testAssetPath = path.join(dirname, '../fixtures/someAssetId');
+    const opPathName = path.join(dirname, '../../asset/');
     const assetDir = [testAssetPath, opPathName];
     const name = 'routed_sender';
     const api_name = 'test_api';
@@ -41,11 +44,10 @@ describe('routed_sender Schema', () => {
         });
 
         harness = new WorkerTestHarness(job, { assetDir });
-
         await harness.initialize();
 
         const validConfig = harness.executionContext.config.operations.find(
-            (testConfig) => testConfig._op === name
+            (testConfig:any) => testConfig._op === name
         );
 
         return validConfig as RouteSenderConfig;

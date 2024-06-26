@@ -2,7 +2,10 @@
 import 'jest-extended';
 import { DataEntity, cloneDeep, AnyObject } from '@terascope/job-components';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
-import path from 'path';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe('count_by_field processor', () => {
     let harness: WorkerTestHarness;
@@ -58,11 +61,12 @@ describe('count_by_field processor', () => {
         });
 
         harness = new WorkerTestHarness(jobWithCollectMetrics, {
-            assetDir: path.join(__dirname, '../../asset'),
+            assetDir: path.join(dirname, '../../asset'),
             cluster_manager_type: 'kubernetes'
         });
 
         await harness.context.apis.foundation.promMetrics.init({
+            terasliceName: 'ts-test',
             assignment: 'worker',
             logger: harness.context.logger,
             tf_prom_metrics_enabled: false,

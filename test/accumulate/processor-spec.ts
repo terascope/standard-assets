@@ -1,7 +1,7 @@
 import 'jest-extended';
 import { DataEntity, AnyObject } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import DataWindow from '../../asset/src/__lib/data-window';
+import DataWindow from '../../asset/src/__lib/data-window.js';
 
 const testData = [
     { id: 1, time: '2019-04-25T18:12:00.000Z' },

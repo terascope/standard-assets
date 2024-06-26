@@ -1,8 +1,10 @@
-import path from 'path';
-import fs from 'fs';
-import processors = require('../asset/src');
+import path from 'node:path';
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import * as processors from '../asset/src/index.js';
 
-const assetDir = path.join(__dirname, '..', 'asset', 'src');
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+const assetDir = path.join(dirname, '..', 'asset', 'src');
 
 describe('index', () => {
     it('should export every processor', () => {

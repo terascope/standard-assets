@@ -1,7 +1,7 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
-import { CountByFieldConfig } from '../../asset/src/count_by_field/interfaces';
+import { CountByFieldConfig } from '../../asset/src/count_by_field/interfaces.js';
 
 describe('count_by_field schema', () => {
     let harness: WorkerTestHarness;
