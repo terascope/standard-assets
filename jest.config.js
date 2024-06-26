@@ -44,6 +44,6 @@ export default {
         }]
     },
     setupFiles: [
-        "<rootDir>/test/test.setup.js"
+        '<rootDir>/test/test.setup.js'
     ]
 };

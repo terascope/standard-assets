@@ -20,6 +20,6 @@ export default {
         '^(\\.{1,2}/.*)\\.js$': '$1',
     },
     setupFiles: [
-        "<rootDir>/test/test.setup.js"
+        '<rootDir>/test/test.setup.js'
     ]
 };

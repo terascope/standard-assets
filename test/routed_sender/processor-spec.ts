@@ -8,6 +8,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import TestApi from '../fixtures/someAssetId/test_api/api.js';
 import RoutedSender from '../../asset/src/routed_sender/processor.js';
+// This is a temp fix to get routed sender imported during testing. May not be a good idea
+await import('../../asset/src/routed_sender/processor.js');
+//
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
