@@ -1,5 +1,5 @@
 import { DataEntity, toString } from '@terascope/utils';
-import * as I from './interfaces';
+import * as I from './interfaces.js';
 
 /**
  * A routing algorithm that uses specific field values from a

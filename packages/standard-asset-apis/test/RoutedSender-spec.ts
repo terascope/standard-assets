@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import {
     DataEntity,
     pDelay,
@@ -6,9 +5,10 @@ import {
     debugLogger
 } from '@terascope/utils';
 import 'jest-extended';
+import { jest } from '@jest/globals';
 import {
     RoutedSender
-} from '../src';
+} from '../src/index.js';
 
 const logger = debugLogger('routed-sender-test');
 

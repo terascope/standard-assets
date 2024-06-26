@@ -2,7 +2,7 @@ import { DataEntity } from '@terascope/utils';
 import 'jest-extended';
 import {
     KeyRouter, KeyRouterCaseOptions, KeyRouterFromOptions
-} from '../../src';
+} from '../../src/index.js';
 
 describe('KeyRouter', () => {
     it('should work with upper case', () => {

@@ -3,7 +3,7 @@ import 'jest-extended';
 import {
     DateRouter,
     DateResolution
-} from '../../src';
+} from '../../src/index.js';
 
 describe('DateRouter', () => {
     it('should work with the default daily', () => {

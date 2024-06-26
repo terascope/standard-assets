@@ -2,7 +2,7 @@ import { DataEntity } from '@terascope/utils';
 import 'jest-extended';
 import {
     FieldRouter
-} from '../../src';
+} from '../../src/index.js';
 
 describe('FieldRouter', () => {
     it('should work with one field', () => {

@@ -3,7 +3,7 @@ import {
     toString
 } from '@terascope/utils';
 import fnv1a from '@sindresorhus/fnv1a';
-import * as I from './interfaces';
+import * as I from './interfaces.js';
 
 /**
  * A routing algorithm that uses a non-cryptographic hash
