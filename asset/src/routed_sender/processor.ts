@@ -1,30 +1,30 @@
 import {
     BatchProcessor,
-    WorkerContext,
-    ExecutionConfig,
+    Context,
     RouteSenderAPI,
     APIFactoryRegistry
 } from '@terascope/job-components';
+import { ExecutionConfig } from '@terascope/types';
 import {
     TSError, DataEntity, isEmpty, AnyObject
 } from '@terascope/utils';
 import { RoutedSender } from '@terascope/standard-asset-apis';
 import {
     RouteSenderConfig
-} from './interfaces';
+} from './interfaces.js';
 
 type SenderFactoryAPI = APIFactoryRegistry<RouteSenderAPI, AnyObject>
 
 export type SenderFn = (
     fn: (msg: any) => DataEntity
-) => (msg: any) => void
+) => (msg: any) => void;
 
 export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderConfig> {
     routedSender: RoutedSender;
     api!: SenderFactoryAPI;
     tryFn: SenderFn;
 
-    constructor(context: WorkerContext, opConfig: RouteSenderConfig, exConfig: ExecutionConfig) {
+    constructor(context: Context, opConfig: RouteSenderConfig, exConfig: ExecutionConfig) {
         super(context, opConfig, exConfig);
         const { routing, size, concurrency } = opConfig;
 

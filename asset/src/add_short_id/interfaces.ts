@@ -1,4 +1,4 @@
-import { OpConfig } from '@terascope/job-components';
+import { OpConfig } from '@terascope/types';
 
 export interface UniqueIdOpConfig extends OpConfig {
     length: number;

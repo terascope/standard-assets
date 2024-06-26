@@ -3,7 +3,7 @@ import {
     OpConfig,
     DataEntity
 } from '@terascope/job-components';
-import DataWindow from '../__lib/data-window';
+import DataWindow from '../__lib/data-window.js';
 
 export default class DropField extends MapProcessor<OpConfig> {
     map(doc: DataEntity): DataEntity {

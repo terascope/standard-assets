@@ -1,5 +1,5 @@
-import { OpConfig } from '@terascope/job-components';
-import { AccumulateConfig } from '../accumulate/interfaces';
+import { OpConfig } from '@terascope/types';
+import { AccumulateConfig } from '../accumulate/interfaces.js';
 
 export interface AccumulateByKeyConfig extends AccumulateConfig, OpConfig {
     key_field: string;

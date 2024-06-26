@@ -1,4 +1,4 @@
-import { OpConfig } from '@terascope/job-components';
+import { OpConfig } from '@terascope/types';
 
 export interface DedupeConfig extends OpConfig {
     field: string;

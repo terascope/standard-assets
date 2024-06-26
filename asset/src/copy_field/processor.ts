@@ -4,7 +4,7 @@ import {
     DataEntity,
 } from '@terascope/job-components';
 import { get, set } from '@terascope/utils';
-import DataWindow from '../__lib/data-window';
+import DataWindow from '../__lib/data-window.js';
 
 export default class CopyField extends MapProcessor<OpConfig> {
     map(doc: DataEntity): DataEntity {

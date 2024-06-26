@@ -1,5 +1,5 @@
-import { OpConfig } from '@terascope/job-components';
-import { Order } from '../__lib/utils';
+import { OpConfig } from '@terascope/types';
+import { Order } from '../__lib/utils.js';
 
 export interface SortConfig extends OpConfig {
     field: string;

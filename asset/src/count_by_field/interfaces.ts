@@ -1,4 +1,4 @@
-import { OpConfig } from '@terascope/job-components';
+import { OpConfig } from '@terascope/types';
 
 export interface CountByField {
     op_name: string;

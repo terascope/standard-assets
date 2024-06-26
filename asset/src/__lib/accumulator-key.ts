@@ -1,7 +1,7 @@
 import { DataEntity } from '@terascope/job-components';
-import Accumulator from './accumulator';
-import DataWindow from './data-window';
-import { AccumulateByKeyConfig } from '../accumulate_by_key/interfaces';
+import Accumulator from './accumulator.js';
+import DataWindow from './data-window.js';
+import { AccumulateByKeyConfig } from '../accumulate_by_key/interfaces.js';
 
 export default class AccumulatorByKey extends Accumulator {
     buckets = new Map();

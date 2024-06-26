@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { AnyObject, isEmpty } from '@terascope/utils';
-import { DataGenerator, DateOptions, IDType } from './interfaces';
+import { DataGenerator, DateOptions, IDType } from './interfaces.js';
 
 // "2016-01-19T13:33:09.356-07:00"
 export const dateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZ';
@@ -106,7 +106,6 @@ export default function getSchema(opConfig: DataGenerator, otherSchema: AnyObjec
         schema[opConfig.date_key] = schema.created;
         delete schema.created;
     }
-
     if (opConfig.format) {
         const dataConfig = schema[dateKey];
         const newFn = getFormatFunction(opConfig.format, { start, diff });
@@ -122,6 +121,5 @@ export default function getSchema(opConfig: DataGenerator, otherSchema: AnyObjec
         const reg = schema.id.randexp;
         schema.id.randexp = `${opConfig.id_start_key}${reg}`;
     }
-
     return schema;
 }

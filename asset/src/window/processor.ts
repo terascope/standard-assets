@@ -1,7 +1,7 @@
 import { BatchProcessor, DataEntity } from '@terascope/job-components';
-import DataWindow from '../__lib/data-window';
-import { WindowConfig } from './interfaces';
-import { getTime } from '../__lib/utils';
+import DataWindow from '../__lib/data-window.js';
+import { WindowConfig } from './interfaces.js';
+import { getTime } from '../__lib/utils.js';
 
 export default class Window extends BatchProcessor<WindowConfig> {
     flushWindows = false;

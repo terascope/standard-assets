@@ -1,13 +1,14 @@
 import {
-    MapProcessor, DataEntity, OpConfig, WorkerContext, ExecutionConfig
+    MapProcessor, DataEntity, Context
 } from '@terascope/job-components';
+import { ExecutionConfig, OpConfig } from '@terascope/types';
 import { FieldRouterConfig, FieldRouter } from '@terascope/standard-asset-apis';
 
 export default class FieldRouterProcessor extends MapProcessor<FieldRouterConfig & OpConfig> {
     router: FieldRouter;
 
     constructor(
-        context: WorkerContext,
+        context: Context,
         opConfig: FieldRouterConfig & OpConfig,
         exConfig: ExecutionConfig
     ) {

@@ -3,13 +3,13 @@ import {
     AnyObject,
     isPlainObject,
     getOpConfig,
-    ValidatedJobConfig,
     has,
     isNumber,
     getTypeOf,
     isNil
 } from '@terascope/job-components';
-import { RouteSenderConfig } from './interfaces';
+import { ValidatedJobConfig } from '@terascope/types';
+import { RouteSenderConfig } from './interfaces.js';
 
 function fetchConfig(job: ValidatedJobConfig) {
     const opConfig = getOpConfig(job, 'routed_sender');

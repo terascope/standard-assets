@@ -1,7 +1,7 @@
 import {
     ConvictSchema, isNumber, getTypeOf, isBoolean
 } from '@terascope/job-components';
-import { AccumulateConfig } from './interfaces';
+import { AccumulateConfig } from './interfaces.js';
 
 export default class Schema extends ConvictSchema<AccumulateConfig> {
     build(): Record<string, any> {

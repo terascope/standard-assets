@@ -4,7 +4,7 @@ import {
     DataEntity
 } from '@terascope/job-components';
 import { FieldValidator } from '@terascope/data-mate';
-import DataWindow from '../__lib/data-window';
+import DataWindow from '../__lib/data-window.js';
 
 export default class DropField extends MapProcessor<OpConfig> {
     map(doc: DataEntity): DataEntity {
