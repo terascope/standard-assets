@@ -60,9 +60,9 @@ function parsedSchema(opConfig: DataGenerator) {
 
         try {
             if (existsSync(firstPath)) {
-                dataSchema = require(firstPath);
+                dataSchema = import(firstPath);
             } else {
-                dataSchema = require(nextPath);
+                dataSchema = import(nextPath);
             }
             return dataSchema;
         } catch (err) {
