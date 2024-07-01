@@ -1,10 +1,10 @@
 {
     "name": "standard-assets-bundle",
     "displayName": "Standard Assets Bundle",
-    "version": "0.25.1",
+    "version": "1.0.0",
     "private": true,
-    "type": "module",
     "description": "Teraslice standard processor asset bundle",
+    "type": "module",
     "workspaces": [
         "packages/*",
         "asset"

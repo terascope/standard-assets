@@ -1,15 +1,15 @@
 {
     "name": "standard",
     "displayName": "Asset",
-    "version": "0.25.1",
+    "version": "1.0.0",
     "private": true,
-    "type": "module",
     "description": "Teraslice standard processor asset bundle",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/terascope/standard-assets.git"
     },
     "license": "MIT",
+    "type": "module",
     "workspaces": {
         "nohoist": [
             "**"
