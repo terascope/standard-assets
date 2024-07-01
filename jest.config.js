@@ -21,11 +21,7 @@ export default {
     ],
     testMatch: [
         '<rootDir>/test/**/*-spec.{ts,js}',
-        '<rootDir>/test/*-spec.{ts,js}',
-
-        // '<rootDir>/test/routed_sender/schema-spec.{ts,js}',
-        // '<rootDir>/test/data-generator/fetcher-spec.{ts,js}',
-
+        '<rootDir>/test/*-spec.{ts,js}'
     ],
     moduleNameMapper: {
         '^@terascope/standard-asset-apis$': path.join(dirname, '/packages/standard-asset-apis/src/index.ts'),
