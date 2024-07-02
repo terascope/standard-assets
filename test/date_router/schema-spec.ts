@@ -1,6 +1,6 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { OpConfig } from '@terascope/job-components';
+import { OpConfig } from '@terascope/types';
 import { DateRouterConfig, DateResolution } from '@terascope/standard-asset-apis';
 
 describe('date_router schema', () => {

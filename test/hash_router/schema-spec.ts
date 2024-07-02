@@ -1,6 +1,6 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { OpConfig } from '@terascope/job-components';
+import { OpConfig } from '@terascope/types';
 import { HashRouterConfig } from '@terascope/standard-asset-apis';
 
 describe('Hash Router Schema', () => {

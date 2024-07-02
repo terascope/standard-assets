@@ -1,17 +1,16 @@
 import {
     MapProcessor,
     DataEntity,
-    WorkerContext,
-    ExecutionConfig,
-    OpConfig
+    Context
 } from '@terascope/job-components';
+import { ExecutionConfig, OpConfig } from '@terascope/types';
 import { HashRouter, HashRouterConfig } from '@terascope/standard-asset-apis';
 
 export default class HashRouterProcessor extends MapProcessor<HashRouterConfig & OpConfig> {
     router: HashRouter;
 
     constructor(
-        context: WorkerContext,
+        context: Context,
         opConfig: HashRouterConfig & OpConfig,
         exConfig: ExecutionConfig
     ) {

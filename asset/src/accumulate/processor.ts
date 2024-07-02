@@ -1,16 +1,17 @@
 import {
-    BatchProcessor, DataEntity, WorkerContext, ExecutionConfig
+    BatchProcessor, DataEntity, Context
 } from '@terascope/job-components';
-import { AccumulateConfig } from './interfaces';
-import DataWindow from '../__lib/data-window';
-import Accumulator from '../__lib/accumulator';
+import { ExecutionConfig } from '@terascope/types';
+import { AccumulateConfig } from './interfaces.js';
+import DataWindow from '../__lib/data-window.js';
+import Accumulator from '../__lib/accumulator.js';
 
 export default class Accumulate extends BatchProcessor<AccumulateConfig> {
     flushData = false;
     shuttingDown = false;
     accumulator: Accumulator;
 
-    constructor(context: WorkerContext, opConfig: AccumulateConfig, exConfig: ExecutionConfig) {
+    constructor(context: Context, opConfig: AccumulateConfig, exConfig: ExecutionConfig) {
         super(context, opConfig, exConfig);
         this.accumulator = new Accumulator(this.opConfig.empty_after);
     }

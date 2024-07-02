@@ -1,4 +1,4 @@
-import { OpConfig } from '@terascope/job-components';
+import { OpConfig } from '@terascope/types';
 import { WatcherConfig } from 'ts-transforms';
 
 export enum NotifyType { matcher = 'matcher', extraction = 'extraction' }

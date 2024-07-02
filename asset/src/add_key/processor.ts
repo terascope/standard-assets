@@ -21,7 +21,7 @@ import {
 } from '@terascope/types';
 
 import crypto from 'crypto';
-import DataWindow from '../__lib/data-window';
+import DataWindow from '../__lib/data-window.js';
 
 export default class AddKey extends BatchProcessor {
     async onBatch(data: DataEntity[] | DataWindow[]) {

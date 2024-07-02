@@ -1,7 +1,7 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
-import { SortConfig } from '../../asset/src/sort/interfaces';
+import { SortConfig } from '../../asset/src/sort/interfaces.js';
 
 describe('sort schema', () => {
     let harness: WorkerTestHarness;

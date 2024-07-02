@@ -1,13 +1,14 @@
 import {
-    MapProcessor, DataEntity, WorkerContext, ExecutionConfig, OpConfig
+    MapProcessor, DataEntity, Context
 } from '@terascope/job-components';
+import { ExecutionConfig, OpConfig } from '@terascope/types';
 import { KeyRouter, KeyRouterConfig } from '@terascope/standard-asset-apis';
 
 export default class KeyRouterProcessor extends MapProcessor<KeyRouterConfig> {
     router: KeyRouter;
 
     constructor(
-        context: WorkerContext,
+        context: Context,
         opConfig: KeyRouterConfig & OpConfig,
         exConfig: ExecutionConfig
     ) {

@@ -4,15 +4,21 @@ import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import {
     isEmpty, DataEntity, get, RouteSenderAPI
 } from '@terascope/job-components';
-import path from 'path';
-import TestApi from '../fixtures/someAssetId/test_api/api';
-import RoutedSender from '../../asset/src/routed_sender/processor';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import TestApi from '../fixtures/someAssetId/test_api/api.js';
+import RoutedSender from '../../asset/src/routed_sender/processor.js';
+// This is a temp fix to get routed sender imported during testing. May not be a good idea
+await import('../../asset/src/routed_sender/processor.js');
+//
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe('Route Sender', () => {
     let harness: WorkerTestHarness;
 
-    const testAssetPath = path.join(__dirname, '../fixtures/someAssetId');
-    const opPathName = path.join(__dirname, '../../asset/');
+    const testAssetPath = path.join(dirname, '../fixtures/someAssetId');
+    const opPathName = path.join(dirname, '../../asset/');
     const assetDir = [testAssetPath, opPathName];
     const apiName = 'test_api';
 

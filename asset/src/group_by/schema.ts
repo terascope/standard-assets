@@ -1,5 +1,5 @@
 import { ConvictSchema } from '@terascope/job-components';
-import { GroupByConfig } from './interfaces';
+import { GroupByConfig } from './interfaces.js';
 
 export default class Schema extends ConvictSchema<GroupByConfig> {
     build(): Record<string, any> {

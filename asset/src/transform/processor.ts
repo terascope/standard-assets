@@ -1,7 +1,7 @@
 import { BatchProcessor, DataEntity } from '@terascope/job-components';
 import { Transform } from 'ts-transforms';
-import { PhaseConfig } from './interfaces';
-import { loadResources } from '../__lib/utils';
+import { PhaseConfig } from './interfaces.js';
+import { loadResources } from '../__lib/utils.js';
 
 export default class Transforms extends BatchProcessor<PhaseConfig> {
     private transform!: Transform;

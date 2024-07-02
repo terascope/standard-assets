@@ -1,7 +1,7 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
-import { DataGenerator } from '../../asset/src/data_generator/interfaces';
+import { DataGenerator } from '../../asset/src/data_generator/interfaces.js';
 
 describe('data-generator schema', () => {
     let harness: WorkerTestHarness;

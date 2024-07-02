@@ -246,7 +246,7 @@ import fse from 'fs-extra';
 import ChunkedSender from '../__lib/chunked-file-sender';
 import { FileSenderAPIConfig } from './interfaces';
 import { FileSenderType } from '../__lib/interfaces';
-import path from 'path';
+import path from 'node:path';
 
 export default class FileSender implements RouteSenderAPI {
     logger: Logger;

@@ -1,7 +1,7 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
-import { DedupeConfig } from '../../asset/src/dedupe/interfaces';
+import { DedupeConfig } from '../../asset/src/dedupe/interfaces.js';
 
 describe('dedupe schema', () => {
     let harness: WorkerTestHarness;

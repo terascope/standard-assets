@@ -1,5 +1,5 @@
 import { ConvictSchema } from '@terascope/job-components';
-import { CountByFieldConfig } from './interfaces';
+import { CountByFieldConfig } from './interfaces.js';
 
 export default class Schema extends ConvictSchema<CountByFieldConfig> {
     build(): Record<string, any> {

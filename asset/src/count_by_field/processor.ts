@@ -1,7 +1,7 @@
 import {
     MapProcessor, DataEntity, isPromAvailable
 } from '@terascope/job-components';
-import { CountByFieldConfig } from './interfaces';
+import { CountByFieldConfig } from './interfaces.js';
 
 type Counters = {
     [valueAsString: string]: {

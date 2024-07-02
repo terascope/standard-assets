@@ -1,7 +1,7 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
-import DataWindow from '../../asset/src/__lib/data-window';
+import DataWindow from '../../asset/src/__lib/data-window.js';
 
 const defaultConfig = {
     _op: 'data_window_to_array',

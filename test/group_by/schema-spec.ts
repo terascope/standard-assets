@@ -1,7 +1,7 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
-import { GroupByConfig } from '../../asset/src/group_by/interfaces';
+import { GroupByConfig } from '../../asset/src/group_by/interfaces.js';
 
 describe('group_by schema', () => {
     let harness: WorkerTestHarness;

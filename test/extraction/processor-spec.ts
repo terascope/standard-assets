@@ -1,12 +1,15 @@
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { DataEntity, AnyObject } from '@terascope/job-components';
-import path from 'path';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 jest.setTimeout(10_000);
 
 describe('extraction phase', () => {
-    const testAssetPath = path.join(__dirname, '../fixtures/someAssetId');
-    const opPathName = path.join(__dirname, '../../asset/');
+    const testAssetPath = path.join(dirname, '../fixtures/someAssetId');
+    const opPathName = path.join(dirname, '../../asset/');
     const assetDir = [testAssetPath, opPathName];
 
     let harness: WorkerTestHarness;

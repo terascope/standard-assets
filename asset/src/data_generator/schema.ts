@@ -7,7 +7,7 @@ import {
     getTypeOf,
     isString
 } from '@terascope/job-components';
-import { DataGenerator, IDType, DateOptions } from './interfaces';
+import { DataGenerator, IDType, DateOptions } from './interfaces.js';
 
 export default class Schema extends ConvictSchema<DataGenerator> {
     validateJob(job: ValidatedJobConfig): void {

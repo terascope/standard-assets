@@ -1,13 +1,14 @@
 import {
-    MapProcessor, DataEntity, WorkerContext, OpConfig, ExecutionConfig
+    MapProcessor, DataEntity, Context
 } from '@terascope/job-components';
+import { ExecutionConfig, OpConfig } from '@terascope/types';
 import { DateRouter, DateRouterConfig } from '@terascope/standard-asset-apis';
 
 export default class DateRouterProcessor extends MapProcessor<DateRouterConfig> {
     router: DateRouter;
 
     constructor(
-        context: WorkerContext,
+        context: Context,
         opConfig: DateRouterConfig & OpConfig,
         exConfig: ExecutionConfig
     ) {

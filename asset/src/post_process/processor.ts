@@ -1,14 +1,14 @@
 import { BatchProcessor, DataEntity } from '@terascope/job-components';
 import { PostProcessPhase, Loader, OperationsManager } from 'ts-transforms';
-import { PhaseConfig } from '../transform/interfaces';
-import { loadResources } from '../__lib/utils';
+import { PhaseConfig } from '../transform/interfaces.js';
+import { loadResources } from '../__lib/utils.js';
 
 export default class PostProcess extends BatchProcessor<PhaseConfig> {
     private phase!: PostProcessPhase;
 
     async initialize(): Promise<void> {
         const { getPath } = this.context.apis.assets;
-        const { opConfig, plugins } = await loadResources(this.opConfig, getPath);
+        const { opConfig, plugins } = await loadResources(this.opConfig as any, getPath);
         const loader = new Loader(opConfig, this.logger);
         const opsManager = new OperationsManager(plugins);
         const { postProcessing } = await loader.load(opsManager);

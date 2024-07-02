@@ -1,6 +1,6 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { OpConfig } from '@terascope/job-components';
+import { OpConfig } from '@terascope/types';
 import { FieldRouterConfig } from '@terascope/standard-asset-apis';
 
 describe('Field Router Schema', () => {

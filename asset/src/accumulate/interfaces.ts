@@ -1,4 +1,4 @@
-import { OpConfig } from '@terascope/job-components';
+import { OpConfig } from '@terascope/types';
 
 export interface AccumulateConfig extends OpConfig {
     empty_after: number;

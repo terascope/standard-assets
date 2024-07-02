@@ -1,6 +1,6 @@
 import { BatchProcessor, DataEntity } from '@terascope/job-components';
-import DataWindow from '../__lib/data-window';
-import { GroupByConfig } from './interfaces';
+import DataWindow from '../__lib/data-window.js';
+import { GroupByConfig } from './interfaces.js';
 
 /*
     handles an array of data entities or an array of data windows

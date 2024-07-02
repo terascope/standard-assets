@@ -1,13 +1,15 @@
 import 'jest-extended';
 import { AnyObject, DataEntity } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { IDType, DateOptions } from '../../asset/src/data_generator/interfaces';
+import { IDType, DateOptions } from '../../asset/src/data_generator/interfaces.js';
 
 describe('data_generator fetcher', () => {
     let harness: WorkerTestHarness;
 
     afterEach(async () => {
-        if (harness) await harness.shutdown();
+        if (harness) {
+            await harness.shutdown();
+        }
     });
 
     async function makeFetcherTest(config: AnyObject = {}) {

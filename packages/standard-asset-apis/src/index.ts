@@ -1,2 +1,2 @@
-export * from './routers';
-export * from './RoutedSender';
+export * from './routers/index.js';
+export * from './RoutedSender.js';

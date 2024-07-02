@@ -1,15 +1,16 @@
 import {
-    BatchProcessor, WorkerContext, ExecutionConfig, DataEntity
+    BatchProcessor, Context, DataEntity
 } from '@terascope/job-components';
-import { AccumulateByKeyConfig } from './interfaces';
-import AccumulatorByKey from '../__lib/accumulator-key';
+import { ExecutionConfig } from '@terascope/types';
+import { AccumulateByKeyConfig } from './interfaces.js';
+import AccumulatorByKey from '../__lib/accumulator-key.js';
 
 export default class AccumulateByKey extends BatchProcessor<AccumulateByKeyConfig> {
     flushData = false;
     accumulator: AccumulatorByKey;
 
     constructor(
-        context: WorkerContext, opConfig: AccumulateByKeyConfig, exConfig: ExecutionConfig
+        context: Context, opConfig: AccumulateByKeyConfig, exConfig: ExecutionConfig
     ) {
         super(context, opConfig, exConfig);
         const { empty_after: emptyAfter } = opConfig;

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import {
     DataEntity,
     pDelay,
@@ -8,7 +7,7 @@ import {
 import 'jest-extended';
 import {
     RoutedSender
-} from '../src';
+} from '../src/index.js';
 
 const logger = debugLogger('routed-sender-test');
 

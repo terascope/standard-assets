@@ -1,5 +1,5 @@
 import { APIFactory, RouteSenderAPI, AnyObject } from '@terascope/job-components';
-import TestSender from './test_sender';
+import TestSender from './test_sender.js';
 
 export default class TestApi extends APIFactory<RouteSenderAPI, AnyObject> {
     async create(

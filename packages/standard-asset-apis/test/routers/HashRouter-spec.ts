@@ -2,7 +2,7 @@ import { DataEntity } from '@terascope/utils';
 import 'jest-extended';
 import {
     HashRouter
-} from '../../src';
+} from '../../src/index.js';
 
 describe('HashRouter', () => {
     it('should work with one no fields and 4 partitions', () => {

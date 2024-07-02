@@ -1,5 +1,5 @@
 import { DataEntity, debugLogger } from '@terascope/utils';
-import * as I from './interfaces';
+import * as I from './interfaces.js';
 
 const logger = debugLogger('key_router');
 

@@ -1,14 +1,12 @@
 import {
     MapProcessor,
     DataEntity,
-    WorkerContext,
-    OpConfig,
-    ExecutionConfig,
-
+    Context
 } from '@terascope/job-components';
+import { ExecutionConfig, OpConfig } from '@terascope/types';
 import ShortUniqueId from 'short-unique-id';
-import DataWindow from '../__lib/data-window';
-import { UniqueIdOpConfig } from './interfaces';
+import DataWindow from '../__lib/data-window.js';
+import { UniqueIdOpConfig } from './interfaces.js';
 
 /**
  * Adds a short unique ID of a specified length to the specified field
@@ -18,7 +16,7 @@ import { UniqueIdOpConfig } from './interfaces';
 export default class AddShortId extends MapProcessor<OpConfig> {
     uniqueId: ShortUniqueId;
 
-    constructor(context: WorkerContext, opConfig: UniqueIdOpConfig, exConfig: ExecutionConfig) {
+    constructor(context: Context, opConfig: UniqueIdOpConfig, exConfig: ExecutionConfig) {
         super(context, opConfig, exConfig);
 
         this.uniqueId = new ShortUniqueId({

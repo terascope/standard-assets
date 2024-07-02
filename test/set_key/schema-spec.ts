@@ -1,7 +1,7 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
-import { SetKeyConfig } from '../../asset/src/set_key/interfaces';
+import { SetKeyConfig } from '../../asset/src/set_key/interfaces.js';
 
 describe('set_key schema', () => {
     let harness: WorkerTestHarness;

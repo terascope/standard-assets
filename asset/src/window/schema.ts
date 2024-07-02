@@ -1,5 +1,5 @@
 import { ConvictSchema } from '@terascope/job-components';
-import { WindowConfig, TimeSetting, WindowType } from './interfaces';
+import { WindowConfig, TimeSetting, WindowType } from './interfaces.js';
 
 export default class Schema extends ConvictSchema<WindowConfig> {
     build(): Record<string, any> {

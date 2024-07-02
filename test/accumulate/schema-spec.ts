@@ -1,7 +1,7 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
-import { AccumulateConfig } from '../../asset/src/accumulate/interfaces';
+import { AccumulateConfig } from '../../asset/src/accumulate/interfaces.js';
 
 describe('accumulate schema', () => {
     let harness: WorkerTestHarness;

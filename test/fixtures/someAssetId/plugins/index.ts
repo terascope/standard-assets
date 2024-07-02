@@ -1,4 +1,4 @@
-import Tag from './tag';
+import Tag from './tag.js';
 
 export default class Plugin {
     init(): { tag: typeof Tag } {

@@ -1,6 +1,6 @@
-import path from 'path';
+import path from 'node:path';
 import { get, getTime as tsGetTime } from '@terascope/job-components';
-import { PhaseConfig } from '../transform/interfaces';
+import { PhaseConfig } from '../transform/interfaces.js';
 
 export enum Order {
     asc = 'asc',
@@ -52,11 +52,11 @@ export async function loadResources(opConfig: PhaseConfig, getPaths: GetPathFn):
     if (opConfig.plugins) {
         const pluginPaths = await formatPaths(getPaths, opConfig.plugins);
         Object.assign(opConfig, { plugins: pluginPaths });
-        plugins = pluginPaths.map((pPath) => {
-            const myPlugin = require(pPath);
+        plugins = await Promise.all(pluginPaths.map(async (pPath) => {
+            const myPlugin = await import(pPath);
             // if es6 import default, else use regular node required obj
             return get(myPlugin, 'default', myPlugin);
-        });
+        }));
     }
     return { opConfig, plugins };
 }

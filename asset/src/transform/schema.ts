@@ -5,7 +5,7 @@ import {
     getTypeOf,
     isObjectEntity
 } from '@terascope/job-components';
-import { PhaseConfig } from './interfaces';
+import { PhaseConfig } from './interfaces.js';
 
 export default class Schema extends ConvictSchema<PhaseConfig> {
     validate(input: PhaseConfig): APIConfig & PhaseConfig {
