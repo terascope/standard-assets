@@ -783,10 +783,10 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@terascope/data-mate@^0.57.0":
-  version "0.57.0"
-  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.57.0.tgz#e9ee1f9bbb553db1f367829a91da0d69a58141f5"
-  integrity sha512-afRzUl3lpYMxZJ9+ae0GoZAn0plKmH1/jZ/vKizSkk6i3MXmb5SaOX3xEI3wLKxE/yvA2/6ApYh5WLTPFjI/WQ==
+"@terascope/data-mate@^0.57.1":
+  version "0.57.1"
+  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-0.57.1.tgz#ca149e056180b5643d59d0b21a5ca0d4b7f1665f"
+  integrity sha512-xK8pAWLR7CDeMXwX1YO1IhY5dOxVGSFnX+CQLtHtMYb9W1lmFDKkqYMzGWDlO3saZkUyKc9Fe8ibGKP/6nAuRA==
   dependencies:
     "@terascope/data-types" "^0.51.0"
     "@terascope/types" "^0.18.0"
@@ -6547,12 +6547,12 @@ ts-jest@^29.2.3:
     semver "^7.5.3"
     yargs-parser "^21.0.1"
 
-ts-transforms@^0.86.0:
-  version "0.86.0"
-  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.86.0.tgz#09a6baf781b61a0fdfdcb55917a95c62c8f57cb8"
-  integrity sha512-3m4nSW+4puI8eqCh/8tUv/9wZHHIzo0zzVCHyBXa0rmGU5BPrsXiNdw+6cZad11eHCkMwB2SSPudFE00Ao3ryw==
+ts-transforms@^0.86.1:
+  version "0.86.1"
+  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-0.86.1.tgz#9d7e88f4f43e181cd9199f6ef2485ddb16c125c9"
+  integrity sha512-v9uRhjG6Eer/8SJUu7uDpoHCLZAUS/pIRL0e7ogChR+0E6ybD/Ig/RmoIhXA1b8uMivAXaaKByqarfat4ClTcw==
   dependencies:
-    "@terascope/data-mate" "^0.57.0"
+    "@terascope/data-mate" "^0.57.1"
     "@terascope/types" "^0.18.0"
     "@terascope/utils" "^0.60.0"
     awesome-phonenumber "^2.70.0"
