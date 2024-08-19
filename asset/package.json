@@ -22,9 +22,9 @@
     },
     "dependencies": {
         "@faker-js/faker": "^8.4.1",
-        "@terascope/job-components": "^1.1.0",
+        "@terascope/job-components": "^1.2.0",
         "@terascope/standard-asset-apis": "^0.7.2",
-        "@terascope/utils": "^0.60.0",
+        "@terascope/utils": "^1.0.0",
         "@types/chance": "^1.1.4",
         "@types/express": "^4.17.19",
         "chance": "^1.1.12",
