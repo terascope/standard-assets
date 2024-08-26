@@ -35,7 +35,7 @@
         "short-unique-id": "^5.2.0",
         "timsort": "^0.3.0",
         "ts-transforms": "^1.0.3",
-        "tslib": "^2.6.3"
+        "tslib": "^2.7.0"
     },
     "engines": {
         "node": ">=18.0.0",
