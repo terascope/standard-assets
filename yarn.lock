@@ -866,7 +866,7 @@
     prom-client "^15.1.2"
     uuid "^9.0.1"
 
-"@terascope/scripts@1.0.0", "@terascope/scripts@^1.0.0":
+"@terascope/scripts@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@terascope/scripts/-/scripts-1.0.0.tgz#dec9127ced459a8de151db0bc584c75124f9735f"
   integrity sha512-E5VMhiF+/eIe5jd9Kf9kGYyy8mPYBPyjV1CtJNE0tbIgZO4CuOlb7hmVwFlOEW4uGI1Q0Xml9OzPpHQi7NZ6Tw==
