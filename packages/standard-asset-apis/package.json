@@ -16,9 +16,9 @@
     "scripts": {
         "build": "tsc --project tsconfig.json",
         "build:watch": "yarn build --watch",
-        "test": "jest",
-        "test:debug": "env DEBUG='*teraslice*' jest --detectOpenHandles --coverage=false --runInBand",
-        "test:watch": "jest --coverage=false --notify --watch --onlyChanged"
+        "test": "NODE_OPTIONS='--experimental-vm-modules' ts-scripts test . --",
+        "test:debug": "NODE_OPTIONS='--experimental-vm-modules' ts-scripts test --debug . --",
+        "test:watch": "NODE_OPTIONS='--experimental-vm-modules' ts-scripts test --watch . --"
     },
     "dependencies": {
         "@sindresorhus/fnv1a": "^2.0.1",
