@@ -16,9 +16,9 @@
     "scripts": {
         "build": "tsc --project tsconfig.json",
         "build:watch": "yarn build --watch",
-        "test": "NODE_OPTIONS='--experimental-vm-modules' ts-scripts test . --",
-        "test:debug": "NODE_OPTIONS='--experimental-vm-modules' ts-scripts test --debug . --",
-        "test:watch": "NODE_OPTIONS='--experimental-vm-modules' ts-scripts test --watch . --"
+        "test": "ts-scripts test . --",
+        "test:debug": "ts-scripts test --debug . --",
+        "test:watch": "ts-scripts test --watch . --"
     },
     "dependencies": {
         "@sindresorhus/fnv1a": "^2.0.1",
