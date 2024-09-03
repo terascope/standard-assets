@@ -1,7 +1,7 @@
 {
     "name": "standard-assets-bundle",
     "displayName": "Standard Assets Bundle",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "private": true,
     "description": "Teraslice standard processor asset bundle",
     "type": "module",
@@ -23,16 +23,16 @@
         "lint:fix": "yarn lint --fix",
         "publish:changed": "./scripts/publish.sh",
         "setup": "yarn && yarn build --force",
-        "test": "NODE_OPTIONS='--experimental-vm-modules' ts-scripts test asset --",
-        "test:all": "NODE_OPTIONS='--experimental-vm-modules' ts-scripts test",
-        "test:debug": "NODE_OPTIONS='--experimental-vm-modules' ts-scripts test --debug asset --",
-        "test:watch": "NODE_OPTIONS='--experimental-vm-modules' ts-scripts test --watch asset --"
+        "test": "ts-scripts test asset --",
+        "test:all": "ts-scripts test",
+        "test:debug": "ts-scripts test --debug asset --",
+        "test:watch": "ts-scripts test --watch asset --"
     },
     "devDependencies": {
         "@terascope/eslint-config": "^0.8.0",
         "@terascope/job-components": "^1.2.0",
-        "@terascope/scripts": "1.0.0",
-        "@terascope/standard-asset-apis": "^1.0.0",
+        "@terascope/scripts": "^1.0.2",
+        "@terascope/standard-asset-apis": "^1.0.1",
         "@types/express": "^4.17.19",
         "@types/jest": "^29.5.12",
         "@types/json2csv": "^5.0.7",
