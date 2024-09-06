@@ -1,14 +1,6 @@
-{
-    "extends": "@terascope",
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module"
-    },
-    "rules": {
-        "@typescript-eslint/naming-convention": "off",
-        "@typescript-eslint/no-duplicate-enum-values": "warn",
-        "import/extensions": "off",
-        "import/no-import-module-exports": "off"
-    },
-    "ignorePatterns":[]
-}
+import eslintConfig from '@terascope/eslint-config';
+// need to probably put this in original eslint-config
+// don't lint the dist folder
+eslintConfig[0].ignores.push('dist/', '**/dist/**');
+
+export default eslintConfig
