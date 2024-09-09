@@ -721,14 +721,14 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@terascope/data-mate@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-1.0.4.tgz#1d45321b6ea9253ace588a97305ddc5fdc700210"
-  integrity sha512-VTXrulcCzCTHTkWJMkxjCRIyPPTTa0mqx5NoQeJh5DTahwpPnX7xMBFyaMxY9Pbpqpyoe3PoQwRdInVwsTha6w==
+"@terascope/data-mate@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@terascope/data-mate/-/data-mate-1.1.0.tgz#a667633125cb879afc984f784ff7169454d5ca03"
+  integrity sha512-VLAARKuVaD0H3ZXxQ4GMoxuh6rqd+SjHnCb7TmJ2L5LtOdC/wp2oFuOqLMziawLBUSx+Il775DUwskLBTmW7kg==
   dependencies:
-    "@terascope/data-types" "^1.0.0"
-    "@terascope/types" "^1.0.0"
-    "@terascope/utils" "^1.0.0"
+    "@terascope/data-types" "^1.1.0"
+    "@terascope/types" "^1.1.0"
+    "@terascope/utils" "^1.1.0"
     "@types/validator" "^13.11.10"
     awesome-phonenumber "^2.70.0"
     date-fns "^2.30.0"
@@ -743,15 +743,15 @@
     uuid "^9.0.1"
     valid-url "^1.0.9"
     validator "^13.12.0"
-    xlucene-parser "^1.0.2"
+    xlucene-parser "^1.1.0"
 
-"@terascope/data-types@^1.0.0":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@terascope/data-types/-/data-types-1.0.1.tgz#20e1bde08cd7f9d52add5823087c43374e7eea0d"
-  integrity sha512-SB6ScJBe2UnqpVgkDn8WvfpFBhO5XEE15qpYcvQhfJtETm2k4e9EVSNJ1mHPfiMheFecTBWR81x2kcy9QyQcpw==
+"@terascope/data-types@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@terascope/data-types/-/data-types-1.1.0.tgz#eb77182ced7a7dbe98f4dae27e707aaa74c76e36"
+  integrity sha512-8T+Xcb2keWP6B1cUem5NEvsWfP5umlcpG8lwIgAPPetfZhoFBHGKKfMYoRBlFAG/dPi94xCr46izoZQ0jhDjqw==
   dependencies:
-    "@terascope/types" "^1.0.1"
-    "@terascope/utils" "^1.0.1"
+    "@terascope/types" "^1.1.0"
+    "@terascope/utils" "^1.1.0"
     graphql "^14.7.0"
     lodash "^4.17.21"
     yargs "^17.7.2"
@@ -831,7 +831,7 @@
     typedoc-plugin-markdown "~4.0.3"
     yargs "^17.7.2"
 
-"@terascope/types@^1.0.0", "@terascope/types@^1.0.1", "@terascope/types@^1.1.0":
+"@terascope/types@^1.0.1", "@terascope/types@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@terascope/types/-/types-1.1.0.tgz#0c87a0340e45b2e387caab27017b8c1e3ea10028"
   integrity sha512-bmPl5w/X4ZIcWK8uqqbCMRObd9QaR52/S9TTZbgQNQA3QNz5KH4/HuC1kNMwdzL7rGWKu7KsqSM2Q4yiPRqmXw==
@@ -6654,14 +6654,14 @@ ts-pegjs@^4.2.1:
     prettier "^2.8.8"
     ts-morph "^18.0.0"
 
-ts-transforms@^1.0.3:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-1.0.4.tgz#4a07eae40c4feec0f89d029d53689d86324b201f"
-  integrity sha512-TySCNH87hkA/bSCUAGB0Wzun08Q1LU8A4qZIPn7BA2l6RpuccheK77vgiM68PiKv3f6Z+Jysq4vRPmZk2QDGFg==
+ts-transforms@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/ts-transforms/-/ts-transforms-1.1.0.tgz#a8f3e3d0928418d9588e87a44bfb22d20fa91006"
+  integrity sha512-TpaM93vFphlR+r6V5a1ifF2WHuWR/pu3u46tSSTdOdeVU3KFppuohsYzdiCoUH5SEmlmQJwkV52KWqTi4+UqXA==
   dependencies:
-    "@terascope/data-mate" "^1.0.4"
-    "@terascope/types" "^1.0.0"
-    "@terascope/utils" "^1.0.0"
+    "@terascope/data-mate" "^1.1.0"
+    "@terascope/types" "^1.1.0"
+    "@terascope/utils" "^1.1.0"
     awesome-phonenumber "^2.70.0"
     graphlib "^2.1.8"
     is-ip "^3.1.0"
@@ -7068,13 +7068,13 @@ ws@^8.11.0:
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.18.0.tgz#0d7505a6eafe2b0e712d232b42279f53bc289bbc"
   integrity sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==
 
-xlucene-parser@^1.0.2:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/xlucene-parser/-/xlucene-parser-1.0.3.tgz#657152795e8ddc461af3a081762af1d969488d04"
-  integrity sha512-A8w9Y7myUedXqaDQAuZU/VRGlXIkfmPj0XsjjicrEk0X0DZwaS0ZqNKojA7BRLlKdoxadU+4WSdJxEqj+Du4ww==
+xlucene-parser@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/xlucene-parser/-/xlucene-parser-1.1.0.tgz#d4dfc0c304ea8d71870599f57b3f16037d8505a2"
+  integrity sha512-EprNprf47GhIT/HMX8depDoHjw+RjuBVSZPxXMoGmXlGcHBnHw6CeTX+Yngp5EQWG7EqEYS08ySfp/SrVmF6Qg==
   dependencies:
-    "@terascope/types" "^1.0.1"
-    "@terascope/utils" "^1.0.1"
+    "@terascope/types" "^1.1.0"
+    "@terascope/utils" "^1.1.0"
     peggy "~4.0.3"
     ts-pegjs "^4.2.1"
 
