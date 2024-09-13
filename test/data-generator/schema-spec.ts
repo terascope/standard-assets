@@ -35,6 +35,8 @@ describe('data-generator schema', () => {
         expect(schema.set_id).toBeNull();
         expect(schema.id_start_key).toBeNull();
         expect(schema.stress_test).toBeFalse();
+        expect(schema.delay).toBeNumber();
+        expect(schema.delay).toEqual(0);
         expect(schema.date_key).toEqual('created');
         expect(schema.size).toEqual(5000);
     });
@@ -48,6 +50,8 @@ describe('data-generator schema', () => {
         await expect(makeSchema({ start: 'asdf987asdf' })).toReject();
         await expect(makeSchema({ end: 'asdf987asdf' })).toReject();
         await expect(makeSchema({ format: 12341234 })).toReject();
+        await expect(makeSchema({ delay: -555 })).toReject();
+        await expect(makeSchema({ delay: 555, stress_test: true })).toReject();
     });
 
     it('should throw if start is later than end', async () => {
