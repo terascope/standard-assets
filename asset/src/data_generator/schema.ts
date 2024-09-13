@@ -79,7 +79,7 @@ export default class Schema extends ConvictSchema<DataGenerator> {
                 format: Boolean
             },
             delay: {
-                doc: 'Time in seconds that a worker will complete a slice. Great'
+                doc: 'Time in seconds that a worker will delay the completion of a slice. Great'
                 + 'for generating controlled amounts of data within a loose time window.',
                 default: 0,
                 format(val: any) {

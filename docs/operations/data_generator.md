@@ -161,7 +161,7 @@ results[0] === {
 
 ### Generate controlled stream of data over a period of time
 
-Example of a job using the `data_generator` processor to generate approximately 10,000 records per minute or 60,000 records per hour.
+Example of a job using the `data_generator` processor to generate approximately 10,000 records per minute or 60,000 records per hour. Results could very as this is a loose approximation.
 
 ```json
 {
@@ -195,7 +195,7 @@ Example of a job using the `data_generator` processor to generate approximately 
 | start         | Start of date range | String  | optional, only used with format `isoBetween` or `utcBetween`, defaults to Thu Jan 01 1970 00:00:00 GMT-0700 (MST) |
 | end           | End of date range | String  | optional, only used with format `isoBetween` or `utcBetween`, defaults to new Date() |
 | stress_test   | If set to true, it will send non-unique documents following your schema as fast as possible.  Helpful to determine downstream performance limits or constraints | Boolean | optional, defaults to false |
-| delay         | Time in seconds that a worker will complete a slice. Good for generating controlled amounts of data within a loose time window. | Number  | optional but can't be used when stress_test is set to `true`|
+| delay         | Time in seconds that a worker will delay the completion of a slice. Good for generating controlled amounts of data within a loose time window. | Number  | optional but can't be used when stress_test is set to `true`|
 | date_key      | Name of they date field.  If set, it will remove the `created` field on the default schema. | String  | optional, defaults to created |
 | set_id        | Sets an `id` field on each record whose value is formatted according the the option given. The options are `base64url`, `hexadecimal`, `HEXADECIMAL` | String  | optional, it does not set any metadata fields, ie `_key`.  See the `set_key` processor on how to set the `_key` in the metadata. |
 | id_start_key  | Set if you would like to force the first part of the `id` to a certain character or set of characters | Sting | optional, must be used in tandem with `set_id`.  `id_start_key` is essentially a regex. If you set it to "a", then the first character of the id will be "a", can also set ranges [a-f] or randomly alternate between b and a if its set to "[ab]" |
