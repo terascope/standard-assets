@@ -18,6 +18,10 @@ export default class Schema extends ConvictSchema<DataGenerator> {
             throw new Error('Invalid data_generator configuration, id_start_key must be used with set_id parameter, please set the missing parameters');
         }
 
+        if (opConfig.stress_test && opConfig.delay !== 0) {
+            throw new Error('Invalid data_generator configuration, setting "delay" while "stress_test" is true is not permitted.');
+        }
+
         if (opConfig.start && opConfig.end) {
             const startingTime = new Date(opConfig.start).getTime();
             const endingTime = new Date(opConfig.end).getTime();
@@ -73,6 +77,18 @@ export default class Schema extends ConvictSchema<DataGenerator> {
                 doc: 'used to speed up the creation process to test load',
                 default: false,
                 format: Boolean
+            },
+            delay: {
+                doc: 'Time in seconds that a worker will delay the completion of a slice. Great'
+                + 'for generating controlled amounts of data within a loose time window.',
+                default: 0,
+                format(val: any) {
+                    if (isNaN(val)) {
+                        throw new Error('Invalid rate parameter for data_generator, must be a number');
+                    } else if (val < 0) {
+                        throw new Error('Invalid rate parameter for data_generator, must not be negative');
+                    }
+                }
             },
             date_key: {
                 doc: 'key value on schema where date should reside',

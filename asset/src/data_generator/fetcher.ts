@@ -1,5 +1,5 @@
 import {
-    Fetcher, Context, TSError, AnyObject
+    Fetcher, Context, TSError, AnyObject, pDelay
 } from '@terascope/job-components';
 import { ExecutionConfig } from '@terascope/types';
 import { Mocker } from 'mocker-data-generator';
@@ -40,6 +40,12 @@ export default class DataGeneratorFetcher extends Fetcher<DataGenerator> {
                     return results;
                 })
                 .catch((err) => Promise.reject(new TSError(err, { reason: 'could not generate mocked data' })));
+        }
+        // default is zero which is falsy
+        if (this.opConfig.delay) {
+            // convert rate value from seconds to milliseconds
+            const time = this.opConfig.delay * (1000);
+            await pDelay(time);
         }
         return mocker
             .addGenerator('faker', faker)
