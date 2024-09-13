@@ -1,7 +1,7 @@
 {
     "name": "standard",
     "displayName": "Asset",
-    "version": "1.0.3",
+    "version": "1.1.0",
     "private": true,
     "description": "Teraslice standard processor asset bundle",
     "repository": {
