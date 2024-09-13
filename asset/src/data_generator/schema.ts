@@ -18,8 +18,8 @@ export default class Schema extends ConvictSchema<DataGenerator> {
             throw new Error('Invalid data_generator configuration, id_start_key must be used with set_id parameter, please set the missing parameters');
         }
 
-        if (opConfig.stress_test && opConfig.rate !== null) {
-            throw new Error('Invalid data_generator configuration, setting "rate" while "stress_test" is true is not permitted.');
+        if (opConfig.stress_test && opConfig.delay !== 0) {
+            throw new Error('Invalid data_generator configuration, setting "delay" while "stress_test" is true is not permitted.');
         }
 
         if (opConfig.start && opConfig.end) {
@@ -78,7 +78,7 @@ export default class Schema extends ConvictSchema<DataGenerator> {
                 default: false,
                 format: Boolean
             },
-            rate: {
+            delay: {
                 doc: 'Time in seconds that a worker will complete a slice. Great'
                 + 'for generating controlled amounts of data within a loose time window.',
                 default: 0,

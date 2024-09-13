@@ -42,9 +42,9 @@ export default class DataGeneratorFetcher extends Fetcher<DataGenerator> {
                 .catch((err) => Promise.reject(new TSError(err, { reason: 'could not generate mocked data' })));
         }
         // default is zero which is falsy
-        if (this.opConfig.rate) {
+        if (this.opConfig.delay) {
             // convert rate value from seconds to milliseconds
-            const time = this.opConfig.rate * (1000);
+            const time = this.opConfig.delay * (1000);
             await pDelay(time);
         }
         return mocker
