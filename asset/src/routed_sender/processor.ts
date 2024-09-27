@@ -13,7 +13,7 @@ import {
     RouteSenderConfig
 } from './interfaces.js';
 
-type SenderFactoryAPI = APIFactoryRegistry<RouteSenderAPI, AnyObject>
+type SenderFactoryAPI = APIFactoryRegistry<RouteSenderAPI, AnyObject>;
 
 export type SenderFn = (
     fn: (msg: any) => DataEntity

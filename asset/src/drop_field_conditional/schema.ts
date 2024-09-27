@@ -36,11 +36,12 @@ export default class Schema extends ConvictSchema<OpConfig> {
 
             const validFlags = ['d', 'g', 'i', 'm', 's', 'u', 'y'];
 
-            regex.slice(lastFwdSlash + 1).split('').forEach((f: string) => {
-                if (!validFlags.includes(f)) {
-                    throw new Error(`Acceptable regex flags are ${validFlags.join(' or ')}, received ${f}`);
-                }
-            });
+            regex.slice(lastFwdSlash + 1).split('')
+                .forEach((f: string) => {
+                    if (!validFlags.includes(f)) {
+                        throw new Error(`Acceptable regex flags are ${validFlags.join(' or ')}, received ${f}`);
+                    }
+                });
         }
 
         if (validationMethod) {

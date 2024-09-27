@@ -73,7 +73,8 @@ export default class AddKey extends BatchProcessor {
             }
 
             return keyProperties;
-        }, []).sort();
+        }, [])
+            .sort();
     }
 
     private getValues(doc: DataEntity, keyFields: string[]) {
@@ -156,7 +157,7 @@ export default class AddKey extends BatchProcessor {
         return this.validCoordinates(lat, lon);
     }
 
-    private truncateObjectGeoPoint(value: AnyObject): { lat: number, lon: number } {
+    private truncateObjectGeoPoint(value: AnyObject): { lat: number; lon: number } {
         // eg, { "lat": 41.12, "lon": -71.34 }
         const { lat, lon } = value as AnyObject;
 
@@ -265,7 +266,9 @@ export default class AddKey extends BatchProcessor {
 
         shasum.update(key);
 
-        return shasum.digest('base64').replace(/=*$/g, '').replace(/\//g, '_').replace(/\+/g, '-');
+        return shasum.digest('base64').replace(/=*$/g, '')
+            .replace(/\//g, '_')
+            .replace(/\+/g, '-');
     }
 
     private formatInnerObject(value: AnyObject): string {

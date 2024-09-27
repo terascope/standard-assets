@@ -24,7 +24,7 @@ export function sortFunction(field: string, order: Order): (a: number, b: number
     return sort;
 }
 
-export function getTime(field: string): number|false {
+export function getTime(field: string): number | false {
     if (field == null) return false;
     return tsGetTime(field);
 }
@@ -42,7 +42,7 @@ export async function loadResources(opConfig: PhaseConfig, getPaths: GetPathFn):
     opConfig: PhaseConfig;
     plugins?: any[];
 }> {
-    let plugins: any[]|undefined;
+    let plugins: any[] | undefined;
 
     if (opConfig.rules) {
         const rules = await formatPaths(getPaths, opConfig.rules);

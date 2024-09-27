@@ -23,7 +23,7 @@ export default class Schema extends ConvictSchema<HashRouterConfig & OpConfig> {
             partitions: {
                 doc: 'Number of partitions to use with hashing',
                 default: null,
-                format: (val: unknown):void => {
+                format: (val: unknown): void => {
                     if (isNumber(val)) {
                         if (val <= 0) throw new Error('Parameter partitions is invalid, it must be set to a number > 0');
                     } else {

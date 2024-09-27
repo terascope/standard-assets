@@ -8,7 +8,7 @@ type Counters = {
         countSinceLastInc: number;
         field: string;
     };
-}
+};
 export default class CountByField extends MapProcessor<CountByFieldConfig> {
     static counters: Counters = {};
     async initialize(): Promise<void> {

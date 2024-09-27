@@ -42,8 +42,8 @@ export default class Schema extends ConvictSchema<RouteSenderConfig> {
             },
             routing: {
                 doc: 'Mapping of `standard:route` metadata to connection names. Routes data to multiple clusters '
-                + 'based on the incoming key. The key name can be a '
-                + 'comma separated list of prefixes that will map to the same connection.',
+                    + 'based on the incoming key. The key name can be a '
+                    + 'comma separated list of prefixes that will map to the same connection.',
                 default: null,
                 format: (val: any) => {
                     if (isPlainObject(val)) {

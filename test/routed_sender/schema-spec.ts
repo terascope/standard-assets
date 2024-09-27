@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import 'jest-extended';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { AnyObject } from '@terascope/job-components';
@@ -50,7 +49,7 @@ describe('routed_sender Schema', () => {
         await harness.initialize();
 
         const validConfig = harness.executionContext.config.operations.find(
-            (testConfig:any) => testConfig._op === name
+            (testConfig: any) => testConfig._op === name
         );
 
         return validConfig as RouteSenderConfig;
@@ -68,7 +67,7 @@ describe('routed_sender Schema', () => {
             await expect(makeSchema({ size: 'test', api_name, routing })).toReject();
             await expect(makeSchema({ size: [12341234], api_name, routing })).toReject();
             await expect(makeSchema({ size: -12341234, api_name, routing })).toReject();
-            await expect(makeSchema({ routing: -12341234, api_name, })).toReject();
+            await expect(makeSchema({ routing: -12341234, api_name })).toReject();
 
             await expect(makeSchema({ routing: 'hello', api_name })).toReject();
             await expect(makeSchema({ routing: {}, api_name })).toReject();

@@ -1,4 +1,3 @@
-/* eslint-disable jest/no-focused-tests */
 import 'jest-extended';
 import { cloneDeep } from '@terascope/utils';
 import { DataEntity, AnyObject } from '@terascope/job-components';
@@ -376,13 +375,14 @@ describe('key', () => {
             truncate_location_places: 4
         });
 
-        const data = cloneDeep(testData).slice(0, 1).map((doc) => {
-            doc.location = {
-                lat: '6.92585216287241E-4',
-                lon: '51.54196872959797'
-            };
-            return doc;
-        });
+        const data = cloneDeep(testData).slice(0, 1)
+            .map((doc) => {
+                doc.location = {
+                    lat: '6.92585216287241E-4',
+                    lon: '51.54196872959797'
+                };
+                return doc;
+            });
 
         const results = await test.runSlice(data);
 

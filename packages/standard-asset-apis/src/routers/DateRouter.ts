@@ -115,7 +115,9 @@ export class DateRouter implements I.Router {
     }
 
     private _parseDate(date: Date): string[] {
-        return date.toISOString().slice(0, 14).split(/[-T\s:]/);
+        return date.toISOString()
+            .slice(0, 14)
+            .split(/[-T\s:]/);
     }
 
     private _getWeeksInYear(date: Date, year: string): string | number {

@@ -61,7 +61,8 @@ describe('date_router', () => {
         });
 
         const [slice] = await test.runSlice(data);
-        const [year, month, day] = new Date().toISOString().split('-');
+        const [year, month, day] = new Date().toISOString()
+            .split('-');
         const [date] = day.split('T');
 
         expect(slice.getMetadata('standard:route')).toEqual(`${year}.${month}.${date}`);

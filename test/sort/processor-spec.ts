@@ -92,9 +92,10 @@ describe('sort', () => {
 
         // all items should be in asc order, can be equal to
         results.forEach((window) => {
-            window.asArray().slice(1).forEach((item: any, i: number) => {
-                expect(item.id >= window.get(i).id).toBe(true);
-            });
+            window.asArray().slice(1)
+                .forEach((item: any, i: number) => {
+                    expect(item.id >= window.get(i).id).toBe(true);
+                });
         });
     });
 
@@ -107,9 +108,10 @@ describe('sort', () => {
 
         // all items should be in asc order, can be equal to
         results.forEach((window) => {
-            window.asArray().slice(1).forEach((item: any, i: number) => {
-                expect(item.id <= window.get(i).id).toBe(true);
-            });
+            window.asArray().slice(1)
+                .forEach((item: any, i: number) => {
+                    expect(item.id <= window.get(i).id).toBe(true);
+                });
         });
     });
 

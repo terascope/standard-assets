@@ -1,5 +1,3 @@
-/* eslint-disable object-curly-newline */
-
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { DataEntity, AnyObject } from '@terascope/job-components';
