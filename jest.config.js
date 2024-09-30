@@ -34,10 +34,11 @@ export default {
         availableExtensions: ['.js', '.ts', '.mjs']
     },
     transform: {
-        '\\.[jt]sx?$': ['ts-jest', {
-            isolatedModules: true,
-            useESM: true
-        }]
+        '\\.[jt]sx?$': ['ts-jest',
+            {
+                isolatedModules: true,
+                useESM: true
+            }]
     },
     setupFiles: [
         '<rootDir>/test/test.setup.js'

@@ -39,7 +39,7 @@ export default class Schema extends ConvictSchema<DataGenerator> {
             },
             size: {
                 doc: 'The limit to the number of docs pulled in a chunk, if the number of docs retrieved '
-                + 'by the interval exceeds this number, it will cause the function to recurse to provide a smaller batch',
+                    + 'by the interval exceeds this number, it will cause the function to recurse to provide a smaller batch',
                 default: 5000,
                 format(val: any) {
                     if (isNaN(val)) {
@@ -61,7 +61,7 @@ export default class Schema extends ConvictSchema<DataGenerator> {
             },
             format: {
                 doc: 'This is only used with the teraslice provided schema, can elect different time structures'
-                + 'such as dateNow, utcDate, utcBetween and isoBetween',
+                    + 'such as dateNow, utcDate, utcBetween and isoBetween',
                 default: null,
                 format: (val: unknown): void => {
                     if (isNotNil(val)) {
@@ -80,7 +80,7 @@ export default class Schema extends ConvictSchema<DataGenerator> {
             },
             delay: {
                 doc: 'Time in seconds that a worker will delay the completion of a slice. Great'
-                + 'for generating controlled amounts of data within a loose time window.',
+                    + 'for generating controlled amounts of data within a loose time window.',
                 default: 0,
                 format(val: any) {
                     if (isNaN(val)) {

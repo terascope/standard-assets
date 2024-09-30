@@ -10,7 +10,7 @@ export default class DataGeneratorSlicer extends Slicer<DataGenerator> {
 
         const { size } = this.opConfig;
         const isPersistent = this.executionConfig.lifecycle === 'persistent';
-        let alreadyProcessed: undefined|number;
+        let alreadyProcessed: undefined | number;
 
         if (this.recoveryData) {
             alreadyProcessed = get(this.recoveryData[0], 'lastSlice.processed', 0);

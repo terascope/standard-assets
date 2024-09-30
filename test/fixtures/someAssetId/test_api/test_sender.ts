@@ -15,7 +15,7 @@ export default class TestSenderApi implements RouteSenderAPI {
         return Array.isArray(args[0]) ? args[0].length : -1;
     }
 
-    async verify(...args:any[]): Promise<void> {
+    async verify(...args: any[]): Promise<void> {
         this.routeArgs.push(...args);
         await pDelay(Math.random() * 10);
     }

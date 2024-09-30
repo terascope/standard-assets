@@ -136,9 +136,9 @@ describe('count_by_field processor', () => {
         });
         expect(results).toBeArrayOfSize(4);
 
-        const metrics:string = await test.context.apis.scrapePromMetrics();
+        const metrics: string = await test.context.apis.scrapePromMetrics();
 
-        const nodeIdLines = metrics.split('\n').filter((line:string) => line.includes('node_id'));
+        const nodeIdLines = metrics.split('\n').filter((line: string) => line.includes('node_id'));
         expect(nodeIdLines.length).toBe(3);
 
         expect(nodeIdLines[0].split(' ')[0])
@@ -153,7 +153,7 @@ describe('count_by_field processor', () => {
             .toBe('teraslice_worker_count_by_field_count_total{value="undefined",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(nodeIdLines[2].split(' ')[1]).toBe('1');
 
-        const ipLines = metrics.split('\n').filter((line:string) => line.includes('ip'));
+        const ipLines = metrics.split('\n').filter((line: string) => line.includes('ip'));
         expect(ipLines.length).toBe(4);
 
         expect(ipLines[0].split(' ')[0])
@@ -218,8 +218,8 @@ describe('count_by_field processor', () => {
         });
         expect(results).toBeArrayOfSize(7);
 
-        const metrics:string = await test.context.apis.scrapePromMetrics();
-        const nodeIdLines = metrics.split('\n').filter((line:string) => line.includes('node_id'));
+        const metrics: string = await test.context.apis.scrapePromMetrics();
+        const nodeIdLines = metrics.split('\n').filter((line: string) => line.includes('node_id'));
         expect(nodeIdLines.length).toBe(5);
 
         expect(nodeIdLines[0].split(' ')[0])
@@ -242,7 +242,7 @@ describe('count_by_field processor', () => {
             .toBe('teraslice_worker_count_by_field_count_total{value="\\\"101\\\"",field="node_id",op_name="count_by_field",name=\"mockPromMetrics\",assignment=\"worker\"}');
         expect(nodeIdLines[4].split(' ')[1]).toBe('2');
 
-        const ipLines = metrics.split('\n').filter((line:string) => line.includes('ip'));
+        const ipLines = metrics.split('\n').filter((line: string) => line.includes('ip'));
         expect(ipLines.length).toBe(4);
 
         expect(ipLines[0].split(' ')[0])

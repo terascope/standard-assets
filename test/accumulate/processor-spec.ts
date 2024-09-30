@@ -111,7 +111,7 @@ describe('accumulate', () => {
     });
 
     it('should return results when flush_data_on_shutdown is set to true', async () => {
-        const test = await makeTest({ flush_data_on_shutdown: true, empty_after: 10, });
+        const test = await makeTest({ flush_data_on_shutdown: true, empty_after: 10 });
 
         const results1 = await test.runSlice(testData);
         expect(results1).toBeArrayOfSize(0);
@@ -123,7 +123,7 @@ describe('accumulate', () => {
     });
 
     it('should NOT return results when flush_data_on_shutdown is set to false', async () => {
-        const test = await makeTest({ flush_data_on_shutdown: false, empty_after: 10, });
+        const test = await makeTest({ flush_data_on_shutdown: false, empty_after: 10 });
 
         const results1 = await test.runSlice(testData);
         expect(results1).toBeArrayOfSize(0);

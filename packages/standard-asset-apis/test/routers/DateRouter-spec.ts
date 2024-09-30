@@ -24,7 +24,8 @@ describe('DateRouter', () => {
 
         const entity = new DataEntity({ date: '1995-01-01T10:05:00.001Z' });
 
-        const [year, month, day] = new Date().toISOString().split('-');
+        const [year, month, day] = new Date().toISOString()
+            .split('-');
         const [date, time] = day.split('T');
         const [hour] = time.split(':');
 

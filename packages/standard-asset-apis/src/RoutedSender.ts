@@ -20,24 +20,24 @@ export interface RoutedSenderOptions {
      * This is called before the first call to standard:route
      * can be used to change the standard:route for storage routing
     */
-    storageRouteHook?(record: DataEntity): void|Promise<void>;
+    storageRouteHook?(record: DataEntity): void | Promise<void>;
 
     /**
      * This is called after the standard:route is pulled from the record
      * metadata and can be used to change the standard:route for data routing
      * (which is used within the route sender api implementations)
     */
-    dataRouteHook?(record: DataEntity): void|Promise<void>;
+    dataRouteHook?(record: DataEntity): void | Promise<void>;
 
     /**
       * This can be used to track the batches start
      */
-    batchStartHook?(batchId: number, route: string, size: number): void|Promise<void>;
+    batchStartHook?(batchId: number, route: string, size: number): void | Promise<void>;
 
     /**
       * This can be used to track the batches end
      */
-    batchEndHook?(batchId: number, route: string, affectedRows: number): void|Promise<void>;
+    batchEndHook?(batchId: number, route: string, affectedRows: number): void | Promise<void>;
 
     /**
       * When a reject is missing the required route or metadata to be processed
@@ -85,24 +85,24 @@ export class RoutedSender {
      * This is called before the first call to standard:route
      * can be used to change the standard:route for storage routing
     */
-    storageRouteHook?: (record: DataEntity) => void|Promise<void>;
+    storageRouteHook?: (record: DataEntity) => void | Promise<void>;
 
     /**
      * This is called after the standard:route is pulled from the record
      * metadata and can be used to change the standard:route for data routing
      * (which is used within the route sender api implementations)
     */
-    dataRouteHook?: (record: DataEntity) => void|Promise<void>;
+    dataRouteHook?: (record: DataEntity) => void | Promise<void>;
 
     /**
      * This can be used to track the batches start
      */
-    batchStartHook?: (batchId: number, route: string, size: number) => void|Promise<void>;
+    batchStartHook?: (batchId: number, route: string, size: number) => void | Promise<void>;
 
     /**
      * This can be used to track the batches end
      */
-    batchEndHook?: (batchId: number, route: string, affectedRows: number) => void|Promise<void>;
+    batchEndHook?: (batchId: number, route: string, affectedRows: number) => void | Promise<void>;
 
     /**
      * When a reject is missing the required route or metadata to be processed

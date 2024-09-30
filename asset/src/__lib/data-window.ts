@@ -19,7 +19,7 @@ export default class DataWindow extends DataEntity {
         this.dataArray = [];
     }
 
-    static make(key?: string|number, docs?: DataOrEntity[]|(DataOrEntity)): DataWindow {
+    static make(key?: string | number, docs?: DataOrEntity[]|(DataOrEntity)): DataWindow {
         const newWindow = new DataWindow();
 
         if (key != null) newWindow.setMetadata('_key', key);
@@ -41,7 +41,7 @@ export default class DataWindow extends DataEntity {
 
     get(item: DataEntity): number;
     get(item: number): DataEntity;
-    get(item: DataEntity|number): DataEntity|number {
+    get(item: DataEntity | number): DataEntity | number {
         // returns the index if given a data entity or returns the data entity if given an index
         if (DataEntity.isDataEntity(item)) {
             return this.dataArray.indexOf(item);
@@ -55,4 +55,4 @@ export default class DataWindow extends DataEntity {
     }
 }
 
-type DataOrEntity = DataEntity|Record<string, any>;
+type DataOrEntity = DataEntity | Record<string, any>;

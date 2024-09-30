@@ -20,7 +20,7 @@ export default class Schema extends ConvictSchema<AccumulateConfig> {
             flush_data_on_shutdown: {
                 doc: 'Option to flush partial data accumulation on unexpected shutdown',
                 default: false,
-                format: (val: unknown):void => {
+                format: (val: unknown): void => {
                     if (!isBoolean(val)) throw new Error(`Invalid parameter flush_data_on_shutdown, expected boolean, got ${getTypeOf(val)}`);
                 }
             }

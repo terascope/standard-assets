@@ -11,10 +11,11 @@ export default {
         '<rootDir>/test/*-spec.{ts,js}',
     ],
     transform: {
-        '\\.[jt]sx?$': ['ts-jest', {
-            isolatedModules: true,
-            useESM: true
-        }]
+        '\\.[jt]sx?$': ['ts-jest',
+            {
+                isolatedModules: true,
+                useESM: true
+            }]
     },
     moduleNameMapper: {
         '^(\\.{1,2}/.*)\\.js$': '$1',

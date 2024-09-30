@@ -54,7 +54,7 @@ describe('extraction phase', () => {
 
         const metaArray = [
             { selectors: ['some: $foo', '*'] },
-            { selectors: ["location: geoBox( top_left: '33.906320, -112.758421' bottom_right: '32.813646,-111.058902')", '*'] }
+            { selectors: ['location: geoBox( top_left: \'33.906320, -112.758421\' bottom_right: \'32.813646,-111.058902\')', '*'] }
         ];
 
         const resultsArray = [

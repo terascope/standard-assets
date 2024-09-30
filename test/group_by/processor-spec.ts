@@ -73,7 +73,7 @@ describe('group_by', () => {
         const dw2 = DataWindow.make(undefined, testData.slice(1, 4));
 
         // 1 - id: 3
-        const dw3 = DataWindow.make(undefined, testData.slice(5,));
+        const dw3 = DataWindow.make(undefined, testData.slice(5));
 
         const test = await makeTest();
         const results = await test.runSlice([dw1, dw2, dw3]) as DataWindow[];

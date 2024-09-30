@@ -274,7 +274,7 @@ describe('window', () => {
         results = await test.runSlice([]);
         expect(results).toBeArrayOfSize(0);
 
-        results = await test.runSlice(data.slice(10,));
+        results = await test.runSlice(data.slice(10));
         expect(results).toBeArrayOfSize(5);
         results.forEach((window) => expect(window.asArray()).toBeArrayOfSize(4));
 
