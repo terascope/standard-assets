@@ -75,6 +75,8 @@ describe('count_by_field processor', () => {
             job_prom_metrics_enabled: testConfig.job_prom_metrics_enabled,
             job_prom_metrics_port: testConfig.job_prom_metrics_port,
             job_prom_metrics_add_default: testConfig.job_prom_metrics_add_default,
+            prom_metrics_display_url:
+                harness.context.sysconfig.terafoundation.prom_metrics_display_url
         });
         await harness.initialize();
 
