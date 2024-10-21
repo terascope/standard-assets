@@ -34,7 +34,7 @@
         "randexp": "^0.5.3",
         "short-unique-id": "^5.2.0",
         "timsort": "^0.3.0",
-        "ts-transforms": "^1.3.0",
+        "ts-transforms": "^1.3.1",
         "tslib": "^2.7.0"
     },
     "engines": {
