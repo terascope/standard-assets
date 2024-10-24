@@ -2,9 +2,9 @@ import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { OpConfig } from '@terascope/job-components';
 
-describe('copy_metadata_field schema', () => {
+describe('count_unique schema', () => {
     let harness: WorkerTestHarness;
-    const name = 'copy_metadata_field';
+    const name = 'count_unique';
 
     async function makeSchema(config: Record<string, any> = {}): Promise<OpConfig> {
         const opConfig = Object.assign({}, { _op: name }, config);
@@ -24,13 +24,13 @@ describe('copy_metadata_field schema', () => {
     });
 
     it('should expect to be properly configured', async () => {
-        await expect(makeSchema({})).toReject();
-        await expect(makeSchema({ destination: ['some stuff'] })).toReject();
-        await expect(makeSchema({ destination: 'some_destination', meta_key: true })).toReject();
-        await expect(makeSchema({ destination: true, source: 'field' })).toReject();
-        await expect(makeSchema({ destination: 'true', meta_key: 1234 })).toReject();
+        await expect(makeSchema({ field: 1234 })).toReject();
+        await expect(makeSchema({ field: ['some stuff'] })).toReject();
+        await expect(makeSchema({ field: 'true', preserve_fields: 1234 })).toReject();
+        await expect(makeSchema({ field: 'true', preserve_fields: [1234] })).toReject();
 
-        await expect(makeSchema({ destination: 'someField' })).toResolve();
-        await expect(makeSchema({ destination: 'someField', meta_key: 'some_key' })).toResolve();
+        await expect(makeSchema({ preserve_fields: ['someField'] })).toResolve();
+        await expect(makeSchema({ field: 'someField' })).toResolve();
+        await expect(makeSchema({ field: 'someField', preserve_fields: ['someField', 'otherField'] })).toResolve();
     });
 });
