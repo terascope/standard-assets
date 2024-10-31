@@ -13,6 +13,9 @@ import AddShortIdSchema from './add_short_id/schema.js';
 import CopyField from './copy_field/processor.js';
 import CopyFieldSchema from './copy_field/schema.js';
 
+import CopyMetadataField from './copy_metadata_field/processor.js';
+import CopyMetadataFieldSchema from './copy_metadata_field/schema.js';
+
 import CountByField from './count_by_field/processor.js';
 import CountByFieldSchema from './count_by_field/schema.js';
 
@@ -22,6 +25,9 @@ import DataGeneratorSlicer from './data_generator/slicer.js';
 
 import DataWindowToArray from './data_window_to_array/processor.js';
 import DataWindowToArraySchema from './data_window_to_array/schema.js';
+
+import DateGuard from './date_guard/processor.js';
+import DateGuardSchema from './date_guard/schema.js';
 
 import DateRouter from './date_router/processor.js';
 import DateRouterSchema from './date_router/schema.js';
@@ -44,11 +50,23 @@ import ExtractionSchema from './extraction/schema.js';
 import FieldRouter from './field_router/processor.js';
 import FieldRouterSchema from './field_router/schema.js';
 
+import Filter from './filter/processor.js';
+import FilterSchema from './filter/schema.js';
+
+import FilterByRequiredFields from './filter_by_required_fields/processor.js';
+import FilterByRequiredFieldsSchema from './filter_by_required_fields/schema.js';
+
+import FilterByUnknownFields from './filter_by_unknown_fields/processor.js';
+import FilterByUnknownFieldsSchema from './filter_by_unknown_fields/schema.js';
+
 import GroupBy from './group_by/processor.js';
 import GroupBySchema from './group_by/schema.js';
 
 import HashRouter from './hash_router/processor.js';
 import HashRouterSchema from './hash_router/schema.js';
+
+import JSONParser from './json_parser/processor.js';
+import JSONParserSchema from './json_parser/schema.js'
 
 import KeyRouter from './key_router/processor.js';
 import KeyRouterSchema from './key_router/schema.js';
@@ -62,17 +80,26 @@ import OutputSchema from './output/schema.js';
 import PostProcess from './post_process/processor.js';
 import PostProcessSchema from './post_process/schema.js';
 
+import RemoveEmptyFields from './remove_empty_fields/processor.js';
+import RemoveEmptyFieldsSchema from './remove_empty_fields/schema.js';
+
 import RemoveKey from './remove_key/processor.js';
 import RemoveKeySchema from './remove_key/schema.js';
 
 import RoutedSender from './routed_sender/processor.js';
 import RoutedSenderSchema from './routed_sender/schema.js';
 
+import Sample from './sample/processor.js';
+import SampleSchema from './sample/schema.js'
+
 import Selection from './selection/processor.js';
 import SelectionSchema from './selection/schema.js';
 
 import SetField from './set_field/processor.js';
 import SetFieldSchema from './set_field/schema.js';
+
+import SetFieldConditional from './set_field_conditional/processor.js';
+import SetFieldConditionalSchema from './set_field_conditional/schema.js';
 
 import SetKey from './set_key/processor.js';
 import SetKeySchema from './set_key/schema.js';
@@ -85,6 +112,9 @@ import StdoutSchema from './stdout/schema.js';
 
 import Transform from './transform/processor.js';
 import TransformSchema from './transform/schema.js';
+
+import Update from './update/processor.js';
+import UpdateSchema from './update/schema.js';
 
 import Window from './window/processor.js';
 import WindowSchema from './window/schema.js';
@@ -110,6 +140,10 @@ export const ASSETS = {
         Processor: CopyField,
         Schema: CopyFieldSchema
     },
+    copy_metadata_field: {
+        Processor: CopyMetadataField,
+        Schema: CopyMetadataFieldSchema
+    },
     count_by_field: {
         Processor: CountByField,
         Schema: CountByFieldSchema
@@ -122,6 +156,10 @@ export const ASSETS = {
     data_window_to_array: {
         Processor: DataWindowToArray,
         Schema: DataWindowToArraySchema
+    },
+    date_guard: {
+        Processor: DateGuard,
+        Schema: DateGuardSchema
     },
     date_router: {
         Processor: DateRouter,
@@ -151,6 +189,18 @@ export const ASSETS = {
         Processor: FieldRouter,
         Schema: FieldRouterSchema
     },
+    filter: {
+        Processor: Filter,
+        Schema: FilterSchema
+    },
+    filter_by_required_fields: {
+        Processor: FilterByRequiredFields,
+        Schema: FilterByRequiredFieldsSchema
+    },
+    filter_by_unknown_fields: {
+        Processor: FilterByUnknownFields,
+        Schema: FilterByUnknownFieldsSchema
+    },
     group_by: {
         Processor: GroupBy,
         Schema: GroupBySchema
@@ -158,6 +208,10 @@ export const ASSETS = {
     hash_router: {
         Processor: HashRouter,
         Schema: HashRouterSchema
+    },
+    json_parser: {
+        Processor: JSONParser,
+        Schema: JSONParserSchema
     },
     key_router: {
         Processor: KeyRouter,
@@ -175,6 +229,10 @@ export const ASSETS = {
         Processor: PostProcess,
         Schema: PostProcessSchema
     },
+    remove_empty_fields: {
+        Processor: RemoveEmptyFields,
+        Schema: RemoveEmptyFieldsSchema
+    },
     remove_key: {
         Processor: RemoveKey,
         Schema: RemoveKeySchema
@@ -183,6 +241,10 @@ export const ASSETS = {
         Processor: RoutedSender,
         Schema: RoutedSenderSchema
     },
+    sample: {
+        Processor: Sample,
+        Schema: SampleSchema
+    },
     selection: {
         Processor: Selection,
         Schema: SelectionSchema
@@ -190,6 +252,10 @@ export const ASSETS = {
     set_field: {
         Processor: SetField,
         Schema: SetFieldSchema
+    },
+    set_field_conditional: {
+        Processor: SetFieldConditional,
+        Schema: SetFieldConditionalSchema
     },
     set_key: {
         Processor: SetKey,
@@ -206,6 +272,10 @@ export const ASSETS = {
     transform: {
         Processor: Transform,
         Schema: TransformSchema
+    },
+    update: {
+        Processor: Update,
+        Schema: UpdateSchema
     },
     window: {
         Processor: Window,
