@@ -48,7 +48,7 @@ export default class Schema extends ConvictSchema<FilterConfig> {
                 default: false,
                 format: (val: unknown) => {
                     if (!isBoolean(val)) {
-                        throw new Error('Paramter "drop_to_dlq" should be a boolean')
+                        throw new Error('Paramter "drop_to_dlq" should be a boolean');
                     }
                 }
             },
@@ -71,10 +71,10 @@ export default class Schema extends ConvictSchema<FilterConfig> {
                         const { field, value, regex } = rule;
 
                         if (!isString(field)
-                        || value == null
-                        || (regex != null
-                            && !isBoolean(regex)
-                            && !isString(value))) {
+                            || value == null
+                            || (regex != null
+                                && !isBoolean(regex)
+                                && !isString(value))) {
                             throw new Error(`exception properties must be either "field" with a string value or "value" with a non-null value, got ${rules}`);
                         }
                     }
@@ -82,8 +82,6 @@ export default class Schema extends ConvictSchema<FilterConfig> {
             }
         };
     }
-
-
 }
 
 function fieldCheck(val: unknown) {
@@ -91,7 +89,7 @@ function fieldCheck(val: unknown) {
         if (val.some((v) => !isString(v))) {
             throw new Error(`Field must be a string or array of strings, received ${val}`);
         }
-        return
+        return;
     } else if (!isString(val)) {
         throw new Error(`Field must be a string or array of strings, received ${val}`);
     }

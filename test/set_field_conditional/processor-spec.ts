@@ -64,14 +64,14 @@ describe('set_field_conditional', () => {
     });
 
     it('generate an empty result if no input data', async () => {
-        const harness = await makeTest(valueCheckOpConfig);
+        harness = await makeTest(valueCheckOpConfig);
         const results = await harness.runSlice([]);
 
         expect(results.length).toBe(0);
     });
 
     it('should correctly set the field in all records with type:data1 and type:data2', async () => {
-        const harness = await makeTest(valueCheckOpConfig);
+        harness = await makeTest(valueCheckOpConfig);
         const results = await harness.runSlice(testData);
 
         expect(results[0].test_prop).toBe(true);
@@ -79,7 +79,7 @@ describe('set_field_conditional', () => {
     });
 
     it('should not update fields that do not match check_values', async () => {
-        const harness = await makeTest(valueCheckOpConfig);
+        harness = await makeTest(valueCheckOpConfig);
         const results = await harness.runSlice(testData2);
 
         expect(results[0].test_prop).toBe('value');
@@ -88,7 +88,7 @@ describe('set_field_conditional', () => {
     });
 
     it('can add fields when the conditional is met', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             check_name: 'count',
             check_values: [null],
             set_name: 'count',
@@ -114,5 +114,5 @@ describe('set_field_conditional', () => {
         expect(results[0].count).toBe(1);
         expect(results[1].count).toBe(10);
         expect(results[2].count).toBe(0);
-    })
+    });
 });

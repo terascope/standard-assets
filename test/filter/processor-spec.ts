@@ -48,15 +48,14 @@ describe('filter', () => {
 
     beforeEach(() => {
         testData = cloneDeep(incoming);
-    })
+    });
 
     afterEach(async () => {
         if (harness) await harness.shutdown();
     });
 
-
     it('should return empty array if input is an empty array', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'test',
             value: 'test',
             filter_by: 'match'
@@ -67,7 +66,7 @@ describe('filter', () => {
     });
 
     it('should return docs without matching value', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'ip',
             value: '28.127.246.232',
             filter_by: 'match'
@@ -78,7 +77,7 @@ describe('filter', () => {
     });
 
     it('should only return doc with matching field', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'ip',
             value: '28.127.246.232',
             filter_by: 'match',
@@ -93,7 +92,7 @@ describe('filter', () => {
         const testDocs = testData;
         testDocs[1].ip = '8.8.8.8';
 
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'ip',
             value: '28.127.246.232',
             filter_by: 'match',
@@ -105,7 +104,7 @@ describe('filter', () => {
     });
 
     it('should filter docs with value that match regex', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'name',
             value: '^jo.*',
             filter_by: 'regex',
@@ -117,7 +116,7 @@ describe('filter', () => {
     });
 
     it('should return docs with value that match regex if invert true and regex_flags to i to ignore case', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'name',
             value: '^jo.*',
             filter_by: 'regex',
@@ -130,7 +129,7 @@ describe('filter', () => {
     });
 
     it('should return docs with value that match regex if invert true and regex_args using the default', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'name',
             value: '^Jo.*',
             regex_flags: '',
@@ -144,7 +143,7 @@ describe('filter', () => {
     });
 
     it('should return docs with an ip value not in the range', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'ip',
             value: '28.127.246.0/26',
             filter_by: 'ip_range',
@@ -155,7 +154,7 @@ describe('filter', () => {
     });
 
     it('should return docs with an ip value in the given range and invert is true', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'ip',
             value: '28.127.246.0/26',
             filter_by: 'ip_range',
@@ -167,7 +166,7 @@ describe('filter', () => {
     });
 
     it('should return docs without matching values for an array of values', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'ip',
             value: ['28.127.246.232', '4.17.14.18'],
             filter_by: 'match'
@@ -178,7 +177,7 @@ describe('filter', () => {
     });
 
     it('should return docs that match and arrary values if invert is true', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'ip',
             value: ['28.127.246.232', '4.17.14.18'],
             filter_by: 'match',
@@ -190,7 +189,7 @@ describe('filter', () => {
     });
 
     it('should filter docs that match regex for an array of values', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'name',
             value: ['^jo.*', '^g.*'],
             filter_by: 'regex',
@@ -201,8 +200,8 @@ describe('filter', () => {
         expect(results.length).toBe(2);
     });
 
-    it('should filter docs that match regex for an array of values', async () => {
-        const harness = await makeTest({
+    it('should filter docs that match regex for an array of values with invert', async () => {
+        harness = await makeTest({
             field: 'name',
             value: ['^jo.*', '^g.*'],
             filter_by: 'regex',
@@ -215,7 +214,7 @@ describe('filter', () => {
     });
 
     it('should return docs with an ip value outside of all ranges of array of cidr values', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'ip',
             value: ['28.127.246.0/26', '4.17.0.0/17'],
             filter_by: 'ip_range',
@@ -226,7 +225,7 @@ describe('filter', () => {
     });
 
     it('should return docs with an ip value in any of the array of ip ranges and invert is true', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'ip',
             value: ['28.127.246.0/26', '4.17.0.0/16'],
             filter_by: 'ip_range',
@@ -237,11 +236,11 @@ describe('filter', () => {
         expect(results.length).toBe(3);
     });
 
-    it('should be able to filter array field values', async () => {
+    it('should be able to filter array field values by regex', async () => {
         testData[0].name = ['bob', 'foo', 'man'];
         testData[2].name = ['herm', 'max', 'bob'];
 
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'name',
             value: 'bob',
             filter_by: 'match',
@@ -257,7 +256,7 @@ describe('filter', () => {
         testData[0].name = ['bob', 'foo', 'man'];
         testData[2].name = ['herm', 'max', 'bob'];
 
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'name',
             value: 'grog',
             filter_by: 'match',
@@ -271,7 +270,7 @@ describe('filter', () => {
         testData[0].name = ['bob', 'foo', 'man'];
         testData[2].name = ['herm', 'max', 'bob'];
 
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'name',
             value: 'bob',
             filter_by: 'match',
@@ -289,70 +288,7 @@ describe('filter', () => {
         testData[0].name = ['bob', 'foo', 'man'];
         testData[2].name = ['herm', 'max', 'bob'];
 
-        const harness = await makeTest({
-            field: 'name',
-            value: 'grog',
-            filter_by: 'match',
-            invert: true
-        });
-        const results = await harness.runSlice(testData);
-
-        expect(results.length).toBe(0);
-    });
-
-    it('should be able to filter array field values', async () => {
-        testData[0].name = ['bob', 'foo', 'man'];
-        testData[2].name = ['herm', 'max', 'bob'];
-
-        const harness = await makeTest({
-            field: 'name',
-            value: 'bob',
-            filter_by: 'match',
-        });
-        const results = await harness.runSlice(testData);
-
-        expect(results.length).toBe(2);
-        expect(results[0]._key).toBe(1);
-        expect(results[1]._key).toBe(4);
-    });
-
-    it('should return everything if no match', async () => {
-        testData[0].name = ['bob', 'foo', 'man'];
-        testData[2].name = ['herm', 'max', 'bob'];
-
-        const harness = await makeTest({
-            field: 'name',
-            value: 'grog',
-            filter_by: 'match',
-        });
-        const results = await harness.runSlice(testData);
-
-        expect(results.length).toBe(5);
-    });
-
-    it('should be able to keep array field values if invert is true', async () => {
-        testData[0].name = ['bob', 'foo', 'man'];
-        testData[2].name = ['herm', 'max', 'bob'];
-
-        const harness = await makeTest({
-            field: 'name',
-            value: 'bob',
-            filter_by: 'match',
-            invert: true
-        });
-        const results = await harness.runSlice(testData);
-
-        expect(results.length).toBe(3);
-        expect(results[0]._key).toBe(0);
-        expect(results[1]._key).toBe(2);
-        expect(results[2]._key).toBe(3);
-    });
-
-    it('should return empty array if no match and invert it true', async () => {
-        testData[0].name = ['bob', 'foo', 'man'];
-        testData[2].name = ['herm', 'max', 'bob'];
-
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'name',
             value: 'grog',
             filter_by: 'match',
@@ -368,7 +304,7 @@ describe('filter', () => {
         testData[2].name = ['herm', 'max', 'bob'];
         testData[3].name = ['foo', 'man', 'cow'];
 
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'name',
             value: 'foo',
             array_index: 1,
@@ -384,7 +320,7 @@ describe('filter', () => {
         testData[2].name = ['herm', 'max', 'bob'];
         testData[3].name = ['foo', 'man', 'cow'];
 
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'name',
             value: 'foo',
             array_index: 0,
@@ -402,7 +338,7 @@ describe('filter', () => {
         testData[2].name = ['herm', 'max', 'bob'];
         testData[3].name = ['foo', 'man', 'cow'];
 
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'name',
             value: 'foo',
             array_index: 2,
@@ -418,7 +354,7 @@ describe('filter', () => {
         testData[2].name = ['herm', 'max', 'bob'];
         testData[3].name = ['foo', 'man', 'cow'];
 
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'name',
             value: 'foo',
             array_index: 2,
@@ -434,7 +370,7 @@ describe('filter', () => {
         testData[0].name = ['bob', 'foo', 'man'];
         testData[2].name = ['herm', 'max', 'bob'];
 
-        const harness = await makeTest({
+        harness = await makeTest({
             field: 'name',
             value: 'foo',
             array_index: 200,
@@ -470,7 +406,7 @@ describe('filter', () => {
         ];
 
         it('should filter by validator args', async () => {
-            const harness = await makeTest({
+            harness = await makeTest({
                 field: 'number',
                 filter_by: 'validator',
                 data_mate_function: 'inNumberRange',
@@ -487,9 +423,9 @@ describe('filter', () => {
 
             const keys = results.map((i) => i._key);
 
-            expect(keys.includes(2));
-            expect(keys.includes(4));
-            expect(keys.includes(5));
+            expect(keys.includes(2)).toBeTrue();
+            expect(keys.includes(4)).toBeTrue();
+            expect(keys.includes(5)).toBeTrue();
         });
     });
 
@@ -519,7 +455,7 @@ describe('filter', () => {
         ];
 
         it('should filter docs based on nested values', async () => {
-            const harness = await makeTest({
+            harness = await makeTest({
                 field: 'boundary.type',
                 filter_by: 'match',
                 value: [
@@ -543,7 +479,7 @@ describe('filter', () => {
         });
 
         it('should return docs based on nested values if invert is true', async () => {
-            const harness = await makeTest({
+            harness = await makeTest({
                 field: 'boundary.type',
                 filter_by: 'match',
                 value: [
@@ -600,7 +536,7 @@ describe('filter', () => {
         ];
 
         it('should filter doc based on size', async () => {
-            const harness = await makeTest({
+            harness = await makeTest({
                 field: 'doc',
                 filter_by: 'size',
                 value: 100
@@ -619,7 +555,7 @@ describe('filter', () => {
         });
 
         it('should return docs over filter size', async () => {
-            const harness = await makeTest({
+            harness = await makeTest({
                 field: 'doc',
                 filter_by: 'size',
                 value: 100,
@@ -649,7 +585,7 @@ describe('filter', () => {
         });
 
         it('should filter by field size', async () => {
-            const harness = await makeTest({
+            harness = await makeTest({
                 field: 'name',
                 filter_by: 'size',
                 value: 10,
@@ -704,7 +640,7 @@ describe('filter', () => {
         ];
 
         it('should filter correctly if exception_rules is undefined', async () => {
-            const harness = await makeTest({
+            harness = await makeTest({
                 field: 'name',
                 value: 'ran'
             });
@@ -725,7 +661,7 @@ describe('filter', () => {
         });
 
         it('should allow for records that match the exception to bypass filter', async () => {
-            const harness = await makeTest({
+            harness = await makeTest({
                 field: 'name',
                 value: 'ran',
                 exception_rules: [
@@ -754,7 +690,7 @@ describe('filter', () => {
         });
 
         it('should allow for records that match any exception rules to bypass filter', async () => {
-            const harness = await makeTest({
+            harness = await makeTest({
                 field: 'name',
                 value: 'ran',
                 exception_rules: [
@@ -789,7 +725,7 @@ describe('filter', () => {
         });
 
         it('should handle a regex in the exception rules', async () => {
-            const harness = await makeTest({
+            harness = await makeTest({
                 field: 'name',
                 value: 'ran',
                 exception_rules: [
@@ -865,7 +801,7 @@ describe('filter', () => {
         ];
 
         it('should handle an array of fields', async () => {
-            const harness = await makeTest({
+            harness = await makeTest({
                 field: ['name', 'last_name'],
                 value: 'ray'
             });
@@ -888,7 +824,7 @@ describe('filter', () => {
         });
 
         it('should handle an array of fields with invert set to true', async () => {
-            const harness = await makeTest({
+            harness = await makeTest({
                 field: ['name', 'last_name'],
                 value: 'ray',
                 invert: true

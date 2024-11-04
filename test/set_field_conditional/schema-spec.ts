@@ -5,7 +5,7 @@ describe('set_field_conditional schema', () => {
     let harness: WorkerTestHarness;
     const name = 'set_field_conditional';
 
-    async function makeSchema(config:  Record<string, any> = {}): Promise<OpConfig> {
+    async function makeSchema(config: Record<string, any> = {}): Promise<OpConfig> {
         const opConfig = Object.assign({}, { _op: name }, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 

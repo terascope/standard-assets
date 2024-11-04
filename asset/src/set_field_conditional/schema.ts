@@ -12,9 +12,9 @@ export default class Schema extends ConvictSchema<SetFieldConditionalConfig> {
             check_values: {
                 default: [],
                 doc: 'Value of the field',
-                format: (val: unknown) =>  {
+                format: (val: unknown) => {
                     if (!Array.isArray(val)) {
-                        throw new Error('Parameter "check_values" must be an array')
+                        throw new Error('Parameter "check_values" must be an array');
                     }
                 }
             },

@@ -1,4 +1,3 @@
-
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { DataEntity } from '@terascope/job-components';
 import { SampleConfig } from '../../asset/src/sample/interfaces.js';
@@ -23,7 +22,7 @@ describe('sample', () => {
     });
 
     it('with default settings, should return empty array from empty array', async () => {
-        const harness = await makeTest();
+        harness = await makeTest();
         const results = await harness.runSlice([]);
 
         expect(results).toEqual([]);
@@ -31,7 +30,7 @@ describe('sample', () => {
 
     it('with default settings, should return all the data', async () => {
         const data = makeData(10);
-        const harness = await makeTest();
+        harness = await makeTest();
         const results = await harness.runSlice(data);
 
         expect(results.length).toEqual(10);
@@ -39,7 +38,7 @@ describe('sample', () => {
 
     it('with 0%, should return all the data', async () => {
         const data = makeData(10);
-        const harness = await makeTest({ percentage: 0 });
+        harness = await makeTest({ percentage: 0 });
         const results = await harness.runSlice(data);
 
         expect(results.length).toEqual(10);
@@ -47,7 +46,7 @@ describe('sample', () => {
 
     it('with 50%, should return half all the data', async () => {
         const data = makeData(10);
-        const harness = await makeTest({ percentage: 50 });
+        harness = await makeTest({ percentage: 50 });
         const results = await harness.runSlice(data);
 
         expect(results.length).toBeLessThan(10);
@@ -56,7 +55,7 @@ describe('sample', () => {
 
     it('with 100%, should return no data', async () => {
         const data = makeData(10);
-        const harness = await makeTest({ percentage: 100 });
+        harness = await makeTest({ percentage: 100 });
         const results = await harness.runSlice(data);
 
         expect(results.length).toEqual(0);
@@ -64,7 +63,7 @@ describe('sample', () => {
 
     it('with large datasets and 95%', async () => {
         const data = makeData(10000);
-        const harness = await makeTest({ percentage: 95 });
+        harness = await makeTest({ percentage: 95 });
         const results = await harness.runSlice(data);
 
         expect(results.length).toBeLessThan(600);
@@ -73,7 +72,7 @@ describe('sample', () => {
 
     it('with large datasets and 50%', async () => {
         const data = makeData(10000);
-        const harness = await makeTest({ percentage: 50 });
+        harness = await makeTest({ percentage: 50 });
         const results = await harness.runSlice(data);
 
         expect(results.length).toBeLessThan(5200);
@@ -82,19 +81,18 @@ describe('sample', () => {
 
     it('with shuffle set to true, will move records around', async () => {
         const data = makeData(100);
-        const harness = await makeTest({ shuffle: true });
+        harness = await makeTest({ shuffle: true });
         const results = await harness.runSlice(data);
 
         expect(results).toHaveLength(100);
         expect(getKeys(data) !== getKeys(results)).toBe(true);
-    })
-
+    });
 });
 
 interface FakeData {
     _key: number;
     name: string;
-    age: string
+    age: string;
 }
 
 function getKeys(data: FakeData[] | DataEntity<FakeData>[]) {

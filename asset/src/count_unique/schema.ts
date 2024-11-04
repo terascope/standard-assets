@@ -9,7 +9,7 @@ export default class Schema extends ConvictSchema<CountUniqueConfig> {
                 default: [],
                 format: (input: unknown) => {
                     if (!Array.isArray(input) || input.some((val) => !isString(val))) {
-                        throw new Error('Parameter "preserve_fields" must be an array of strings')
+                        throw new Error('Parameter "preserve_fields" must be an array of strings');
                     }
                 }
             },

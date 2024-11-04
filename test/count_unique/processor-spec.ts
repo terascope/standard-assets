@@ -55,7 +55,7 @@ describe('count_unique', () => {
     });
 
     it('generate an empty result if no input data', async () => {
-        const harness = await makeTest();
+        harness = await makeTest();
         const results = await harness.runSlice([]);
 
         expect(results.length).toBe(0);
@@ -63,7 +63,7 @@ describe('count_unique', () => {
 
     it('verify correct counts', async () => {
         const testData = convertToDE(data, 'id');
-        const harness = await makeTest();
+        harness = await makeTest();
 
         const results = await harness.runSlice(testData);
 
@@ -91,10 +91,9 @@ describe('count_unique', () => {
         ];
 
         const testData = convertToDE(test2, '_key');
-        const harness = await makeTest();
+        harness = await makeTest();
 
         const results = await harness.runSlice(testData);
-
 
         expect(results).toEqual([
             { count: 1, _key: 1, type: 0 },
@@ -105,7 +104,7 @@ describe('count_unique', () => {
 
     it('verify correct counts when using a non-key field', async () => {
         const testData = convertToDE(data, 'id');
-        const harness = await makeTest({ field: 'name' });
+        harness = await makeTest({ field: 'name' });
 
         const results = await harness.runSlice(testData);
 

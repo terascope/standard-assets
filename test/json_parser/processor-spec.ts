@@ -1,4 +1,3 @@
-
 import { cloneDeep, DataEntity, isString } from '@terascope/utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { OpConfig } from '@terascope/job-components';
@@ -23,9 +22,8 @@ describe('json_parser', () => {
         if (harness) await harness.shutdown();
     });
 
-
     it('should return empty array if input is an empty array', async () => {
-        const harness = await makeTest();
+        harness = await makeTest();
         const results = await harness.runSlice([]);
 
         expect(results.length).toBe(0);
@@ -45,7 +43,7 @@ describe('json_parser', () => {
 
         const rawData = makeRawDataEntities(cloneDeep(data));
 
-        const harness = await makeTest();
+        harness = await makeTest();
         const results = await harness.runSlice(rawData);
 
         expect(results).toEqual(data);
@@ -62,7 +60,7 @@ describe('json_parser', () => {
 
         const rawData = makeRawDataEntities(cloneDeep(data));
 
-        const harness = await makeTest();
+        harness = await makeTest();
         const results = await harness.runSlice(rawData);
 
         expect(results).toEqual([{ _key: 2, name: 'joe' }]);

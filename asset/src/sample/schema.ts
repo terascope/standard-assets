@@ -15,7 +15,7 @@ export default class Schema extends ConvictSchema<SampleConfig> {
             },
             shuffle: {
                 doc: 'Shuffle the output array, otherwise all of the duplicate'
-                     + 'documents are next to their originals.',
+                    + 'documents are next to their originals.',
                 default: false,
                 format: Boolean,
             }

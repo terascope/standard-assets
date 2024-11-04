@@ -9,11 +9,11 @@ export default class Schema extends ConvictSchema<FilterByRequiredFieldConfig> {
                 default: [],
                 format: (val: unknown) => {
                     if (!Array.isArray(val)) {
-                        throw new Error('Parameter "required_fields" must be an array of strings')
+                        throw new Error('Parameter "required_fields" must be an array of strings');
                     }
 
                     if (val.length === 0 || !val.every((i) => isString(i))) {
-                        throw new Error('Parameter "required_fields" cannot be empty and must have all string values')
+                        throw new Error('Parameter "required_fields" cannot be empty and must have all string values');
                     }
                 }
             },

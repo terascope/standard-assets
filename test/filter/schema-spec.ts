@@ -45,10 +45,10 @@ describe('filter schema', () => {
 
         await expect(makeSchema({
             field: 'name',
-                value: 'ran',
-                exception_rules: [
-                    { field: 'favorite_baseball_team', regex: true }
-                ]
+            value: 'ran',
+            exception_rules: [
+                { field: 'favorite_baseball_team', regex: true }
+            ]
         })).toReject();
 
         await expect(makeSchema({ field: 'someField' })).toResolve();

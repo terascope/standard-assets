@@ -1,4 +1,4 @@
-import  { BatchProcessor, DataEntity } from '@terascope/job-components';
+import { BatchProcessor, DataEntity } from '@terascope/job-components';
 
 /**
    Expects an array of data entities and attempts to transform the buffer data to json
@@ -14,7 +14,8 @@ export default class JSONParser extends BatchProcessor {
     onBatch(docArray: DataEntity[]) {
         return docArray.reduce<DataEntity[]>((parsedDocs, doc) => {
             try {
-                const dataString = Buffer.from(doc.getRawData()).toString('utf8').trim();
+                const dataString = Buffer.from(doc.getRawData()).toString('utf8')
+                    .trim();
 
                 const toJson = JSON.parse(dataString);
 

@@ -1,5 +1,5 @@
 import {
-    subtractFromDate, addToDate, getTime, getUnixTime
+    subtractFromDate, addToDate, getTime
 } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { DateGuardConfig } from '../../asset/src/date_guard/interfaces.js';
@@ -7,7 +7,9 @@ import { DateGuardConfig } from '../../asset/src/date_guard/interfaces.js';
 const nowDate = new Date();
 const currentTimeMilliSeconds = getTime(nowDate) as number;
 const currentISO8601 = new Date().toISOString();
-const oneWeekAgoIso8601 = new Date(Number(currentTimeMilliSeconds) - (7 * 24 * 3600 * 1000)).toISOString();
+const oneWeekAgoIso8601 = new Date(
+    Number(currentTimeMilliSeconds) - (7 * 24 * 3600 * 1000)
+).toISOString();
 const veryLongTimeAgo = currentTimeMilliSeconds - (3600 * 24 * 365 * 1000000000 * 1000);
 const farIntoTheFuture = currentTimeMilliSeconds + (3600 * 24 * 365 * 100000000 * 1000);
 
@@ -106,14 +108,14 @@ describe('date_guard', () => {
     });
 
     it('should generate an empty result if no input data', async () => {
-        const harness = await makeTest();
+        harness = await makeTest();
         const results = await harness.runSlice([]);
 
         expect(results.length).toEqual(0);
     });
 
     it('should return only documents that have a date within the date guards (short range)', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             date_field: 'timestamp',
             limit_past: '2week',
             limit_future: '2day'
@@ -124,7 +126,7 @@ describe('date_guard', () => {
     });
 
     it('should return only documents that have a date within the date guards (large range)', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             date_field: 'timestamp',
             limit_past: '1000Y',
             limit_future: '100000day'
@@ -143,7 +145,7 @@ describe('date_guard', () => {
             { timestamp: Date.now(), ip: '223.33.181.51' }
         ];
 
-        const harness = await makeTest({
+        harness = await makeTest({
             date_field: 'timestamp',
             limit_past: '5Y',
             limit_future: '2day'
@@ -170,7 +172,7 @@ describe('date_guard', () => {
             return doc;
         });
 
-        const harness = await makeTest({
+        harness = await makeTest({
             limit_past: new Date(limitPast).toISOString(),
             date_field: 'date'
         });
@@ -192,7 +194,7 @@ describe('date_guard', () => {
             return doc;
         });
 
-        const harness = await makeTest({
+        harness = await makeTest({
             limit_future: new Date(limitFuture).toISOString(),
             date_field: 'date'
         });

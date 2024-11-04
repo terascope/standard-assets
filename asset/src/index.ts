@@ -69,7 +69,7 @@ import HashRouter from './hash_router/processor.js';
 import HashRouterSchema from './hash_router/schema.js';
 
 import JSONParser from './json_parser/processor.js';
-import JSONParserSchema from './json_parser/schema.js'
+import JSONParserSchema from './json_parser/schema.js';
 
 import KeyRouter from './key_router/processor.js';
 import KeyRouterSchema from './key_router/schema.js';
@@ -93,7 +93,7 @@ import RoutedSender from './routed_sender/processor.js';
 import RoutedSenderSchema from './routed_sender/schema.js';
 
 import Sample from './sample/processor.js';
-import SampleSchema from './sample/schema.js'
+import SampleSchema from './sample/schema.js';
 
 import Selection from './selection/processor.js';
 import SelectionSchema from './selection/schema.js';

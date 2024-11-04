@@ -29,7 +29,7 @@ import { SampleConfig } from './interfaces.js';
  */
 
 export default class Sample extends BatchProcessor<SampleConfig> {
-    async onBatch(dataArray:DataEntity[]) {
+    async onBatch(dataArray: DataEntity[]) {
         const outData: DataEntity[] = [];
 
         for (const doc of dataArray) {

@@ -53,14 +53,14 @@ describe('remove_empty_fields should', () => {
     ];
 
     it('generate an empty result if no input data', async () => {
-        const harness = await makeTest();
+        harness = await makeTest();
         const results = await harness.runSlice([]);
 
         expect(results.length).toBe(0);
     });
 
     it('remove empty fields from records', async () => {
-        const harness = await makeTest();
+        harness = await makeTest();
         const results = await harness.runSlice(testData);
 
         expect(results.length).toBe(4);

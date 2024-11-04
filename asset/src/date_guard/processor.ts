@@ -90,7 +90,7 @@ export default class DateGuard extends FilterProcessor<DateGuardConfig> {
         return now + (timeLength * this._limitToMilliseconds(timeUnits));
     }
 
-    _parseLimit(limit: string): [number,SecondsKey] {
+    _parseLimit(limit: string): [number, SecondsKey] {
         // gets the number and time unit
         const numPattern = /^[\d]+(\.[\d]+)?/;
         const matchCall = limit.match(numPattern) as RegExpMatchArray;

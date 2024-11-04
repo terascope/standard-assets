@@ -1,5 +1,4 @@
-
-import { DataEntity, cloneDeep } from '@terascope/job-components';
+import { cloneDeep } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { FilterByUnknownFieldsConfig } from '../../asset/src/filter_by_unknown_fields/interfaces.js';
 
@@ -49,20 +48,19 @@ describe('filter_by_unknown_fields', () => {
         return harness;
     }
 
-
     afterEach(async () => {
         if (harness) await harness.shutdown();
     });
 
     it('should return an empty array from an empty array', async () => {
-        const harness = await makeTest();
+        harness = await makeTest();
         const results = await harness.runSlice([]);
 
         expect(results.length).toEqual(0);
     });
 
     it('should return only records that have known fields', async () => {
-        const harness = await makeTest();
+        harness = await makeTest();
         const results = await harness.runSlice(cloneDeep(data));
 
         expect(results).toEqual(
@@ -92,7 +90,7 @@ describe('filter_by_unknown_fields', () => {
     });
 
     it('should return only records that have unknown fields if invert is true', async () => {
-        const harness = await makeTest({ invert: true });
+        harness = await makeTest({ invert: true });
         const results = await harness.runSlice(cloneDeep(data));
 
         expect(results).toEqual([

@@ -63,7 +63,6 @@ export default class Filter extends FilterProcessor<FilterConfig> {
     }
 
     _getDocValue(doc: DataEntity) {
-
         if (Array.isArray(this.opConfig.field)) {
             return this.opConfig.field.map((f) => get(doc, f));
         }
@@ -116,7 +115,7 @@ export default class Filter extends FilterProcessor<FilterConfig> {
     }
 
     validator(docValue: any) {
-        const fn =  get(FieldValidator, this.opConfig.data_mate_function as string);
+        const fn = get(FieldValidator, this.opConfig.data_mate_function as string);
         return fn(docValue, {}, this.opConfig.data_mate_args);
     }
 

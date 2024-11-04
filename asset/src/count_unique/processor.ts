@@ -22,7 +22,7 @@ export default class CountUnique extends BatchProcessor<CountUniqueConfig> {
                     results[key][field] = doc[field];
                 }
             });
-        };
+        }
 
         return Object.values(results);
     }

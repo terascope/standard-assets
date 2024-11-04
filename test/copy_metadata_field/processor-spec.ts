@@ -47,7 +47,7 @@ describe('copy_metadata_field', () => {
     });
 
     it('should generate an empty result if no input data', async () => {
-        const harness = await makeTest();
+        harness = await makeTest();
         const results = await harness.runSlice([]);
 
         expect(results.length).toBe(0);
@@ -55,7 +55,7 @@ describe('copy_metadata_field', () => {
 
     it('by default, it should copy the metadata _key to the _key property on the doc', async () => {
         const destination = 'testField';
-        const harness = await makeTest({ destination });
+        harness = await makeTest({ destination });
         const results = await harness.runSlice(data);
 
         results.forEach((result) => {
@@ -63,11 +63,11 @@ describe('copy_metadata_field', () => {
         });
     });
 
-    it('it should copy any metadata key specified', async () => {
+    it('should copy any metadata key specified', async () => {
         const destination = 'testTime';
         const meta_key = '_createTime';
 
-        const harness = await makeTest({ destination, meta_key });
+        harness = await makeTest({ destination, meta_key });
         const results = await harness.runSlice(data);
 
         results.forEach((result) => {

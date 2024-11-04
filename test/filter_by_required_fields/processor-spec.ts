@@ -19,13 +19,12 @@ describe('filter_by_required_fields', () => {
         return harness;
     }
 
-
     afterEach(async () => {
         if (harness) await harness.shutdown();
     });
 
     it('should return empty array from empty values', async () => {
-        const harness = await makeTest();
+        harness = await makeTest();
         const results = await harness.runSlice([]);
 
         expect(results.length).toBe(0);
@@ -80,7 +79,7 @@ describe('filter_by_required_fields', () => {
             }
         ];
 
-        const harness = await makeTest();
+        harness = await makeTest();
         const results = await harness.runSlice(data);
 
         expect(results.length).toBe(2);
@@ -127,7 +126,7 @@ describe('filter_by_required_fields', () => {
             }
         ];
 
-        const harness = await makeTest({
+        harness = await makeTest({
             required_fields: ['age', 'size'],
             filter_type: LogicType.OR
         });
@@ -137,7 +136,7 @@ describe('filter_by_required_fields', () => {
     });
 
     it('can invert the data', async () => {
-        const harness = await makeTest({
+        harness = await makeTest({
             required_fields: ['age', 'size'],
             filter_type: LogicType.OR,
             invert: true
