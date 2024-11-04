@@ -103,9 +103,9 @@ export default class DateGuard extends FilterProcessor<DateGuardConfig> {
         if (this._validTimestamp(date)) {
             const milliDate = this._timeStampToMilliseconds(date);
             if (milliDate === false) return false;
+
             return milliDate >= pastGuard && milliDate <= futureGuard;
         }
-
         return false;
     }
 
@@ -113,7 +113,7 @@ export default class DateGuard extends FilterProcessor<DateGuardConfig> {
         return isValidDate(value);
     }
 
-    _toWholeNumber(value: number | string) {
+    _toWholeNumber(value: Date | string | number) {
         if (isInteger(Number(value))) {
             return value;
         }
@@ -121,7 +121,10 @@ export default class DateGuard extends FilterProcessor<DateGuardConfig> {
         return `${value}`.split('.')[0];
     }
 
-    _timeStampToMilliseconds(date: Date) {
+    _timeStampToMilliseconds(date: Date | string | number) {
+        if (typeof date === 'number' && String(this._toWholeNumber(date)).length < 11) {
+            return getTime(date * 1000);
+        }
         return getTime(date);
     }
 

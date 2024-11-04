@@ -1,11 +1,11 @@
 import { DataEntity } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { FilterFieldConfig, LogicType } from '../../asset/src/filter_by_required_fields/interfaces.js';
+import { FilterByRequiredFieldConfig, LogicType } from '../../asset/src/filter_by_required_fields/interfaces.js';
 
 describe('filter_by_required_fields', () => {
     let harness: WorkerTestHarness;
 
-    async function makeTest(config: Partial<FilterFieldConfig> = {}) {
+    async function makeTest(config: Partial<FilterByRequiredFieldConfig> = {}) {
         const baseConfig = {
             _op: 'filter_by_required_fields',
             required_fields: ['age', 'name', 'size']

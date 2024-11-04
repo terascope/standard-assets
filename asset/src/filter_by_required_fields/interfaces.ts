@@ -5,7 +5,7 @@ export enum LogicType {
     OR = 'or'
 }
 
-export interface FilterFieldConfig extends OpConfig {
+export interface FilterByRequiredFieldConfig extends OpConfig {
     required_fields: string[];
     filter_type: LogicType;
     invert: boolean;

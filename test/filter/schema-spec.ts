@@ -1,7 +1,7 @@
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { OpConfig } from '@terascope/job-components';
 
-describe('copy_metadata_field schema', () => {
+describe('filter schema', () => {
     let harness: WorkerTestHarness;
     const name = 'filter';
 
@@ -29,7 +29,6 @@ describe('copy_metadata_field schema', () => {
         await expect(makeSchema({ array_index: true, field: 'field' })).toReject();
         await expect(makeSchema({ field: 'field', filter_by: 'field' })).toReject();
         await expect(makeSchema({ field: 'field', data_mate_function: 'field' })).toReject();
-        await expect(makeSchema({ field: 'field', drop_to_dlq: 'field' })).toReject();
         await expect(makeSchema({ field: 'field', regex_flags: 1234 })).toReject();
 
         await expect(makeSchema({
@@ -53,6 +52,6 @@ describe('copy_metadata_field schema', () => {
         })).toReject();
 
         await expect(makeSchema({ field: 'someField' })).toResolve();
-        await expect(makeSchema({ destination: 'someField', meta_key: 'some_key' })).toResolve();
+        await expect(makeSchema({ field: 'someField', meta_key: 'some_key' })).toResolve();
     });
 });

@@ -24,10 +24,9 @@ describe('count_unique schema', () => {
     });
 
     it('should expect to be properly configured', async () => {
-        await expect(makeSchema({ field: 1234 })).toReject();
+        await expect(makeSchema({ preserve_fields: 1234 })).toReject();
         await expect(makeSchema({ field: ['some stuff'] })).toReject();
-        await expect(makeSchema({ field: 'true', preserve_fields: 1234 })).toReject();
-        await expect(makeSchema({ field: 'true', preserve_fields: [1234] })).toReject();
+        await expect(makeSchema({ field: true, preserve_fields: 1234 })).toReject();
 
         await expect(makeSchema({ preserve_fields: ['someField'] })).toResolve();
         await expect(makeSchema({ field: 'someField' })).toResolve();

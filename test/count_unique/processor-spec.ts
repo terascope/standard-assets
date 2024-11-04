@@ -104,7 +104,6 @@ describe('count_unique', () => {
     });
 
     it('verify correct counts when using a non-key field', async () => {
-        // TODO: check what this does?
         const testData = convertToDE(data, 'id');
         const harness = await makeTest({ field: 'name' });
 

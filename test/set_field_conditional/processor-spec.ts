@@ -41,7 +41,7 @@ describe('set_field_conditional', () => {
 
     async function makeTest(config: Partial<SetFieldConditionalConfig> = {}) {
         const baseConfig = {
-            _op: 'drop_docs',
+            _op: 'set_field_conditional',
         };
         const opConfig = Object.assign({}, baseConfig, config);
         harness = WorkerTestHarness.testProcessor(opConfig);

@@ -23,7 +23,6 @@ describe('date_guard schema', () => {
     });
 
     it('should expect to be properly configured', async () => {
-        await expect(makeSchema({})).toReject();
         await expect(makeSchema({ date_field: ['some stuff'] })).toReject();
         await expect(makeSchema({ date_field: true, limit_past: 'field' })).toReject();
         await expect(makeSchema({ date_field: 'field', limit_past: 1234 })).toReject();

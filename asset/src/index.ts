@@ -19,6 +19,9 @@ import CopyMetadataFieldSchema from './copy_metadata_field/schema.js';
 import CountByField from './count_by_field/processor.js';
 import CountByFieldSchema from './count_by_field/schema.js';
 
+import CountUnique from './count_unique/processor.js';
+import CountUniqueSchema from './count_unique/schema.js';
+
 import DataGeneratorFetcher from './data_generator/fetcher.js';
 import DataGeneratorSchema from './data_generator/schema.js';
 import DataGeneratorSlicer from './data_generator/slicer.js';
@@ -113,9 +116,6 @@ import StdoutSchema from './stdout/schema.js';
 import Transform from './transform/processor.js';
 import TransformSchema from './transform/schema.js';
 
-import Update from './update/processor.js';
-import UpdateSchema from './update/schema.js';
-
 import Window from './window/processor.js';
 import WindowSchema from './window/schema.js';
 
@@ -147,6 +147,10 @@ export const ASSETS = {
     count_by_field: {
         Processor: CountByField,
         Schema: CountByFieldSchema
+    },
+    count_unique: {
+        Processor: CountUnique,
+        Schema: CountUniqueSchema
     },
     data_generator: {
         Fetcher: DataGeneratorFetcher,
@@ -272,10 +276,6 @@ export const ASSETS = {
     transform: {
         Processor: Transform,
         Schema: TransformSchema
-    },
-    update: {
-        Processor: Update,
-        Schema: UpdateSchema
     },
     window: {
         Processor: Window,

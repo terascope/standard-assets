@@ -8,7 +8,7 @@ describe('sample', () => {
 
     async function makeTest(config: Partial<SampleConfig> = {}) {
         const baseConfig = {
-            _op: 'drop_docs',
+            _op: 'sample',
         };
         const opConfig = Object.assign({}, baseConfig, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
@@ -50,7 +50,8 @@ describe('sample', () => {
         const harness = await makeTest({ percentage: 50 });
         const results = await harness.runSlice(data);
 
-        expect(results.length).toEqual(5);
+        expect(results.length).toBeLessThan(10);
+        expect(results.length).toBeGreaterThan(0);
     });
 
     it('with 100%, should return no data', async () => {

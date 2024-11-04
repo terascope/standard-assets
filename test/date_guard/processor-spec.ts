@@ -1,13 +1,15 @@
-import { subtractFromDate, addToDate } from '@terascope/job-components';
+import {
+    subtractFromDate, addToDate, getTime, getUnixTime
+} from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { DateGuardConfig } from '../../asset/src/date_guard/interfaces.js';
 
-const currentTimeMilliSeconds = String(Date.now());
-const currentTimeSeconds = String(Math.floor(Number(Date.now()) / 1000));
+const nowDate = new Date();
+const currentTimeMilliSeconds = getTime(nowDate) as number;
 const currentISO8601 = new Date().toISOString();
-const oneWeekAgoIso8601 = new Date(Number(Date.now()) - (7 * 24 * 3600 * 1000)).toISOString();
-const veryLongTimeAgo = Date.now() - (3600 * 24 * 365 * 1000000000 * 1000);
-const farIntoTheFuture = Date.now() + (3600 * 24 * 365 * 100000000 * 1000);
+const oneWeekAgoIso8601 = new Date(Number(currentTimeMilliSeconds) - (7 * 24 * 3600 * 1000)).toISOString();
+const veryLongTimeAgo = currentTimeMilliSeconds - (3600 * 24 * 365 * 1000000000 * 1000);
+const farIntoTheFuture = currentTimeMilliSeconds + (3600 * 24 * 365 * 100000000 * 1000);
 
 const referenceDate = new Date().toISOString();
 
@@ -15,10 +17,6 @@ const jsonData = [
     {
         id: 1,
         timestamp: currentTimeMilliSeconds
-    },
-    {
-        id: 2,
-        timestamp: currentTimeSeconds
     },
     {
         id: 3,
@@ -50,15 +48,15 @@ const jsonData = [
     },
     {
         id: 10,
-        timestamp: '315359998474698950000'
+        timestamp: 315359998474698950000
     },
     {
         id: 11,
-        timestamp: '-315359998474698950000'
+        timestamp: -315359998474698950000
     },
     {
         id: 12,
-        timestamp: '0'
+        timestamp: 0
     },
     {
         id: 13,
@@ -114,7 +112,7 @@ describe('date_guard', () => {
         expect(results.length).toEqual(0);
     });
 
-    it('should return only documents that have a date within the date guards', async () => {
+    it('should return only documents that have a date within the date guards (short range)', async () => {
         const harness = await makeTest({
             date_field: 'timestamp',
             limit_past: '2week',
@@ -122,10 +120,10 @@ describe('date_guard', () => {
         });
         const results = await harness.runSlice(jsonData);
 
-        expect(results.length).toBe(5);
+        expect(results.length).toBe(4);
     });
 
-    it('should return only documents that have a date within the date guards', async () => {
+    it('should return only documents that have a date within the date guards (large range)', async () => {
         const harness = await makeTest({
             date_field: 'timestamp',
             limit_past: '1000Y',

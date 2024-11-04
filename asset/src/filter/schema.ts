@@ -46,7 +46,11 @@ export default class Schema extends ConvictSchema<FilterConfig> {
             drop_to_dlq: {
                 doc: 'Filtered docs are sent to the kafka dead letter queue',
                 default: false,
-                format: 'Boolean'
+                format: (val: unknown) => {
+                    if (!isBoolean(val)) {
+                        throw new Error('Paramter "drop_to_dlq" should be a boolean')
+                    }
+                }
             },
             regex_flags: {
                 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#advanced_searching_with_flags
@@ -83,7 +87,12 @@ export default class Schema extends ConvictSchema<FilterConfig> {
 }
 
 function fieldCheck(val: unknown) {
-    if (!isString(val) || (Array.isArray(val) && val.some((v) => !isString(v)))) {
+    if (Array.isArray(val)) {
+        if (val.some((v) => !isString(v))) {
+            throw new Error(`Field must be a string or array of strings, received ${val}`);
+        }
+        return
+    } else if (!isString(val)) {
         throw new Error(`Field must be a string or array of strings, received ${val}`);
     }
 }

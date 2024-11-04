@@ -1,7 +1,7 @@
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { OpConfig } from '@terascope/job-components';
 
-describe('drop_docs schema', () => {
+describe('sample schema', () => {
     let harness: WorkerTestHarness;
     const name = 'sample';
 
@@ -33,6 +33,5 @@ describe('drop_docs schema', () => {
         await expect(makeSchema({ percentage: 50 })).toResolve();
         await expect(makeSchema({ shuffle: true })).toResolve();
         await expect(makeSchema({ percentage: 50, shuffle: true })).toResolve();
-
     });
 });

@@ -1,7 +1,7 @@
 import { FilterProcessor, DataEntity } from '@terascope/job-components';
-import { FilterFieldConfig, LogicType } from './interfaces.js';
+import { FilterByRequiredFieldConfig, LogicType } from './interfaces.js';
 
-export default class FilterByRequiredFields extends FilterProcessor<FilterFieldConfig> {
+export default class FilterByRequiredFields extends FilterProcessor<FilterByRequiredFieldConfig> {
     filter(doc: DataEntity) {
         const keep = this._keepDoc(doc);
 

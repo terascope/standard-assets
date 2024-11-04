@@ -9,9 +9,7 @@ import {
     TSError, DataEntity, isEmpty, AnyObject
 } from '@terascope/utils';
 import { RoutedSender } from '@terascope/standard-asset-apis';
-import {
-    RouteSenderConfig
-} from './interfaces.js';
+import { RouteSenderConfig } from './interfaces.js';
 
 type SenderFactoryAPI = APIFactoryRegistry<RouteSenderAPI, AnyObject>;
 
@@ -78,8 +76,8 @@ export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderCon
 
     async onBatch(batch: DataEntity[]): Promise<DataEntity[]> {
         await this.routedSender.route(batch);
-
         await this.routedSender.send();
+
         return batch;
     }
 }

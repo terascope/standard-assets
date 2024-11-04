@@ -47,7 +47,7 @@ describe('filter', () => {
     }
 
     beforeEach(() => {
-        testData = testData;
+        testData = cloneDeep(incoming);
     })
 
     afterEach(async () => {
@@ -109,7 +109,7 @@ describe('filter', () => {
             field: 'name',
             value: '^jo.*',
             filter_by: 'regex',
-            regex_flags: 'i'
+            regex_flags: 'i',
         });
         const results = await harness.runSlice(testData);
 
@@ -121,7 +121,8 @@ describe('filter', () => {
             field: 'name',
             value: '^jo.*',
             filter_by: 'regex',
-            regex_flags: 'i'
+            regex_flags: 'i',
+            invert: true
         });
         const results = await harness.runSlice(testData);
 
@@ -652,7 +653,6 @@ describe('filter', () => {
                 field: 'name',
                 filter_by: 'size',
                 value: 10,
-                invert: true
             });
             const results = await harness.runSlice(myTestData);
 

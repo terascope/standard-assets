@@ -3,7 +3,6 @@ import { cloneDeep, DataEntity, isString } from '@terascope/utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { OpConfig } from '@terascope/job-components';
 
-
 describe('json_parser', () => {
     let harness: WorkerTestHarness;
 
