@@ -1,5 +1,4 @@
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { DataEntity } from '@terascope/job-components';
 import { SampleExactConfig } from '../../asset/src/sample_exact/interfaces.js';
 
 describe('sample_exact', () => {
@@ -36,16 +35,16 @@ describe('sample_exact', () => {
         expect(results.length).toEqual(10);
     });
 
-    it('it shuffles the data', async () => {
+    it('shuffles the data', async () => {
         const data = makeData(10);
         harness = await makeTest();
         const results = await harness.runSlice(data);
 
         const outOfOrder = results.some((record, index) => {
             return record._key !== data[index]._key;
-        })
+        });
 
-        expect(outOfOrder).toBeTrue()
+        expect(outOfOrder).toBeTrue();
     });
 
     it('with 0%, should return none of the data', async () => {
@@ -101,10 +100,6 @@ interface FakeData {
     _key: number;
     name: string;
     age: string;
-}
-
-function getKeys(data: FakeData[] | DataEntity<FakeData>[]) {
-    return data.map((doc) => doc._key).join('');
 }
 
 function makeData(n: number): FakeData[] {

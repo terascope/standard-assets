@@ -1,5 +1,4 @@
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { DataEntity } from '@terascope/job-components';
 import { SampleRandomConfig } from '../../asset/src/sample_random/interfaces.js';
 
 describe('sample_random', () => {
@@ -84,10 +83,6 @@ interface FakeData {
     _key: number;
     name: string;
     age: string;
-}
-
-function getKeys(data: FakeData[] | DataEntity<FakeData>[]) {
-    return data.map((doc) => doc._key).join('');
 }
 
 function makeData(n: number): FakeData[] {

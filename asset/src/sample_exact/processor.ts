@@ -1,4 +1,6 @@
-import { BatchProcessor, Context, DataEntity, ExecutionConfig, random } from '@terascope/job-components';
+import {
+    BatchProcessor, Context, DataEntity, ExecutionConfig
+} from '@terascope/job-components';
 import { SampleExactConfig } from './interfaces.js';
 
 /* sample_exact.js - given an array of JSON documents will return an array containing
@@ -36,7 +38,7 @@ export default class SampleExact extends BatchProcessor<SampleExactConfig> {
 
     async onBatch(dataArray: DataEntity[]) {
         this._shuffleArray(dataArray);
-        const length = Math.floor(dataArray.length * this.percentage)
+        const length = Math.floor(dataArray.length * this.percentage);
         return dataArray.slice(0, length);
     }
 
