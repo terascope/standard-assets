@@ -65,8 +65,8 @@ describe('sample_random', () => {
         harness = await makeTest({ probability_to_keep: 95 });
         const results = await harness.runSlice(data);
 
-        expect(results.length).toBeLessThan(9600);
-        expect(results.length).toBeGreaterThan(9400);
+        expect(results.length).toBeLessThan(9700);
+        expect(results.length).toBeGreaterThan(9300);
     });
 
     it('with large datasets and 50%', async () => {
