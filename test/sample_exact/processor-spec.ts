@@ -1,13 +1,13 @@
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { DataEntity } from '@terascope/job-components';
-import { SampleConfig } from '../../asset/src/sample/interfaces.js';
+import { SampleExactConfig } from '../../asset/src/sample_exact/interfaces.js';
 
-describe('sample', () => {
+describe('sample_exact', () => {
     let harness: WorkerTestHarness;
 
-    async function makeTest(config: Partial<SampleConfig> = {}) {
+    async function makeTest(config: Partial<SampleExactConfig> = {}) {
         const baseConfig = {
-            _op: 'sample',
+            _op: 'sample_exact',
         };
         const opConfig = Object.assign({}, baseConfig, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
@@ -36,26 +36,45 @@ describe('sample', () => {
         expect(results.length).toEqual(10);
     });
 
-    it('with 0%, should return all the data', async () => {
+    it('it shuffles the data', async () => {
         const data = makeData(10);
-        harness = await makeTest({ percentage: 0 });
+        harness = await makeTest();
+        const results = await harness.runSlice(data);
+
+        const outOfOrder = results.some((record, index) => {
+            return record._key !== data[index]._key;
+        })
+
+        expect(outOfOrder).toBeTrue()
+    });
+
+    it('with 0%, should return none of the data', async () => {
+        const data = makeData(10);
+        harness = await makeTest({ percent_kept: 0 });
+        const results = await harness.runSlice(data);
+
+        expect(results.length).toEqual(0);
+    });
+
+    it('with 50%, should return half all the data', async () => {
+        const data = makeData(10);
+        harness = await makeTest({ percent_kept: 50 });
+        const results = await harness.runSlice(data);
+
+        expect(results.length).toEqual(5);
+    });
+
+    it('with 100%, should return all data', async () => {
+        const data = makeData(10);
+        harness = await makeTest({ percent_kept: 100 });
         const results = await harness.runSlice(data);
 
         expect(results.length).toEqual(10);
     });
 
-    it('with 50%, should return half all the data', async () => {
-        const data = makeData(10);
-        harness = await makeTest({ percentage: 50 });
-        const results = await harness.runSlice(data);
-
-        expect(results.length).toBeLessThan(10);
-        expect(results.length).toBeGreaterThan(0);
-    });
-
-    it('with 100%, should return no data', async () => {
-        const data = makeData(10);
-        harness = await makeTest({ percentage: 100 });
+    it('with small data, and a high enough percentage, will return 0', async () => {
+        const data = makeData(3);
+        harness = await makeTest({ percent_kept: 25 });
         const results = await harness.runSlice(data);
 
         expect(results.length).toEqual(0);
@@ -63,29 +82,18 @@ describe('sample', () => {
 
     it('with large datasets and 95%', async () => {
         const data = makeData(10000);
-        harness = await makeTest({ percentage: 95 });
+        harness = await makeTest({ percent_kept: 95 });
         const results = await harness.runSlice(data);
 
-        expect(results.length).toBeLessThan(600);
-        expect(results.length).toBeGreaterThan(400);
+        expect(results.length).toEqual(9500);
     });
 
     it('with large datasets and 50%', async () => {
         const data = makeData(10000);
-        harness = await makeTest({ percentage: 50 });
+        harness = await makeTest({ percent_kept: 50 });
         const results = await harness.runSlice(data);
 
-        expect(results.length).toBeLessThan(5200);
-        expect(results.length).toBeGreaterThan(4800);
-    });
-
-    it('with shuffle set to true, will move records around', async () => {
-        const data = makeData(100);
-        harness = await makeTest({ shuffle: true });
-        const results = await harness.runSlice(data);
-
-        expect(results).toHaveLength(100);
-        expect(getKeys(data) !== getKeys(results)).toBe(true);
+        expect(results.length).toEqual(5000);
     });
 });
 

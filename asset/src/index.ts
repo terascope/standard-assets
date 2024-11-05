@@ -92,8 +92,11 @@ import RemoveKeySchema from './remove_key/schema.js';
 import RoutedSender from './routed_sender/processor.js';
 import RoutedSenderSchema from './routed_sender/schema.js';
 
-import Sample from './sample/processor.js';
-import SampleSchema from './sample/schema.js';
+import SampleExact from './sample_exact/processor.js';
+import SampleExactSchema from './sample_exact/schema.js';
+
+import SampleRandom from './sample_random/processor.js';
+import SampleRandomSchema from './sample_random/schema.js';
 
 import Selection from './selection/processor.js';
 import SelectionSchema from './selection/schema.js';
@@ -245,9 +248,13 @@ export const ASSETS = {
         Processor: RoutedSender,
         Schema: RoutedSenderSchema
     },
-    sample: {
-        Processor: Sample,
-        Schema: SampleSchema
+    sample_exact: {
+        Processor: SampleExact,
+        Schema: SampleExactSchema
+    },
+    sample_random: {
+        Processor: SampleRandom,
+        Schema: SampleRandomSchema
     },
     selection: {
         Processor: Selection,
