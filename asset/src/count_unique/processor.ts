@@ -28,8 +28,8 @@ export default class CountUnique extends BatchProcessor<CountUniqueConfig> {
     }
 
     private _getIdentifier(doc: DataEntity): any {
-        if (this.opConfig.field === '_key') {
-            return doc.getMetadata('_key');
+        if (this.opConfig.is_meta_field) {
+            return doc.getMetadata(this.opConfig.field);
         }
 
         return doc[this.opConfig.field];

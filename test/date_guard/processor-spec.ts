@@ -1,6 +1,4 @@
-import {
-    subtractFromDate, addToDate, getTime
-} from '@terascope/job-components';
+import { subtractFromDate, addToDate, getTime } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { DateGuardConfig } from '../../asset/src/date_guard/interfaces.js';
 

@@ -17,6 +17,11 @@ export default class Schema extends ConvictSchema<CountUniqueConfig> {
                 doc: 'field to get count on',
                 default: '_key',
                 format: 'required_String'
+            },
+            is_meta_field: {
+                doc: 'determines if the field to count on lives as a DataEntity meta field or on the record itself',
+                default: true,
+                format: Boolean
             }
         };
     }
