@@ -4,23 +4,6 @@ import {
 } from '@terascope/job-components';
 import { FieldValidator } from '@terascope/data-mate';
 import { FilterConfig, ExceptionRule } from './interfaces.js';
-/*
-    Drops docs if the field value meets the criteria provided by filter_by, field, and value.
-    Filter_by field can be a strict match, regex match, or within an ip range using cidr notation.
-    If invert is true then processor returns objects whose value meets the criteria.
-    Criteria value can be a single item or an array of items.
-
-    Example:
-    ...
-    {
-        "_op": "filter",
-        "field": "field name",
-        "value": "value",
-        "invert": true,
-        "type": "match"
-    },
-    ...
- */
 
 export default class Filter extends FilterProcessor<FilterConfig> {
     functionName: string;
@@ -46,7 +29,7 @@ export default class Filter extends FilterProcessor<FilterConfig> {
 
         const keep = this.opConfig.invert === true ? result : !result;
 
-        if (this.opConfig.drop_to_dlq && keep === false) {
+        if (this.opConfig.filtered_to_dead_letter_queue && keep === false) {
             const err = new Error('Record was rejected');
             this.rejectRecord(doc, err);
         }
@@ -115,8 +98,8 @@ export default class Filter extends FilterProcessor<FilterConfig> {
     }
 
     validator(docValue: any) {
-        const fn = get(FieldValidator, this.opConfig.data_mate_function as string);
-        return fn(docValue, {}, this.opConfig.data_mate_args);
+        const fn = get(FieldValidator, this.opConfig.validation_function as string);
+        return fn(docValue, {}, this.opConfig.validation_function_args);
     }
 
     size(sizeValue: number) {

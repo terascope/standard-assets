@@ -1,12 +1,12 @@
-# copy_field
+# filter_by_required_fields
 
-The `copy_field` processor copies the source field value to a destination field for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
+The `filter_by_required_fields` processor copies the source field value to a destination field for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
 
 ## Usage
 
-### Copy a field value to another field
+### Find Records that have all three fields with non-nullish values
 
-Example of a job using the `copy_field` processor
+Example of a job using the `filter_by_required_fields` processor
 
 ```json
 {
@@ -22,9 +22,95 @@ Example of a job using the `copy_field` processor
             "_op": "test-reader"
         },
         {
-            "_op": "copy_field",
-            "source": "name",
-            "destination": "name_again"
+            "_op": "filter_by_required_fields",
+            "required_fields": ["age", "name", "size"],
+            "filter_type": "AND"
+        }
+    ]
+}
+
+```
+Example of the data and the expected results
+
+```javascript
+ const data = [
+    {
+        age: 20,
+        name: 'bob1',
+        size: 10
+    },
+    {
+        name: 'bob2',
+        size: 11
+    },
+    {
+        age: 21,
+        size: 12
+    },
+    {
+        age: 22,
+        name: 'bob3',
+    },
+    {
+        goop: true
+    },
+    {
+        age: undefined,
+        name: 'bob4',
+        size: 13
+    },
+    {
+        age: 23,
+        name: 'NA',
+        size: 14
+    },
+    {
+        age: 24,
+        name: 'bob5',
+        size: ''
+    },
+    {
+        age: 25,
+        name: 'bob6',
+        size: null
+    },
+    {
+        age: 26,
+        name: 'bob7',
+        size: 15
+    }
+];
+
+const results = await processor.run(data);
+
+results === [
+    { age: 20, name: 'bob1', size: 10 },
+    { age: 26, name: 'bob7', size: 15 }
+]
+```
+
+### Find Records that neither have
+
+Example of a job using the `filter_by_required_fields` processor
+
+```json
+{
+    "name" : "testing",
+    "workers" : 1,
+    "slicers" : 1,
+    "lifecycle" : "once",
+    "assets" : [
+        "standard"
+    ],
+    "operations" : [
+        {
+            "_op": "test-reader"
+        },
+        {
+            "_op": "filter_by_required_fields",
+            "required_fields": ["age", "size"],
+            "filter_type": "OR",
+            "invert": true
         }
     ]
 }
@@ -34,18 +120,40 @@ Example of the data and the expected results
 
 ```javascript
 const data = [
-    DataEntity.make({ name: 'lilly', otherField: 1 }),
-    DataEntity.make({ name: 'willy', otherField: 2  }),
-    DataEntity.make({ name: 'billy', otherField: 3  }),
-    DataEntity.make({ name: 'dilly', otherField: 4  }),
-]
+    { age: 20, name: 'bob1', size: 10 },
+    { name: 'bob2' },
+    {
+        age: 21,
+        size: 12
+    },
+    {
+        age: 22,
+        name: 'bob3',
+    },
+    {
+        goop: true,
+        name: 'bob',
+        date: 'sometime'
+    },
+    {
+        age: 25,
+        name: 'bob6',
+        size: null
+    },
+    {
+        age: null,
+        name: 'bob7',
+        size: null
+    }
+];
 
 const results = await processor.run(data);
 
-DataEntity.make({ name: 'lilly', name_again: 'lilly', otherField: 1 }),
-DataEntity.make({ name: 'willy', name_again: 'willy', otherField: 2  }),
-DataEntity.make({ name: 'billy', name_again: 'billy', otherField: 3  }),
-DataEntity.make({ name: 'dilly', name_again: 'dilly', otherField: 4  }),
+results === [
+    { name: 'bob2' },
+    { goop: true, name: 'bob', date: 'sometime' },
+    { age: null, name: 'bob7', size: null }
+]
 ```
 
 ## Parameters
@@ -53,6 +161,6 @@ DataEntity.make({ name: 'dilly', name_again: 'dilly', otherField: 4  }),
 | Configuration | Description                                                   | Type   | Notes                        |
 | ------------- | ------------------------------------------------------------- | ------ | ---------------------------- |
 | _op           | Name of operation, it must reflect the exact name of the file | String | required |
-| source         | Name of field to copy the value from | required, no default |
-| destination    | Name of field to copy the value to | required, no default |
-| delete_source  | Option to delete the source field once the value is copied to the destination field| optional, defaults to `false` |
+| required_fields | Array of fields that must be present and have a non-null value | required, no default |
+| filter_type   | AND or OR, if AND then every field is required, if OR just one of the fields | required, defaults to AND |
+| invert  | Set to True to Invert the selection and return records with required fields, defaults to `false` |

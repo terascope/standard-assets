@@ -3,15 +3,7 @@ import {
     Context, DataEntity, isValidDate, isInteger,
     getTime
 } from '@terascope/job-components';
-import { DateGuardConfig } from './interfaces.js';
-
-/*
-    Guards against records that have bad dates, either too far in the past or the future.
-    Returns an array minus the objects that violate the date rules.
-    Acceptable units are minutes, hours, day, week, month, year.
-    Records with dates that are not ISO 8601, linux time
-    (seconds or milliseconds), or date objects will be dropped.
-*/
+import { FilterByDateConfig } from './interfaces.js';
 
 enum DateDirection {
     past = 'past',
@@ -48,11 +40,11 @@ const seconds = {
 
 type SecondsKey = keyof typeof seconds;
 
-export default class DateGuard extends FilterProcessor<DateGuardConfig> {
+export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
     private limit_past?: number;
     private limit_future?: number;
 
-    constructor(context: Context, opConfig: DateGuardConfig, exConfig: ExecutionConfig) {
+    constructor(context: Context, opConfig: FilterByDateConfig, exConfig: ExecutionConfig) {
         super(context, opConfig, exConfig);
 
         if (isISO8601(this.opConfig.limit_past)) {

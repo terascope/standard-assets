@@ -1,12 +1,31 @@
-# copy_field
+# filter
 
-The `copy_field` processor copies the source field value to a destination field for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
+The `filter` processor copies the source field value to a destination field for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
+
+/*
+    Drops docs if the field value meets the criteria provided by filter_by, field, and value.
+    Filter_by field can be a strict match, regex match, or within an ip range using cidr notation.
+    If invert is true then processor returns objects whose value meets the criteria.
+    Criteria value can be a single item or an array of items.
+
+    Example:
+    ...
+    {
+        "_op": "filter",
+        "field": "field name",
+        "value": "value",
+        "invert": true,
+        "type": "match"
+    },
+    ...
+ */
+
 
 ## Usage
 
 ### Copy a field value to another field
 
-Example of a job using the `copy_field` processor
+Example of a job using the `filter` processor
 
 ```json
 {
@@ -22,7 +41,7 @@ Example of a job using the `copy_field` processor
             "_op": "test-reader"
         },
         {
-            "_op": "copy_field",
+            "_op": "filter",
             "source": "name",
             "destination": "name_again"
         }
@@ -53,6 +72,12 @@ DataEntity.make({ name: 'dilly', name_again: 'dilly', otherField: 4  }),
 | Configuration | Description                                                   | Type   | Notes                        |
 | ------------- | ------------------------------------------------------------- | ------ | ---------------------------- |
 | _op           | Name of operation, it must reflect the exact name of the file | String | required |
-| source         | Name of field to copy the value from | required, no default |
+| field         | Name of field to copy the value from | required, no default |
 | destination    | Name of field to copy the value to | required, no default |
+| delete_source  | Option to delete the source field once the value is copied to the destination field| optional, defaults to `false` |
+| delete_source  | Option to delete the source field once the value is copied to the destination field| optional, defaults to `false` |
+| delete_source  | Option to delete the source field once the value is copied to the destination field| optional, defaults to `false` |
+| delete_source  | Option to delete the source field once the value is copied to the destination field| optional, defaults to `false` |
+| delete_source  | Option to delete the source field once the value is copied to the destination field| optional, defaults to `false` |
+| delete_source  | Option to delete the source field once the value is copied to the destination field| optional, defaults to `false` |
 | delete_source  | Option to delete the source field once the value is copied to the destination field| optional, defaults to `false` |

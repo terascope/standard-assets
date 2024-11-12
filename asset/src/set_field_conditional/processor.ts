@@ -9,18 +9,14 @@ export default class SetFieldConditional extends MapProcessor<SetFieldConditiona
 
     constructor(context: Context, opConfig: SetFieldConditionalConfig, exConfig: ExecutionConfig) {
         super(context, opConfig, exConfig);
-        for (const value of opConfig.check_values) {
+        for (const value of opConfig.conditional_values) {
             this.valuesMap.set(value, value);
         }
     }
 
     map(data: DataEntity) {
-        if (this.opConfig.create_check_field && !(this.opConfig.check_name in data)) {
-            set(data, this.opConfig.check_name, null);
-        }
-
-        if (this.valuesMap.has(data[this.opConfig.check_name])) {
-            set(data, this.opConfig.set_name, this.opConfig.set_value);
+        if (this.valuesMap.has(data[this.opConfig.conditional_field])) {
+            set(data, this.opConfig.set_field, this.opConfig.value);
         }
 
         return data;

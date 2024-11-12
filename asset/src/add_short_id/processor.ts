@@ -1,8 +1,4 @@
-import {
-    MapProcessor,
-    DataEntity,
-    Context
-} from '@terascope/job-components';
+import { MapProcessor, DataEntity, Context } from '@terascope/job-components';
 import { ExecutionConfig, OpConfig } from '@terascope/types';
 import ShortUniqueId from 'short-unique-id';
 import DataWindow from '../__lib/data-window.js';

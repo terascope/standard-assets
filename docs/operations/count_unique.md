@@ -99,6 +99,6 @@ DataEntity.make({ count: 1, name: 'lilly', otherField: 1, }),
 | Configuration | Description                                                   | Type   | Notes                        |
 | ------------- | ------------------------------------------------------------- | ------ | ---------------------------- |
 | _op           | Name of operation, it must reflect the exact name of the file | String | required |
-| preserve_fields     | Set of fields to preserve the last seen value on the counter record. | optional, defaults to an empty array |
+| preserve_fields   | A list of fields whose last seen values are added to the result in addition to the count | optional, defaults to an empty array |
 | field    | field to get count on | required, defaults to "_key" |
 | is_meta_field  | determines if the "field" parameter is a Metadata field or an actual field on the record| required, defaults to true since _key is a Metadata field |

@@ -18,7 +18,7 @@ export default class Schema extends ConvictSchema<FilterByUnknownFieldsConfig> {
                 }
             },
             invert: {
-                doc: 'inverts selection, returns docs where fields are equal',
+                doc: 'Set invert to True to return records with unknown fields',
                 format: 'Boolean',
                 default: false
             }

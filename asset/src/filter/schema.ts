@@ -9,7 +9,7 @@ export default class Schema extends ConvictSchema<FilterConfig> {
     build() {
         return {
             field: {
-                doc: 'Field to check for value to filter on',
+                doc: 'Field to filter on',
                 format: fieldCheck,
                 default: null
             },
@@ -19,7 +19,7 @@ export default class Schema extends ConvictSchema<FilterConfig> {
                 default: null
             },
             invert: {
-                doc: 'Set to true to keep objects that match field and value',
+                doc: 'Set to true to return documents that match filter rules',
                 format: 'Boolean',
                 default: false
             },
@@ -29,21 +29,21 @@ export default class Schema extends ConvictSchema<FilterConfig> {
                 default: -1
             },
             filter_by: {
-                doc: 'Filter function, options are match, regex, ip_range, validator and size',
+                doc: 'Filter function options are: match, regex, ip_range, validator or size',
                 default: 'match',
                 format: typeCheck
             },
-            data_mate_function: {
-                doc: 'Data-Mate validation function to apply to a field',
+            validation_function: {
+                doc: 'DataMate validation function to apply to a field',
                 default: null,
                 format: validatorFuncCheck,
             },
-            data_mate_args: {
+            validation_function_args: {
                 doc: 'Required Validator function args',
                 default: null,
                 format: '*'
             },
-            drop_to_dlq: {
+            filtered_to_dead_letter_queue: {
                 doc: 'Filtered docs are sent to the kafka dead letter queue',
                 default: false,
                 format: (val: unknown) => {
@@ -107,6 +107,6 @@ function validatorFuncCheck(val: unknown) {
     if (val == null) return;
 
     if (!isString(val) || !has(FieldValidator, val)) {
-        throw new Error('type must be a FieldValidator function');
+        throw new Error(`Parameter validation_function was set to "${val}", must be a valid FieldValidator function`);
     }
 }

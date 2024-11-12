@@ -1,9 +1,9 @@
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { OpConfig, makeISODate } from '@terascope/job-components';
 
-describe('date_guard schema', () => {
+describe('filter_by_date schema', () => {
     let harness: WorkerTestHarness;
-    const name = 'date_guard';
+    const name = 'filter_by_date';
 
     async function makeSchema(config: Record<string, any> = {}): Promise<OpConfig> {
         const opConfig = Object.assign({}, { _op: name }, config);

@@ -1,6 +1,6 @@
 import { subtractFromDate, addToDate, getTime } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { DateGuardConfig } from '../../asset/src/date_guard/interfaces.js';
+import { FilterByDateConfig } from '../../asset/src/filter_by_date/interfaces.js';
 
 const nowDate = new Date();
 const currentTimeMilliSeconds = getTime(nowDate) as number;
@@ -84,12 +84,12 @@ const jsonData = [
     }
 ];
 
-describe('date_guard', () => {
+describe('filter_by_date', () => {
     let harness: WorkerTestHarness;
 
-    async function makeTest(config: Partial<DateGuardConfig> = {}) {
+    async function makeTest(config: Partial<FilterByDateConfig> = {}) {
         const baseConfig = {
-            _op: 'date_guard',
+            _op: 'filter_by_date',
         };
         const opConfig = Object.assign({}, baseConfig, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
@@ -134,7 +134,7 @@ describe('date_guard', () => {
         expect(results.length).toBe(7);
     });
 
-    it('data should be unchanged by date_guard', async () => {
+    it('data should be unchanged by filter_by_date', async () => {
         const data = [
             { timestamp: Date.now(), ip: '116.206.15.22' },
             { timestamp: Date.now(), ip: '114.125.58.223' },

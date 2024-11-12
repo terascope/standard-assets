@@ -29,8 +29,8 @@ import DataGeneratorSlicer from './data_generator/slicer.js';
 import DataWindowToArray from './data_window_to_array/processor.js';
 import DataWindowToArraySchema from './data_window_to_array/schema.js';
 
-import DateGuard from './date_guard/processor.js';
-import DateGuardSchema from './date_guard/schema.js';
+import DateGuard from './filter_by_date/processor.js';
+import DateGuardSchema from './filter_by_date/schema.js';
 
 import DateRouter from './date_router/processor.js';
 import DateRouterSchema from './date_router/schema.js';

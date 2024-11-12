@@ -1,7 +1,7 @@
 import { ConvictSchema } from '@terascope/job-components';
-import { DateRouterConfig } from '@terascope/standard-asset-apis';
+import { CopyFieldConfig } from './interfaces.js';
 
-export default class Schema extends ConvictSchema<DateRouterConfig> {
+export default class Schema extends ConvictSchema<CopyFieldConfig> {
     build(): Record<string, any> {
         return {
             source: {

@@ -1,12 +1,12 @@
-# date_guard
+# filter_by_date
 
-The `date_guard` processor filters records based on if the date value is within a given range
+The `filter_by_date` processor filters records based on if the date value is within a given range
 
 ## Usage
 
 ### Filter records based off of date ranges
 
-Example of a job using the `date_guard` processor
+Example of a job using the `filter_by_date` processor
 
 ```json
 {
@@ -22,7 +22,7 @@ Example of a job using the `date_guard` processor
             "_op": "test-reader"
         },
         {
-            "_op": "date_guard",
+            "_op": "filter_by_date",
             "limit_past": "2week",
             "limit_future": "2day"
         }

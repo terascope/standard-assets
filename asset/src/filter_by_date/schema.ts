@@ -1,5 +1,5 @@
 import { ConvictSchema, isString, isISO8601 } from '@terascope/job-components';
-import { DateGuardConfig } from './interfaces.js';
+import { FilterByDateConfig } from './interfaces.js';
 
 // TODO: should we be using the "ms" library?
 const acceptableUnits = [
@@ -23,7 +23,7 @@ const acceptableUnits = [
     'Y'
 ];
 
-export default class Schema extends ConvictSchema<DateGuardConfig> {
+export default class Schema extends ConvictSchema<FilterByDateConfig> {
     _limitsSchema(val: unknown) {
         if (!isString(val)) {
             throw new Error('Limits must be a string');

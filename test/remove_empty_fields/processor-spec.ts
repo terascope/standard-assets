@@ -1,6 +1,6 @@
 import { WorkerTestHarness } from 'teraslice-test-harness';
 
-describe('remove_empty_fields should', () => {
+describe('remove_empty_fields', () => {
     let harness: WorkerTestHarness;
 
     async function makeTest(config = {}) {

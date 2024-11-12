@@ -1,6 +1,4 @@
-import {
-    MapProcessor, DataEntity, isPromAvailable
-} from '@terascope/job-components';
+import { MapProcessor, DataEntity, isPromAvailable } from '@terascope/job-components';
 import { CountByFieldConfig } from './interfaces.js';
 
 type Counters = {
@@ -9,8 +7,10 @@ type Counters = {
         field: string;
     };
 };
+
 export default class CountByField extends MapProcessor<CountByFieldConfig> {
     static counters: Counters = {};
+
     async initialize(): Promise<void> {
         const { opConfig, context } = this;
 

@@ -5,7 +5,7 @@ export default class Schema extends ConvictSchema<CountUniqueConfig> {
     build() {
         return {
             preserve_fields: {
-                doc: 'Set of fields to preserve on the counter record.',
+                doc: 'A list of fields whose last seen values are added to the result in addition to the count',
                 default: [],
                 format: (input: unknown) => {
                     if (!Array.isArray(input) || input.some((val) => !isString(val))) {
@@ -14,7 +14,7 @@ export default class Schema extends ConvictSchema<CountUniqueConfig> {
                 }
             },
             field: {
-                doc: 'field to get count on',
+                doc: 'Field that is counted, defaults to metadata _key',
                 default: '_key',
                 format: 'required_String'
             },

@@ -10,8 +10,6 @@ export default class RemoveEmptyProperties extends MapProcessor {
     }
 
     _isEmptyField(value: unknown) {
-        // json data types string, number, object, array, boolean, null
-
         if (typeof value === 'boolean' || typeof value === 'number') return false;
 
         if (value == null) return true;

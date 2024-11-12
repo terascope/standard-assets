@@ -1,4 +1,4 @@
-import { FilterProcessor, DataEntity } from '@terascope/job-components';
+import { FilterProcessor, DataEntity, isNil } from '@terascope/job-components';
 import { FilterByRequiredFieldConfig, LogicType } from './interfaces.js';
 
 export default class FilterByRequiredFields extends FilterProcessor<FilterByRequiredFieldConfig> {
@@ -21,6 +21,6 @@ export default class FilterByRequiredFields extends FilterProcessor<FilterByRequ
     }
 
     _validValue(value: unknown) {
-        return value != null && value !== 'null' && value !== 'NA' && value !== '' && value !== 'N/A';
+        return isNil(value);
     }
 }

@@ -1,8 +1,9 @@
-import { MapProcessor, OpConfig, DataEntity } from '@terascope/job-components';
+import { MapProcessor, DataEntity } from '@terascope/job-components';
 import { get, set } from '@terascope/utils';
+import { CopyFieldConfig } from './interfaces.js';
 import DataWindow from '../__lib/data-window.js';
 
-export default class CopyField extends MapProcessor<OpConfig> {
+export default class CopyField extends MapProcessor<CopyFieldConfig> {
     map(doc: DataEntity): DataEntity {
         if (doc instanceof DataWindow) {
             return this.handleDataWindow(doc);

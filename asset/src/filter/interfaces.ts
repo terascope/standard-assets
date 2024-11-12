@@ -12,9 +12,9 @@ export interface FilterConfig extends OpConfig {
     invert: boolean;
     array_index: number;
     filter_by: string;
-    data_mate_function?: string;
-    data_mate_args?: any;
-    drop_to_dlq: boolean;
+    validation_function?: string;
+    validation_function_args?: any;
+    filtered_to_dead_letter_queue: boolean;
     regex_flags: string;
     exception_rules?: ExceptionRule[];
 }

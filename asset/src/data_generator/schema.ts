@@ -1,11 +1,6 @@
 import {
-    ConvictSchema,
-    ValidatedJobConfig,
-    getOpConfig,
-    AnyObject,
-    isNotNil,
-    getTypeOf,
-    isString
+    ConvictSchema, ValidatedJobConfig, getOpConfig,
+    AnyObject, isNotNil, getTypeOf, isString
 } from '@terascope/job-components';
 import { DataGenerator, IDType, DateOptions } from './interfaces.js';
 

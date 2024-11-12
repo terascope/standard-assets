@@ -1,26 +1,12 @@
+import { BatchProcessor, DataEntity, AnyObject } from '@terascope/job-components';
 import {
-    BatchProcessor,
-    DataEntity,
-    AnyObject
-} from '@terascope/job-components';
-import {
-    get,
-    isObjectEntity,
-    isEmpty,
-    isString,
-    toNumber,
-    geoHash,
-    setPrecision,
-    isGeoShapePoint,
-    isPlainObject,
+    get, isObjectEntity, isEmpty,
+    isString, toNumber, geoHash,
+    setPrecision, isGeoShapePoint, isPlainObject,
     flatten
 } from '@terascope/utils';
-import {
-    GeoShapePoint,
-    GeoShapeType
-} from '@terascope/types';
-
-import crypto from 'crypto';
+import { GeoShapePoint, GeoShapeType } from '@terascope/types';
+import crypto from 'node:crypto';
 import DataWindow from '../__lib/data-window.js';
 
 export default class AddKey extends BatchProcessor {

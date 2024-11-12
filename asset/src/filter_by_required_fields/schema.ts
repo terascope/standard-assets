@@ -5,7 +5,7 @@ export default class Schema extends ConvictSchema<FilterByRequiredFieldConfig> {
     build() {
         return {
             required_fields: {
-                doc: 'Array of fields that must be present',
+                doc: 'Array of fields that must be present and have a non-null value',
                 default: [],
                 format: (val: unknown) => {
                     if (!Array.isArray(val)) {
@@ -33,7 +33,7 @@ export default class Schema extends ConvictSchema<FilterByRequiredFieldConfig> {
                 }
             },
             invert: {
-                doc: 'invert selection, keep docs with fields',
+                doc: 'Set to True to Invert the selection and return records with required fields',
                 default: false,
                 format: 'Boolean'
             }
