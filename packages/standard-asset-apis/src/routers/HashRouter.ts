@@ -33,7 +33,7 @@ export class HashRouter implements I.Router {
     }
 
     lookup(record: DataEntity): string {
-        const bucket = fnv1a(this.getHash(record)) % this.partitions;
+        const bucket = Number(fnv1a(this.getHash(record), { size: 32 })) % this.partitions;
         return bucket.toString();
     }
 }
