@@ -1,8 +1,8 @@
 import {
-    FilterProcessor, isISO8601, ExecutionConfig,
-    Context, DataEntity, isValidDate, isInteger,
-    getTime
+    FilterProcessor, Context, ExecutionConfig,
+    DataEntity, isValidDate, getTime, isISO8601
 } from '@terascope/job-components';
+import ms from 'ms';
 import { FilterByDateConfig } from './interfaces.js';
 
 enum DateDirection {
@@ -10,49 +10,28 @@ enum DateDirection {
     future = 'future'
 }
 
-const min = 60;
-const hour = 60 * min;
-const day = 24 * hour;
-const week = 7 * day;
-const month = 30 * day;
-const year = 365 * day;
-
-const seconds = {
-    m: min,
-    minute: min,
-    minutes: min,
-    h: hour,
-    hour,
-    hours: hour,
-    d: day,
-    day,
-    days: day,
-    w: week,
-    week,
-    weeks: week,
-    M: month,
-    month,
-    months: month,
-    Y: year,
-    year,
-    years: year
-};
-
-type SecondsKey = keyof typeof seconds;
-
 export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
-    private limit_past?: number;
-    private limit_future?: number;
+    private limit_past: number;
+    private limit_future: number;
+    // a set date compares against a static date, while the other (ie 1Day) is a moving date
+    private is_precise_past_date = false;
+    private is_precise_future_date = false;
 
     constructor(context: Context, opConfig: FilterByDateConfig, exConfig: ExecutionConfig) {
         super(context, opConfig, exConfig);
 
         if (isISO8601(this.opConfig.limit_past)) {
             this.limit_past = new Date(this.opConfig.limit_past).getTime();
+            this.is_precise_past_date = true;
+        } else {
+            this.limit_past = ms(this.opConfig.limit_past as string);
         }
 
         if (isISO8601(this.opConfig.limit_future)) {
             this.limit_future = new Date(this.opConfig.limit_future).getTime();
+            this.is_precise_future_date = true;
+        } else {
+            this.limit_future = ms(this.opConfig.limit_future as string);
         }
     }
 
@@ -66,34 +45,27 @@ export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
 
     _getGuardTime(guardDirection: DateDirection, now: number) {
         if (guardDirection === DateDirection.past) {
-            if (this.limit_past) {
+            if (this.is_precise_past_date) {
+                // static past comparison
                 return this.limit_past;
             }
-
-            const [timeLength, timeUnits] = this._parseLimit(this.opConfig.limit_past);
-            return now - (timeLength * this._limitToMilliseconds(timeUnits));
+            // moving past range comparison
+            return now - this.limit_past;
         }
 
-        if (this.limit_future) {
+        if (this.is_precise_future_date) {
+            // moving future range comparison
             return this.limit_future;
         }
 
-        const [timeLength, timeUnits] = this._parseLimit(this.opConfig.limit_future);
-        return now + (timeLength * this._limitToMilliseconds(timeUnits));
-    }
-
-    _parseLimit(limit: string): [number, SecondsKey] {
-        // gets the number and time unit
-        const numPattern = /^[\d]+(\.[\d]+)?/;
-        const matchCall = limit.match(numPattern) as RegExpMatchArray;
-        const number = matchCall[0];
-
-        return [Number(number), limit.slice(number.length) as SecondsKey];
+        // static future comparison
+        return now + this.limit_future;
     }
 
     _checkDate(date: unknown, pastGuard: number, futureGuard: number): boolean {
         if (this._validTimestamp(date)) {
-            const milliDate = this._timeStampToMilliseconds(date);
+            const milliDate = getTime(date);
+
             if (milliDate === false) return false;
 
             return milliDate >= pastGuard && milliDate <= futureGuard;
@@ -103,24 +75,5 @@ export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
 
     _validTimestamp(value: unknown): value is Date {
         return isValidDate(value);
-    }
-
-    _toWholeNumber(value: Date | string | number) {
-        if (isInteger(Number(value))) {
-            return value;
-        }
-
-        return `${value}`.split('.')[0];
-    }
-
-    _timeStampToMilliseconds(date: Date | string | number) {
-        if (typeof date === 'number' && String(this._toWholeNumber(date)).length < 11) {
-            return getTime(date * 1000);
-        }
-        return getTime(date);
-    }
-
-    _limitToMilliseconds(limit: SecondsKey) {
-        return seconds[limit] * 1000;
     }
 }

@@ -1,27 +1,6 @@
 import { ConvictSchema, isString, isISO8601 } from '@terascope/job-components';
+import ms from 'ms';
 import { FilterByDateConfig } from './interfaces.js';
-
-// TODO: should we be using the "ms" library?
-const acceptableUnits = [
-    'minute',
-    'minutes',
-    'm',
-    'hour',
-    'hours',
-    'h',
-    'day',
-    'days',
-    'd',
-    'week',
-    'weeks',
-    'w',
-    'month',
-    'months',
-    'M',
-    'year',
-    'years',
-    'Y'
-];
 
 export default class Schema extends ConvictSchema<FilterByDateConfig> {
     _limitsSchema(val: unknown) {
@@ -30,28 +9,10 @@ export default class Schema extends ConvictSchema<FilterByDateConfig> {
         }
 
         if (isISO8601(val)) {
-            return;
+            return new Date(val).getTime();
         }
 
-        const param = val as string;
-        let number: any;
-        // TODO: This checking is very bad
-        try {
-            // @ts-expect-error
-            ([number] = param.match(/^[\d]+(\.[\d]+)?/));
-        } catch (err) {
-            throw new Error('Limits must start with a positive number');
-        }
-
-        if (!(number >= 0 && number <= 100000)) {
-            throw new Error('Limits must be between 0 and 100000');
-        }
-
-        const unit = param.slice(number.length);
-
-        if (acceptableUnits.indexOf(unit) < 0) {
-            throw new Error('Acceptable units are minute(s) or m, hour(s) or h, day(s) or d, week(s) or w, month(s) or M, year(s) or Y');
-        }
+        return ms(val);
     }
 
     build() {
