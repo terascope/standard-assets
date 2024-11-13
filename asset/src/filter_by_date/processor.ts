@@ -13,7 +13,8 @@ enum DateDirection {
 export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
     private limit_past: number;
     private limit_future: number;
-    // a set date compares against a static date, while the other (ie 1Day) is a moving date
+    // a date value is a comparison against a static set date, while the
+    // other (ie 1Day) is a moving date comparison during the life of the job
     private is_precise_past_date = false;
     private is_precise_future_date = false;
 

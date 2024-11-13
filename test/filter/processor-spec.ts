@@ -106,40 +106,24 @@ describe('filter', () => {
     it('should filter docs with value that match regex', async () => {
         harness = await makeTest({
             field: 'name',
-            value: '^jo.*',
+            value: '/^jo.*/i',
             filter_by: 'regex',
-            regex_flags: 'i',
         });
         const results = await harness.runSlice(testData);
 
         expect(results.length).toBe(3);
     });
 
-    it('should return docs with value that match regex if invert true and regex_flags to i to ignore case', async () => {
+    it('should return docs with value that match regex if invert true', async () => {
         harness = await makeTest({
             field: 'name',
-            value: '^jo.*',
+            value: '/^jo.*/i',
             filter_by: 'regex',
-            regex_flags: 'i',
             invert: true
         });
         const results = await harness.runSlice(testData);
 
         expect(results.length).toBe(2);
-    });
-
-    it('should return docs with value that match regex if invert true and regex_args using the default', async () => {
-        harness = await makeTest({
-            field: 'name',
-            value: '^Jo.*',
-            regex_flags: '',
-            filter_by: 'regex',
-            invert: true
-        });
-        const results = await harness.runSlice(testData);
-
-        expect(results[0].name).toBe('Johnson');
-        expect(results.length).toBe(1);
     });
 
     it('should return docs with an ip value not in the range', async () => {
@@ -191,9 +175,8 @@ describe('filter', () => {
     it('should filter docs that match regex for an array of values', async () => {
         harness = await makeTest({
             field: 'name',
-            value: ['^jo.*', '^g.*'],
+            value: ['/^jo.*/i', '/^g.*/i'],
             filter_by: 'regex',
-            regex_flags: 'i'
         });
         const results = await harness.runSlice(testData);
 
@@ -203,9 +186,8 @@ describe('filter', () => {
     it('should filter docs that match regex for an array of values with invert', async () => {
         harness = await makeTest({
             field: 'name',
-            value: ['^jo.*', '^g.*'],
+            value: ['/^jo.*/i', '/^g.*/i'],
             filter_by: 'regex',
-            regex_flags: 'i',
             invert: true
         });
         const results = await harness.runSlice(testData);
@@ -409,8 +391,8 @@ describe('filter', () => {
             harness = await makeTest({
                 field: 'number',
                 filter_by: 'validator',
-                data_mate_function: 'inNumberRange',
-                data_mate_args: {
+                validation_function: 'inNumberRange',
+                validation_function_args: {
                     min: 0,
                     max: 5,
                     inclusive: true,

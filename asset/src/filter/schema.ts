@@ -52,14 +52,8 @@ export default class Schema extends ConvictSchema<FilterConfig> {
                     }
                 }
             },
-            regex_flags: {
-                // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#advanced_searching_with_flags
-                doc: 'Arguments to pass to the RegExp function, default is no flags',
-                default: '',
-                format: 'String'
-            },
             exception_rules: {
-                doc: 'Array of { field, value, regex } objects that allow for specific values to bypass the validation.  Will accept a regex value but must be in format /REGEX/Flags to work',
+                doc: 'Expects an array of objects, ie: [{ field: FIELD NAME, value: STRING or REGEX, regex: BOOLEAN }]. The value property can be a string or a regex, but if it is a regex it must be in format /REGEX/Flags and the regex property should be set to true.',
                 default: null,
                 format: (rules: unknown) => {
                     if (rules == null) return;

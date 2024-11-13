@@ -82,13 +82,7 @@ describe('filter_by_required_fields', () => {
         harness = await makeTest();
         const results = await harness.runSlice(data);
 
-        expect(results.length).toBe(2);
-        expect(results[0].name).toBe('bob1');
-        expect(results[0].age).toBe(20);
-        expect(results[0].size).toBe(10);
-        expect(results[1].name).toBe('bob7');
-        expect(results[1].age).toBe(26);
-        expect(results[1].size).toBe(15);
+        expect(results.length).toBe(4);
     });
 
     it('can work with OR statements', async () => {

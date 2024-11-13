@@ -29,9 +29,6 @@ import DataGeneratorSlicer from './data_generator/slicer.js';
 import DataWindowToArray from './data_window_to_array/processor.js';
 import DataWindowToArraySchema from './data_window_to_array/schema.js';
 
-import DateGuard from './filter_by_date/processor.js';
-import DateGuardSchema from './filter_by_date/schema.js';
-
 import DateRouter from './date_router/processor.js';
 import DateRouterSchema from './date_router/schema.js';
 
@@ -55,6 +52,9 @@ import FieldRouterSchema from './field_router/schema.js';
 
 import Filter from './filter/processor.js';
 import FilterSchema from './filter/schema.js';
+
+import FilterByDate from './filter_by_date/processor.js';
+import FilterByDateSchema from './filter_by_date/schema.js';
 
 import FilterByRequiredFields from './filter_by_required_fields/processor.js';
 import FilterByRequiredFieldsSchema from './filter_by_required_fields/schema.js';
@@ -164,9 +164,9 @@ export const ASSETS = {
         Processor: DataWindowToArray,
         Schema: DataWindowToArraySchema
     },
-    date_guard: {
-        Processor: DateGuard,
-        Schema: DateGuardSchema
+    filter_by_date: {
+        Processor: FilterByDate,
+        Schema: FilterByDateSchema
     },
     date_router: {
         Processor: DateRouter,

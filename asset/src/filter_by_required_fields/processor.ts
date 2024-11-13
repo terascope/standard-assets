@@ -21,6 +21,6 @@ export default class FilterByRequiredFields extends FilterProcessor<FilterByRequ
     }
 
     _validValue(value: unknown) {
-        return isNil(value);
+        return !isNil(value);
     }
 }

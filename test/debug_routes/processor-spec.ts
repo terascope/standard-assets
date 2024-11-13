@@ -5,10 +5,9 @@ import { DataEntity } from '@terascope/job-components';
 describe('debug_routes', () => {
     let harness: WorkerTestHarness;
     let spyOnStdout: jest.SpiedFunction<any>;
-    let data: DataEntity[] = [];
 
     beforeEach(() => {
-        //@ts-expect-error
+        // @ts-expect-error
         spyOnStdout = jest.spyOn(process.stdout, 'write').mockImplementation(() => {});
     });
 
@@ -31,17 +30,25 @@ describe('debug_routes', () => {
         spyOnStdout.mockRestore();
     });
 
-
     it('should write to stdout and return all records', async () => {
+        const data = [
+            DataEntity.make({ id: 1 }, { _key: '1', 'standard:route': 'a' }),
+            DataEntity.make({ id: 2 }, { _key: '2', 'standard:route': 'b' }),
+            DataEntity.make({ id: 3 }, { _key: '3', 'standard:route': 'a' }),
+            DataEntity.make({ id: 4 }, { _key: '4', 'standard:route': 'c' }),
+            DataEntity.make({ id: 5 }, { _key: '5', 'standard:route': 'a' }),
+            DataEntity.make({ id: 6 }, { _key: '6', 'standard:route': 'b' }),
+        ];
+
         harness = await makeTest();
-        const results = await harness.runSlice(data)
+        const results = await harness.runSlice(data);
 
         expect(results.length).toEqual(data.length);
 
         results.forEach((result, index) => {
-            expect(result).toMatchObject(data[index])
+            expect(result).toMatchObject(data[index]);
         });
 
-        expect(spyOnStdout.mock.calls[0]).toEqual(["{ a: 3, b: 2, c: 1 }\n"])
+        expect(spyOnStdout.mock.calls[0]).toEqual(['{ a: 3, b: 2, c: 1 }\n']);
     });
 });

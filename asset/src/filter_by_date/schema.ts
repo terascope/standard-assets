@@ -12,7 +12,12 @@ export default class Schema extends ConvictSchema<FilterByDateConfig> {
             return new Date(val).getTime();
         }
 
-        return ms(val);
+        const result = ms(val);
+        if (result == null) {
+            throw new Error(`Invalid date like value, got ${val}`);
+        }
+
+        return result;
     }
 
     build() {

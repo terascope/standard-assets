@@ -70,11 +70,21 @@ export default class Filter extends FilterProcessor<FilterConfig> {
     }
 
     _filterValueToArray() {
-        if (Array.isArray(this.opConfig.value)) {
-            return this.opConfig.value;
+        let value = this.opConfig.value;
+
+        if (this.functionName === 'regex') {
+            if (Array.isArray(value)) {
+                return value.map((v: string) => this._toRegex(v));
+            }
+            value = this._toRegex(value);
+            return [value];
         }
 
-        return [this.opConfig.value];
+        if (Array.isArray(this.opConfig.value)) {
+            return value;
+        }
+
+        return [value];
     }
 
     _compareValues(docValue: any) {
@@ -88,9 +98,8 @@ export default class Filter extends FilterProcessor<FilterConfig> {
         return docValue === filterValue;
     }
 
-    regex(docValue: any, filterValue: any) {
-        const reg = new RegExp(filterValue, this.opConfig.regex_flags);
-        return reg.test(docValue);
+    regex(docValue: any, filterValue: RegExp) {
+        return filterValue.test(docValue);
     }
 
     ipRange(docValue: string, filterValue: string) {

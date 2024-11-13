@@ -24,13 +24,13 @@ describe('set_field_conditional schema', () => {
 
     it('should expect to be properly configured', async () => {
         await expect(makeSchema({})).toReject();
-        await expect(makeSchema({ conditional_name: 1234 })).toReject();
-        await expect(makeSchema({ conditional_name: 1234, set_field: 'world' })).toReject();
-        await expect(makeSchema({ conditional_name: 'hello', set_field: 1234 })).toReject();
+        await expect(makeSchema({ conditional_field: 1234 })).toReject();
+        await expect(makeSchema({ conditional_field: 1234, set_field: 'world' })).toReject();
+        await expect(makeSchema({ conditional_field: 'hello', set_field: 1234 })).toReject();
 
-        await expect(makeSchema({ conditional_name: 'hello', set_field: 'world' })).toResolve();
+        await expect(makeSchema({ conditional_field: 'hello', set_field: 'world' })).toResolve();
         await expect(makeSchema({
-            conditional_name: 'hello',
+            conditional_field: 'hello',
             set_field: 'world',
             conditional_values: [null],
             value: true,

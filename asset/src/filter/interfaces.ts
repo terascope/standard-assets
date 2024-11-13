@@ -15,6 +15,5 @@ export interface FilterConfig extends OpConfig {
     validation_function?: string;
     validation_function_args?: any;
     filtered_to_dead_letter_queue: boolean;
-    regex_flags: string;
     exception_rules?: ExceptionRule[];
 }

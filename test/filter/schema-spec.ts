@@ -29,7 +29,6 @@ describe('filter schema', () => {
         await expect(makeSchema({ array_index: true, field: 'field' })).toReject();
         await expect(makeSchema({ field: 'field', filter_by: 'field' })).toReject();
         await expect(makeSchema({ field: 'field', validation_function: 'field' })).toReject();
-        await expect(makeSchema({ field: 'field', regex_flags: 1234 })).toReject();
 
         await expect(makeSchema({
             field: [1234, 'last_name'],
