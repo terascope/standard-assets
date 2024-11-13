@@ -3,31 +3,11 @@ import { cloneDeep } from '@terascope/job-components';
 import { FilterConfig } from '../../asset/src/filter/interfaces.js';
 
 const incoming = [
-    {
-        _key: 0,
-        ip: '28.127.246.12',
-        name: 'francis'
-    },
-    {
-        _key: 1,
-        ip: '28.127.246.232',
-        name: 'joseph'
-    },
-    {
-        _key: 2,
-        ip: '28.127.246.244',
-        name: 'Johnson'
-    },
-    {
-        _key: 3,
-        ip: '4.17.23.6',
-        name: 'bob'
-    },
-    {
-        _key: 4,
-        ip: '4.17.14.18',
-        name: 'greg'
-    },
+    { _key: 0, ip: '28.127.246.12', name: 'francis' },
+    { _key: 1, ip: '28.127.246.232', name: 'joseph' },
+    { _key: 2, ip: '28.127.246.244', name: 'Johnson' },
+    { _key: 3, ip: '4.17.23.6', name: 'bob' },
+    { _key: 4, ip: '4.17.14.18', name: 'greg' },
 ];
 
 describe('filter', () => {

@@ -1,12 +1,12 @@
-# copy_field
+# sample_exact
 
-The `copy_field` processor copies the source field value to a destination field for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
+given an array of JSON documents will return an array containing a shuffled subset of those input documents.  The size of the subset will be the percentage multiplied against the length of the array rounded down.
 
 ## Usage
 
-### Copy a field value to another field
+### Reduce and shuffle the returned array
 
-Example of a job using the `copy_field` processor
+Example of a job using the `sample_exact` processor
 
 ```json
 {
@@ -22,9 +22,8 @@ Example of a job using the `copy_field` processor
             "_op": "test-reader"
         },
         {
-            "_op": "copy_field",
-            "source": "name",
-            "destination": "name_again"
+            "_op": "sample_exact",
+            "percent_kept": "50",
         }
     ]
 }
@@ -35,17 +34,17 @@ Example of the data and the expected results
 ```javascript
 const data = [
     DataEntity.make({ name: 'lilly', otherField: 1 }),
-    DataEntity.make({ name: 'willy', otherField: 2  }),
-    DataEntity.make({ name: 'billy', otherField: 3  }),
-    DataEntity.make({ name: 'dilly', otherField: 4  }),
+    DataEntity.make({ name: 'willy', otherField: 2 }),
+    DataEntity.make({ name: 'billy', otherField: 3 }),
+    DataEntity.make({ name: 'dilly', otherField: 4 }),
 ]
 
 const results = await processor.run(data);
 
-DataEntity.make({ name: 'lilly', name_again: 'lilly', otherField: 1 }),
-DataEntity.make({ name: 'willy', name_again: 'willy', otherField: 2  }),
-DataEntity.make({ name: 'billy', name_again: 'billy', otherField: 3  }),
-DataEntity.make({ name: 'dilly', name_again: 'dilly', otherField: 4  }),
+results === [
+    { name: 'dilly', name_again: 'dilly', otherField: 4  },
+    { name: 'willy', name_again: 'willy', otherField: 2  },
+]
 ```
 
 ## Parameters
@@ -53,6 +52,4 @@ DataEntity.make({ name: 'dilly', name_again: 'dilly', otherField: 4  }),
 | Configuration | Description                                                   | Type   | Notes                        |
 | ------------- | ------------------------------------------------------------- | ------ | ---------------------------- |
 | _op           | Name of operation, it must reflect the exact name of the file | String | required |
-| source         | Name of field to copy the value from | required, no default |
-| destination    | Name of field to copy the value to | required, no default |
-| delete_source  | Option to delete the source field once the value is copied to the destination field| optional, defaults to `false` |
+| percent_kept   | The percentage of documents to be kept from the input. Must be between 0 and 100 | required, defaults to 100 |
