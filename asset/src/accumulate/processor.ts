@@ -1,6 +1,4 @@
-import {
-    BatchProcessor, DataEntity, Context
-} from '@terascope/job-components';
+import { BatchProcessor, DataEntity, Context } from '@terascope/job-components';
 import { ExecutionConfig } from '@terascope/types';
 import { AccumulateConfig } from './interfaces.js';
 import DataWindow from '../__lib/data-window.js';
@@ -25,9 +23,14 @@ export default class Accumulate extends BatchProcessor<AccumulateConfig> {
     }
 
     async onBatch(dataArray: DataEntity[]): Promise<DataEntity[]> {
-        if (dataArray.length === 0) this.accumulator.emptySlice();
-        else this.accumulator.add(dataArray);
+        if (dataArray.length === 0) {
+            this.accumulator.emptySlice();
+        } else {
+            this.accumulator.add(dataArray);
+        }
+
         let results: DataEntity[] = [];
+
         if ((this.accumulator.readyToEmpty() || this.flushData) && this.accumulator.size > 0) {
             results = DataWindow.make(
                 this.opConfig.data_window_key,

@@ -1,7 +1,4 @@
-import {
-    BatchProcessor,
-    DataEntity,
-} from '@terascope/job-components';
+import { BatchProcessor, DataEntity } from '@terascope/job-components';
 import { inspect } from 'util';
 
 export default class DebugRoutesProcessor extends BatchProcessor {

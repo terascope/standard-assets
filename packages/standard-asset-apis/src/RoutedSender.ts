@@ -1,5 +1,6 @@
 import {
-    DataEntity, pMap, getLast, isInteger, RouteSenderAPI, Logger
+    DataEntity, pMap, getLast,
+    isInteger, RouteSenderAPI, Logger
 } from '@terascope/utils';
 import EventEmitter, { once } from 'node:events';
 

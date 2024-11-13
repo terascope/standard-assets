@@ -1,4 +1,4 @@
-# drop_field
+# drop_field_conditional
 
 The `drop_field_conditional` processor drops a field from [DataEntities](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindows](../entity/data-window.md) based on the specified conditions.  The conditions can be either a regex or a [Field Validation](https://terascope.github.io/teraslice/docs/packages/data-mate/overview#Field-Validations) function.  There is also an `invert` option to drop fields that don't match a regex or don't pass the validation function.  Only a regex or a validation can be specified, if both are configured the job will throw an error.
 
@@ -148,4 +148,3 @@ DataEntity.make({ name: 'ron' }),
 | validation_method | Name of validation method to apply to field value | see [Field Validations](https://terascope.github.io/teraslice/docs/packages/data-mate/overview#field-validations) for list of available functions |
 | validation_args | some validations require args | optional |
 | invert | When set to `true`, the processor drops the value if it doesn't match the regex or if it doesn't pass the validation | defaults to `false` |
-
