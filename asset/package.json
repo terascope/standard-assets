@@ -25,7 +25,7 @@
         "@terascope/data-mate": "~1.5.0",
         "@terascope/job-components": "~1.7.0",
         "@terascope/standard-asset-apis": "~1.0.3",
-        "@terascope/teraslice-state-storage": "~1.5.0",
+        "@terascope/teraslice-state-storage": "~1.6.0",
         "@terascope/utils": "~1.5.0",
         "@types/chance": "~1.1.4",
         "@types/express": "~4.17.19",
