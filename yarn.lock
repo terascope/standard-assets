@@ -1319,7 +1319,7 @@ __metadata:
   dependencies:
     "@sindresorhus/fnv1a": "npm:~3.1.0"
     "@terascope/scripts": "npm:^1.9.0"
-    "@terascope/utils": "npm:~1.6.0"
+    "@terascope/utils": "npm:~1.7.1"
     "@types/jest": "npm:~29.5.14"
     "@types/node": "npm:~22.10.2"
     jest: "npm:~29.7.0"
@@ -8909,7 +8909,7 @@ __metadata:
     "@terascope/job-components": "npm:~1.8.0"
     "@terascope/standard-asset-apis": "npm:~1.0.3"
     "@terascope/teraslice-state-storage": "npm:~1.6.0"
-    "@terascope/utils": "npm:~1.6.0"
+    "@terascope/utils": "npm:~1.7.1"
     "@types/chance": "npm:~1.1.4"
     "@types/express": "npm:~4.17.19"
     "@types/ms": "npm:^0.7.34"
