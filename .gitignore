@@ -28,3 +28,6 @@ tsconfig.tsbuildinfo
 
 # developer tools
 .vscode/*
+
+# .yarn
+.yarn/install-state.gz
