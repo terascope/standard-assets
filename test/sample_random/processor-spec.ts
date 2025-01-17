@@ -77,6 +77,14 @@ describe('sample_random', () => {
         expect(results.length).toBeLessThan(5400);
         expect(results.length).toBeGreaterThan(4600);
     });
+
+    it('with large datasets and 0%', async () => {
+        const data = makeData(10000);
+        harness = await makeTest({ probability_to_keep: 0 });
+        const results = await harness.runSlice(data);
+
+        expect(results.length).toEqual(0);
+    });
 });
 
 interface FakeData {
