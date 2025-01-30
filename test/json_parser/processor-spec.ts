@@ -65,6 +65,19 @@ describe('json_parser', () => {
 
         expect(results).toEqual([{ _key: 2, name: 'joe' }]);
     });
+
+    it('should remove null values', async () => {
+        const data = '{ "_key": "1234", "name": "\u0000joe\x00\x00" }';
+        const buf = Buffer.from(data, 'utf8');
+
+        const entity = DataEntity.make({}, { _key: '1234' });
+        entity.setRawData(buf);
+
+        harness = await makeTest();
+        const results = await harness.runSlice([entity]);
+
+        expect(results).toEqual([{ _key: '1234', name: 'joe' }]);
+    });
 });
 
 function makeRawDataEntities(dataArray: any[]) {

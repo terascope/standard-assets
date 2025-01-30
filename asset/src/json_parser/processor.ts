@@ -5,12 +5,12 @@ export default class JSONParser extends BatchProcessor {
     onBatch(docArray: DataEntity[]) {
         return docArray.reduce<DataEntity[]>((parsedDocs, doc) => {
             try {
-                const dataString = Buffer.from(doc.getRawData()).toString('utf8')
-                    .trim();
-
-                const toJson = JSON.parse(dataString.replace(/\0/g, ''));
-
-                parsedDocs.push(DataEntity.make(toJson, doc.getMetadata()));
+                parsedDocs.push(
+                    DataEntity.make(
+                        parseJSON(doc.getRawData()),
+                        doc.getMetadata()
+                    )
+                );
             } catch (err: unknown) {
                 this.rejectRecord(doc.getRawData(), err as Error);
             }
