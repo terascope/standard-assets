@@ -65,6 +65,23 @@ describe('json_parser', () => {
 
         expect(results).toEqual([{ _key: 2, name: 'joe' }]);
     });
+
+    it('should remove null values', async () => {
+        /**
+         * JSON.stringify converts the unicode null into a string literal
+         * which does not duplicate the incoming data in this case.
+         * This is why the makeRawDataEntities function isn't used for this test
+         */
+        const data = '{ "_key": "1234", "name": "\u0000joe\x00\x00" }';
+
+        const entity = DataEntity.make({}, { _key: '1234' });
+        entity.setRawData(Buffer.from(data, 'utf8'));
+
+        harness = await makeTest();
+        const results = await harness.runSlice([entity]);
+
+        expect(results).toEqual([{ _key: '1234', name: 'joe' }]);
+    });
 });
 
 function makeRawDataEntities(dataArray: any[]) {
