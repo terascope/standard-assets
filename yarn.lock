@@ -1265,9 +1265,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@terascope/scripts@npm:~1.9.3":
-  version: 1.9.3
-  resolution: "@terascope/scripts@npm:1.9.3"
+"@terascope/scripts@npm:~1.10.0":
+  version: 1.10.0
+  resolution: "@terascope/scripts@npm:1.10.0"
   dependencies:
     "@kubernetes/client-node": "npm:~0.22.3"
     "@terascope/utils": "npm:~1.7.3"
@@ -1298,7 +1298,7 @@ __metadata:
       optional: true
   bin:
     ts-scripts: ./bin/ts-scripts.js
-  checksum: 10c0/fe4f151b68173586d8ea16624c5639a92424900730786d393f1310d833ca72cf5ee23c1cc6b495bf76fbb8b558eb9ab7119f6475ccdce65b9cd4480c25000aee
+  checksum: 10c0/47c7e9bfe360e0d026c25fc5e936925e0267662d4734bd9f64e2b182e4d284b444593e776d1a5396203e19761baadc9f70b28b76d5808a0dc71cea22a518a184
   languageName: node
   linkType: hard
 
@@ -1307,7 +1307,7 @@ __metadata:
   resolution: "@terascope/standard-asset-apis@workspace:packages/standard-asset-apis"
   dependencies:
     "@sindresorhus/fnv1a": "npm:~3.1.0"
-    "@terascope/scripts": "npm:~1.9.3"
+    "@terascope/scripts": "npm:~1.10.0"
     "@terascope/utils": "npm:~1.7.3"
     "@types/jest": "npm:~29.5.14"
     "@types/node": "npm:~22.12.0"
@@ -9358,7 +9358,7 @@ __metadata:
   dependencies:
     "@terascope/eslint-config": "npm:~1.1.5"
     "@terascope/job-components": "npm:~1.9.3"
-    "@terascope/scripts": "npm:~1.9.3"
+    "@terascope/scripts": "npm:~1.10.0"
     "@terascope/standard-asset-apis": "npm:~1.0.3"
     "@types/express": "npm:~4.17.21"
     "@types/fs-extra": "npm:~11.0.4"
