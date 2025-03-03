@@ -21,12 +21,12 @@
         "test": "yarn --cwd ../ test"
     },
     "dependencies": {
-        "@faker-js/faker": "~9.5.0",
-        "@terascope/data-mate": "~1.7.6",
-        "@terascope/job-components": "~1.9.6",
+        "@faker-js/faker": "~9.5.1",
+        "@terascope/data-mate": "~1.7.7",
+        "@terascope/job-components": "~1.9.7",
         "@terascope/standard-asset-apis": "~1.0.3",
-        "@terascope/teraslice-state-storage": "~1.8.3",
-        "@terascope/utils": "~1.7.5",
+        "@terascope/teraslice-state-storage": "~1.8.4",
+        "@terascope/utils": "~1.7.6",
         "@types/chance": "~1.1.6",
         "@types/express": "~4.17.21",
         "chance": "~1.1.12",
@@ -37,7 +37,7 @@
         "randexp": "~0.5.3",
         "short-unique-id": "~5.2.0",
         "timsort": "~0.3.0",
-        "ts-transforms": "~1.7.6",
+        "ts-transforms": "~1.7.7",
         "tslib": "~2.8.1"
     },
     "devDependencies": {
