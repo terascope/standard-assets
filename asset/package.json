@@ -23,7 +23,7 @@
     "dependencies": {
         "@faker-js/faker": "~9.6.0",
         "@terascope/data-mate": "~1.7.7",
-        "@terascope/job-components": "~1.9.7",
+        "@terascope/job-components": "~1.9.8",
         "@terascope/standard-asset-apis": "~1.0.3",
         "@terascope/teraslice-state-storage": "~1.8.4",
         "@terascope/utils": "~1.7.6",
