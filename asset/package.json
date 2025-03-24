@@ -28,7 +28,7 @@
         "@terascope/teraslice-state-storage": "~1.8.5",
         "@terascope/utils": "~1.7.7",
         "@types/chance": "~1.1.6",
-        "@types/express": "~4.17.21",
+        "@types/express": "~5.0.1",
         "chance": "~1.1.12",
         "express": "~4.21.2",
         "mocker-data-generator": "~3.0.3",
