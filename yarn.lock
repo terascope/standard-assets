@@ -1286,9 +1286,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@terascope/scripts@npm:~1.13.0":
-  version: 1.13.0
-  resolution: "@terascope/scripts@npm:1.13.0"
+"@terascope/scripts@npm:~1.14.0":
+  version: 1.14.0
+  resolution: "@terascope/scripts@npm:1.14.0"
   dependencies:
     "@kubernetes/client-node": "npm:~0.22.3"
     "@terascope/utils": "npm:~1.7.7"
@@ -1319,7 +1319,7 @@ __metadata:
       optional: true
   bin:
     ts-scripts: ./bin/ts-scripts.js
-  checksum: 10c0/79b9534d813b390348504f9667f2baec3945be128be5ea3a8856825e9c222d353deef8c3e11cbafa476b136bd90af87f6e53fadaaad603f65994c80b6301739c
+  checksum: 10c0/0313c8334b34d74894c9f8e2a4f63dfb9381f0887839ff5ccfdcd2104a744ff2c0a215f5417892f67bb45d86b46248fc9b4c97f3443af50919395f17b02a7ce8
   languageName: node
   linkType: hard
 
@@ -1328,10 +1328,10 @@ __metadata:
   resolution: "@terascope/standard-asset-apis@workspace:packages/standard-asset-apis"
   dependencies:
     "@sindresorhus/fnv1a": "npm:~3.1.0"
-    "@terascope/scripts": "npm:~1.13.0"
+    "@terascope/scripts": "npm:~1.14.0"
     "@terascope/utils": "npm:~1.7.7"
     "@types/jest": "npm:~29.5.14"
-    "@types/node": "npm:~22.13.13"
+    "@types/node": "npm:~22.13.14"
     jest: "npm:~29.7.0"
     jest-extended: "npm:~4.0.2"
     jest-fixtures: "npm:~0.6.0"
@@ -1954,12 +1954,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:~22.13.13":
-  version: 22.13.13
-  resolution: "@types/node@npm:22.13.13"
+"@types/node@npm:~22.13.14":
+  version: 22.13.14
+  resolution: "@types/node@npm:22.13.14"
   dependencies:
     undici-types: "npm:~6.20.0"
-  checksum: 10c0/daf792ba5dcff1316abf4b33680f94b792f8d54d6ae495efc8929531e0ba1284a248d29aab117d2259f9280284d986ad5799b193b0516e2b926d713aab835f7d
+  checksum: 10c0/fa2ab5b8277bfbcc86c42e46a3ea9871b0d559894cc9d955685d17178c9499f0b1bf03d1d1ea8d92ef2dda818988f4035acb8abf9dc15423a998fa56173ab804
   languageName: node
   linkType: hard
 
@@ -1977,10 +1977,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/semver@npm:~7.5.8":
-  version: 7.5.8
-  resolution: "@types/semver@npm:7.5.8"
-  checksum: 10c0/8663ff927234d1c5fcc04b33062cb2b9fcfbe0f5f351ed26c4d1e1581657deebd506b41ff7fdf89e787e3d33ce05854bc01686379b89e9c49b564c4cfa988efa
+"@types/semver@npm:~7.7.0":
+  version: 7.7.0
+  resolution: "@types/semver@npm:7.7.0"
+  checksum: 10c0/6b5f65f647474338abbd6ee91a6bbab434662ddb8fe39464edcbcfc96484d388baad9eb506dff217b6fc1727a88894930eb1f308617161ac0f376fe06be4e1ee
   languageName: node
   linkType: hard
 
@@ -9183,13 +9183,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"short-unique-id@npm:~5.2.0":
-  version: 5.2.0
-  resolution: "short-unique-id@npm:5.2.0"
+"short-unique-id@npm:~5.2.2":
+  version: 5.2.2
+  resolution: "short-unique-id@npm:5.2.2"
   bin:
     short-unique-id: bin/short-unique-id
     suid: bin/short-unique-id
-  checksum: 10c0/fb5f2d11bf38c3a2de629caaa55de858b4e1c0b02399b9c42afa1ef05e5203ae6e3ab5b11449b56c68d04d74f76515a778780afd7d16742b340d77d2967498f1
+  checksum: 10c0/2ff27cd772e13a370dae4de174ad503770caf7fefa6cfffcc9e52f4fe5bed2cbe07ab5683d5846c6b3b554d4036785d94b877ce09db26e22912e22de35d40772
   languageName: node
   linkType: hard
 
@@ -9442,15 +9442,15 @@ __metadata:
   dependencies:
     "@terascope/eslint-config": "npm:~1.1.10"
     "@terascope/job-components": "npm:~1.9.8"
-    "@terascope/scripts": "npm:~1.13.0"
+    "@terascope/scripts": "npm:~1.14.0"
     "@terascope/standard-asset-apis": "npm:~1.0.4"
     "@types/express": "npm:~4.17.21"
     "@types/fs-extra": "npm:~11.0.4"
     "@types/jest": "npm:~29.5.14"
     "@types/json2csv": "npm:~5.0.7"
-    "@types/node": "npm:~22.13.13"
+    "@types/node": "npm:~22.13.14"
     "@types/node-gzip": "npm:~1.1.3"
-    "@types/semver": "npm:~7.5.8"
+    "@types/semver": "npm:~7.7.0"
     "@types/timsort": "npm:~0.3.3"
     eslint: "npm:~9.23.0"
     fs-extra: "npm:~11.3.0"
@@ -9458,7 +9458,7 @@ __metadata:
     jest-extended: "npm:~4.0.2"
     node-notifier: "npm:~10.0.1"
     semver: "npm:~7.7.1"
-    teraslice-test-harness: "npm:~1.3.3"
+    teraslice-test-harness: "npm:~1.3.4"
     ts-jest: "npm:~29.3.0"
     tslib: "npm:~2.8.1"
     typescript: "npm:~5.8.2"
@@ -9484,7 +9484,7 @@ __metadata:
     ms: "npm:^2.1.3"
     prom-client: "npm:~15.1.3"
     randexp: "npm:~0.5.3"
-    short-unique-id: "npm:~5.2.0"
+    short-unique-id: "npm:~5.2.2"
     timsort: "npm:~0.3.0"
     ts-transforms: "npm:~1.7.8"
     tslib: "npm:~2.8.1"
@@ -9844,16 +9844,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"teraslice-test-harness@npm:~1.3.3":
-  version: 1.3.3
-  resolution: "teraslice-test-harness@npm:1.3.3"
+"teraslice-test-harness@npm:~1.3.4":
+  version: 1.3.4
+  resolution: "teraslice-test-harness@npm:1.3.4"
   dependencies:
     "@terascope/fetch-github-release": "npm:~2.1.0"
     decompress: "npm:~4.2.1"
     fs-extra: "npm:~11.3.0"
   peerDependencies:
     "@terascope/job-components": ">=1.9.8"
-  checksum: 10c0/be70df34401a3cb2d94d84686f960028673bfa66de491de5c4ed22549539da61e5027567231a4187436df851fe9e5eee9e4850f06a8244022d8110257c2c580f
+  checksum: 10c0/85eaed8c37c2555d98d9571026e72ffc0f2a03c040d95d672e30ed57ee16384c1de85c3f78e5cfe73c550f48e7f40583bf45a5acf0730c10b51147f9e0e5d470
   languageName: node
   linkType: hard
 
