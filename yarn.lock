@@ -9183,13 +9183,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"short-unique-id@npm:~5.2.0":
-  version: 5.2.0
-  resolution: "short-unique-id@npm:5.2.0"
+"short-unique-id@npm:~5.2.2":
+  version: 5.2.2
+  resolution: "short-unique-id@npm:5.2.2"
   bin:
     short-unique-id: bin/short-unique-id
     suid: bin/short-unique-id
-  checksum: 10c0/fb5f2d11bf38c3a2de629caaa55de858b4e1c0b02399b9c42afa1ef05e5203ae6e3ab5b11449b56c68d04d74f76515a778780afd7d16742b340d77d2967498f1
+  checksum: 10c0/2ff27cd772e13a370dae4de174ad503770caf7fefa6cfffcc9e52f4fe5bed2cbe07ab5683d5846c6b3b554d4036785d94b877ce09db26e22912e22de35d40772
   languageName: node
   linkType: hard
 
@@ -9484,7 +9484,7 @@ __metadata:
     ms: "npm:^2.1.3"
     prom-client: "npm:~15.1.3"
     randexp: "npm:~0.5.3"
-    short-unique-id: "npm:~5.2.0"
+    short-unique-id: "npm:~5.2.2"
     timsort: "npm:~0.3.0"
     ts-transforms: "npm:~1.7.8"
     tslib: "npm:~2.8.1"
