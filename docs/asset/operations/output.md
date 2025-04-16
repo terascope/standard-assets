@@ -4,7 +4,7 @@ This processor encapsulates the output phase of [ts-transforms](https://terascop
 
 To use this processor, it requires a file containing all transform rules that is will be preforming and any necessary plugins that those rules require to operate.
 
-The full functionality of ts-transforms is encapsulated in the [transform]( ../transform.md) processor.
+The full functionality of ts-transforms is encapsulated in the [transform]( ./transform.md) processor.
 
 You would only want to use this processor instead of the fully functional transform processor if you wanted to inject a custom operation between each phase, or to capture the analytics of the records between each phase.
 
