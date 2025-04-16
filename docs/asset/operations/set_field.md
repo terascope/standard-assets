@@ -1,6 +1,6 @@
 # set_field
 
-The `set_field` processor sets the value for a field in any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md). If the field already exists on a record the default behavior to is not overwrite it, but there is an option to overwrite the field value even if it exists.
+The `set_field` processor sets the value for a field in any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/entities/data-entity/classes/dataentity) or [DataWindow](../entity/data-window.md). If the field already exists on a record the default behavior to is not overwrite it, but there is an option to overwrite the field value even if it exists.
 
 ## Usage
 

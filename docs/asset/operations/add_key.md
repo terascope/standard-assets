@@ -1,6 +1,6 @@
 # add_key
 
-The `add_key` processor adds a deterministic key derived from the properties of the [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or items in a [DataWindow](../entity/data-window.md).  It adds the key to both the incoming document and its metadata. Used for indexing or re-indexing data.
+The `add_key` processor adds a deterministic key derived from the properties of the [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/entities/data-entity/classes/dataentity) or items in a [DataWindow](../entity/data-window.md).  It adds the key to both the incoming document and its metadata. Used for indexing or re-indexing data.
 
 ## Usage
 
@@ -58,5 +58,5 @@ results = [{ name: 'joe', age: 34, _key: '42mFPfdm-kTh7Q_2E_VjvQ' }]
 | minimum_field_count | The number of fields required to make the key. Fields that are empty or undefined are excluded from the key values. If the minimum count is not met for a record then it will not be returned by the processor | Number | defaults to `0` |
 | preserve_original_key | Copies the incoming records metadata `_key` value to `_original_key`, can be useful when re-indexing a data set | Boolean | defaults to `false` |
 | delete_original | Copies the metadata `_key` to `_delete_id` in the metadata.  This allows a teraslice job to index data with a new key while deleting records by their old key in one pass, must be paired with the elasticsearch-assets bulk_sender | Boolean | defaults to `false` |
-| truncate_location | Geo-point fields whose value should be truncated for keying purposes.  Supports the geo-point formats listed here <https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-point.html>. It does not alter the value in the incoming document | String Array | defaults to an empty array |
+| truncate_location | Geo-point fields whose value should be truncated for keying purposes.  Supports the geo-point formats listed [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/geo-point.html). It does not alter the value in the incoming document | String Array | defaults to an empty array |
 | truncate_location_places | The number of digits to keep after the decimal for the lat, lon values of a geo-point if truncate_location is true | Number | defaults to `4` |

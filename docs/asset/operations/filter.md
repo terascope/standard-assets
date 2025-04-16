@@ -208,4 +208,4 @@ results === [
 | validation_function  | DataMate validation function to apply to a field | String | optional |
 | validation_function_args  | Required Validator function args | Object | optional|
 | filtered_to_dead_letter_queue  | Filtered docs are sent to the kafka dead letter queue | Boolean | optional, defaults to `false` |
-| exception_rules  | Expects an array of objects, ie: [{ field: FIELD NAME, value: STRING or REGEX, regex: BOOLEAN }]. The value property can be a string or a regex, but if it is a regex it must be in format /REGEX/Flags and the regex property should be set to true. | Array\<Object> | optional, defaults to `null` |
+| exception_rules  | Expects an array of objects, ie: `[{ field: FIELD NAME, value: STRING or REGEX, regex: BOOLEAN }]`. The value property can be a string or a regex, but if it is a regex it must be in format /REGEX/Flags and the regex property should be set to true. | Array\<Object> | optional, defaults to `null` |

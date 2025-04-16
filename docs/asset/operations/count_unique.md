@@ -1,6 +1,6 @@
 # count_unique
 
-The `count_unique` processor returns a list of unique values and how many times it appears within the slice for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
+The `count_unique` processor returns a list of unique values and how many times it appears within the slice for any [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/entities/data-entity/classes/dataentity) or [DataWindow](../entity/data-window.md).
 
 ## Usage
 

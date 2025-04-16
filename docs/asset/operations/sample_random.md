@@ -1,6 +1,6 @@
 # sample_random
 
-given an array of JSON documents will return an array containing a subset of those input documents.  It iterates through the array and generates a random number between 1 and 100 for each record, and if the number <= probability it is kept. Must be between 0 and 100, with 100 keeping all records and 0 rejecting all records.
+Given an array of JSON documents, will return an array containing a subset of those input documents.  It iterates through the array and generates a random number between 1 and 100 for each record, and if the number `<=` probability it is kept. Must be between 0 and 100, with 100 keeping all records and 0 rejecting all records.
 
 ## Usage
 
@@ -53,4 +53,4 @@ results === [
 | Configuration | Description                                                   | Type   | Notes                        |
 | ------------- | ------------------------------------------------------------- | ------ | ---------------------------- |
 | _op           | Name of operation, it must reflect the exact name of the file | String | required |
-| probability_to_keep   | The probability of the record being kept. It iterates through the array and generates a random number between 1 and 100, and if the number <= probability it is kept. Must be between 0 and 100, with 100 keeping all records and 0 rejecting all records | Number, defaults to 100 | required |
+| probability_to_keep   | The probability of the record being kept. It iterates through the array and generates a random number between 1 and 100, and if the number `<=` probability it is kept. Must be between 0 and 100, with 100 keeping all records and 0 rejecting all records | Number, defaults to 100 | required |

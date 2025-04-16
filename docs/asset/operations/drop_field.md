@@ -1,6 +1,6 @@
 # drop_field
 
-This `drop_field` processor drops a field from a [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md).
+This `drop_field` processor drops a field from a [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/entities/data-entity/classes/dataentity) or [DataWindow](../entity/data-window.md).
 
 ## Usage
 

@@ -1,6 +1,6 @@
 # debug_routes
 
-The `debug_routes` processor helps with debugging and inspecting a slice to see how many records belong to a given route as marked in the metadata key 'standard:route' in [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or [DataWindow](../entity/data-window.md). The key 'standard:route' is used by the routed_sender processor.
+The `debug_routes` processor helps with debugging and inspecting a slice to see how many records belong to a given route as marked in the metadata key 'standard:route' in [DataEntity](https://terascope.github.io/teraslice/docs/packages/utils/api/entities/data-entity/classes/dataentity) or [DataWindow](../entity/data-window.md). The key 'standard:route' is used by the routed_sender processor.
 
 ## Usage
 

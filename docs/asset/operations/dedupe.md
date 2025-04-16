@@ -1,6 +1,6 @@
 # dedupe
 
-The `dedupe` processor is used to dedupe an array of [DataEntities](https://terascope.github.io/teraslice/docs/packages/utils/api/classes/dataentity) or an array of [DataWindows](../entity/data-window.md) by a given field.  If no field is configured then it will attempt to dedupe based off the `_key` metadata property.  This processor can also track dates of duplicate records so that the resulting unique record has either the `oldest` or `newest` date for the date field based on the `adjust_time` parameter.
+The `dedupe` processor is used to dedupe an array of [DataEntities](https://terascope.github.io/teraslice/docs/packages/utils/api/entities/data-entity/classes/dataentity) or an array of [DataWindows](../entity/data-window.md) by a given field.  If no field is configured then it will attempt to dedupe based off the `_key` metadata property.  This processor can also track dates of duplicate records so that the resulting unique record has either the `oldest` or `newest` date for the date field based on the `adjust_time` parameter.
 
 ## Usage
 
