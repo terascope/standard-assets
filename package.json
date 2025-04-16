@@ -4,7 +4,7 @@
     "version": "1.3.5",
     "private": true,
     "description": "Teraslice standard processor asset bundle",
-    "homepage": "https://github.com/terascope/stabdard-assets",
+    "homepage": "https://github.com/terascope/standard-assets",
     "bugs": {
         "url": "https://github.com/terascope/standard-assets/issues"
     },

@@ -4,7 +4,7 @@
 
 > Teraslice standard processor asset bundle
 
-This is a package within the [Standard Assets Bundle](https://github.com/terascope/stabdard-assets) monorepo. See our [documentation](https://terascope.github.io/standard-assets/docs/asset/overview) for more information or the [issues](https://github.com/terascope/standard-assets/issues?q=is%3Aopen+is%3Aissue+label%3Apkg%2Fasset) associated with this package
+This is a package within the [Standard Assets Bundle](https://github.com/terascope/standard-assets) monorepo. See our [documentation](https://terascope.github.io/standard-assets/docs/asset/overview) for more information or the [issues](https://github.com/terascope/standard-assets/issues?q=is%3Aopen+is%3Aissue+label%3Apkg%2Fasset) associated with this package
 
 ## Contributing
 
