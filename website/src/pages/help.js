@@ -30,11 +30,11 @@ function Help() {
       title: 'Browse Docs',
     },
     {
-      content: '[Ask questions](https://github.com/terascope/kafka-assets/issues) about the documentation and project',
+      content: '[Ask questions](https://github.com/terascope/standard-assets/issues) about the documentation and project',
       title: 'Join the community',
     },
     {
-      content: '[Find out](https://github.com/terascope/kafka-assets/releases) what\'s new with this project',
+      content: '[Find out](https://github.com/terascope/standard-assets/releases) what\'s new with this project',
       title: 'Stay up to date',
     },
   ];
