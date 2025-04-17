@@ -1,0 +1,68 @@
+{
+    "asset": {
+        "Overview": [
+            "asset/overview"
+        ],
+        "Entity": [
+            "asset/entity/data-window"
+        ],
+        "Operations": [
+            "asset/operations/accumulate",
+            "asset/operations/accumulate_by_key",
+            "asset/operations/add_short_id",
+            "asset/operations/add_key",
+            "asset/operations/copy_field",
+            "asset/operations/copy_metadata_field",
+            "asset/operations/count_by_field",
+            "asset/operations/count_unique",
+            "asset/operations/data_generator",
+            "asset/operations/data_window_to_array",
+            "asset/operations/filter_by_date",
+            "asset/operations/date_router",
+            "asset/operations/debug_routes",
+            "asset/operations/dedupe",
+            "asset/operations/drop_field",
+            "asset/operations/drop_field_conditional",
+            "asset/operations/extraction",
+            "asset/operations/field_router",
+            "asset/operations/filter",
+            "asset/operations/filter_by_required_fields",
+            "asset/operations/filter_by_unknown_fields",
+            "asset/operations/group_by",
+            "asset/operations/hash_router",
+            "asset/operations/json_parser",
+            "asset/operations/key_router",
+            "asset/operations/match",
+            "asset/operations/output",
+            "asset/operations/post_process",
+            "asset/operations/remove_empty_fields",
+            "asset/operations/remove_key",
+            "asset/operations/routed_sender",
+            "asset/operations/sample_exact",
+            "asset/operations/sample_random",
+            "asset/operations/selection",
+            "asset/operations/set_field",
+            "asset/operations/set_field_conditional",
+            "asset/operations/set_key",
+            "asset/operations/sort",
+            "asset/operations/stdout",
+            "asset/operations/transform",
+            "asset/operations/window"
+        ]
+    },
+    "packages": {
+        "Overview": [
+            "packages/overview"
+        ],
+        "Packages": [
+            {
+                "type": "category",
+                "label": "standard-asset-apis",
+                "items": [
+                    "packages/standard-asset-apis/overview",
+                    "packages/standard-asset-apis/api/overview"
+                ]
+            }
+        ]
+    }
+}
