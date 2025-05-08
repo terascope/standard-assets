@@ -1,7 +1,7 @@
 {
     "name": "standard-assets-bundle",
     "displayName": "Standard Assets Bundle",
-    "version": "1.3.6",
+    "version": "1.4.0",
     "private": true,
     "description": "Teraslice standard processor asset bundle",
     "homepage": "https://github.com/terascope/standard-assets",
