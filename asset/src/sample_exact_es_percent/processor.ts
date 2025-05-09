@@ -1,13 +1,13 @@
 import {
     BatchProcessor, Context, DataEntity,
-    ExecutionConfig, pRetry
+    ExecutionConfig, getTypeOf, isNumber, pRetry
 } from '@terascope/job-components';
-import { SampleExactESPercentConfig } from './interfaces.js';
+import { Client, SampleExactESPercentConfig } from './interfaces.js';
 
 // fixme rename
 export default class SampleExactESPercent extends BatchProcessor<SampleExactESPercentConfig> {
     private percentage!: number;
-    private esClient: any;
+    private esClient!: Client;
     private updatePercentKeptInterval: NodeJS.Timeout | undefined;
 
     constructor(context: Context, opConfig: SampleExactESPercentConfig, exConfig: ExecutionConfig) {
@@ -60,20 +60,39 @@ export default class SampleExactESPercent extends BatchProcessor<SampleExactESPe
         const { document_id: id, index, connection } = this.opConfig;
         try {
             return pRetry(async () => {
+                let percentToNum: number;
                 const response = await this.esClient.get({ id, index });
                 this.logger.trace('search GET response: ', response);
-                // clamp percent to a number between 0 and 100
-                const percent = Math.max(0, Math.min(100, response._source.percent));
-                this.logger.debug('new sample percent: ', percent);
 
+                if (!response.found || !response._source) {
+                    throw new Error(`The document with id ${id} was not found.`);
+                }
+
+                if (typeof response._source.percent === 'string') {
+                    percentToNum = Number(response._source.percent);
+                    if (!isNumber(percentToNum)) {
+                        throw new Error(`Percent could not be converted from a string to a number`);
+                    }
+                } else if (typeof response._source.percent === 'number') {
+                    percentToNum = response._source.percent;
+                } else {
+                    throw new Error(`Expected percent to be of type number or string, found ${getTypeOf(response._source.percent)}`);
+                }
+
+                // clamp percent to a number between 0 and 100
+                const percent = Math.max(0, Math.min(100, percentToNum));
+                this.logger.debug('new sample percent: ', percent);
                 return percent / 100;
             });
         } catch (err) {
             if (this.percentage) {
+                // If we have retrieved percentage before this error should be temporary.
+                // Keep using current percentage
                 this.logger.warn(`Error retrieving new percentage, will re-use current percentage: ${err}`);
                 return this.percentage;
             } else {
-                throw new Error(`SampleExactESPercentage failed to retrieve percentage from index ${index} of elasticsearch-next connection ${connection}.`);
+                // Fail if initial percentage retrieval unsuccessful
+                throw new Error(`SampleExactESPercentage failed to retrieve percentage from index ${index} of elasticsearch-next connection ${connection}: ${err}`);
             }
         }
     }
