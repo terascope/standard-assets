@@ -12,7 +12,7 @@ describe('sample_exact_es_percent', () => {
     const percentArr = [100, 100, 100, 0, 50, 100, 25, 95, 50, 50, 0, 100];
     let i = 0;
 
-    const clients: TestClientConfig[] = [
+    const defaultClients: TestClientConfig[] = [
         {
             type: 'elasticsearch-next',
             endpoint: 'default',
@@ -27,7 +27,7 @@ describe('sample_exact_es_percent', () => {
         }
     ];
 
-    async function makeTest(config: Partial<SampleExactESPercentConfig> = { index: 'my-index', document_id: 'abc123' }) {
+    async function makeTest(config: Partial<SampleExactESPercentConfig> = { index: 'my-index', document_id: 'abc123' }, clients = defaultClients) {
         const baseConfig = {
             _op: 'sample_exact_es_percent',
         };
@@ -131,6 +131,29 @@ describe('sample_exact_es_percent', () => {
         expect(results2.length).toEqual(0);
         expect(results3.length).toEqual(10000);
     }, 30000);
+
+    describe('-> _getNewPercentKept errors', () => {
+        const errorClients: TestClientConfig[] = [
+            {
+                type: 'elasticsearch-next',
+                endpoint: 'default',
+                createClient: async () => ({
+                    client: {
+                        get: () => {
+                            return { found: false };
+                        }
+                    },
+                    logger
+                }),
+            }
+        ];
+
+        it('should throw if initial request fails', async () => {
+            await expect(makeTest({ index: 'my-index', document_id: 'abc123' }, errorClients)).toReject();
+        });
+
+        // TODO add tests for all error conditions
+    });
 });
 
 interface FakeData {
