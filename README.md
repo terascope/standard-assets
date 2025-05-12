@@ -21,6 +21,10 @@ teraslice-cli assets deploy localhost --build
 
 ```
 
+## Documentation
+
+<https://terascope.github.io/standard-assets/>
+
 ## Operations
 
 * [accumulate_by_key](./docs/operations/accumulate_by_key.md)
