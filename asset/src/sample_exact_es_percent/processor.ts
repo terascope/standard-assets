@@ -4,7 +4,6 @@ import {
 } from '@terascope/job-components';
 import { Client, SampleExactESPercentConfig } from './interfaces.js';
 
-// fixme rename
 export default class SampleExactESPercent extends BatchProcessor<SampleExactESPercentConfig> {
     private percentage!: number;
     private esClient!: Client;
