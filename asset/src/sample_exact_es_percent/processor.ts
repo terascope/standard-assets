@@ -79,7 +79,7 @@ export default class SampleExactESPercent extends BatchProcessor<SampleExactESPe
                 } else {
                     throw new Error('Expected percent to be of type number or string, '
                         + `found ${getTypeOf(response._source.percent)}. `
-                        + `connection: ${connection}, index: ${index}, _id: ${id}, percent: ${response._source.percent}`);
+                        + `_id: ${id}, percent: ${response._source.percent}`);
                 }
 
                 // clamp percent to a number between 0 and 100
