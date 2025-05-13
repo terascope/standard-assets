@@ -177,7 +177,7 @@ describe('sample_exact_es_percent', () => {
             await expect(makeTest({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
                 .toThrow('SampleExactESPercentage failed to retrieve percentage from index my-index of '
                     + 'elasticsearch-next connection default: TSError: Expected percent to be of type '
-                    + 'number or string, found Object. connection: default, index: my-index, _id: abc123, '
+                    + 'number or string, found Object. _id: abc123, '
                     + 'percent: [object Object]');
         });
 
