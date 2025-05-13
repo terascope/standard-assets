@@ -58,24 +58,28 @@ export default class SampleExactESPercent extends BatchProcessor<SampleExactESPe
     private async _getNewPercentKept(): Promise<number> {
         const { document_id: id, index, connection } = this.opConfig;
         try {
-            return pRetry(async () => {
+            return await pRetry(async () => {
                 let percentToNum: number;
                 const response = await this.esClient.get({ id, index });
                 this.logger.trace('search GET response: ', response);
 
                 if (!response.found || !response._source) {
-                    throw new Error(`The document with id ${id} was not found.`);
+                    throw new Error(`The document with id ${id} was not found in index ${index} of`
+                        + ` elasticsearch-next connection ${connection}.`);
                 }
 
                 if (typeof response._source.percent === 'string') {
                     percentToNum = Number(response._source.percent);
                     if (!isNumber(percentToNum)) {
-                        throw new Error(`Percent could not be converted from a string to a number`);
+                        throw new Error('Percent could not be converted from a string to a number:'
+                            + `_id: ${id}, percent: ${response._source.percent}`);
                     }
                 } else if (typeof response._source.percent === 'number') {
                     percentToNum = response._source.percent;
                 } else {
-                    throw new Error(`Expected percent to be of type number or string, found ${getTypeOf(response._source.percent)}`);
+                    throw new Error('Expected percent to be of type number or string, '
+                        + `found ${getTypeOf(response._source.percent)}. `
+                        + `connection: ${connection}, index: ${index}, _id: ${id}, percent: ${response._source.percent}`);
                 }
 
                 // clamp percent to a number between 0 and 100
@@ -91,7 +95,8 @@ export default class SampleExactESPercent extends BatchProcessor<SampleExactESPe
                 return this.percentage;
             } else {
                 // Fail if initial percentage retrieval unsuccessful
-                throw new Error(`SampleExactESPercentage failed to retrieve percentage from index ${index} of elasticsearch-next connection ${connection}: ${err}`);
+                throw new Error(`SampleExactESPercentage failed to retrieve percentage from index ${index}`
+                    + ` of elasticsearch-next connection ${connection}: ${err}`);
             }
         }
     }
