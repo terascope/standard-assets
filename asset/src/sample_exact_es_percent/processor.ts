@@ -91,7 +91,8 @@ export default class SampleExactESPercent extends BatchProcessor<SampleExactESPe
             if (this.percentage) {
                 // If we have retrieved percentage before this error should be temporary.
                 // Keep using current percentage
-                this.logger.warn(`Error retrieving new percentage, will re-use current percentage: ${err}`);
+                this.logger.warn(`Error retrieving new percentage from index ${index}`
+                    + ` of elasticsearch-next connection ${connection}, will re-use current percentage: ${err}`);
                 return this.percentage;
             } else {
                 // Fail if initial percentage retrieval unsuccessful
