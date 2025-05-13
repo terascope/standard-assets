@@ -133,6 +133,9 @@ describe('sample_exact_es_percent', () => {
     }, 30000);
 
     describe('-> _getNewPercentKept errors', () => {
+        // client will return docArr[j] 3 times, once fore each retry
+        let j = 0;
+        const docArr = [{ found: false }, { found: false }, { found: true, _source: { percent: 'hi' } }, { found: true, _source: { percent: {} } }];
         const errorClients: TestClientConfig[] = [
             {
                 type: 'elasticsearch-next',
@@ -140,7 +143,8 @@ describe('sample_exact_es_percent', () => {
                 createClient: async () => ({
                     client: {
                         get: () => {
-                            return { found: false };
+                            const idx = j++ / 3;
+                            return docArr[Math.floor(idx)];
                         }
                     },
                     logger
@@ -149,10 +153,35 @@ describe('sample_exact_es_percent', () => {
         ];
 
         it('should throw if initial request fails', async () => {
-            await expect(makeTest({ index: 'my-index', document_id: 'abc123' }, errorClients)).toReject();
+            await expect(makeTest({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
+                .toThrow('SampleExactESPercentage failed to retrieve percentage from index my-index of '
+                    + 'elasticsearch-next connection default: TSError: The document with id abc123 was '
+                    + 'not found in index my-index of elasticsearch-next connection default.');
         });
 
-        // TODO add tests for all error conditions
+        it('should throw if document not found', async () => {
+            await expect(makeTest({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
+                .toThrow('SampleExactESPercentage failed to retrieve percentage from index my-index of '
+                    + 'elasticsearch-next connection default: TSError: The document with id abc123 was '
+                    + 'not found in index my-index of elasticsearch-next connection default.');
+        });
+
+        it('should throw if percent string cannot be converted to a number', async () => {
+            await expect(makeTest({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
+                .toThrow('SampleExactESPercentage failed to retrieve percentage from index my-index of '
+                    + 'elasticsearch-next connection default: TSError: Percent could not be converted '
+                    + 'from a string to a number:_id: abc123, percent: hi');
+        });
+
+        it('should throw percent is not a string or number', async () => {
+            await expect(makeTest({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
+                .toThrow('SampleExactESPercentage failed to retrieve percentage from index my-index of '
+                    + 'elasticsearch-next connection default: TSError: Expected percent to be of type '
+                    + 'number or string, found Object. connection: default, index: my-index, _id: abc123, '
+                    + 'percent: [object Object]');
+        });
+
+        // TODO add tests for error conditions while in interval
     });
 });
 
