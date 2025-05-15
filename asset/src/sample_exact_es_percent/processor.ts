@@ -59,9 +59,9 @@ export default class SampleExactESPercent extends BatchProcessor<SampleExactESPe
         const { document_id: id, index, connection } = this.opConfig;
         try {
             return await pRetry(async () => {
-                let percentToNum: number;
+                let percent: number;
                 const response = await this.esClient.get({ id, index });
-                this.logger.trace('search GET response: ', response);
+                this.logger.trace(`esClient.get(${{ id, index }}) response: `, response); // check this
 
                 if (!response.found || !response._source) {
                     throw new Error(`The document with id ${id} was not found in index ${index} of`
@@ -69,21 +69,23 @@ export default class SampleExactESPercent extends BatchProcessor<SampleExactESPe
                 }
 
                 if (typeof response._source.percent === 'string') {
-                    percentToNum = Number(response._source.percent);
-                    if (!isNumber(percentToNum)) {
+                    percent = Number(response._source.percent);
+                    if (!isNumber(percent)) {
                         throw new Error('Percent could not be converted from a string to a number:'
                             + `_id: ${id}, percent: ${response._source.percent}`);
                     }
                 } else if (typeof response._source.percent === 'number') {
-                    percentToNum = response._source.percent;
+                    percent = response._source.percent;
                 } else {
                     throw new Error('Expected percent to be of type number or string, '
                         + `found ${getTypeOf(response._source.percent)}. `
                         + `_id: ${id}, percent: ${response._source.percent}`);
                 }
 
-                // clamp percent to a number between 0 and 100
-                const percent = Math.max(0, Math.min(100, percentToNum));
+                if (percent < 0 || percent > 100) {
+                    throw new Error(`Percent must be a number between 0 and 100, received ${percent}.`);
+                }
+
                 this.logger.debug('new sample percent: ', percent);
                 return percent / 100;
             });
