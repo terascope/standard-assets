@@ -214,6 +214,23 @@ describe('sample_exact_es_percent', () => {
                     + 'percent: [object Object]');
         });
 
+        it('should throw percent is < 0', async () => {
+            const doc = { found: true, _source: { percent: -1 } };
+            docArr = Array(3).fill(doc);
+            await expect(makeTest({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
+                .toThrow('SampleExactESPercentage failed to retrieve percentage from index my-index of '
+                    + 'elasticsearch-next connection default: TSError: Percent must be a number between '
+                    + '0 and 100, received -1.');
+        });
+
+        it('should throw percent is > 100', async () => {
+            const doc = { found: true, _source: { percent: 101 } };
+            docArr = Array(3).fill(doc);
+            await expect(makeTest({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
+                .toThrow('SampleExactESPercentage failed to retrieve percentage from index my-index of '
+                    + 'elasticsearch-next connection default: TSError: Percent must be a number between '
+                    + '0 and 100, received 101.');
+        });
         // TODO add tests for error conditions while in interval
     });
 });
