@@ -4,9 +4,9 @@ Given an array of JSON documents will return an array containing a shuffled subs
 
 ## Usage
 
-### Reduce and shuffle the returned array
+In this example we want to retrieve the percentage from the document with _id `abc123` in index `my-index` at the terafoundation connection named `elasticsearch7`.
 
-Example of a job using the `sample_exact_es_percent` processor
+### Example of a job using the `sample_exact_es_percent` processor
 
 ```json
 {
@@ -33,10 +33,41 @@ Example of a job using the `sample_exact_es_percent` processor
 
 ```
 
-Example of the document
+### Example sample index creation
+
+Create an index with 1 shard, 2 replicas, and a single text property called `percent`.
 
 ```sh
-curl localhost:9200/my-index/_doc/abc123 | jq
+curl -X PUT "http://localhost:9200/my-index" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 2
+  },
+  "mappings": {
+    "properties": {
+      "percent": {
+        "type": "text"
+      }
+    }
+  }
+}'
+```
+
+### Example document creation
+
+```sh
+curl -X POST 'localhost:9200/my-index/_doc/abc123' -H 'Content-Type:application/json' -d '
+{
+  "percent": 50
+}
+'
+```
+
+### Review the document
+
+```sh
+curl -X GET 'localhost:9200/my-index/_doc/abc123' | jq
 {
   "_index": "my-index",
   "_id": "abc123",
@@ -50,7 +81,7 @@ curl localhost:9200/my-index/_doc/abc123 | jq
 }
 ```
 
-Example of the data and the expected results
+### Example of the data and the expected results
 
 ```javascript
 const data = [
@@ -76,4 +107,4 @@ results === [
 | connection    | Name of the elasticsearch connection to use to find index size | String | defaults to `default` |
 | index         | Name of the index that holds the percentage document | String | required |
 | document_id   | `_id` of the document holding the percentage of docs to keep | String | required |
-| window_ms     | The time in milliseconds between queries to elasticsearch. Must be between 100 and 3_600_000 (1 hour) | Number | defaults to 300_000ms (5 minutes) | 
+| window_ms     | The time in milliseconds between queries to elasticsearch. Must be between 100 and 3_600_000 (1 hour) | Number | defaults to 300_000ms (5 minutes) |
