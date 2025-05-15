@@ -1,6 +1,7 @@
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { SampleExactESPercentConfig } from '../../asset/src/sample_exact_es_percent/interfaces.js';
 import { debugLogger, pDelay, TestClientConfig } from '@terascope/job-components';
+import { makeData } from '../test_helpers.js';
 
 describe('sample_exact_es_percent', () => {
     let harness: WorkerTestHarness;
@@ -184,23 +185,3 @@ describe('sample_exact_es_percent', () => {
         // TODO add tests for error conditions while in interval
     });
 });
-
-interface FakeData {
-    _key: number;
-    name: string;
-    age: string;
-}
-
-function makeData(n: number): FakeData[] {
-    const bunchesOData = [];
-
-    for (let i = 0; i < n; i++) {
-        bunchesOData.push({
-            _key: i,
-            name: 'name',
-            age: 'age'
-        });
-    }
-
-    return bunchesOData;
-}

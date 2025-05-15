@@ -1,5 +1,6 @@
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { SampleExactConfig } from '../../asset/src/sample_exact/interfaces.js';
+import { makeData } from '../test_helpers.js';
 
 describe('sample_exact', () => {
     let harness: WorkerTestHarness;
@@ -95,23 +96,3 @@ describe('sample_exact', () => {
         expect(results.length).toEqual(5000);
     });
 });
-
-interface FakeData {
-    _key: number;
-    name: string;
-    age: string;
-}
-
-function makeData(n: number): FakeData[] {
-    const bunchesOData = [];
-
-    for (let i = 0; i < n; i++) {
-        bunchesOData.push({
-            _key: i,
-            name: 'name',
-            age: 'age'
-        });
-    }
-
-    return bunchesOData;
-}
