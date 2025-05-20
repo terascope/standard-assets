@@ -1,6 +1,6 @@
 # sample_exact_es_percent
 
-Given an array of JSON documents will return an array containing a shuffled subset of those input documents. The size of the subset will be the percentage stored in an elasticsearch record multiplied against the length of the array rounded down. Percentage will be recalculated every `window_ms` milliseconds by querying the elasticsearch located at `connection` for the document with `document_id` found within the `index` specified in the config.
+Given an array of JSON documents, this processor will return an array containing a shuffled subset of those input documents. The size of the subset will be determined by the `percentage` value stored in an Elasticsearch record multiplied against the length of the array rounded down. The `percentage` will be retrieved every `window_ms` milliseconds by getting the document with `document_id` found within the `index` in the Elasticsearch specified by the `connection` as specified in the config.
 
 ## Usage
 
