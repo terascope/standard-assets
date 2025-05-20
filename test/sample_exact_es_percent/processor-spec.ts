@@ -28,7 +28,7 @@ describe('sample_exact_es_percent', () => {
         }
     ];
 
-    async function makeTest(config: Partial<SampleExactESPercentConfig> = { index: 'my-index', document_id: 'abc123' }, clients = defaultClients) {
+    async function makeHarness(config: Partial<SampleExactESPercentConfig> = { index: 'my-index', document_id: 'abc123' }, clients = defaultClients) {
         const baseConfig = {
             _op: 'sample_exact_es_percent',
         };
@@ -46,7 +46,7 @@ describe('sample_exact_es_percent', () => {
 
     it('with initial percentage at 100%, should return empty array from empty array', async () => {
         percentArr = [100];
-        harness = await makeTest();
+        harness = await makeHarness();
         const results = await harness.runSlice([]);
 
         expect(results).toEqual([]);
@@ -55,7 +55,7 @@ describe('sample_exact_es_percent', () => {
     it('with initial percentage at 100%, should return all the data', async () => {
         percentArr = ['100'];
         const data = makeData(10);
-        harness = await makeTest();
+        harness = await makeHarness();
         const results = await harness.runSlice(data);
 
         expect(results.length).toEqual(10);
@@ -64,7 +64,7 @@ describe('sample_exact_es_percent', () => {
     it('shuffles the data', async () => {
         percentArr = [100];
         const data = makeData(10);
-        harness = await makeTest();
+        harness = await makeHarness();
         const results = await harness.runSlice(data);
 
         const outOfOrder = results.some((record, index) => {
@@ -77,7 +77,7 @@ describe('sample_exact_es_percent', () => {
     it('with initial percentage at 0%, should return none of the data', async () => {
         percentArr = [0];
         const data = makeData(10);
-        harness = await makeTest();
+        harness = await makeHarness();
         const results = await harness.runSlice(data);
 
         expect(results.length).toEqual(0);
@@ -86,7 +86,7 @@ describe('sample_exact_es_percent', () => {
     it('with initial percentage at 50%, should return half of all the data', async () => {
         percentArr = [50];
         const data = makeData(10);
-        harness = await makeTest();
+        harness = await makeHarness();
         const results = await harness.runSlice(data);
 
         expect(results.length).toEqual(5);
@@ -95,7 +95,7 @@ describe('sample_exact_es_percent', () => {
     it('with initial percentage at 100%, should return all data', async () => {
         percentArr = [100];
         const data = makeData(10);
-        harness = await makeTest();
+        harness = await makeHarness();
         const results = await harness.runSlice(data);
 
         expect(results.length).toEqual(10);
@@ -104,7 +104,7 @@ describe('sample_exact_es_percent', () => {
     it('with small data, and a low enough percentage, will return 0', async () => {
         percentArr = [25];
         const data = makeData(3);
-        harness = await makeTest();
+        harness = await makeHarness();
         const results = await harness.runSlice(data);
 
         expect(results.length).toEqual(0);
@@ -113,7 +113,7 @@ describe('sample_exact_es_percent', () => {
     it('with large datasets and 95%', async () => {
         percentArr = [95];
         const data = makeData(10000);
-        harness = await makeTest();
+        harness = await makeHarness();
         const results = await harness.runSlice(data);
 
         expect(results.length).toEqual(9500);
@@ -122,7 +122,7 @@ describe('sample_exact_es_percent', () => {
     it('with large datasets and 50%', async () => {
         percentArr = [50];
         const data = makeData(10000);
-        harness = await makeTest();
+        harness = await makeHarness();
         const results = await harness.runSlice(data);
 
         expect(results.length).toEqual(5000);
@@ -131,7 +131,7 @@ describe('sample_exact_es_percent', () => {
     it('updates percentage every window_ms', async () => {
         percentArr = [50, 0, 100];
         const data = makeData(10000);
-        harness = await makeTest({ window_ms: 100, index: 'my-index', document_id: 'abc123' });
+        harness = await makeHarness({ window_ms: 100, index: 'my-index', document_id: 'abc123' });
         const results1 = await harness.runSlice(data);
         await pDelay(100);
         const results2 = await harness.runSlice(data);
@@ -146,7 +146,7 @@ describe('sample_exact_es_percent', () => {
     it('percentage can be number or string', async () => {
         percentArr = ['50', 0, '100'];
         const data = makeData(10000);
-        harness = await makeTest({ window_ms: 100, index: 'my-index', document_id: 'abc123' });
+        harness = await makeHarness({ window_ms: 100, index: 'my-index', document_id: 'abc123' });
         const results1 = await harness.runSlice(data);
         await pDelay(100);
         const results2 = await harness.runSlice(data);
@@ -180,7 +180,7 @@ describe('sample_exact_es_percent', () => {
         it('should throw if initial request fails', async () => {
             const doc = { found: false };
             docArr = Array(3).fill(doc);
-            await expect(makeTest({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
+            await expect(makeHarness({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
                 .toThrow('SampleExactESPercentage failed to retrieve percentage from index my-index of '
                     + 'elasticsearch-next connection default: TSError: The document with id abc123 was '
                     + 'not found in index my-index of elasticsearch-next connection default.');
@@ -189,7 +189,7 @@ describe('sample_exact_es_percent', () => {
         it('should throw if document not found', async () => {
             const doc = { found: false };
             docArr = Array(3).fill(doc);
-            await expect(makeTest({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
+            await expect(makeHarness({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
                 .toThrow('SampleExactESPercentage failed to retrieve percentage from index my-index of '
                     + 'elasticsearch-next connection default: TSError: The document with id abc123 was '
                     + 'not found in index my-index of elasticsearch-next connection default.');
@@ -198,7 +198,7 @@ describe('sample_exact_es_percent', () => {
         it('should throw if percent string cannot be converted to a number', async () => {
             const doc = { found: true, _source: { percent: 'hi' } };
             docArr = Array(3).fill(doc);
-            await expect(makeTest({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
+            await expect(makeHarness({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
                 .toThrow('SampleExactESPercentage failed to retrieve percentage from index my-index of '
                     + 'elasticsearch-next connection default: TSError: Percent could not be converted '
                     + 'from a string to a number:_id: abc123, percent: hi');
@@ -207,7 +207,7 @@ describe('sample_exact_es_percent', () => {
         it('should throw percent is not a string or number', async () => {
             const doc = { found: true, _source: { percent: {} } };
             docArr = Array(3).fill(doc);
-            await expect(makeTest({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
+            await expect(makeHarness({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
                 .toThrow('SampleExactESPercentage failed to retrieve percentage from index my-index of '
                     + 'elasticsearch-next connection default: TSError: Expected percent to be of type '
                     + 'number or string, found Object. _id: abc123, '
@@ -217,7 +217,7 @@ describe('sample_exact_es_percent', () => {
         it('should throw percent is < 0', async () => {
             const doc = { found: true, _source: { percent: -1 } };
             docArr = Array(3).fill(doc);
-            await expect(makeTest({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
+            await expect(makeHarness({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
                 .toThrow('SampleExactESPercentage failed to retrieve percentage from index my-index of '
                     + 'elasticsearch-next connection default: TSError: Percent must be a number between '
                     + '0 and 100, received -1.');
@@ -226,7 +226,7 @@ describe('sample_exact_es_percent', () => {
         it('should throw percent is > 100', async () => {
             const doc = { found: true, _source: { percent: 101 } };
             docArr = Array(3).fill(doc);
-            await expect(makeTest({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
+            await expect(makeHarness({ index: 'my-index', document_id: 'abc123' }, errorClients)).rejects
                 .toThrow('SampleExactESPercentage failed to retrieve percentage from index my-index of '
                     + 'elasticsearch-next connection default: TSError: Percent must be a number between '
                     + '0 and 100, received 101.');
