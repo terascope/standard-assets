@@ -23,7 +23,7 @@ teraslice-cli assets deploy localhost --build
 
 ## Documentation
 
-<https://terascope.github.io/standard-assets/>
+https://terascope.github.io/standard-assets/
 
 ## Operations
 
