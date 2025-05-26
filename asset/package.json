@@ -27,7 +27,7 @@
         "@terascope/standard-asset-apis": "~1.0.5",
         "@terascope/teraslice-state-storage": "~1.9.1",
         "@terascope/types": "~1.4.1",
-        "@terascope/utils": "~1.8.1",
+        "@terascope/utils": "~1.8.2",
         "@types/chance": "~1.1.6",
         "@types/express": "~5.0.2",
         "chance": "~1.1.13",
