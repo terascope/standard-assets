@@ -1,7 +1,7 @@
 {
     "name": "standard-assets-bundle",
     "displayName": "Standard Assets Bundle",
-    "version": "1.4.1",
+    "version": "1.5.0",
     "private": true,
     "description": "Teraslice standard processor asset bundle",
     "homepage": "https://github.com/terascope/standard-assets",
@@ -59,7 +59,7 @@
     },
     "packageManager": "yarn@4.6.0",
     "engines": {
-        "node": ">=18.0.0",
+        "node": ">=22.0.0",
         "yarn": ">=1.22.19"
     },
     "documentation": "https://terascope.github.io/standard-assets",
