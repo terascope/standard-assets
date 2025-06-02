@@ -163,7 +163,7 @@ describe('Route Sender', () => {
         // this tests to make sure that the _key is being propagated correctly on the config
         for (const opKey of Object.keys(opConfig.routing)) {
             const keys = opKey.split(',').map((key) => key.trim());
-            expect(keyValues).toContainValues(keys);
+            expect(keyValues).toIncludeAllMembers(keys);
         }
     });
 
