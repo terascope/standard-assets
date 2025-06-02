@@ -9217,7 +9217,7 @@ __metadata:
     randexp: "npm:~0.5.3"
     short-unique-id: "npm:~5.3.2"
     timsort: "npm:~0.3.0"
-    ts-transforms: "npm:~1.8.2"
+    ts-transforms: "npm:~1.8.3"
     tslib: "npm:~2.8.1"
   languageName: unknown
   linkType: soft
@@ -9764,9 +9764,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-transforms@npm:~1.8.2":
-  version: 1.8.2
-  resolution: "ts-transforms@npm:1.8.2"
+"ts-transforms@npm:~1.8.3":
+  version: 1.8.3
+  resolution: "ts-transforms@npm:1.8.3"
   dependencies:
     "@terascope/data-mate": "npm:~1.8.2"
     "@terascope/types": "npm:~1.4.1"
@@ -9781,7 +9781,7 @@ __metadata:
   bin:
     ts-match: ./bin/ts-transform.js
     ts-transform: ./bin/ts-transform.js
-  checksum: 10c0/c2488440d40462441a1bdb8ad5fb8e0b5236a4053efa40cb62ceab382fbc49905fac80972cab8afa548cae9d7aab9892d889c5c8c20fe1ab5ebb7f006ba41825
+  checksum: 10c0/65e939371031317df76121e515c4c9de7fbd533507a6742ce015d4adc55a2fec58927639131d67b7e9898fe3e60e7de474ef53b9f27edf47f3d5dba3524769f5
   languageName: node
   linkType: hard
 
