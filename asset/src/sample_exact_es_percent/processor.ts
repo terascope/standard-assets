@@ -29,7 +29,7 @@ export default class SampleExactESPercent extends BatchProcessor<SampleExactESPe
     async onBatch(dataArray: DataEntity[]) {
         this._shuffleArray(dataArray);
         const length = Math.floor(dataArray.length * this.percentage);
-        this.logger.info(`Keeping ${length} record sample size of ${dataArray.length} original records (${this.percentage * 100}%)`);
+        this.logger.info(`Keeping ${length} record sample size of ${dataArray.length} original records (${(this.percentage * 100).toFixed(2)}%)`);
 
         return dataArray.slice(0, length);
     }
@@ -86,7 +86,7 @@ export default class SampleExactESPercent extends BatchProcessor<SampleExactESPe
                     throw new Error(`Percent must be a number between 0 and 100, received ${percent}.`);
                 }
 
-                this.logger.debug('new sample percent: ', percent);
+                this.logger.info('New sample percent: ', percent);
                 return percent / 100;
             });
         } catch (err) {
