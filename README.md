@@ -4,7 +4,7 @@
 
 ## Getting Started
 
-This asset bundle requires a running Teraslice cluster, you can find the documentation [here](https://terascope.github.io/teraslice/docs/overview/).
+This asset bundle requires a running Teraslice cluster. [Documentation](https://terascope.github.io/teraslice/docs/overview/).
 
 ```bash
 # Step 1: make sure you have teraslice-cli installed
@@ -23,55 +23,55 @@ teraslice-cli assets deploy localhost --build
 
 ## Documentation
 
-https://terascope.github.io/standard-assets/
+[https://terascope.github.io/standard-assets/](https://terascope.github.io/standard-assets/)
 
 ## Operations
 
-* [accumulate_by_key](./docs/operations/accumulate_by_key.md)
-* [accumulate](./docs/operations/accumulate.md)
-* [add_key](./docs/operations/add_key.md)
-* [add_short_id](./docs/operations/add_short_id.md)
-* [copy_field](./docs/operations/copy_field.md)
-* [copy_metadata_field](./docs/operations/copy_metadata_field.md)
-* [count_by_field](./docs/operations/count_by_field.md)
-* [count_unique](./docs/operations/count_unique.md)
-* [data_generator](./docs/operations/data_generator.md)
-* [data_window_to_array](./docs/operations/data_window_to_array.md)
-* [date_router](./docs/operations/date_router.md)
-* [debug_routes](./docs/operations/debug_routes.md)
-* [dedupe](./docs/operations/dedupe.md)
-* [drop_field_conditional](./docs/operations/drop_field_conditional.md)
-* [drop_field](./docs/operations/drop_field.md)
-* [extraction](./docs/operations/extraction.md)
-* [filter_by_date](./docs/operations/filter_by_date.md)
-* [filter_by_required_fields](./docs/operations/filter_by_required_fields.md)
-* [filter_by_unknown_fields](./docs/operations/filter_by_unknown_fields.md)
-* [filter](./docs/operations/filter.md)
-* [group_by](./docs/operations/group_by.md)
-* [hash_router](./docs/operations/hash_router.md)
-* [json_parser](./docs/operations/json_parser.md)
-* [key_router](./docs/operations/key_router.md)
-* [match](./docs/operations/match.md)
-* [output](./docs/operations/output.md)
-* [post_process](./docs/operations/post_process.md)
-* [remove_empty_fields](./docs/operations/remove_empty_fields.md)
-* [remove_key](./docs/operations/remove_key.md)
-* [routed_sender](./docs/operations/routed_sender.md)
-* [sample_exact_es_percent](./docs/operations/sample_exact_es_percent.md)
-* [sample_exact](./docs/operations/sample_exact.md)
-* [sample_random](./docs/operations/sample_random.md)
-* [selection](./docs/operations/selection.md)
-* [set_field_conditional](./docs/operations/set_field_conditional.md)
-* [set_field](./docs/operations/set_field.md)
-* [set_key](./docs/operations/set_key.md)
-* [sort](./docs/operations/sort.md)
-* [stdout](./docs/operations/stdout.md)
-* [transform](./docs/operations/transform.md)
-* [window](./docs/operations/window.md)
+* [accumulate_by_key](./docs/asset/operations/accumulate_by_key)
+* [accumulate](./docs/asset/operations/accumulate)
+* [add_key](./docs/asset/operations/add_key)
+* [add_short_id](./docs/asset/operations/add_short_id)
+* [copy_field](./docs/asset/operations/copy_field)
+* [copy_metadata_field](./docs/asset/operations/copy_metadata_field)
+* [count_by_field](./docs/asset/operations/count_by_field)
+* [count_unique](./docs/asset/operations/count_unique)
+* [data_generator](./docs/asset/operations/data_generator)
+* [data_window_to_array](./docs/asset/operations/data_window_to_array)
+* [date_router](./docs/asset/operations/date_router)
+* [debug_routes](./docs/asset/operations/debug_routes)
+* [dedupe](./docs/asset/operations/dedupe)
+* [drop_field_conditional](./docs/asset/operations/drop_field_conditional)
+* [drop_field](./docs/asset/operations/drop_field)
+* [extraction](./docs/asset/operations/extraction)
+* [filter_by_date](./docs/asset/operations/filter_by_date)
+* [filter_by_required_fields](./docs/asset/operations/filter_by_required_fields)
+* [filter_by_unknown_fields](./docs/asset/operations/filter_by_unknown_fields)
+* [filter](./docs/asset/operations/filter)
+* [group_by](./docs/asset/operations/group_by)
+* [hash_router](./docs/asset/operations/hash_router)
+* [json_parser](./docs/asset/operations/json_parser)
+* [key_router](./docs/asset/operations/key_router)
+* [match](./docs/asset/operations/match)
+* [output](./docs/asset/operations/output)
+* [post_process](./docs/asset/operations/post_process)
+* [remove_empty_fields](./docs/asset/operations/remove_empty_fields)
+* [remove_key](./docs/asset/operations/remove_key)
+* [routed_sender](./docs/asset/operations/routed_sender)
+* [sample_exact_es_percent](./docs/asset/operations/sample_exact_es_percent)
+* [sample_exact](./docs/asset/operations/sample_exact)
+* [sample_random](./docs/asset/operations/sample_random)
+* [selection](./docs/asset/operations/selection)
+* [set_field_conditional](./docs/asset/operations/set_field_conditional)
+* [set_field](./docs/asset/operations/set_field)
+* [set_key](./docs/asset/operations/set_key)
+* [sort](./docs/asset/operations/sort)
+* [stdout](./docs/asset/operations/stdout)
+* [transform](./docs/asset/operations/transform)
+* [window](./docs/asset/operations/window)
 
 ## Entities
 
-* [data-window](./docs/entity/data-window.md)
+* [data-window](./docs/asset/entity/data-window)
 
 ## Contributing
 
