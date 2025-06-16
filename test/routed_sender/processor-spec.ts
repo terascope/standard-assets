@@ -99,7 +99,7 @@ describe('Route Sender', () => {
             }
         };
 
-        await expect(makeTest(opConfig)).rejects.toThrowError('routing cannot specify "*" and "**"');
+        await expect(makeTest(opConfig)).rejects.toThrow('routing cannot specify "*" and "**"');
     });
 
     it('will not throw if routing is misconfigured part 2', async () => {

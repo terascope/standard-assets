@@ -42,12 +42,12 @@ describe('remove_key schema', () => {
             _op: name,
             field: 'id_field',
             dictionary: 'random stuff'
-        })).rejects.toThrowError('Validation failed for operation config: add_short_id - dictionary: dictionary value must be one of number,alpha,alpha_lower,alpha_upper,alphanum,alphanum_lower,alphanum_upper,hex.  Input was random stuff: value was "random stuff"');
+        })).rejects.toThrow('Validation failed for operation config: add_short_id - dictionary: dictionary value must be one of number,alpha,alpha_lower,alpha_upper,alphanum,alphanum_lower,alphanum_upper,hex.  Input was random stuff: value was "random stuff"');
     });
 
     it('should throw if field is not defined', async () => {
         await expect(makeSchema({
             _op: name
-        })).rejects.toThrowError('Validation failed for operation config: add_short_id - field: This field is required and must by of type string');
+        })).rejects.toThrow('Validation failed for operation config: add_short_id - field: This field is required and must by of type string');
     });
 });

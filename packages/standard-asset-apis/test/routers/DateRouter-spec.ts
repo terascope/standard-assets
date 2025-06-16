@@ -122,7 +122,7 @@ describe('DateRouter', () => {
                 field: 'date',
                 date_delimiter: '@',
             });
-        }).toThrowError(/Expected date_delimiter to be one of/);
+        }).toThrow(/Expected date_delimiter to be one of/);
     });
 
     it('should throw if given an invalid date_unit_delimiter', () => {
@@ -131,6 +131,6 @@ describe('DateRouter', () => {
                 field: 'date',
                 date_unit_delimiter: '@',
             });
-        }).toThrowError(/Expected date_unit_delimiter to be one of/);
+        }).toThrow(/Expected date_unit_delimiter to be one of/);
     });
 });
