@@ -68,11 +68,11 @@ import FilterByUnknownFieldsSchema from '../src/filter_by_unknown_fields/schema'
 import GroupBy from '../src/group_by/processor';
 import GroupBySchema from '../src/group_by/schema';
 
-import JsonParser from '../src/json_parser/processor';
-import JsonParserSchema from '../src/json_parser/schema';
-
 import HashRouter from '../src/hash_router/processor';
 import HashRouterSchema from '../src/hash_router/schema';
+
+import JsonParser from '../src/json_parser/processor';
+import JsonParserSchema from '../src/json_parser/schema';
 
 import KeyRouter from '../src/key_router/processor';
 import KeyRouterSchema from '../src/key_router/schema';
@@ -218,13 +218,13 @@ export const ASSETS = {
         Processor: GroupBy,
         Schema: GroupBySchema,
     },
-    json_parser: {
-        Processor: JsonParser,
-        Schema: JsonParserSchema,
-    },
     hash_router: {
         Processor: HashRouter,
         Schema: HashRouterSchema,
+    },
+    json_parser: {
+        Processor: JsonParser,
+        Schema: JsonParserSchema,
     },
     key_router: {
         Processor: KeyRouter,
