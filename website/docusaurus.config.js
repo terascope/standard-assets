@@ -1,3 +1,5 @@
+import { themes } from 'prism-react-renderer';
+
 module.exports = {
     title: 'Standard Assets',
     tagline: 'Teraslice standard processor asset bundle',
@@ -156,6 +158,11 @@ module.exports = {
                 light: 'default',
                 dark: 'dark'
             },
-        }
+        },
+        prism: {
+            theme: themes.default,
+            darkTheme: themes.dark,
+            additionalLanguages: ['bash'],
+        },
     }
 };
