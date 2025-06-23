@@ -1662,7 +1662,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@terascope/standard-asset-apis@npm:~1.0.5, @terascope/standard-asset-apis@workspace:packages/standard-asset-apis":
+"@terascope/standard-asset-apis@npm:~1.0.6, @terascope/standard-asset-apis@workspace:packages/standard-asset-apis":
   version: 0.0.0-use.local
   resolution: "@terascope/standard-asset-apis@workspace:packages/standard-asset-apis"
   dependencies:
@@ -9966,7 +9966,7 @@ __metadata:
     "@terascope/eslint-config": "npm:~1.1.18"
     "@terascope/job-components": "npm:~1.10.3"
     "@terascope/scripts": "npm:~1.18.1"
-    "@terascope/standard-asset-apis": "npm:~1.0.5"
+    "@terascope/standard-asset-apis": "npm:~1.0.6"
     "@types/express": "npm:~5.0.3"
     "@types/fs-extra": "npm:~11.0.4"
     "@types/jest": "npm:~30.0.0"
@@ -9995,7 +9995,7 @@ __metadata:
     "@faker-js/faker": "npm:~9.8.0"
     "@terascope/data-mate": "npm:~1.8.4"
     "@terascope/job-components": "npm:~1.10.3"
-    "@terascope/standard-asset-apis": "npm:~1.0.5"
+    "@terascope/standard-asset-apis": "npm:~1.0.6"
     "@terascope/teraslice-state-storage": "npm:~1.9.3"
     "@terascope/types": "npm:~1.4.1"
     "@terascope/utils": "npm:~1.8.3"
