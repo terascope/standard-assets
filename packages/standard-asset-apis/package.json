@@ -28,7 +28,7 @@
         "@terascope/scripts": "~1.18.0",
         "@types/jest": "~30.0.0",
         "@types/node": "~24.0.3",
-        "jest": "~30.0.0",
+        "jest": "~30.0.2",
         "jest-extended": "~6.0.0",
         "jest-fixtures": "~0.6.0",
         "ts-jest": "~29.4.0",
