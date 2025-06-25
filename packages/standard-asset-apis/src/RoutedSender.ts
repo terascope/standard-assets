@@ -358,7 +358,8 @@ export class RoutedSender {
                     }
                     affectedRows += affectedBatchCount;
 
-                    this.batchEndHook && await this.batchEndHook(batchId, route, affectedBatchCount);
+                    this.batchEndHook
+                    && await this.batchEndHook(batchId, route, affectedBatchCount);
                 }, {
                     stopOnError: false,
                     concurrency: this.concurrencyPerStorage
@@ -367,7 +368,7 @@ export class RoutedSender {
                 stopOnError: false,
                 concurrency: this.concurrencyAllStorage
             });
-        } catch(err) {
+        } catch (err) {
             throw new Error(`routed_sender failed to send records to their destinations: ${err}`);
         }
 
