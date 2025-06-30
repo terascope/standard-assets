@@ -28,7 +28,7 @@
         "@terascope/teraslice-state-storage": "~1.9.3",
         "@terascope/types": "~1.4.1",
         "@terascope/utils": "~1.8.3",
-        "@types/chance": "~1.1.6",
+        "@types/chance": "~1.1.7",
         "@types/express": "~5.0.3",
         "chance": "~1.1.13",
         "express": "~5.1.0",

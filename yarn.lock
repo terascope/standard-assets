@@ -2084,10 +2084,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chance@npm:~1.1.6":
-  version: 1.1.6
-  resolution: "@types/chance@npm:1.1.6"
-  checksum: 10c0/9059986f58e7d0a5f591fcaecb74bfb3c678161eb947972bb1f6473183f74516fa6a2176e0bae83aa2825637cdf9f3a5515127e34c0763ef27bb812e8208cb12
+"@types/chance@npm:~1.1.7":
+  version: 1.1.7
+  resolution: "@types/chance@npm:1.1.7"
+  checksum: 10c0/896288f0a0f87a738c873dfd8cb0893154225bfda11b1fac36842f4722bc4d73c3933bb986217a59873ad5bc97861ca8939dad370a09ecc32723a928534938bd
   languageName: node
   linkType: hard
 
@@ -9999,7 +9999,7 @@ __metadata:
     "@terascope/teraslice-state-storage": "npm:~1.9.3"
     "@terascope/types": "npm:~1.4.1"
     "@terascope/utils": "npm:~1.8.3"
-    "@types/chance": "npm:~1.1.6"
+    "@types/chance": "npm:~1.1.7"
     "@types/express": "npm:~5.0.3"
     "@types/ms": "npm:^0.7.34"
     chance: "npm:~1.1.13"
