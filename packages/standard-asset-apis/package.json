@@ -22,12 +22,12 @@
     },
     "dependencies": {
         "@sindresorhus/fnv1a": "~3.1.0",
-        "@terascope/utils": "~1.8.3"
+        "@terascope/utils": "~1.9.1"
     },
     "devDependencies": {
-        "@terascope/scripts": "~1.18.1",
+        "@terascope/scripts": "~1.19.2",
         "@types/jest": "~30.0.0",
-        "@types/node": "~24.0.7",
+        "@types/node": "~24.0.8",
         "jest": "~30.0.3",
         "jest-extended": "~6.0.0",
         "jest-fixtures": "~0.6.0",
