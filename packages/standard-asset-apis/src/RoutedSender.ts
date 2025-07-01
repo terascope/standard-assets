@@ -263,7 +263,7 @@ export class RoutedSender {
             }, {
                 stopOnError: true,
             });
-        } catch(err) {
+        } catch (err) {
             await formatAggregateError(err);
         }
     }
@@ -347,7 +347,8 @@ export class RoutedSender {
                         }
 
                         const batchId = ++this._batchId;
-                        this.batchStartHook && await this.batchStartHook(batchId, route, batch.length);
+                        this.batchStartHook
+                        && await this.batchStartHook(batchId, route, batch.length);
 
                         this.logger.debug(`Sending ${batch.length} records to route ${route}`);
 
@@ -364,19 +365,20 @@ export class RoutedSender {
                         }
                         affectedRows += affectedBatchCount;
 
-                        this.batchEndHook && await this.batchEndHook(batchId, route, affectedBatchCount);
+                        this.batchEndHook
+                        && await this.batchEndHook(batchId, route, affectedBatchCount);
                     }, {
                         stopOnError: false,
                         concurrency: this.concurrencyPerStorage
                     });
-                } catch(err) {
+                } catch (err) {
                     await formatAggregateError(err);
                 }
             }, {
                 stopOnError: false,
                 concurrency: this.concurrencyAllStorage
             });
-        } catch(err) {
+        } catch (err) {
             await formatAggregateError(err);
         }
 
