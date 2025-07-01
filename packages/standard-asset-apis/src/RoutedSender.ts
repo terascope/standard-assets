@@ -197,75 +197,71 @@ export class RoutedSender {
     async route(
         records: Iterable<DataEntity>
     ): Promise<void> {
-        try {
-            await pMap(records, async (record) => {
-                this.storageRouteHook && await this.storageRouteHook(record);
+        await pMap(records, async (record) => {
+            this.storageRouteHook && await this.storageRouteHook(record);
 
-                const route = record.getMetadata('standard:route');
+            const route = record.getMetadata('standard:route');
 
-                this.dataRouteHook && await this.dataRouteHook(record);
+            this.dataRouteHook && await this.dataRouteHook(record);
 
-                // if we have route, then use it, else make a topic if allowed.
-                // if not then check if a "*" is set, if not then use rejectRecord
-                if (this.routesDefinitions.has(route)) {
-                    await this.initializeRoute(route);
+            // if we have route, then use it, else make a topic if allowed.
+            // if not then check if a "*" is set, if not then use rejectRecord
+            if (this.routesDefinitions.has(route)) {
+                await this.initializeRoute(route);
 
-                    const batches = this.allBatches.get(route)!;
+                const batches = this.allBatches.get(route)!;
 
-                    this.allBatches.set(
-                        route,
-                        addRecordToBatch(batches, record, this.batchSize)
-                    );
-                } else if (this.routesDefinitions.has('*')) {
-                    await this.initializeRoute('*');
+                this.allBatches.set(
+                    route,
+                    addRecordToBatch(batches, record, this.batchSize)
+                );
+            } else if (this.routesDefinitions.has('*')) {
+                await this.initializeRoute('*');
 
-                    const batches = this.allBatches.get('*')!;
-                    this.allBatches.set(
-                        '*',
-                        addRecordToBatch(batches, record, this.batchSize)
-                    );
-                } else if (this.routesDefinitions.has('**')) {
-                    const dataRoute = record.getMetadata('standard:route');
-                    if (!dataRoute) {
-                        this.rejectRecord(
-                            record,
-                            new Error('No data route was specified in record metadata')
-                        );
-                        return;
-                    }
-
-                    const sender = await this._waitForSender('**');
-
-                    await this._verifyRoute(
-                        sender,
-                        // we need to use the data route here because
-                        // this will allow us to create the correct resource
-                        dataRoute
-                    );
-
-                    const batches = this.allBatches.get('**')!;
-
-                    this.allBatches.set(
-                        '**',
-                        addRecordToBatch(batches, record, this.batchSize)
-                    );
-                } else if (route == null) {
+                const batches = this.allBatches.get('*')!;
+                this.allBatches.set(
+                    '*',
+                    addRecordToBatch(batches, record, this.batchSize)
+                );
+            } else if (this.routesDefinitions.has('**')) {
+                const dataRoute = record.getMetadata('standard:route');
+                if (!dataRoute) {
                     this.rejectRecord(
                         record,
-                        new Error('No route was specified in record metadata')
+                        new Error('No data route was specified in record metadata')
                     );
-                } else {
-                    this.rejectRecord(
-                        record,
-                        new Error(`Invalid connection route: ${route} was not found in routing`)
-                    );
+                    return;
                 }
-            }, {
-                stopOnError: true,
-            });
-        } catch (err) {
-            await formatAggregateError(err);
-        }
+
+                const sender = await this._waitForSender('**');
+
+                await this._verifyRoute(
+                    sender,
+                    // we need to use the data route here because
+                    // this will allow us to create the correct resource
+                    dataRoute
+                );
+
+                const batches = this.allBatches.get('**')!;
+
+                this.allBatches.set(
+                    '**',
+                    addRecordToBatch(batches, record, this.batchSize)
+                );
+            } else if (route == null) {
+                this.rejectRecord(
+                    record,
+                    new Error('No route was specified in record metadata')
+                );
+            } else {
+                this.rejectRecord(
+                    record,
+                    new Error(`Invalid connection route: ${route} was not found in routing`)
+                );
+            }
+        }, {
+            stopOnError: true,
+        });
     }
 
     /**
