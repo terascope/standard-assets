@@ -1,6 +1,7 @@
 import {
     DataEntity, pMap, getLast,
-    isInteger, RouteSenderAPI, Logger
+    isInteger, RouteSenderAPI, Logger,
+    formatAggregateError
 } from '@terascope/utils';
 import EventEmitter, { once } from 'node:events';
 
@@ -321,51 +322,61 @@ export class RoutedSender {
     ): Promise<number> {
         let affectedRows = 0;
 
-        await pMap(this.allBatches.entries(), async ([route, batches]) => {
-            if (!batches.length) return;
+        try {
+            await pMap(this.allBatches.entries(), async ([route, batches]) => {
+                if (!batches.length) return;
 
-            this.allBatches.set(route, []);
+                this.allBatches.set(route, []);
 
-            await pMap(batches, async (batch) => {
-                if (batch.length <= minPerBatch) {
-                    batch.forEach((record) => {
-                        this.allBatches.set(
-                            route,
-                            addRecordToBatch(
-                                this.allBatches.get(route)!, record, this.batchSize
-                            )
-                        );
+                try {
+                    await pMap(batches, async (batch) => {
+                        if (batch.length <= minPerBatch) {
+                            batch.forEach((record) => {
+                                this.allBatches.set(
+                                    route,
+                                    addRecordToBatch(
+                                        this.allBatches.get(route)!, record, this.batchSize
+                                    )
+                                );
+                            });
+                            return;
+                        }
+
+                        const batchId = ++this._batchId;
+                        this.batchStartHook
+                        && await this.batchStartHook(batchId, route, batch.length);
+
+                        this.logger.debug(`Sending ${batch.length} records to route ${route}`);
+
+                        const sender = this.senders.get(route);
+                        if (!sender) throw new Error('No sender registered for route');
+
+                        const result: unknown = await sender.send(batch);
+                        let affectedBatchCount: number;
+                        if (isInteger(result)) {
+                            affectedBatchCount = result;
+                        } else {
+                            // we do this for backwards compatibility
+                            affectedBatchCount = batch.length;
+                        }
+                        affectedRows += affectedBatchCount;
+
+                        this.batchEndHook
+                        && await this.batchEndHook(batchId, route, affectedBatchCount);
+                    }, {
+                        stopOnError: false,
+                        concurrency: this.concurrencyPerStorage
                     });
-                    return;
+                } catch (err) {
+                    await formatAggregateError(err);
                 }
-
-                const batchId = ++this._batchId;
-                this.batchStartHook && await this.batchStartHook(batchId, route, batch.length);
-
-                this.logger.debug(`Sending ${batch.length} records to route ${route}`);
-
-                const sender = this.senders.get(route);
-                if (!sender) throw new Error('No sender registered for route');
-
-                const result: unknown = await sender.send(batch);
-                let affectedBatchCount: number;
-                if (isInteger(result)) {
-                    affectedBatchCount = result;
-                } else {
-                    // we do this for backwards compatibility
-                    affectedBatchCount = batch.length;
-                }
-                affectedRows += affectedBatchCount;
-
-                this.batchEndHook && await this.batchEndHook(batchId, route, affectedBatchCount);
             }, {
                 stopOnError: false,
-                concurrency: this.concurrencyPerStorage
+                concurrency: this.concurrencyAllStorage
             });
-        }, {
-            stopOnError: false,
-            concurrency: this.concurrencyAllStorage
-        });
+        } catch (err) {
+            await formatAggregateError(err);
+        }
 
         return affectedRows;
     }
