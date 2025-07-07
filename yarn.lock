@@ -1626,12 +1626,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@terascope/scripts@npm:~1.19.2":
-  version: 1.19.2
-  resolution: "@terascope/scripts@npm:1.19.2"
+"@terascope/scripts@npm:~1.19.4":
+  version: 1.19.4
+  resolution: "@terascope/scripts@npm:1.19.4"
   dependencies:
     "@kubernetes/client-node": "npm:~1.3.0"
-    "@terascope/utils": "npm:~1.9.1"
+    "@terascope/utils": "npm:~1.9.3"
     execa: "npm:~9.6.0"
     fs-extra: "npm:~11.3.0"
     globby: "npm:~14.1.0"
@@ -1659,7 +1659,7 @@ __metadata:
       optional: true
   bin:
     ts-scripts: ./bin/ts-scripts.js
-  checksum: 10c0/3bddd807471d16a487c010039e8ca3766486a8cf85e51469e7c3c7c5d29b27edc14aa00ac90d5f6c81743eb3351ac662b34a1efe4606d7d75f38b7879761cf58
+  checksum: 10c0/5e0daad65ee53c48b2548b58f0bd6e33aeb7519646918edeb79a84ff8deeccb73f4952937d1e2d53d3b19c36b1d6c3fe4681479faa986a721f762659d9ce645f
   languageName: node
   linkType: hard
 
@@ -1668,7 +1668,7 @@ __metadata:
   resolution: "@terascope/standard-asset-apis@workspace:packages/standard-asset-apis"
   dependencies:
     "@sindresorhus/fnv1a": "npm:~3.1.0"
-    "@terascope/scripts": "npm:~1.19.2"
+    "@terascope/scripts": "npm:~1.19.4"
     "@terascope/utils": "npm:~1.9.1"
     "@types/jest": "npm:~30.0.0"
     "@types/node": "npm:~24.0.8"
@@ -1696,6 +1696,15 @@ __metadata:
   dependencies:
     prom-client: "npm:~15.1.3"
   checksum: 10c0/5021e3e2dced0d366f55811684c4a8aedbe740993d21690ba86a272de807f1d30bd5e20990187b68924e89e5900250d50c92fbb64e9c8dbdf8036aa87d1c388a
+  languageName: node
+  linkType: hard
+
+"@terascope/types@npm:~1.4.3":
+  version: 1.4.3
+  resolution: "@terascope/types@npm:1.4.3"
+  dependencies:
+    prom-client: "npm:~15.1.3"
+  checksum: 10c0/2187e0fbbd7e939a6c060fdeccd4cbdf61ce3802b20eb3b52ea86885416fed9892beb621c5feaf0336a1d1986b4f2dbba5b0bf265cc507e54d99d73b1cb04753
   languageName: node
   linkType: hard
 
@@ -1740,6 +1749,50 @@ __metadata:
     shallow-clone: "npm:~3.0.1"
     validator: "npm:~13.12.0"
   checksum: 10c0/31f0a4ccea53a992c2635ae146060570afe84d4ed0c8e3b0575217da616be55c1992faa11f449a920a358c41824ccf81f1b563d91811099cec25adaf16c15ac9
+  languageName: node
+  linkType: hard
+
+"@terascope/utils@npm:~1.9.3":
+  version: 1.9.3
+  resolution: "@terascope/utils@npm:1.9.3"
+  dependencies:
+    "@chainsafe/is-ip": "npm:~2.1.0"
+    "@terascope/types": "npm:~1.4.3"
+    "@turf/bbox": "npm:~7.2.0"
+    "@turf/bbox-polygon": "npm:~7.2.0"
+    "@turf/boolean-contains": "npm:~7.2.0"
+    "@turf/boolean-disjoint": "npm:~7.2.0"
+    "@turf/boolean-equal": "npm:~7.2.0"
+    "@turf/boolean-intersects": "npm:~7.2.0"
+    "@turf/boolean-point-in-polygon": "npm:~7.2.0"
+    "@turf/boolean-within": "npm:~7.2.0"
+    "@turf/circle": "npm:~7.2.0"
+    "@turf/helpers": "npm:~7.2.0"
+    "@turf/invariant": "npm:~7.2.0"
+    "@turf/line-to-polygon": "npm:~7.2.0"
+    "@types/lodash-es": "npm:~4.17.12"
+    "@types/validator": "npm:~13.12.3"
+    awesome-phonenumber: "npm:~7.5.0"
+    date-fns: "npm:~4.1.0"
+    date-fns-tz: "npm:~3.2.0"
+    datemath-parser: "npm:~1.0.6"
+    debug: "npm:~4.4.1"
+    geo-tz: "npm:~8.1.4"
+    ip-bigint: "npm:~8.2.1"
+    ip-cidr: "npm:~4.0.2"
+    ip6addr: "npm:~0.2.5"
+    ipaddr.js: "npm:~2.2.0"
+    is-cidr: "npm:~5.1.1"
+    is-plain-object: "npm:~5.0.0"
+    js-string-escape: "npm:~1.0.1"
+    kind-of: "npm:~6.0.3"
+    latlon-geohash: "npm:~2.0.0"
+    lodash-es: "npm:~4.17.21"
+    mnemonist: "npm:~0.40.3"
+    p-map: "npm:~7.0.3"
+    shallow-clone: "npm:~3.0.1"
+    validator: "npm:~13.12.0"
+  checksum: 10c0/d3fdadf68c7a93529b273944cc52ed3f85e93c9ed9c6c347e0c9de867593cd81029aae426ce06e2c938a918699ebc5ee597a37e58098c3e30e1a5663cff54cd9
   languageName: node
   linkType: hard
 
@@ -9965,7 +10018,7 @@ __metadata:
   dependencies:
     "@terascope/eslint-config": "npm:~1.1.19"
     "@terascope/job-components": "npm:~1.11.1"
-    "@terascope/scripts": "npm:~1.19.2"
+    "@terascope/scripts": "npm:~1.19.4"
     "@terascope/standard-asset-apis": "npm:~1.1.0"
     "@types/express": "npm:~5.0.3"
     "@types/fs-extra": "npm:~11.0.4"
