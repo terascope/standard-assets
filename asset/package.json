@@ -38,7 +38,7 @@
         "randexp": "~0.5.3",
         "short-unique-id": "~5.3.2",
         "timsort": "~0.3.0",
-        "ts-transforms": "~1.9.3",
+        "ts-transforms": "~1.10.0",
         "tslib": "~2.8.1"
     },
     "devDependencies": {

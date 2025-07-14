@@ -1526,6 +1526,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@terascope/data-mate@npm:~1.10.0":
+  version: 1.10.0
+  resolution: "@terascope/data-mate@npm:1.10.0"
+  dependencies:
+    "@terascope/data-types": "npm:~1.10.0"
+    "@terascope/types": "npm:~1.4.3"
+    "@terascope/utils": "npm:~1.9.3"
+    "@types/validator": "npm:~13.12.3"
+    awesome-phonenumber: "npm:~7.5.0"
+    date-fns: "npm:~4.1.0"
+    ip-bigint: "npm:~8.2.1"
+    ip6addr: "npm:~0.2.5"
+    ipaddr.js: "npm:~2.2.0"
+    is-cidr: "npm:~5.1.1"
+    jexl: "npm:~2.3.0"
+    mnemonist: "npm:~0.40.3"
+    uuid: "npm:~11.1.0"
+    valid-url: "npm:~1.0.9"
+    validator: "npm:~13.12.0"
+    xlucene-parser: "npm:~1.9.3"
+  checksum: 10c0/dec368054b6420a8102cf474aafe24fb8c268eb92ab05ef4927963c355737cf8f90156bd6a599e2e3928e40e54fadbf7961c3b88747fd9120704948f19aab763
+  languageName: node
+  linkType: hard
+
 "@terascope/data-mate@npm:~1.9.3":
   version: 1.9.3
   resolution: "@terascope/data-mate@npm:1.9.3"
@@ -1547,6 +1571,20 @@ __metadata:
     validator: "npm:~13.12.0"
     xlucene-parser: "npm:~1.9.3"
   checksum: 10c0/972a37e8adf98ff12b80d99b92fb7fe93d527ef76b00eded04e16972126d52a55caadbdab970c9847abee84a27d70d572aa3d31f2b72f39e938307063e1595b3
+  languageName: node
+  linkType: hard
+
+"@terascope/data-types@npm:~1.10.0":
+  version: 1.10.0
+  resolution: "@terascope/data-types@npm:1.10.0"
+  dependencies:
+    "@terascope/types": "npm:~1.4.3"
+    "@terascope/utils": "npm:~1.9.3"
+    graphql: "npm:~16.11.0"
+    yargs: "npm:~18.0.0"
+  bin:
+    data-types: ./bin/data-types.js
+  checksum: 10c0/743c924f0d8adbd5ae3cf6f501c967e617dcb36a3f055f102d44f3625102d86121d366b198631fdb1bccaffe4c64e6f4841705d9cee82cc8b15b204dc3810263
   languageName: node
   linkType: hard
 
@@ -10067,7 +10105,7 @@ __metadata:
     randexp: "npm:~0.5.3"
     short-unique-id: "npm:~5.3.2"
     timsort: "npm:~0.3.0"
-    ts-transforms: "npm:~1.9.3"
+    ts-transforms: "npm:~1.10.0"
     tslib: "npm:~2.8.1"
   languageName: unknown
   linkType: soft
@@ -10672,11 +10710,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-transforms@npm:~1.9.3":
-  version: 1.9.3
-  resolution: "ts-transforms@npm:1.9.3"
+"ts-transforms@npm:~1.10.0":
+  version: 1.10.0
+  resolution: "ts-transforms@npm:1.10.0"
   dependencies:
-    "@terascope/data-mate": "npm:~1.9.3"
+    "@terascope/data-mate": "npm:~1.10.0"
     "@terascope/types": "npm:~1.4.3"
     "@terascope/utils": "npm:~1.9.3"
     awesome-phonenumber: "npm:~7.5.0"
@@ -10689,7 +10727,7 @@ __metadata:
   bin:
     ts-match: ./bin/ts-transform.js
     ts-transform: ./bin/ts-transform.js
-  checksum: 10c0/470feaaf0ddd0bc84d60d65461c59f6af0bf03b5f01c6d7b2af4c7d5995757584f298ec023619dba9ac2c139193c55b52876f2c9bed2d3a7a346b6d7f3819e7e
+  checksum: 10c0/56d48567392e3911778d41a30bb288ad29737b7e700132ad16030830436b785e8334333d5d200655b28c8b17a77c90988e0d10e17a2813838f5283e6710b9bd3
   languageName: node
   linkType: hard
 
