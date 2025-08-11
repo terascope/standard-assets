@@ -6,14 +6,15 @@ updates:
       interval: weekly
       time: '04:00'
       timezone: US/Arizona
-    open-pull-requests-limit: 6
+    # Disable version updates, only get security updates
+    open-pull-requests-limit: 0
     assignees:
       - busma13
       - sotojn
-    ignore:
-      - dependency-name: '@types/node'
-        versions:
-          - '> 17.0.0'
+    # ignore:
+    #   - dependency-name: '@types/node'
+    #     versions:
+    #       - '> 17.0.0'
   - package-ecosystem: npm
     directory: '/website'
     schedule:
@@ -22,7 +23,8 @@ updates:
       timezone: US/Arizona
     ignore:
       - dependency-name: "*"
-    open-pull-requests-limit: 3
+    # Disable version updates, only get security updates
+    open-pull-requests-limit: 0
     assignees:
       - godber
       - sotojn
