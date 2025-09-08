@@ -25,9 +25,9 @@
         "@terascope/utils": "~1.10.2"
     },
     "devDependencies": {
-        "@terascope/scripts": "~1.21.4",
+        "@terascope/scripts": "~1.21.5",
         "@types/jest": "~30.0.0",
-        "@types/node": "~24.3.0",
+        "@types/node": "~24.3.1",
         "jest": "~30.0.5",
         "jest-extended": "~6.0.0",
         "jest-fixtures": "~0.6.0",
