@@ -22,12 +22,12 @@
     },
     "dependencies": {
         "@faker-js/faker": "~10.0.0",
-        "@terascope/data-mate": "~1.12.0",
-        "@terascope/job-components": "~1.12.2",
+        "@terascope/data-mate": "~1.12.1",
+        "@terascope/job-components": "~1.12.3",
         "@terascope/standard-asset-apis": "~1.1.1",
-        "@terascope/teraslice-state-storage": "~1.12.2",
+        "@terascope/teraslice-state-storage": "~1.13.0",
         "@terascope/types": "~1.4.4",
-        "@terascope/utils": "~1.10.2",
+        "@terascope/utils": "~1.10.3",
         "@types/chance": "~1.1.7",
         "@types/express": "~5.0.3",
         "chance": "~1.1.13",
@@ -38,7 +38,7 @@
         "randexp": "~0.5.3",
         "short-unique-id": "~5.3.2",
         "timsort": "~0.3.0",
-        "ts-transforms": "~1.12.0",
+        "ts-transforms": "~1.12.1",
         "tslib": "~2.8.1"
     },
     "devDependencies": {
