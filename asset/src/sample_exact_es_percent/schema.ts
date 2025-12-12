@@ -9,7 +9,7 @@ export default class SampleExactESPercentSchema extends ConvictSchema<SampleExac
             connection: {
                 doc: 'Name of the elasticsearch connection to use to find index size.',
                 default: 'default',
-                format: 'optional_String'
+                format: 'optional_string'
             },
             index: {
                 doc: 'Name of the index that holds the percentage document - required',

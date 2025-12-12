@@ -56,7 +56,7 @@ export default class Schema extends ConvictSchema<RouteSenderConfig> {
             api_name: {
                 doc: 'Name of the elasticsearch connection to use when sending data.',
                 default: null,
-                format: 'required_String'
+                format: 'required_string'
             },
             concurrency: {
                 doc: 'The number of inflight calls to the api.send allowed',

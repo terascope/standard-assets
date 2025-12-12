@@ -7,7 +7,7 @@ export default class Schema extends ConvictSchema<SetFieldConditionalConfig> {
             conditional_field: {
                 default: '',
                 doc: 'Name of the field',
-                format: 'required_String',
+                format: 'required_string',
             },
             conditional_values: {
                 default: [],
@@ -21,7 +21,7 @@ export default class Schema extends ConvictSchema<SetFieldConditionalConfig> {
             set_field: {
                 default: '',
                 doc: 'Name of the field',
-                format: 'required_String',
+                format: 'required_string',
             },
             value: {
                 default: null,

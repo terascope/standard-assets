@@ -7,7 +7,7 @@ export default class Schema extends ConvictSchema<CountByFieldConfig> {
             field: {
                 doc: 'field to count',
                 default: null,
-                format: 'required_String'
+                format: 'required_string'
             },
             collect_metrics: {
                 doc: 'enable metric collection',

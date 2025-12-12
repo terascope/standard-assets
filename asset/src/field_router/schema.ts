@@ -19,12 +19,12 @@ export default class Schema extends ConvictSchema<FieldRouterConfig & OpConfig> 
             field_delimiter: {
                 doc: 'separator between field/value combinations - default "-"',
                 default: '-',
-                format: 'optional_String'
+                format: 'optional_string'
             },
             value_delimiter: {
                 doc: 'separator between the field name and the value - default "_"',
                 default: '_',
-                format: 'optional_String'
+                format: 'optional_string'
             },
             include_field_names: {
                 doc: 'determines if the field name should be included in final output',

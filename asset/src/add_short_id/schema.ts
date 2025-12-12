@@ -17,7 +17,7 @@ export default class Schema extends ConvictSchema<OpConfig> {
             field: {
                 doc: 'Name of field to add the id to',
                 default: null,
-                format: 'required_String'
+                format: 'required_string'
             },
             dictionary: {
                 doc: 'Character types to use in the ID',

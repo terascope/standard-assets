@@ -30,7 +30,7 @@ export default class Schema extends ConvictSchema<DataGenerator> {
             json_schema: {
                 doc: 'File path to custom data schema',
                 default: null,
-                format: 'optional_String'
+                format: 'optional_string'
             },
             size: {
                 doc: 'The limit to the number of docs pulled in a chunk, if the number of docs retrieved '
@@ -47,12 +47,12 @@ export default class Schema extends ConvictSchema<DataGenerator> {
             start: {
                 doc: 'The start date (ISOString or in ms) to which it will read from ',
                 default: null,
-                format: 'optional_Date'
+                format: 'optional_date'
             },
             end: {
                 doc: 'The end date (ISOString or in ms) to which it will read to',
                 default: null,
-                format: 'optional_Date'
+                format: 'optional_date'
             },
             format: {
                 doc: 'This is only used with the teraslice provided schema, can elect different time structures'
@@ -106,7 +106,7 @@ export default class Schema extends ConvictSchema<DataGenerator> {
             id_start_key: {
                 doc: 'set if you would like to force the first part of the ID to a certain character',
                 default: null,
-                format: 'optional_String'
+                format: 'optional_string'
             }
         };
     }

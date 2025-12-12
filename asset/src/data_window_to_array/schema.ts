@@ -6,7 +6,7 @@ export default class Schema extends ConvictSchema<OpConfig> {
             type: {
                 doc: 'type of data window',
                 default: null,
-                format: 'optional_String'
+                format: 'optional_string'
             },
         };
     }

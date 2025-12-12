@@ -7,12 +7,12 @@ export default class Schema extends ConvictSchema<CopyFieldConfig> {
             source: {
                 doc: 'Name of the field to copy value from',
                 default: null,
-                format: 'required_String'
+                format: 'required_string'
             },
             destination: {
                 doc: 'Name of the field that copied value is written to',
                 default: null,
-                format: 'required_String'
+                format: 'required_string'
             },
             delete_source: {
                 doc: 'Option to delete the source field',

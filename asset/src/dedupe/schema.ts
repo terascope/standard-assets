@@ -7,7 +7,7 @@ export default class Schema extends ConvictSchema<I.DedupeConfig> {
             field: {
                 doc: 'field to dedupe records on',
                 default: undefined,
-                format: 'optional_String',
+                format: 'optional_string',
             },
             adjust_time: {
                 doc: 'Requires and array of objects with field and preference properties.  Preference should be oldest or newest.',

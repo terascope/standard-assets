@@ -64,7 +64,7 @@ export default class Schema extends ConvictSchema<OpConfig> {
             field: {
                 doc: 'Field to remove from incoming document',
                 default: null,
-                format: 'required_String'
+                format: 'required_string'
             },
             regex: {
                 doc: 'Regular Expression to compare field value with',

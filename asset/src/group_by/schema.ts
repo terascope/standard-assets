@@ -7,7 +7,7 @@ export default class Schema extends ConvictSchema<GroupByConfig> {
             field: {
                 doc: 'Name of field to group each record by',
                 default: undefined,
-                format: 'optional_String',
+                format: 'optional_string',
             }
         };
     }

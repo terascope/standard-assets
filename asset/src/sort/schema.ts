@@ -8,7 +8,7 @@ export default class Schema extends ConvictSchema<SortConfig> {
             field: {
                 doc: 'The field in the input records to use for sorting',
                 default: null,
-                format: 'required_String',
+                format: 'required_string',
             },
             order: {
                 doc: 'The order in which it will be sorted',

@@ -24,7 +24,7 @@ export default class Schema extends ConvictSchema<FilterByDateConfig> {
         return {
             date_field: {
                 doc: 'date field',
-                format: 'required_String',
+                format: 'required_string',
                 default: 'date'
             },
             limit_past: {
