@@ -1,11 +1,12 @@
-import { DataEntity, AnyObject } from '@terascope/utils';
+import { DataEntity } from '@terascope/core-utils';
+import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 
 describe('Field Router Processor', () => {
     let harness: WorkerTestHarness;
     let data: DataEntity[];
 
-    async function makeTest(config: AnyObject = {}) {
+    async function makeTest(config: Partial<OpConfig> = {}) {
         const _op = {
             _op: 'field_router',
             fields: [
@@ -13,7 +14,7 @@ describe('Field Router Processor', () => {
                 'field1'
             ]
         };
-        const opConfig = config ? Object.assign({}, _op, config) : _op;
+        const opConfig: OpConfig = config ? Object.assign({}, _op, config) : _op;
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();

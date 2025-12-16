@@ -1,4 +1,4 @@
-import { cloneDeep } from '@terascope/job-components';
+import { cloneDeep } from '@terascope/core-utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { FilterByUnknownFieldsConfig } from '../../asset/src/filter_by_unknown_fields/interfaces.js';
 

@@ -1,5 +1,6 @@
 import 'jest-extended';
-import { AnyObject, DataEntity } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
+import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { IDType, DateOptions } from '../../asset/src/data_generator/interfaces.js';
 
@@ -12,8 +13,8 @@ describe('data_generator fetcher', () => {
         }
     });
 
-    async function makeFetcherTest(config: AnyObject = {}) {
-        const opConfig = Object.assign({}, { _op: 'data_generator' }, config);
+    async function makeFetcherTest(config: Partial<OpConfig> = {}) {
+        const opConfig: OpConfig = Object.assign({}, { _op: 'data_generator' }, config);
         harness = WorkerTestHarness.testFetcher(opConfig);
         await harness.initialize();
         return harness;

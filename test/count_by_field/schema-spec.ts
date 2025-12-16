@@ -1,14 +1,14 @@
 import 'jest-extended';
+import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { AnyObject } from '@terascope/job-components';
 import { CountByFieldConfig } from '../../asset/src/count_by_field/interfaces.js';
 
 describe('count_by_field schema', () => {
     let harness: WorkerTestHarness;
     const name = 'count_by_field';
 
-    async function makeSchema(config: AnyObject = {}): Promise<CountByFieldConfig> {
-        const opConfig = Object.assign({}, { _op: name }, config);
+    async function makeSchema(config: Partial<OpConfig> = {}): Promise<CountByFieldConfig> {
+        const opConfig:OpConfig = Object.assign({}, { _op: name }, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();

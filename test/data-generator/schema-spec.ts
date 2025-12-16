@@ -1,14 +1,14 @@
 import 'jest-extended';
+import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { AnyObject } from '@terascope/job-components';
 import { DataGenerator } from '../../asset/src/data_generator/interfaces.js';
 
 describe('data-generator schema', () => {
     let harness: WorkerTestHarness;
 
-    async function makeSchema(config: AnyObject = {}): Promise<DataGenerator> {
+    async function makeSchema(config: Partial<OpConfig> = {}): Promise<DataGenerator> {
         const name = 'data_generator';
-        const opConfig = Object.assign({}, { _op: name }, config);
+        const opConfig: OpConfig = Object.assign({}, { _op: name }, config);
         harness = WorkerTestHarness.testFetcher(opConfig);
 
         await harness.initialize();

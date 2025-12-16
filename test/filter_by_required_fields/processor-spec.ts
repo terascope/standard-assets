@@ -1,4 +1,4 @@
-import { DataEntity } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { FilterByRequiredFieldConfig, LogicType } from '../../asset/src/filter_by_required_fields/interfaces.js';
 

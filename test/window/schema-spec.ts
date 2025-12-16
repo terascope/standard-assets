@@ -1,14 +1,14 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { AnyObject } from '@terascope/job-components';
 import { WindowConfig, TimeSetting, WindowType } from '../../asset/src/window/interfaces.js';
+import { OpConfig } from '@terascope/job-components';
 
 describe('window Schema', () => {
     let harness: WorkerTestHarness;
     const name = 'window';
 
-    async function makeSchema(config: AnyObject = {}): Promise<WindowConfig> {
-        const opConfig = Object.assign({}, { _op: name }, config);
+    async function makeSchema(config: Partial<OpConfig> = {}): Promise<WindowConfig> {
+        const opConfig: OpConfig = Object.assign({}, { _op: name }, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();

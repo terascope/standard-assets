@@ -1,14 +1,14 @@
 import 'jest-extended';
+import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { AnyObject } from '@terascope/job-components';
 import { GroupByConfig } from '../../asset/src/group_by/interfaces.js';
 
 describe('group_by schema', () => {
     let harness: WorkerTestHarness;
     const name = 'group_by';
 
-    async function makeSchema(config: AnyObject = {}): Promise<GroupByConfig> {
-        const opConfig = Object.assign({}, { _op: name }, config);
+    async function makeSchema(config: Partial<OpConfig> = {}): Promise<GroupByConfig> {
+        const opConfig: OpConfig = Object.assign({}, { _op: name }, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();

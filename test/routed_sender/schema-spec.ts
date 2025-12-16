@@ -1,8 +1,8 @@
 import 'jest-extended';
-import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
-import { AnyObject } from '@terascope/job-components';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { OpConfig } from '@terascope/job-components';
+import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { RouteSenderConfig } from '../../asset/src/routed_sender/interfaces.js';
 // This is a temp fix to get routed sender imported during testing. May not be a good idea
 await import('../../asset/src/routed_sender/processor.js');
@@ -18,8 +18,8 @@ describe('routed_sender Schema', () => {
     const name = 'routed_sender';
     const api_name = 'test_api';
 
-    async function makeSchema(config: AnyObject = {}): Promise<RouteSenderConfig> {
-        const opConfig = Object.assign({
+    async function makeSchema(config: Partial<OpConfig> = {}): Promise<RouteSenderConfig> {
+        const opConfig: OpConfig = Object.assign({
             _op: name,
             api_name
         }, config);

@@ -1,8 +1,9 @@
 import 'jest-extended';
-import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
-import { DataEntity, AnyObject } from '@terascope/job-components';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { DataEntity } from '@terascope/core-utils';
+import { OpConfig } from '@terascope/job-components';
+import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -15,7 +16,7 @@ describe('selection phase', () => {
 
     let harness: WorkerTestHarness;
 
-    async function makeTest(config: AnyObject = {}) {
+    async function makeTest(config: Partial<OpConfig> = {}) {
         const _op = {
             _op: 'selection',
             plugins: ['someAssetId:plugins'],
@@ -25,7 +26,7 @@ describe('selection phase', () => {
                 foo: 'data'
             }
         };
-        const opConfig = Object.assign({}, _op, config);
+        const opConfig: OpConfig = Object.assign({}, _op, config);
 
         const job = newTestJobConfig({
             operations: [
