@@ -1,4 +1,5 @@
-import { FilterProcessor, DataEntity, isNil } from '@terascope/job-components';
+import { DataEntity, isNil } from '@terascope/core-utils';
+import { FilterProcessor } from '@terascope/job-components';
 import { FilterByRequiredFieldConfig, LogicType } from './interfaces.js';
 
 export default class FilterByRequiredFields extends FilterProcessor<FilterByRequiredFieldConfig> {

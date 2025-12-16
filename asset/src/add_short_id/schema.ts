@@ -1,5 +1,5 @@
 import { ConvictSchema, OpConfig } from '@terascope/job-components';
-import { isInteger, inNumberRange } from '@terascope/utils';
+import { isInteger, inNumberRange } from '@terascope/core-utils';
 
 export default class Schema extends ConvictSchema<OpConfig> {
     build(): Record<string, any> {

@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { get, getTime as tsGetTime } from '@terascope/job-components';
+import { get, getTime as tsGetTime } from '@terascope/core-utils';
 import { PhaseConfig } from '../transform/interfaces.js';
 
 export enum Order {

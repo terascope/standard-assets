@@ -1,5 +1,5 @@
 import {
-    Fetcher, Context, TSError, AnyObject, pDelay
+    Fetcher, Context,
 } from '@terascope/job-components';
 import { ExecutionConfig } from '@terascope/types';
 import { Mocker } from 'mocker-data-generator';
@@ -8,19 +8,20 @@ import Randexp from 'randexp';
 import Chance from 'chance';
 import path from 'node:path';
 import { existsSync } from 'node:fs';
+import { pDelay, TSError } from '@terascope/core-utils';
 import { DataGenerator, CounterResults } from './interfaces.js';
 import defaultSchema from './data-schema.js';
 
 const chance = new Chance();
 export default class DataGeneratorFetcher extends Fetcher<DataGenerator> {
-    dataSchema: AnyObject;
+    dataSchema: Record<string, any>;
 
     constructor(context: Context, opConfig: DataGenerator, exConfig: ExecutionConfig) {
         super(context, opConfig, exConfig);
         this.dataSchema = parsedSchema(opConfig);
     }
 
-    async fetch(slice?: CounterResults): Promise<AnyObject[]> {
+    async fetch(slice?: CounterResults): Promise<Record<string, any>[]> {
         const mocker = new Mocker();
         if (slice == null) return [];
         const { count } = slice;

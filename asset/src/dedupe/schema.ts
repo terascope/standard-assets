@@ -1,4 +1,5 @@
-import { ConvictSchema, isPlainObject, isString } from '@terascope/job-components';
+import { isPlainObject, isString } from '@terascope/core-utils';
+import { ConvictSchema } from '@terascope/job-components';
 import * as I from './interfaces.js';
 
 export default class Schema extends ConvictSchema<I.DedupeConfig> {

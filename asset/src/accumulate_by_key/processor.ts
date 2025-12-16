@@ -1,4 +1,5 @@
-import { BatchProcessor, Context, DataEntity } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
+import { BatchProcessor, Context } from '@terascope/job-components';
 import { ExecutionConfig } from '@terascope/types';
 import { AccumulateByKeyConfig } from './interfaces.js';
 import AccumulatorByKey from '../__lib/accumulator-key.js';

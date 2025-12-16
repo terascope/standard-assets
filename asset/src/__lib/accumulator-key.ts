@@ -1,4 +1,4 @@
-import { DataEntity } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
 import Accumulator from './accumulator.js';
 import DataWindow from './data-window.js';
 import { AccumulateByKeyConfig } from '../accumulate_by_key/interfaces.js';

@@ -6,12 +6,12 @@ import {
 } from '@terascope/job-components';
 import { ExecutionConfig } from '@terascope/types';
 import {
-    TSError, DataEntity, isEmpty, AnyObject
-} from '@terascope/utils';
+    TSError, DataEntity, isEmpty
+} from '@terascope/core-utils';
 import { RoutedSender } from '@terascope/standard-asset-apis';
 import { RouteSenderConfig } from './interfaces.js';
 
-type SenderFactoryAPI = APIFactoryRegistry<RouteSenderAPI, AnyObject>;
+type SenderFactoryAPI = APIFactoryRegistry<RouteSenderAPI, Record<string, any>>;
 
 export type SenderFn = (
     fn: (msg: any) => DataEntity

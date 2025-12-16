@@ -1,6 +1,8 @@
 import {
-    BatchProcessor, Context, DataEntity,
-    ExecutionConfig, getTypeOf, isNumber, pRetry
+    DataEntity, getTypeOf, isNumber, pRetry
+} from '@terascope/core-utils';
+import {
+    BatchProcessor, Context, ExecutionConfig
 } from '@terascope/job-components';
 import { Client, SampleExactESPercentConfig } from './interfaces.js';
 

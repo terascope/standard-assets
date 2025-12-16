@@ -1,15 +1,12 @@
 import {
-    ConvictSchema,
-    AnyObject,
-    isPlainObject,
-    getOpConfig,
-    has,
-    isNumber,
-    getTypeOf,
-    isNil
+    ConvictSchema, getOpConfig,
 } from '@terascope/job-components';
-import { ValidatedJobConfig } from '@terascope/types';
+import { Terafoundation, ValidatedJobConfig } from '@terascope/types';
 import { RouteSenderConfig } from './interfaces.js';
+import {
+    getTypeOf, has, isNil,
+    isNumber, isPlainObject
+} from '@terascope/core-utils';
 
 function fetchConfig(job: ValidatedJobConfig) {
     const opConfig = getOpConfig(job, 'routed_sender');
@@ -27,7 +24,7 @@ export default class Schema extends ConvictSchema<RouteSenderConfig> {
         if (isNil(SenderAPI)) throw new Error(`Invalid parameter api_name: ${api_name}, could not find corresponding api on the job configuration`);
     }
 
-    build(): AnyObject {
+    build(): Terafoundation.Schema<Omit<RouteSenderConfig, '_op'>> {
         return {
             size: {
                 doc: 'the maximum number of docs it will take at a time, anything past it will be split up and sent',

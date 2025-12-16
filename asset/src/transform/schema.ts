@@ -1,10 +1,7 @@
 import {
-    ConvictSchema,
-    APIConfig,
-    isString,
-    getTypeOf,
-    isObjectEntity
-} from '@terascope/job-components';
+    isString, getTypeOf, isObjectEntity
+} from '@terascope/core-utils';
+import { ConvictSchema, APIConfig } from '@terascope/job-components';
 import { PhaseConfig } from './interfaces.js';
 
 export default class Schema extends ConvictSchema<PhaseConfig> {

@@ -1,4 +1,5 @@
-import { ConvictSchema, isInteger } from '@terascope/job-components';
+import { isInteger } from '@terascope/core-utils';
+import { ConvictSchema } from '@terascope/job-components';
 import { AccumulateByKeyConfig } from './interfaces.js';
 
 export default class Schema extends ConvictSchema<AccumulateByKeyConfig> {

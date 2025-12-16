@@ -1,4 +1,5 @@
-import { Slicer, get, SlicerRecoveryData } from '@terascope/job-components';
+import { get } from '@terascope/core-utils';
+import { Slicer, SlicerRecoveryData } from '@terascope/job-components';
 import { DataGenerator, CounterResults } from './interfaces.js';
 import Counter from './counter.js';
 

@@ -1,5 +1,5 @@
 import { ConvictSchema, OpConfig, APIConfig } from '@terascope/job-components';
-import { isObjectEntity } from '@terascope/utils';
+import { isObjectEntity } from '@terascope/core-utils';
 import { FieldValidator } from '@terascope/data-mate';
 
 export default class Schema extends ConvictSchema<OpConfig> {

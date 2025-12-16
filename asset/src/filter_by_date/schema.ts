@@ -1,4 +1,5 @@
-import { ConvictSchema, isString, isISO8601 } from '@terascope/job-components';
+import { isISO8601, isString } from '@terascope/core-utils';
+import { ConvictSchema } from '@terascope/job-components';
 import ms from 'ms';
 import { FilterByDateConfig } from './interfaces.js';
 

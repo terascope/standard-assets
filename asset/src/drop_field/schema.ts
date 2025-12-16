@@ -1,6 +1,6 @@
 import { ConvictSchema } from '@terascope/job-components';
 import { DateRouterConfig } from '@terascope/standard-asset-apis';
-import { isString } from '@terascope/utils';
+import { isString } from '@terascope/core-utils';
 
 export default class Schema extends ConvictSchema<DateRouterConfig> {
     build(): Record<string, any> {

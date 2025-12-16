@@ -1,4 +1,5 @@
-import { BatchProcessor, DataEntity, has } from '@terascope/job-components';
+import { DataEntity, has } from '@terascope/core-utils';
+import { BatchProcessor } from '@terascope/job-components';
 import { CountUniqueConfig } from './interfaces.js';
 
 export default class CountUnique extends BatchProcessor<CountUniqueConfig> {

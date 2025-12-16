@@ -1,8 +1,11 @@
 import {
+    isNotNil, getTypeOf, isString
+} from '@terascope/core-utils';
+import {
     ConvictSchema, ValidatedJobConfig, getOpConfig,
-    AnyObject, isNotNil, getTypeOf, isString
 } from '@terascope/job-components';
 import { DataGenerator, IDType, DateOptions } from './interfaces.js';
+import { Terafoundation } from '@terascope/types';
 
 export default class Schema extends ConvictSchema<DataGenerator> {
     validateJob(job: ValidatedJobConfig): void {
@@ -25,7 +28,7 @@ export default class Schema extends ConvictSchema<DataGenerator> {
         }
     }
 
-    build(): AnyObject {
+    build(): Terafoundation.Schema<Omit<DataGenerator, '_op'>> {
         return {
             json_schema: {
                 doc: 'File path to custom data schema',

@@ -1,13 +1,13 @@
-import { BatchProcessor, DataEntity, AnyObject } from '@terascope/job-components';
+import { BatchProcessor } from '@terascope/job-components';
 import {
     get, isObjectEntity, isEmpty,
-    isString, toNumber, geoHash,
-    setPrecision, isGeoShapePoint, isPlainObject,
-    flatten
-} from '@terascope/utils';
+    isString, toNumber, setPrecision,
+    isPlainObject, flatten, DataEntity
+} from '@terascope/core-utils';
 import { GeoShapePoint, GeoShapeType } from '@terascope/types';
 import crypto from 'node:crypto';
 import DataWindow from '../__lib/data-window.js';
+import { geoHash, isGeoShapePoint } from '@terascope/geo-utils';
 
 export default class AddKey extends BatchProcessor {
     async onBatch(data: DataEntity[] | DataWindow[]) {
@@ -100,8 +100,8 @@ export default class AddKey extends BatchProcessor {
             return this.truncateGeoJSONPoint(value);
         }
 
-        if (this.isGeoPointObject(value as AnyObject)) {
-            return this.truncateObjectGeoPoint(value as AnyObject);
+        if (this.isGeoPointObject(value as Record<string, any>)) {
+            return this.truncateObjectGeoPoint(value as Record<string, any>);
         }
 
         if (Array.isArray(value)) {
@@ -137,15 +137,15 @@ export default class AddKey extends BatchProcessor {
         throw new Error(`could not truncate GeoJSON point ${value}`);
     }
 
-    private isGeoPointObject(value: AnyObject) {
+    private isGeoPointObject(value: Record<string, any>) {
         const { lat, lon } = value;
 
         return this.validCoordinates(lat, lon);
     }
 
-    private truncateObjectGeoPoint(value: AnyObject): { lat: number; lon: number } {
+    private truncateObjectGeoPoint(value: Record<string, any>): { lat: number; lon: number } {
         // eg, { "lat": 41.12, "lon": -71.34 }
-        const { lat, lon } = value as AnyObject;
+        const { lat, lon } = value;
 
         if (this.validCoordinates(lat, lon)) {
             return { lat: this.truncate(toNumber(lat)), lon: this.truncate(toNumber(lon)) };
@@ -243,7 +243,7 @@ export default class AddKey extends BatchProcessor {
         const key = keyValues
             .map((value) => {
                 if (isPlainObject(value)) {
-                    return this.formatInnerObject(value as AnyObject);
+                    return this.formatInnerObject(value as Record<string, any>);
                 }
 
                 return value;
@@ -257,7 +257,7 @@ export default class AddKey extends BatchProcessor {
             .replace(/\+/g, '-');
     }
 
-    private formatInnerObject(value: AnyObject): string {
+    private formatInnerObject(value: Record<string, any>): string {
         const prepped = JSON.stringify(value)
             .split(',')
             .map((x) => x.split('{'));

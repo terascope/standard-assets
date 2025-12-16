@@ -1,4 +1,5 @@
-import { BatchProcessor, DataEntity, parseJSON } from '@terascope/job-components';
+import { DataEntity, parseJSON } from '@terascope/core-utils';
+import { BatchProcessor } from '@terascope/job-components';
 
 export default class JSONParser extends BatchProcessor {
     // @ts-expect-error TODO: fix this type issue
