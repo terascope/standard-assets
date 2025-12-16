@@ -1,8 +1,9 @@
 import {
     DataEntity, pMap, getLast,
-    isInteger, RouteSenderAPI, Logger,
+    isInteger, Logger,
     formatAggregateError
-} from '@terascope/utils';
+} from '@terascope/core-utils';
+import { RouteSenderAPI } from '@terascope/job-components';
 import EventEmitter, { once } from 'node:events';
 
 export type BatchOfRecords = readonly (DataEntity[])[];

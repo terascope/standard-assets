@@ -1,9 +1,7 @@
 import {
-    DataEntity,
-    pDelay,
-    RouteSenderAPI,
-    debugLogger
-} from '@terascope/utils';
+    DataEntity, pDelay, debugLogger
+} from '@terascope/core-utils';
+import { RouteSenderAPI } from '@terascope/job-components';
 import 'jest-extended';
 import {
     RoutedSender
