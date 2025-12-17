@@ -47,11 +47,11 @@ describe('sample_exact_es_percent schema', () => {
         // These actually fail on job config because the
         // connection doesn't exist, not on schema validation
         await expect(makeSchema({ connection: 1234, index: 'my-index', document_id: 'abc123' })).rejects
-            .toThrow('Validation failed for job config');
+            .toThrow('must be of type string');
         await expect(makeSchema({ connection: ['some stuff'], index: 'my-index', document_id: 'abc123' })).rejects
-            .toThrow('Validation failed for job config');
+            .toThrow('must be of type string');
         await expect(makeSchema({ connection: {}, index: 'my-index', document_id: 'abc123' })).rejects
-            .toThrow('Validation failed for job config');
+            .toThrow('must be of type string');
 
         // test index config
         await expect(makeSchema({ index: 1234, document_id: 'abc123' })).rejects
