@@ -1,5 +1,5 @@
 import 'jest-extended';
-import { OpConfig } from '@terascope/job-components';
+import { JobConfigParams, OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { DataGenerator } from '../../asset/src/data_generator/interfaces.js';
 
@@ -9,7 +9,27 @@ describe('data-generator schema', () => {
     async function makeSchema(config: Partial<OpConfig> = {}): Promise<DataGenerator> {
         const name = 'data_generator';
         const opConfig: OpConfig = Object.assign({}, { _op: name }, config);
-        harness = WorkerTestHarness.testFetcher(opConfig);
+        const job: JobConfigParams = {
+            name: 'test-job',
+            active: true,
+            analytics: false,
+            autorecover: false,
+            assets: [],
+            lifecycle: 'once',
+            max_retries: 0,
+            probation_window: 30000,
+            slicers: 1,
+            workers: 1,
+            env_vars: {},
+            apis: [],
+            operations: [
+                opConfig,
+                {
+                    _op: 'noop',
+                },
+            ],
+        };
+        harness = new WorkerTestHarness(job);
 
         await harness.initialize();
 
