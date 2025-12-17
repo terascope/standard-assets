@@ -8,7 +8,7 @@ describe('count_by_field schema', () => {
     const name = 'count_by_field';
 
     async function makeSchema(config: Partial<OpConfig> = {}): Promise<CountByFieldConfig> {
-        const opConfig:OpConfig = Object.assign({}, { _op: name }, config);
+        const opConfig: OpConfig = Object.assign({}, { _op: name }, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();
