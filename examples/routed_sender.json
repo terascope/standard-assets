@@ -29,7 +29,7 @@
         {
             "_op": "routed_sender",
             "size": 1000,
-            "api_name": "elasticsearch_sender_api",
+            "_api_name": "elasticsearch_sender_api",
             "routing": {
                 "0": "test_es",
                 "1": "default"

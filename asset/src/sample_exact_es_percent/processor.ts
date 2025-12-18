@@ -16,6 +16,7 @@ export default class SampleExactESPercent extends BatchProcessor<SampleExactESPe
     }
 
     async initialize(): Promise<void> {
+        // TODO: This should probably be using this.createAPI()
         this.esClient = (await this.context.apis.foundation.createClient({
             type: 'elasticsearch-next',
             endpoint: this.opConfig.connection
@@ -63,7 +64,7 @@ export default class SampleExactESPercent extends BatchProcessor<SampleExactESPe
             return await pRetry(async () => {
                 let percent: number;
                 const response = await this.esClient.get({ id, index });
-                this.logger.trace(`esClient.get(${{ id, index }}) response: `, response); // check this
+                this.logger.trace(`esClient.get(${{ id, index }}) response: `, response);
 
                 if (!response.found || !response._source) {
                     throw new Error(`The document with id ${id} was not found in index ${index} of`

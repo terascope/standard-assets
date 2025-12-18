@@ -35,7 +35,7 @@ Example of a job using the `key_router` and setting all the characters to be low
         },
         {
             "_op": "routed_sender",
-            "api_name": "elasticsearch_sender_api",
+            "_api_name": "elasticsearch_sender_api",
             "routing": {
                 "**": "default"
             }
@@ -110,7 +110,7 @@ Example of a job using part of the `_key` value
         },
         {
             "_op": "routed_sender",
-            "api_name": "elasticsearch_sender_api",
+            "_api_name": "elasticsearch_sender_api",
             "routing": {
                 "**": "default"
             }
@@ -190,7 +190,7 @@ Example of a job adding a suffix the the route
         },
         {
             "_op": "routed_sender",
-            "api_name": "elasticsearch_sender_api",
+            "_api_name": "elasticsearch_sender_api",
             "routing": {
                 "**": "default"
             }

@@ -27,7 +27,7 @@ describe('Route Sender', () => {
     async function makeTest(senderConfig = {}) {
         const opConfig = Object.assign({
             _op: 'routed_sender',
-            api_name: apiName
+            _api_name: apiName
         }, senderConfig);
         const job = newTestJobConfig({
             max_retries: 0,
