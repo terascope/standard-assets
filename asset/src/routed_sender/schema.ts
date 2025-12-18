@@ -4,8 +4,7 @@ import {
 import { Terafoundation, ValidatedJobConfig } from '@terascope/types';
 import { RouteSenderConfig } from './interfaces.js';
 import {
-    getTypeOf, has, isNil,
-    isNumber, isPlainObject
+    has, isNil, isPlainObject
 } from '@terascope/core-utils';
 
 function fetchConfig(job: ValidatedJobConfig) {
@@ -16,27 +15,16 @@ function fetchConfig(job: ValidatedJobConfig) {
 
 export default class Schema extends ConvictSchema<RouteSenderConfig> {
     validateJob(job: ValidatedJobConfig): void {
-        const { routing, api_name } = fetchConfig(job);
+        const { routing, _api_name } = fetchConfig(job);
 
         if (has(routing, '*') && has(routing, '**')) throw new Error('routing cannot specify "*" and "**"');
 
-        const SenderAPI = job.apis.find((jobApi) => jobApi._name === api_name);
-        if (isNil(SenderAPI)) throw new Error(`Invalid parameter api_name: ${api_name}, could not find corresponding api on the job configuration`);
+        const SenderAPI = job.apis.find((jobApi) => jobApi._name === _api_name);
+        if (isNil(SenderAPI)) throw new Error(`Invalid parameter _api_name: ${_api_name}, could not find corresponding api on the job configuration`);
     }
 
     build(): Terafoundation.Schema<Omit<RouteSenderConfig, '_op'>> {
         return {
-            size: {
-                doc: 'the maximum number of docs it will take at a time, anything past it will be split up and sent',
-                default: 10000,
-                format(val: any) {
-                    if (!isNumber(val)) {
-                        throw new Error('Invalid size parameter for routed_sender opConfig, it must be a number');
-                    } else if (val <= 0) {
-                        throw new Error('Invalid size parameter for routed_sender, it must be greater than zero');
-                    }
-                }
-            },
             routing: {
                 doc: 'Mapping of `standard:route` metadata to connection names. Routes data to multiple clusters '
                     + 'based on the incoming key. The key name can be a '
@@ -50,19 +38,11 @@ export default class Schema extends ConvictSchema<RouteSenderConfig> {
                     }
                 }
             },
-            api_name: {
+            _api_name: {
                 doc: 'Name of the elasticsearch connection to use when sending data.',
                 default: null,
                 format: 'required_string'
             },
-            concurrency: {
-                doc: 'The number of inflight calls to the api.send allowed',
-                default: 10,
-                format(val: unknown) {
-                    if (!isNumber(val)) throw new Error(`Invalid parameter concurrency, must be a number, was given ${getTypeOf(val)}`);
-                    if (val < 0) throw new Error('Invalid parameter concurrency, it must be a positive integer greater than zero');
-                }
-            }
         };
     }
 }
