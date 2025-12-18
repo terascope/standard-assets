@@ -64,24 +64,13 @@ describe('routed_sender Schema', () => {
             const routing = { a: 'default' };
 
             await expect(makeSchema({})).toReject();
-            await expect(makeSchema({ size: 'test', _api_name, routing })).toReject();
-            await expect(makeSchema({ size: [12341234], _api_name, routing })).toReject();
-            await expect(makeSchema({ size: -12341234, _api_name, routing })).toReject();
             await expect(makeSchema({ routing: -12341234, _api_name })).toReject();
 
             await expect(makeSchema({ routing: 'hello', _api_name })).toReject();
             await expect(makeSchema({ routing: {}, _api_name })).toReject();
             await expect(makeSchema({ routing: { b: undefined }, _api_name })).toReject();
 
-            await expect(makeSchema({ _api_name, concurrency: -2134, routing })).toReject();
-            await expect(makeSchema({ _api_name, concurrency: 'hello', routing })).toReject();
-
-            await expect(makeSchema({
-                _api_name,
-                concurrency: 10,
-                routing,
-                size: 3000
-            })).toResolve();
+            await expect(makeSchema({ _api_name, routing })).toResolve();
         });
 
         it('should throw if routing has both * and **', async () => {

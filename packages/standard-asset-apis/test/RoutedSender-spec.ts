@@ -20,12 +20,12 @@ describe('RoutedSender', () => {
             },
             {
                 batchSize: 10,
-                async createRouteSenderAPI(route, connection) {
+                async createRouteSenderAPI(route, _connection) {
                     if (route !== '**') {
                         throw new Error('Expected route to equal "**"');
                     }
-                    if (connection !== 'default') {
-                        throw new Error('Expected connection to equal "default"');
+                    if (_connection !== 'default') {
+                        throw new Error('Expected _connection to equal "default"');
                     }
                     await pDelay(10);
                     return { send, verify } as RouteSenderAPI;
@@ -65,12 +65,12 @@ describe('RoutedSender', () => {
             { '**': 'default' },
             {
                 batchSize: 2,
-                async createRouteSenderAPI(route, connection) {
+                async createRouteSenderAPI(route, _connection) {
                     if (route !== '**') {
                         throw new Error('Expected route to equal "**"');
                     }
-                    if (connection !== 'default') {
-                        throw new Error('Expected connection to equal "default"');
+                    if (_connection !== 'default') {
+                        throw new Error('Expected _connection to equal "default"');
                     }
                     await pDelay(10);
                     return { send, verify } as RouteSenderAPI;
@@ -111,12 +111,12 @@ describe('RoutedSender', () => {
             { '**': 'default' },
             {
                 batchSize: 2,
-                async createRouteSenderAPI(route, connection) {
+                async createRouteSenderAPI(route, _connection) {
                     if (route !== '**') {
                         throw new Error('Expected route to equal "**"');
                     }
-                    if (connection !== 'default') {
-                        throw new Error('Expected connection to equal "default"');
+                    if (_connection !== 'default') {
+                        throw new Error('Expected _connection to equal "default"');
                     }
                     await pDelay(10);
                     return { send, verify } as RouteSenderAPI;
@@ -171,21 +171,21 @@ describe('RoutedSender', () => {
             },
             {
                 batchSize: 2,
-                async createRouteSenderAPI(route, connection) {
+                async createRouteSenderAPI(route, _connection) {
                     if (route === 'foo1' || route === 'foo2') {
-                        if (connection !== 'foo') {
-                            throw new Error(`Expected connection to equal "foo" for route "${route}"`);
+                        if (_connection !== 'foo') {
+                            throw new Error(`Expected _connection to equal "foo" for route "${route}"`);
                         }
                     } else if (route === 'bar') {
-                        if (connection !== 'bar') {
-                            throw new Error(`Expected connection to equal "bar" for route "${route}"`);
+                        if (_connection !== 'bar') {
+                            throw new Error(`Expected _connection to equal "bar" for route "${route}"`);
                         }
                     } else if (route === '*') {
-                        if (connection !== 'default') {
-                            throw new Error(`Expected connection to equal "default" for route "${route}"`);
+                        if (_connection !== 'default') {
+                            throw new Error(`Expected _connection to equal "default" for route "${route}"`);
                         }
                     } else {
-                        throw new Error(`Invalid combination of route:${route} connection:${connection}`);
+                        throw new Error(`Invalid combination of route:${route} _connection:${_connection}`);
                     }
                     await pDelay(10);
                     return { send, verify } as RouteSenderAPI;
@@ -238,12 +238,12 @@ describe('RoutedSender', () => {
                 dataRouteHook,
                 batchStartHook,
                 batchEndHook,
-                async createRouteSenderAPI(route, connection) {
+                async createRouteSenderAPI(route, _connection) {
                     if (route !== '**') {
                         throw new Error('Expected route to equal "**"');
                     }
-                    if (connection !== 'default') {
-                        throw new Error('Expected connection to equal "default"');
+                    if (_connection !== 'default') {
+                        throw new Error('Expected _connection to equal "default"');
                     }
                     await pDelay(10);
                     return { send, verify } as RouteSenderAPI;

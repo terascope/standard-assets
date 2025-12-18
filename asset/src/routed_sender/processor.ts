@@ -51,7 +51,7 @@ export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderCon
         this.routedSender.clearBatches();
     }
 
-    private async createRouteSenderAPI(route: string, connection: string) {
+    private async createRouteSenderAPI(route: string, _connection: string) {
         let client = this.api.get(route);
 
         this.logger.info('debugging sender route: client in api', client);
@@ -64,7 +64,7 @@ export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderCon
                 {
                     ...this.opConfig,
                     _key: route,
-                    connection,
+                    _connection,
                     tryFn: this.tryFn,
                     logger: this.logger
                 }

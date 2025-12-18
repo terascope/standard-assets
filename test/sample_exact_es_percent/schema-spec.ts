@@ -44,8 +44,6 @@ describe('sample_exact_es_percent schema', () => {
         await expect(makeSchema({})).toReject();
 
         // test connection config
-        // These actually fail on job config because the
-        // connection doesn't exist, not on schema validation
         await expect(makeSchema({ connection: 1234, index: 'my-index', document_id: 'abc123' })).rejects
             .toThrow('must be of type string');
         await expect(makeSchema({ connection: ['some stuff'], index: 'my-index', document_id: 'abc123' })).rejects

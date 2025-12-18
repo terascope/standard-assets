@@ -44,7 +44,7 @@ This is an example of counting a field in a record based off a given field
         {
             "name": "kafka_reader_api",
             "topic": "test_topic_1",
-            "connection": "kafka_test1",
+            "_connection": "kafka_test1",
             "group": "temp#metric-count-field-r1",
             "size": 50000,
             "wait": 5000
