@@ -5,11 +5,9 @@ on:
   push:
     branches:
       - master
-      - 'release/standard-assets-v*'
   pull_request:
     branches:
       - master
-      - 'release/standard-assets-v*'
 
 jobs:
   call-asset-test-workflow:
