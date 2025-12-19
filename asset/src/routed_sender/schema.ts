@@ -4,7 +4,8 @@ import {
 import { Terafoundation, ValidatedJobConfig } from '@terascope/types';
 import { RouteSenderConfig } from './interfaces.js';
 import {
-    has, isNil, isPlainObject
+    getTypeOf, has, isNil,
+    isNumber, isPlainObject
 } from '@terascope/core-utils';
 
 function fetchConfig(job: ValidatedJobConfig) {
@@ -25,6 +26,17 @@ export default class Schema extends ConvictSchema<RouteSenderConfig> {
 
     build(): Terafoundation.Schema<Omit<RouteSenderConfig, '_op'>> {
         return {
+            size: {
+                doc: 'the maximum number of docs it will take at a time, anything past it will be split up and sent',
+                default: 10000,
+                format(val: any) {
+                    if (!isNumber(val)) {
+                        throw new Error('Invalid size parameter for routed_sender opConfig, it must be a number');
+                    } else if (val <= 0) {
+                        throw new Error('Invalid size parameter for routed_sender, it must be greater than zero');
+                    }
+                }
+            },
             routing: {
                 doc: 'Mapping of `standard:route` metadata to connection names. Routes data to multiple clusters '
                     + 'based on the incoming key. The key name can be a '
@@ -43,6 +55,14 @@ export default class Schema extends ConvictSchema<RouteSenderConfig> {
                 default: null,
                 format: 'required_string'
             },
+            concurrency: {
+                doc: 'The number of inflight calls to the api.send allowed',
+                default: 10,
+                format(val: unknown) {
+                    if (!isNumber(val)) throw new Error(`Invalid parameter concurrency, must be a number, was given ${getTypeOf(val)}`);
+                    if (val < 0) throw new Error('Invalid parameter concurrency, it must be a positive integer greater than zero');
+                }
+            }
         };
     }
 }
