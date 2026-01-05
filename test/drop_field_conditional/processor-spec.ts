@@ -1,11 +1,12 @@
 import 'jest-extended';
-import { DataEntity, cloneDeep, AnyObject } from '@terascope/job-components';
+import { DataEntity, cloneDeep } from '@terascope/core-utils';
+import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import DataWindow from '../../asset/src/__lib/data-window.js';
 
 describe('drop_field should', () => {
     let harness: WorkerTestHarness;
-    let data: AnyObject[];
+    let data: Record<string, any>[];
 
     beforeEach(() => {
         data = [
@@ -27,13 +28,13 @@ describe('drop_field should', () => {
         ];
     });
 
-    async function makeTest(config: AnyObject = {}) {
+    async function makeTest(config: Partial<OpConfig> = {}) {
         const _op = {
             _op: 'drop_field_conditional',
             field: 'name'
         };
 
-        const opConfig = config ? Object.assign({}, _op, config) : _op;
+        const opConfig: OpConfig = config ? Object.assign({}, _op, config) : _op;
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();

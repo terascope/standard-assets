@@ -1,5 +1,5 @@
-import { MapProcessor, DataEntity } from '@terascope/job-components';
-import { get, set } from '@terascope/utils';
+import { MapProcessor } from '@terascope/job-components';
+import { DataEntity, get, set } from '@terascope/core-utils';
 import { CopyFieldConfig } from './interfaces.js';
 import DataWindow from '../__lib/data-window.js';
 

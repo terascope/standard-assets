@@ -1,10 +1,10 @@
 # sample_exact_es_percent
 
-Given an array of JSON documents, this processor will return an array containing a shuffled subset of those input documents. The size of the subset will be determined by the `percentage` value stored in an Elasticsearch record multiplied against the length of the array rounded down. The `percentage` will be retrieved every `window_ms` milliseconds by getting the document with `document_id` found within the `index` in the Elasticsearch specified by the `connection` as specified in the config.
+Given an array of JSON documents, this processor will return an array containing a shuffled subset of those input documents. The size of the subset will be determined by the `percentage` value stored in an Elasticsearch record multiplied against the length of the array rounded down. The `percentage` will be retrieved every `window_ms` milliseconds by getting the document with `document_id` found within the `index` in the Elasticsearch specified by the `_connection` as specified in the config.
 
 ## Usage
 
-In this example we want to retrieve the percentage from the document with _id `abc123` in index `my-index` at the terafoundation connection named `elasticsearch7`.
+In this example we want to retrieve the percentage from the document with _id `abc123` in index `my-index` at the terafoundation _connection named `elasticsearch7`.
 
 ### Example of a job using the `sample_exact_es_percent` processor
 
@@ -23,7 +23,7 @@ In this example we want to retrieve the percentage from the document with _id `a
         },
         {
             "_op": "sample_exact_es_percent",
-            "connection": "elasticsearch7",
+            "_connection": "elasticsearch7",
             "index": "my-index",
             "document_id": "abc123",
             "window_ms": 300000
@@ -104,7 +104,7 @@ results === [
 | Configuration | Description                                                   | Type   | Notes                        |
 | ------------- | ------------------------------------------------------------- | ------ | ---------------------------- |
 | _op           | Name of operation, it must reflect the exact name of the file | String | required |
-| connection    | Name of the elasticsearch connection to use to find index size | String | defaults to `default` |
+| _connection    | Name of the elasticsearch connection to use to find index size | String | defaults to `default` |
 | index         | Name of the index that holds the percentage document | String | required |
 | document_id   | `_id` of the document holding the percentage of docs to keep | String | required |
 | window_ms     | The time in milliseconds between queries to elasticsearch. Must be between 100 and 3_600_000 (1 hour) | Number | defaults to 300_000ms (5 minutes) |

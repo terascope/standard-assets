@@ -1,5 +1,5 @@
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { cloneDeep } from '@terascope/job-components';
+import { cloneDeep } from '@terascope/core-utils';
 import { FilterConfig } from '../../asset/src/filter/interfaces.js';
 
 const incoming = [

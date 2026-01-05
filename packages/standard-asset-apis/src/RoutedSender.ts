@@ -1,8 +1,9 @@
 import {
     DataEntity, pMap, getLast,
-    isInteger, RouteSenderAPI, Logger,
+    isInteger, Logger,
     formatAggregateError
-} from '@terascope/utils';
+} from '@terascope/core-utils';
+import { RouteSenderAPI } from '@terascope/job-components';
 import EventEmitter, { once } from 'node:events';
 
 export type BatchOfRecords = readonly (DataEntity[])[];
@@ -16,7 +17,7 @@ export interface RoutedSenderOptions {
      * This is used to create a sender apis for a particular and must be implemented
      * by a consumer of this class. This should NOT be called directly
     */
-    createRouteSenderAPI(route: string, connection: string): Promise<RouteSenderAPI>;
+    createRouteSenderAPI(route: string, _connection: string): Promise<RouteSenderAPI>;
 
     /**
      * This is called before the first call to standard:route
@@ -81,7 +82,7 @@ export class RoutedSender {
      * This is used to create a sender apis for a particular and must be implemented
      * by a consumer of this class. This should NOT be called directly
     */
-    createRouteSenderAPI: (route: string, connection: string) => Promise<RouteSenderAPI>;
+    createRouteSenderAPI: (route: string, _connection: string) => Promise<RouteSenderAPI>;
 
     /**
      * This is called before the first call to standard:route
@@ -132,11 +133,11 @@ export class RoutedSender {
             throw new Error(`Expect batch size to be >0, got ${this.batchSize}`);
         }
 
-        for (const [keyset, connection] of Object.entries(routes)) {
+        for (const [keyset, _connection] of Object.entries(routes)) {
             const keys = keyset.split(',');
 
             for (const key of keys) {
-                this.routesDefinitions.set(key.trim(), connection);
+                this.routesDefinitions.set(key.trim(), _connection);
             }
         }
 
@@ -163,13 +164,13 @@ export class RoutedSender {
         this.initializingSender.add(route);
 
         try {
-            const connection = this.routesDefinitions.get(route);
-            if (!connection) {
+            const _connection = this.routesDefinitions.get(route);
+            if (!_connection) {
                 throw new Error(`Missing route definition for "${route}"`);
             }
 
-            this.logger.info(`Creating sender api for route:${route}, connection:${connection}`);
-            const sender = await this.createRouteSenderAPI(route, connection);
+            this.logger.info(`Creating sender api for route:${route}, _connection:${_connection}`);
+            const sender = await this.createRouteSenderAPI(route, _connection);
             this.senders.set(route, sender);
         } finally {
             this.initializingSender.delete(route);

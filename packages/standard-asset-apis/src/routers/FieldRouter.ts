@@ -1,4 +1,4 @@
-import { DataEntity, toString } from '@terascope/utils';
+import { DataEntity, toString } from '@terascope/core-utils';
 import * as I from './interfaces.js';
 
 /**

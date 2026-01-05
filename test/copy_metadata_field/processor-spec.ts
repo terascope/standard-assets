@@ -1,4 +1,4 @@
-import { DataEntity } from '@terascope/utils';
+import { DataEntity } from '@terascope/core-utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { CopyMetadataFieldConfig } from '../../asset/src/copy_metadata_field/interfaces.js';
 

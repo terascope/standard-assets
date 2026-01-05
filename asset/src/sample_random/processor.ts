@@ -1,4 +1,5 @@
-import { BatchProcessor, DataEntity, random } from '@terascope/job-components';
+import { DataEntity, random } from '@terascope/core-utils';
+import { BatchProcessor } from '@terascope/job-components';
 import { SampleRandomConfig } from './interfaces.js';
 
 export default class SampleRandom extends BatchProcessor<SampleRandomConfig> {

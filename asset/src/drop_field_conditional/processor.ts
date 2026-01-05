@@ -1,7 +1,7 @@
+import { DataEntity } from '@terascope/core-utils';
 import {
     MapProcessor,
     OpConfig,
-    DataEntity
 } from '@terascope/job-components';
 import { FieldValidator } from '@terascope/data-mate';
 import DataWindow from '../__lib/data-window.js';

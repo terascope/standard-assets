@@ -1,5 +1,6 @@
+import { DataEntity } from '@terascope/core-utils';
 import {
-    BatchProcessor, Context, DataEntity, ExecutionConfig
+    BatchProcessor, Context, ExecutionConfig
 } from '@terascope/job-components';
 import { SampleExactConfig } from './interfaces.js';
 

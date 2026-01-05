@@ -1,5 +1,6 @@
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { OpConfig, makeISODate } from '@terascope/job-components';
+import { makeISODate } from '@terascope/core-utils';
+import { OpConfig } from '@terascope/job-components';
 
 describe('filter_by_date schema', () => {
     let harness: WorkerTestHarness;

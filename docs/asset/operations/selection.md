@@ -69,7 +69,7 @@ Example rules located at `someAssetId:transformRules.txt`
 Example plugin used by rules above located at `someAssetId:plugins`
 
 ```javascript
-import { DataEntity } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
 
 class Tag {
     static cardinality = 'one-to-one';

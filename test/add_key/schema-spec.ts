@@ -1,13 +1,13 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { AnyObject, OpConfig } from '@terascope/job-components';
+import { OpConfig } from '@terascope/job-components';
 
 describe('add_key schema', () => {
     let harness: WorkerTestHarness;
     const name = 'add_key';
 
-    async function makeSchema(config: AnyObject = {}): Promise<OpConfig> {
-        const opConfig = Object.assign({}, { _op: name }, config);
+    async function makeSchema(config: Partial<OpConfig> = {}): Promise<OpConfig> {
+        const opConfig: OpConfig = Object.assign({}, { _op: name }, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();

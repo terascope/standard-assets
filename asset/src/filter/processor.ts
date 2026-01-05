@@ -1,6 +1,8 @@
 import {
-    FilterProcessor, Context, ExecutionConfig,
     DataEntity, get, toCamelCase
+} from '@terascope/core-utils';
+import {
+    FilterProcessor, Context, ExecutionConfig,
 } from '@terascope/job-components';
 import { FieldValidator } from '@terascope/data-mate';
 import { FilterConfig, ExceptionRule } from './interfaces.js';

@@ -6,12 +6,12 @@ import {
 } from '@terascope/job-components';
 import { ExecutionConfig } from '@terascope/types';
 import {
-    TSError, DataEntity, isEmpty, AnyObject
-} from '@terascope/utils';
+    TSError, DataEntity, isEmpty
+} from '@terascope/core-utils';
 import { RoutedSender } from '@terascope/standard-asset-apis';
 import { RouteSenderConfig } from './interfaces.js';
 
-type SenderFactoryAPI = APIFactoryRegistry<RouteSenderAPI, AnyObject>;
+type SenderFactoryAPI = APIFactoryRegistry<RouteSenderAPI, Record<string, any>>;
 
 export type SenderFn = (
     fn: (msg: any) => DataEntity
@@ -43,7 +43,7 @@ export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderCon
 
     async initialize(): Promise<void> {
         await super.initialize();
-        this.api = await this.createAPI(this.opConfig.api_name);
+        this.api = await this.createAPI(this.opConfig._api_name);
         await this.routedSender.initialize();
     }
 
@@ -51,7 +51,7 @@ export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderCon
         this.routedSender.clearBatches();
     }
 
-    private async createRouteSenderAPI(route: string, connection: string) {
+    private async createRouteSenderAPI(route: string, _connection: string) {
         let client = this.api.get(route);
 
         this.logger.info('debugging sender route: client in api', client);
@@ -64,7 +64,7 @@ export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderCon
                 {
                     ...this.opConfig,
                     _key: route,
-                    connection,
+                    _connection,
                     tryFn: this.tryFn,
                     logger: this.logger
                 }

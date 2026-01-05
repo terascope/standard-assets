@@ -1,7 +1,8 @@
 import path from 'node:path';
-import { DataEntity, AnyObject } from '@terascope/utils';
-import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { fileURLToPath } from 'node:url';
+import { DataEntity } from '@terascope/core-utils';
+import { OpConfig } from '@terascope/job-components';
+import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -14,14 +15,14 @@ describe('match phase', () => {
     const opPathName = path.join(dirname, '../../asset/');
     const assetDir = [testAssetPath, opPathName];
 
-    async function makeTest(config: AnyObject = {}) {
+    async function makeTest(config: Partial<OpConfig> = {}) {
         const _op = {
             _op: 'match',
             plugins: ['someAssetId:plugins'],
             rules: ['someAssetId:matchRules.txt'],
             types: { _created: 'date' }
         };
-        const opConfig = config ? Object.assign({}, _op, config) : _op;
+        const opConfig: OpConfig = config ? Object.assign({}, _op, config) : _op;
 
         const job = newTestJobConfig({
             operations: [

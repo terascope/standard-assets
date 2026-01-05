@@ -1,18 +1,19 @@
 import 'jest-extended';
+import { DataEntity } from '@terascope/core-utils';
+import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { DataEntity, AnyObject } from '@terascope/job-components';
 import DataWindow from '../../asset/src/__lib/data-window.js';
 
 describe('dedupe', () => {
     let harness: WorkerTestHarness;
     const field = 'name';
 
-    async function makeTest(config: AnyObject = {}) {
+    async function makeTest(config: Partial<OpConfig> = {}) {
         const _op = {
             _op: 'dedupe',
             field
         };
-        const opConfig = Object.assign({}, _op, config);
+        const opConfig: OpConfig = Object.assign({}, _op, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();

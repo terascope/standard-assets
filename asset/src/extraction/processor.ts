@@ -1,4 +1,5 @@
-import { BatchProcessor, DataEntity } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
+import { BatchProcessor } from '@terascope/job-components';
 import { ExtractionPhase, Loader, OperationsManager } from 'ts-transforms';
 import { PhaseConfig } from '../transform/interfaces.js';
 import { loadResources } from '../__lib/utils.js';

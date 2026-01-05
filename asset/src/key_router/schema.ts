@@ -1,5 +1,6 @@
+import { isBoolean, isNumber, isString } from '@terascope/core-utils';
 import {
-    ConvictSchema, isNumber, ValidatedJobConfig, getOpConfig, OpConfig, isBoolean, isString
+    ConvictSchema, ValidatedJobConfig, getOpConfig, OpConfig
 } from '@terascope/job-components';
 import { KeyRouterConfig, KeyRouterFromOptions, KeyRouterCaseOptions } from '@terascope/standard-asset-apis';
 

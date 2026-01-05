@@ -1,4 +1,5 @@
-import { DataEntity, AnyObject } from '@terascope/utils';
+import { DataEntity } from '@terascope/core-utils';
+import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { DateResolution } from '@terascope/standard-asset-apis';
 
@@ -6,12 +7,12 @@ describe('date_router', () => {
     let harness: WorkerTestHarness;
     let data: DataEntity[];
 
-    async function makeTest(config: AnyObject = {}) {
+    async function makeTest(config: Partial<OpConfig> = {}) {
         const _op = {
             _op: 'date_router',
             field: 'date',
         };
-        const opConfig = Object.assign({}, _op, config);
+        const opConfig: OpConfig = Object.assign({}, _op, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();

@@ -7,7 +7,7 @@ export default class Schema extends ConvictSchema<WindowConfig> {
             time_field: {
                 doc: 'field name that holds the time value',
                 default: '@timestamp',
-                format: 'required_String'
+                format: 'required_string'
             },
             window_time_setting: {
                 doc: 'Sets window timer to clock time or event time',

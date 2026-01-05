@@ -6,12 +6,12 @@ export default class Schema extends ConvictSchema<CopyMetadataFieldConfig> {
         return {
             destination: {
                 doc: 'The property to copy to',
-                format: 'required_String',
+                format: 'required_string',
                 default: null
             },
             meta_key: {
                 doc: 'The Dataentity metadata key to copy',
-                format: 'required_String',
+                format: 'required_string',
                 default: '_key'
             }
         };

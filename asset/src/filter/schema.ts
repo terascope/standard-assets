@@ -1,7 +1,8 @@
 import {
-    ConvictSchema, isString, isBoolean, has
-} from '@terascope/job-components';
+    isString, isBoolean, has
+} from '@terascope/core-utils';
 import { FieldValidator } from '@terascope/data-mate';
+import { ConvictSchema } from '@terascope/job-components';
 import { FilterConfig } from './interfaces.js';
 
 // TODO: add more checks around grouping, if one set but not another that is paired

@@ -1,12 +1,12 @@
 import 'jest-extended';
+import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { AnyObject } from '@terascope/job-components';
 
 describe('data_window_to_array schema', () => {
     let harness: WorkerTestHarness;
     const name = 'data_window_to_array';
 
-    async function makeSchema(config: AnyObject = {}): Promise<AnyObject> {
+    async function makeSchema(config: Partial<OpConfig> = {}): Promise<OpConfig> {
         const opConfig = Object.assign({}, { _op: name }, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
@@ -16,7 +16,7 @@ describe('data_window_to_array schema', () => {
             (testConfig) => testConfig._op === name
         );
 
-        return validConfig as AnyObject;
+        return validConfig as OpConfig;
     }
 
     afterEach(async () => {

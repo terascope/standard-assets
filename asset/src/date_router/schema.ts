@@ -7,7 +7,7 @@ export default class Schema extends ConvictSchema<DateRouterConfig> {
             field: {
                 doc: 'Which field in each data record contains the date to use for time series',
                 default: null,
-                format: 'required_String'
+                format: 'required_string'
             },
             use_clock_time: {
                 doc: 'Use clock time for date value, overrides the field value',

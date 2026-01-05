@@ -1,6 +1,7 @@
 import 'jest-extended';
+import { isEmpty, DataEntity, get } from '@terascope/core-utils';
+import { RouteSenderAPI } from '@terascope/job-components';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
-import { isEmpty, DataEntity, get, RouteSenderAPI } from '@terascope/job-components';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import TestApi from '../fixtures/someAssetId/test_api/api.js';
@@ -26,7 +27,7 @@ describe('Route Sender', () => {
     async function makeTest(senderConfig = {}) {
         const opConfig = Object.assign({
             _op: 'routed_sender',
-            api_name: apiName
+            _api_name: apiName
         }, senderConfig);
         const job = newTestJobConfig({
             max_retries: 0,

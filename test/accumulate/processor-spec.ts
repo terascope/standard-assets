@@ -1,5 +1,6 @@
 import 'jest-extended';
-import { DataEntity, AnyObject } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
+import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import DataWindow from '../../asset/src/__lib/data-window.js';
 
@@ -22,8 +23,8 @@ for (let i = 0; i < 100; i++) {
 describe('accumulate', () => {
     let harness: WorkerTestHarness;
 
-    async function makeTest(config: AnyObject = {}) {
-        const opConfig = Object.assign({}, { _op: 'accumulate', empty_after: 0 }, config);
+    async function makeTest(config: Partial<OpConfig> = {}) {
+        const opConfig: OpConfig = Object.assign({}, { _op: 'accumulate', empty_after: 0 }, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();

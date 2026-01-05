@@ -1,5 +1,6 @@
+import { DataEntity } from '@terascope/core-utils';
 import {
-    MapProcessor, DataEntity, Context
+    MapProcessor, Context
 } from '@terascope/job-components';
 import { ExecutionConfig, OpConfig } from '@terascope/types';
 import { FieldRouterConfig, FieldRouter } from '@terascope/standard-asset-apis';

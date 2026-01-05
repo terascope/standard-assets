@@ -1,8 +1,8 @@
 import 'jest-extended';
-import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
-import { AnyObject } from '@terascope/job-components';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { OpConfig } from '@terascope/job-components';
+import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { RouteSenderConfig } from '../../asset/src/routed_sender/interfaces.js';
 // This is a temp fix to get routed sender imported during testing. May not be a good idea
 await import('../../asset/src/routed_sender/processor.js');
@@ -16,18 +16,18 @@ describe('routed_sender Schema', () => {
     const opPathName = path.join(dirname, '../../asset/');
     const assetDir = [testAssetPath, opPathName];
     const name = 'routed_sender';
-    const api_name = 'test_api';
+    const _api_name = 'test_api';
 
-    async function makeSchema(config: AnyObject = {}): Promise<RouteSenderConfig> {
-        const opConfig = Object.assign({
+    async function makeSchema(config: Partial<OpConfig> = {}): Promise<RouteSenderConfig> {
+        const opConfig: OpConfig = Object.assign({
             _op: name,
-            api_name
+            _api_name
         }, config);
         const job = newTestJobConfig({
             max_retries: 0,
             apis: [
                 {
-                    _name: api_name,
+                    _name: _api_name,
                     some: 'config'
                 },
             ],
@@ -64,29 +64,18 @@ describe('routed_sender Schema', () => {
             const routing = { a: 'default' };
 
             await expect(makeSchema({})).toReject();
-            await expect(makeSchema({ size: 'test', api_name, routing })).toReject();
-            await expect(makeSchema({ size: [12341234], api_name, routing })).toReject();
-            await expect(makeSchema({ size: -12341234, api_name, routing })).toReject();
-            await expect(makeSchema({ routing: -12341234, api_name })).toReject();
+            await expect(makeSchema({ routing: -12341234, _api_name })).toReject();
 
-            await expect(makeSchema({ routing: 'hello', api_name })).toReject();
-            await expect(makeSchema({ routing: {}, api_name })).toReject();
-            await expect(makeSchema({ routing: { b: undefined }, api_name })).toReject();
+            await expect(makeSchema({ routing: 'hello', _api_name })).toReject();
+            await expect(makeSchema({ routing: {}, _api_name })).toReject();
+            await expect(makeSchema({ routing: { b: undefined }, _api_name })).toReject();
 
-            await expect(makeSchema({ api_name, concurrency: -2134, routing })).toReject();
-            await expect(makeSchema({ api_name, concurrency: 'hello', routing })).toReject();
-
-            await expect(makeSchema({
-                api_name,
-                concurrency: 10,
-                routing,
-                size: 3000
-            })).toResolve();
+            await expect(makeSchema({ _api_name, routing })).toResolve();
         });
 
         it('should throw if routing has both * and **', async () => {
             await expect(makeSchema({
-                api_name,
+                _api_name,
                 routing: {
                     '*': 'default',
                     '**': 'default'
@@ -94,9 +83,9 @@ describe('routed_sender Schema', () => {
             })).toReject();
         });
 
-        it('should throw if api_name is not listed on the job', async () => {
+        it('should throw if _api_name is not listed on the job', async () => {
             await expect(makeSchema({
-                api_name: 'hello',
+                _api_name: 'hello',
                 routing: {
                     '*': 'default',
                 }

@@ -1,6 +1,6 @@
+import { OpConfig } from '@terascope/job-components';
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { AnyObject } from '@terascope/job-components';
 
 jest.setTimeout(10_000);
 
@@ -12,11 +12,11 @@ describe('stdout', () => {
         logMsg = msg;
     });
 
-    async function makeTest(config: AnyObject = {}) {
+    async function makeTest(config: Partial<OpConfig> = {}) {
         const _op = {
             _op: 'stdout',
         };
-        const opConfig = Object.assign({}, _op, config);
+        const opConfig: OpConfig = Object.assign({}, _op, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();

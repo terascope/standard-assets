@@ -1,4 +1,5 @@
-import { ConvictSchema, isNumber } from '@terascope/job-components';
+import { isNumber } from '@terascope/core-utils';
+import { ConvictSchema } from '@terascope/job-components';
 import { SampleExactConfig } from './interfaces.js';
 
 export default class Schema extends ConvictSchema<SampleExactConfig> {

@@ -1,6 +1,7 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { pDelay, AnyObject } from '@terascope/job-components';
+import { pDelay } from '@terascope/core-utils';
+import { OpConfig } from '@terascope/job-components';
 
 const testData = [
     {
@@ -20,14 +21,14 @@ const testData = [
 describe('window', () => {
     let harness: WorkerTestHarness;
 
-    async function makeTest(config: AnyObject = {}) {
+    async function makeTest(config: Partial<OpConfig> = {}) {
         const _op = {
             _op: 'window',
             window_length: 1000,
             time_field: 'time',
             event_window_expiration: 1
         };
-        const opConfig = config ? Object.assign({}, _op, config) : _op;
+        const opConfig: OpConfig = config ? Object.assign({}, _op, config) : _op;
 
         harness = WorkerTestHarness.testProcessor(opConfig);
 

@@ -1,7 +1,7 @@
 import {
     DataEntity, getTypeOf, isInteger,
     toString
-} from '@terascope/utils';
+} from '@terascope/core-utils';
 import fnv1a from '@sindresorhus/fnv1a';
 import * as I from './interfaces.js';
 

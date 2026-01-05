@@ -1,4 +1,4 @@
-import { DataEntity } from '@terascope/utils';
+import { DataEntity } from '@terascope/core-utils';
 
 /*
     An array of DataEntities inside a DataEntity

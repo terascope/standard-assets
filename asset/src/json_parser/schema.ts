@@ -8,7 +8,7 @@ export default class Schema extends ConvictSchema<OpConfig> {
             _dead_letter_action: {
                 doc: 'Dead letter action if the incoming buffer cannot be parsed to JSON, defaults to log',
                 default: 'log',
-                value: 'required_String'
+                value: 'required_string'
             }
         };
     }

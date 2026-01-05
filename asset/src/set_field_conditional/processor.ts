@@ -1,6 +1,6 @@
+import { DataEntity, set } from '@terascope/core-utils';
 import {
-    MapProcessor, Context, DataEntity,
-    ExecutionConfig, set,
+    MapProcessor, Context, ExecutionConfig,
 } from '@terascope/job-components';
 import { SetFieldConditionalConfig } from './interfaces.js';
 

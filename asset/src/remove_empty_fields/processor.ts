@@ -1,4 +1,5 @@
-import { MapProcessor, DataEntity, isEmpty } from '@terascope/job-components';
+import { DataEntity, isEmpty } from '@terascope/core-utils';
+import { MapProcessor } from '@terascope/job-components';
 
 export default class RemoveEmptyProperties extends MapProcessor {
     map(doc: DataEntity) {

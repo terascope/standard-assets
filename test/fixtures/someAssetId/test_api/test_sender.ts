@@ -1,4 +1,5 @@
-import { RouteSenderAPI, pDelay } from '@terascope/job-components';
+import { pDelay } from '@terascope/core-utils';
+import { RouteSenderAPI } from '@terascope/job-components';
 
 export default class TestSenderApi implements RouteSenderAPI {
     sendArgs: any[] = [];

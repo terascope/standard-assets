@@ -1,4 +1,4 @@
-import { DataEntity } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
 
 export default class Accumulator {
     emptySliceCount = 0;

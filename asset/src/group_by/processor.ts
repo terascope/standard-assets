@@ -1,4 +1,5 @@
-import { BatchProcessor, DataEntity } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
+import { BatchProcessor } from '@terascope/job-components';
 import DataWindow from '../__lib/data-window.js';
 import { GroupByConfig } from './interfaces.js';
 

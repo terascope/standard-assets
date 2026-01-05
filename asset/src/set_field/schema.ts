@@ -7,7 +7,7 @@ export default class Schema extends ConvictSchema<DateRouterConfig> {
             field: {
                 doc: 'Name of new field',
                 default: null,
-                format: 'required_String'
+                format: 'required_string'
             },
             value: {
                 doc: 'Value of new field',

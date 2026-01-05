@@ -1,6 +1,6 @@
 import {
     DataEntity, getValidDate, TSError
-} from '@terascope/utils';
+} from '@terascope/core-utils';
 import * as I from './interfaces.js';
 
 const WEEK_IN_MS = 86400 * 7 * 1000;
