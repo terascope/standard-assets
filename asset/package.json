@@ -1,7 +1,7 @@
 {
     "name": "standard",
     "displayName": "Asset",
-    "version": "2.0.0-dev.0",
+    "version": "2.0.0-rc.0",
     "private": true,
     "description": "Teraslice standard processor asset bundle",
     "repository": {
@@ -26,7 +26,7 @@
         "@terascope/data-mate": "~2.0.0-rc.0",
         "@terascope/geo-utils": "~2.0.0-rc.0",
         "@terascope/job-components": "~2.0.0-rc.1",
-        "@terascope/standard-asset-apis": "~2.0.0-dev.0",
+        "@terascope/standard-asset-apis": "~2.0.0-rc.0",
         "@terascope/teraslice-state-storage": "~2.0.0-rc.0",
         "@terascope/types": "~2.0.0-rc.0",
         "@types/chance": "~1.1.7",
