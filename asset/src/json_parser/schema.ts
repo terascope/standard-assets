@@ -1,7 +1,7 @@
-import { ConvictSchema, OpConfig } from '@terascope/job-components';
+import { BaseSchema, OpConfig } from '@terascope/job-components';
 
 // TODO: check check if api name is real and available
-export default class Schema extends ConvictSchema<OpConfig> {
+export default class Schema extends BaseSchema<OpConfig> {
     build() {
         return {
             // maybe document its an inbuilt setting?

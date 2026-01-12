@@ -1,8 +1,8 @@
 import { isNumber } from '@terascope/core-utils';
-import { ConvictSchema } from '@terascope/job-components';
+import { BaseSchema } from '@terascope/job-components';
 import { SampleExactConfig } from './interfaces.js';
 
-export default class Schema extends ConvictSchema<SampleExactConfig> {
+export default class Schema extends BaseSchema<SampleExactConfig> {
     build() {
         return {
             percent_kept: {

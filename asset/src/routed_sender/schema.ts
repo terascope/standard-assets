@@ -1,5 +1,5 @@
 import {
-    ConvictSchema, getOpConfig,
+    BaseSchema, getOpConfig,
 } from '@terascope/job-components';
 import { Terafoundation, ValidatedJobConfig } from '@terascope/types';
 import { RouteSenderConfig } from './interfaces.js';
@@ -14,7 +14,7 @@ function fetchConfig(job: ValidatedJobConfig) {
     return opConfig as RouteSenderConfig;
 }
 
-export default class Schema extends ConvictSchema<RouteSenderConfig> {
+export default class Schema extends BaseSchema<RouteSenderConfig> {
     validateJob(job: ValidatedJobConfig): void {
         const { routing, _api_name } = fetchConfig(job);
 

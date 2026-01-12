@@ -1,7 +1,7 @@
-import { ConvictSchema } from '@terascope/job-components';
+import { BaseSchema } from '@terascope/job-components';
 import { GroupByConfig } from './interfaces.js';
 
-export default class Schema extends ConvictSchema<GroupByConfig> {
+export default class Schema extends BaseSchema<GroupByConfig> {
     build(): Record<string, any> {
         return {
             field: {

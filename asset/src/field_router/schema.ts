@@ -1,7 +1,7 @@
-import { ConvictSchema, OpConfig } from '@terascope/job-components';
+import { BaseSchema, OpConfig } from '@terascope/job-components';
 import { FieldRouterConfig } from '@terascope/standard-asset-apis';
 
-export default class Schema extends ConvictSchema<FieldRouterConfig & OpConfig> {
+export default class Schema extends BaseSchema<FieldRouterConfig & OpConfig> {
     build(): Record<string, any> {
         return {
             fields: {

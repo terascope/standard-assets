@@ -1,10 +1,10 @@
 import {
     isString, getTypeOf, isObjectEntity
 } from '@terascope/core-utils';
-import { ConvictSchema, APIConfig } from '@terascope/job-components';
+import { BaseSchema, APIConfig } from '@terascope/job-components';
 import { PhaseConfig } from './interfaces.js';
 
-export default class Schema extends ConvictSchema<PhaseConfig> {
+export default class Schema extends BaseSchema<PhaseConfig> {
     validate(input: PhaseConfig): APIConfig & PhaseConfig {
         const validatedSchema = super.validate(input);
         if (!Array.isArray(input.rules) || input.rules.length === 0) throw new Error('you must specify rules path to retrieve the rules for this op');

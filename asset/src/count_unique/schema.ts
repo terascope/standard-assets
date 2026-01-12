@@ -1,8 +1,8 @@
 import { isString } from '@terascope/core-utils';
-import { ConvictSchema } from '@terascope/job-components';
+import { BaseSchema } from '@terascope/job-components';
 import { CountUniqueConfig } from './interfaces.js';
 
-export default class Schema extends ConvictSchema<CountUniqueConfig> {
+export default class Schema extends BaseSchema<CountUniqueConfig> {
     build() {
         return {
             preserve_fields: {

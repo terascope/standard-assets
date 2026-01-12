@@ -1,9 +1,9 @@
 import { isISO8601, isString } from '@terascope/core-utils';
-import { ConvictSchema } from '@terascope/job-components';
+import { BaseSchema } from '@terascope/job-components';
 import ms from 'ms';
 import { FilterByDateConfig } from './interfaces.js';
 
-export default class Schema extends ConvictSchema<FilterByDateConfig> {
+export default class Schema extends BaseSchema<FilterByDateConfig> {
     _limitsSchema(val: unknown) {
         if (!isString(val)) {
             throw new Error('Limits must be a string');

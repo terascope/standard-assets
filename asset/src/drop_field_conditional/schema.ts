@@ -1,8 +1,8 @@
-import { ConvictSchema, OpConfig, APIConfig } from '@terascope/job-components';
+import { BaseSchema, OpConfig, APIConfig } from '@terascope/job-components';
 import { isObjectEntity } from '@terascope/core-utils';
 import { FieldValidator } from '@terascope/data-mate';
 
-export default class Schema extends ConvictSchema<OpConfig> {
+export default class Schema extends BaseSchema<OpConfig> {
     validate(config: OpConfig & APIConfig): OpConfig & APIConfig {
         const {
             regex,

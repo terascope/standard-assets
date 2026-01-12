@@ -1,8 +1,8 @@
 import { isNumber, isString } from '@terascope/core-utils';
-import { ConvictSchema } from '@terascope/job-components';
+import { BaseSchema } from '@terascope/job-components';
 import { SampleExactESPercentConfig } from './interfaces.js';
 
-export default class SampleExactESPercentSchema extends ConvictSchema<SampleExactESPercentConfig> {
+export default class SampleExactESPercentSchema extends BaseSchema<SampleExactESPercentConfig> {
     build() {
         return {
             connection: {

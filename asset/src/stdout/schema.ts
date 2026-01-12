@@ -1,7 +1,7 @@
-import { ConvictSchema } from '@terascope/job-components';
+import { BaseSchema } from '@terascope/job-components';
 import { StdoutConfig } from './interfaces.js';
 
-export default class Schema extends ConvictSchema<StdoutConfig> {
+export default class Schema extends BaseSchema<StdoutConfig> {
     build() {
         return {
             limit: {

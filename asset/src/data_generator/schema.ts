@@ -2,12 +2,12 @@ import {
     isNotNil, getTypeOf, isString
 } from '@terascope/core-utils';
 import {
-    ConvictSchema, ValidatedJobConfig, getOpConfig,
+    BaseSchema, ValidatedJobConfig, getOpConfig,
 } from '@terascope/job-components';
 import { DataGenerator, IDType, DateOptions } from './interfaces.js';
 import { Terafoundation } from '@terascope/types';
 
-export default class Schema extends ConvictSchema<DataGenerator> {
+export default class Schema extends BaseSchema<DataGenerator> {
     validateJob(job: ValidatedJobConfig): void {
         const opConfig = getOpConfig(job, 'data_generator');
         if (!opConfig) throw new Error('No opConfig was found for operation data_generator on the job');
