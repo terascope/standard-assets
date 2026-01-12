@@ -1,7 +1,7 @@
 {
     "name": "standard-assets-bundle",
     "displayName": "Standard Assets Bundle",
-    "version": "2.0.0-dev.0",
+    "version": "2.0.0-rc.0",
     "private": true,
     "description": "Teraslice standard processor asset bundle",
     "homepage": "https://github.com/terascope/standard-assets",
@@ -35,9 +35,9 @@
     },
     "devDependencies": {
         "@terascope/eslint-config": "~1.1.26",
-        "@terascope/job-components": "~2.0.0-dev.13",
-        "@terascope/scripts": "~2.0.0-dev.17",
-        "@terascope/standard-asset-apis": "~2.0.0-dev.0",
+        "@terascope/job-components": "~2.0.0-rc.1",
+        "@terascope/scripts": "~2.0.0-rc.0",
+        "@terascope/standard-asset-apis": "~2.0.0-rc.0",
         "@types/fs-extra": "~11.0.4",
         "@types/jest": "~30.0.0",
         "@types/json2csv": "~5.0.7",
@@ -51,14 +51,14 @@
         "jest-extended": "~7.0.0",
         "node-notifier": "~10.0.1",
         "semver": "~7.7.3",
-        "teraslice-test-harness": "~2.0.0-dev.13",
+        "teraslice-test-harness": "~2.0.0-rc.1",
         "ts-jest": "~29.4.6",
         "tslib": "~2.8.1",
         "typescript": "~5.9.3"
     },
     "packageManager": "yarn@4.6.0",
     "engines": {
-        "node": ">=22.0.0",
+        "node": ">=22.21.1",
         "yarn": ">=1.22.19"
     },
     "documentation": "https://terascope.github.io/standard-assets",

@@ -1,6 +1,6 @@
-import { ConvictSchema, OpConfig } from '@terascope/job-components';
+import { BaseSchema, OpConfig } from '@terascope/job-components';
 
-export default class Schema extends ConvictSchema<OpConfig> {
+export default class Schema extends BaseSchema<OpConfig> {
     build(): Record<string, any> {
         return {};
     }

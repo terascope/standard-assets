@@ -1,10 +1,10 @@
 import { isBoolean, isNumber, isString } from '@terascope/core-utils';
 import {
-    ConvictSchema, ValidatedJobConfig, getOpConfig, OpConfig
+    BaseSchema, ValidatedJobConfig, getOpConfig, OpConfig
 } from '@terascope/job-components';
 import { KeyRouterConfig, KeyRouterFromOptions, KeyRouterCaseOptions } from '@terascope/standard-asset-apis';
 
-export default class Schema extends ConvictSchema<KeyRouterConfig & OpConfig> {
+export default class Schema extends BaseSchema<KeyRouterConfig & OpConfig> {
     validateJob(job: ValidatedJobConfig): void {
         const op = getOpConfig(job, 'key_router') as KeyRouterConfig;
         if ((op.from && !op.use) || (!op.from && op.use)) {

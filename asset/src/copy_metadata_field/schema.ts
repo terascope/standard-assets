@@ -1,7 +1,7 @@
-import { ConvictSchema } from '@terascope/job-components';
+import { BaseSchema } from '@terascope/job-components';
 import { CopyMetadataFieldConfig } from './interfaces.js';
 
-export default class Schema extends ConvictSchema<CopyMetadataFieldConfig> {
+export default class Schema extends BaseSchema<CopyMetadataFieldConfig> {
     build() {
         return {
             destination: {

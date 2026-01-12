@@ -1,8 +1,8 @@
 import { isPlainObject, isString } from '@terascope/core-utils';
-import { ConvictSchema } from '@terascope/job-components';
+import { BaseSchema } from '@terascope/job-components';
 import * as I from './interfaces.js';
 
-export default class Schema extends ConvictSchema<I.DedupeConfig> {
+export default class Schema extends BaseSchema<I.DedupeConfig> {
     build(): Record<string, any> {
         return {
             field: {

@@ -1,4 +1,4 @@
-import { ConvictSchema, OpConfig } from '@terascope/job-components';
+import { BaseSchema, OpConfig } from '@terascope/job-components';
 
 const ALGOS = [
     'md4',
@@ -9,7 +9,7 @@ const ALGOS = [
     'whirlpool'
 ];
 
-export default class Schema extends ConvictSchema<OpConfig> {
+export default class Schema extends BaseSchema<OpConfig> {
     build(): Record<string, any> {
         return {
             key_name: {

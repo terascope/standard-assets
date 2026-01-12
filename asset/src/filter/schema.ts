@@ -2,11 +2,11 @@ import {
     isString, isBoolean, has
 } from '@terascope/core-utils';
 import { FieldValidator } from '@terascope/data-mate';
-import { ConvictSchema } from '@terascope/job-components';
+import { BaseSchema } from '@terascope/job-components';
 import { FilterConfig } from './interfaces.js';
 
 // TODO: add more checks around grouping, if one set but not another that is paired
-export default class Schema extends ConvictSchema<FilterConfig> {
+export default class Schema extends BaseSchema<FilterConfig> {
     build() {
         return {
             field: {

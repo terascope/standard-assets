@@ -1,7 +1,7 @@
-import { ConvictSchema } from '@terascope/job-components';
+import { BaseSchema } from '@terascope/job-components';
 import { SetFieldConditionalConfig } from './interfaces.js';
 
-export default class Schema extends ConvictSchema<SetFieldConditionalConfig> {
+export default class Schema extends BaseSchema<SetFieldConditionalConfig> {
     build() {
         return {
             conditional_field: {

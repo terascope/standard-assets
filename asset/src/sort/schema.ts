@@ -1,8 +1,8 @@
-import { ConvictSchema } from '@terascope/job-components';
+import { BaseSchema } from '@terascope/job-components';
 import { SortConfig } from './interfaces.js';
 import { Order } from '../__lib/utils.js';
 
-export default class Schema extends ConvictSchema<SortConfig> {
+export default class Schema extends BaseSchema<SortConfig> {
     build(): Record<string, any> {
         return {
             field: {
