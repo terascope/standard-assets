@@ -35,8 +35,8 @@
     },
     "devDependencies": {
         "@terascope/eslint-config": "~1.1.26",
-        "@terascope/job-components": "~2.0.0-rc.1",
-        "@terascope/scripts": "~2.0.0-rc.0",
+        "@terascope/job-components": "~2.0.0",
+        "@terascope/scripts": "~2.0.0",
         "@terascope/standard-asset-apis": "~2.0.0-rc.1",
         "@types/fs-extra": "~11.0.4",
         "@types/jest": "~30.0.0",
@@ -51,7 +51,7 @@
         "jest-extended": "~7.0.0",
         "node-notifier": "~10.0.1",
         "semver": "~7.7.3",
-        "teraslice-test-harness": "~2.0.0-rc.1",
+        "teraslice-test-harness": "~2.0.0",
         "ts-jest": "~29.4.6",
         "tslib": "~2.8.1",
         "typescript": "~5.9.3"
