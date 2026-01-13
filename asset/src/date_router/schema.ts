@@ -1,13 +1,13 @@
-import { ConvictSchema } from '@terascope/job-components';
+import { BaseSchema } from '@terascope/job-components';
 import { DateRouterConfig, DateResolution, validDateDelimiters } from '@terascope/standard-asset-apis';
 
-export default class Schema extends ConvictSchema<DateRouterConfig> {
+export default class Schema extends BaseSchema<DateRouterConfig> {
     build(): Record<string, any> {
         return {
             field: {
                 doc: 'Which field in each data record contains the date to use for time series',
                 default: null,
-                format: 'required_String'
+                format: 'required_string'
             },
             use_clock_time: {
                 doc: 'Use clock time for date value, overrides the field value',

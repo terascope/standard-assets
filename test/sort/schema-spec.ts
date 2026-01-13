@@ -1,14 +1,14 @@
 import 'jest-extended';
+import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { AnyObject } from '@terascope/job-components';
 import { SortConfig } from '../../asset/src/sort/interfaces.js';
 
 describe('sort schema', () => {
     let harness: WorkerTestHarness;
     const name = 'sort';
 
-    async function makeSchema(config: AnyObject = {}): Promise<SortConfig> {
-        const opConfig = Object.assign({}, { _op: name }, config);
+    async function makeSchema(config: Partial<OpConfig> = {}): Promise<SortConfig> {
+        const opConfig: OpConfig = Object.assign({}, { _op: name }, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();

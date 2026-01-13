@@ -40,7 +40,7 @@ Example Job
         },
         {
             "_op": "routed_sender",
-            "api_name": "elasticsearch_sender_api",
+            "_api_name": "elasticsearch_sender_api",
             "routing": {
                 "**": "ELASTICSEARCH_CONNECTION"
             }
@@ -97,7 +97,7 @@ Example Job
         },
         {
             "_op": "routed_sender",
-            "api_name": "elasticsearch_sender_api",
+            "_api_name": "elasticsearch_sender_api",
             "routing": {
                 "**": "ELASTICSEARCH_CONNECTION"
             }
@@ -156,7 +156,7 @@ Example Job
         },
         {
             "_op": "routed_sender",
-            "api_name": "file_sender_api",
+            "_api_name": "file_sender_api",
             "routing": {
                 "**": "FILE_CONNECTION"
             }
@@ -217,7 +217,7 @@ Example Job
         },
         {
             "_op": "routed_sender",
-            "api_name": "file_sender_api",
+            "_api_name": "file_sender_api",
             "routing": {
                 "**": "FILE_CONNECTION"
             }

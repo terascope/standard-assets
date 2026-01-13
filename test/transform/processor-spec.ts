@@ -1,7 +1,8 @@
-import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
-import { DataEntity, AnyObject } from '@terascope/job-components';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { DataEntity } from '@terascope/core-utils';
+import { OpConfig } from '@terascope/job-components';
+import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -14,7 +15,7 @@ describe('transform matches', () => {
 
     let harness: WorkerTestHarness;
 
-    async function makeTest(config: AnyObject = {}) {
+    async function makeTest(config: Partial<OpConfig> = {}) {
         const _op = {
             _op: 'transform',
             plugins: ['someAssetId:plugins'],
@@ -27,7 +28,7 @@ describe('transform matches', () => {
                 foo: 'data'
             }
         };
-        const opConfig = config ? Object.assign({}, _op, config) : _op;
+        const opConfig: OpConfig = config ? Object.assign({}, _op, config) : _op;
 
         const job = newTestJobConfig({
             operations: [

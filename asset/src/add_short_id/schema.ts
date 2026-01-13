@@ -1,7 +1,7 @@
-import { ConvictSchema, OpConfig } from '@terascope/job-components';
-import { isInteger, inNumberRange } from '@terascope/utils';
+import { BaseSchema, OpConfig } from '@terascope/job-components';
+import { isInteger, inNumberRange } from '@terascope/core-utils';
 
-export default class Schema extends ConvictSchema<OpConfig> {
+export default class Schema extends BaseSchema<OpConfig> {
     build(): Record<string, any> {
         return {
             length: {
@@ -17,7 +17,7 @@ export default class Schema extends ConvictSchema<OpConfig> {
             field: {
                 doc: 'Name of field to add the id to',
                 default: null,
-                format: 'required_String'
+                format: 'required_string'
             },
             dictionary: {
                 doc: 'Character types to use in the ID',

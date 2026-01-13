@@ -1,4 +1,5 @@
-import { MapProcessor, DataEntity } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
+import { MapProcessor } from '@terascope/job-components';
 import { CopyMetadataFieldConfig } from './interfaces.js';
 
 // generalize any meta data field retrieval CopyMetadataField

@@ -1,4 +1,4 @@
-import { cloneDeep, DataEntity, isString } from '@terascope/utils';
+import { cloneDeep, DataEntity, isString } from '@terascope/core-utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { OpConfig } from '@terascope/job-components';
 

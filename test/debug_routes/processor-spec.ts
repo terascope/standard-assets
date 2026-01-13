@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { DataEntity } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
 
 describe('debug_routes', () => {
     let harness: WorkerTestHarness;

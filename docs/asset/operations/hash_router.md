@@ -37,7 +37,7 @@ Example of a job using the `hash_router` with `fields` configured and writing th
         },
         {
             "_op": "routed_sender",
-            "api_name": "elasticsearch_sender_api",
+            "_api_name": "elasticsearch_sender_api",
             "routing": {
                 "**": "default"
             }
@@ -116,7 +116,7 @@ Example of a job using the `hash_router` that uses the `_key` metadata value to 
         },
         {
             "_op": "routed_sender",
-            "api_name": "elasticsearch_sender_api",
+            "_api_name": "elasticsearch_sender_api",
             "routing": {
                 "**": "default"
             }

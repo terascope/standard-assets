@@ -1,6 +1,7 @@
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { SampleExactESPercentConfig } from '../../asset/src/sample_exact_es_percent/interfaces.js';
-import { debugLogger, pDelay, TestClientConfig } from '@terascope/job-components';
+import { debugLogger, pDelay } from '@terascope/core-utils';
+import { TestClientConfig } from '@terascope/job-components';
 import { makeData } from '../test_helpers.js';
 
 describe('sample_exact_es_percent', () => {

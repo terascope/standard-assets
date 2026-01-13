@@ -41,7 +41,7 @@ Example of a job using the `field_router`.  Notice that the order which you spec
         },
         {
             "_op": "routed_sender",
-            "api_name": "elasticsearch_sender_api",
+            "_api_name": "elasticsearch_sender_api",
             "routing": {
                 "**": "default"
             }
@@ -113,7 +113,7 @@ Example a job without the field names in the route
         },
         {
             "_op": "routed_sender",
-            "api_name": "elasticsearch_sender_api",
+            "_api_name": "elasticsearch_sender_api",
             "routing": {
                 "**": "default"
             }

@@ -1,15 +1,12 @@
 import {
-    ConvictSchema,
-    AnyObject,
-    isPlainObject,
-    getOpConfig,
-    has,
-    isNumber,
-    getTypeOf,
-    isNil
+    BaseSchema, getOpConfig,
 } from '@terascope/job-components';
-import { ValidatedJobConfig } from '@terascope/types';
+import { Terafoundation, ValidatedJobConfig } from '@terascope/types';
 import { RouteSenderConfig } from './interfaces.js';
+import {
+    getTypeOf, has, isNil,
+    isNumber, isPlainObject
+} from '@terascope/core-utils';
 
 function fetchConfig(job: ValidatedJobConfig) {
     const opConfig = getOpConfig(job, 'routed_sender');
@@ -17,17 +14,17 @@ function fetchConfig(job: ValidatedJobConfig) {
     return opConfig as RouteSenderConfig;
 }
 
-export default class Schema extends ConvictSchema<RouteSenderConfig> {
+export default class Schema extends BaseSchema<RouteSenderConfig> {
     validateJob(job: ValidatedJobConfig): void {
-        const { routing, api_name } = fetchConfig(job);
+        const { routing, _api_name } = fetchConfig(job);
 
         if (has(routing, '*') && has(routing, '**')) throw new Error('routing cannot specify "*" and "**"');
 
-        const SenderAPI = job.apis.find((jobApi) => jobApi._name === api_name);
-        if (isNil(SenderAPI)) throw new Error(`Invalid parameter api_name: ${api_name}, could not find corresponding api on the job configuration`);
+        const SenderAPI = job.apis.find((jobApi) => jobApi._name === _api_name);
+        if (isNil(SenderAPI)) throw new Error(`Invalid parameter _api_name: ${_api_name}, could not find corresponding api on the job configuration`);
     }
 
-    build(): AnyObject {
+    build(): Terafoundation.Schema<Omit<RouteSenderConfig, '_op'>> {
         return {
             size: {
                 doc: 'the maximum number of docs it will take at a time, anything past it will be split up and sent',
@@ -53,10 +50,10 @@ export default class Schema extends ConvictSchema<RouteSenderConfig> {
                     }
                 }
             },
-            api_name: {
+            _api_name: {
                 doc: 'Name of the elasticsearch connection to use when sending data.',
                 default: null,
-                format: 'required_String'
+                format: 'required_string'
             },
             concurrency: {
                 doc: 'The number of inflight calls to the api.send allowed',

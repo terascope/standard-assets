@@ -1,7 +1,7 @@
-import { ConvictSchema, OpConfig } from '@terascope/job-components';
+import { BaseSchema, OpConfig } from '@terascope/job-components';
 import { FieldRouterConfig } from '@terascope/standard-asset-apis';
 
-export default class Schema extends ConvictSchema<FieldRouterConfig & OpConfig> {
+export default class Schema extends BaseSchema<FieldRouterConfig & OpConfig> {
     build(): Record<string, any> {
         return {
             fields: {
@@ -19,12 +19,12 @@ export default class Schema extends ConvictSchema<FieldRouterConfig & OpConfig> 
             field_delimiter: {
                 doc: 'separator between field/value combinations - default "-"',
                 default: '-',
-                format: 'optional_String'
+                format: 'optional_string'
             },
             value_delimiter: {
                 doc: 'separator between the field name and the value - default "_"',
                 default: '_',
-                format: 'optional_String'
+                format: 'optional_string'
             },
             include_field_names: {
                 doc: 'determines if the field name should be included in final output',

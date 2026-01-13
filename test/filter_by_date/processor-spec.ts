@@ -1,4 +1,4 @@
-import { subtractFromDate, addToDate, getTime } from '@terascope/job-components';
+import { subtractFromDate, addToDate, getTime } from '@terascope/core-utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { FilterByDateConfig } from '../../asset/src/filter_by_date/interfaces.js';
 

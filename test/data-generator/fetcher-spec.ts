@@ -1,5 +1,6 @@
 import 'jest-extended';
-import { AnyObject, DataEntity } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
+import { JobConfigParams, OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { IDType, DateOptions } from '../../asset/src/data_generator/interfaces.js';
 
@@ -12,9 +13,30 @@ describe('data_generator fetcher', () => {
         }
     });
 
-    async function makeFetcherTest(config: AnyObject = {}) {
-        const opConfig = Object.assign({}, { _op: 'data_generator' }, config);
-        harness = WorkerTestHarness.testFetcher(opConfig);
+    async function makeFetcherTest(config: Partial<OpConfig> = {}) {
+        const opConfig: OpConfig = Object.assign({}, { _op: 'data_generator' }, config);
+        const job: JobConfigParams = {
+            name: 'test-job',
+            active: true,
+            analytics: false,
+            autorecover: false,
+            assets: [],
+            lifecycle: 'once',
+            max_retries: 0,
+            probation_window: 30000,
+            slicers: 1,
+            workers: 1,
+            env_vars: {},
+            apis: [],
+            operations: [
+                opConfig,
+                {
+                    _op: 'noop',
+                },
+            ],
+        };
+        harness = new WorkerTestHarness(job);
+
         await harness.initialize();
         return harness;
     }

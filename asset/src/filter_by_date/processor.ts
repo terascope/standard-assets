@@ -1,6 +1,8 @@
 import {
-    FilterProcessor, Context, ExecutionConfig,
     DataEntity, isValidDate, getTime, isISO8601
+} from '@terascope/core-utils';
+import {
+    FilterProcessor, Context, ExecutionConfig,
 } from '@terascope/job-components';
 import ms from 'ms';
 import { FilterByDateConfig } from './interfaces.js';

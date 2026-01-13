@@ -1,15 +1,14 @@
-import {
-    ConvictSchema, isNumber, isString
-} from '@terascope/job-components';
+import { isNumber, isString } from '@terascope/core-utils';
+import { BaseSchema } from '@terascope/job-components';
 import { SampleExactESPercentConfig } from './interfaces.js';
 
-export default class SampleExactESPercentSchema extends ConvictSchema<SampleExactESPercentConfig> {
+export default class SampleExactESPercentSchema extends BaseSchema<SampleExactESPercentConfig> {
     build() {
         return {
             connection: {
                 doc: 'Name of the elasticsearch connection to use to find index size.',
                 default: 'default',
-                format: 'optional_String'
+                format: 'optional_string'
             },
             index: {
                 doc: 'Name of the index that holds the percentage document - required',

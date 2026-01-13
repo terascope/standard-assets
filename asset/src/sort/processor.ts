@@ -1,6 +1,7 @@
 import { sort } from 'timsort';
+import { DataEntity } from '@terascope/core-utils';
 import {
-    BatchProcessor, DataEntity, Context
+    BatchProcessor, Context
 } from '@terascope/job-components';
 import { ExecutionConfig } from '@terascope/types';
 import { sortFunction } from '../__lib/utils.js';

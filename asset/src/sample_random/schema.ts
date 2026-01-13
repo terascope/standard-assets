@@ -1,7 +1,8 @@
-import { ConvictSchema, isNumber } from '@terascope/job-components';
+import { isNumber } from '@terascope/core-utils';
+import { BaseSchema } from '@terascope/job-components';
 import { SampleRandomConfig } from './interfaces.js';
 
-export default class Schema extends ConvictSchema<SampleRandomConfig> {
+export default class Schema extends BaseSchema<SampleRandomConfig> {
     build() {
         return {
             probability_to_keep: {

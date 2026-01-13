@@ -1,4 +1,5 @@
-import { FilterProcessor, DataEntity } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
+import { FilterProcessor } from '@terascope/job-components';
 import { FilterByUnknownFieldsConfig } from './interfaces.js';
 
 export default class FilterIfUnknownFields extends FilterProcessor<FilterByUnknownFieldsConfig> {

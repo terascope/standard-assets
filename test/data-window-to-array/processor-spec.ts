@@ -1,6 +1,6 @@
 import 'jest-extended';
+import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { AnyObject } from '@terascope/job-components';
 import DataWindow from '../../asset/src/__lib/data-window.js';
 
 const defaultConfig = {
@@ -17,8 +17,8 @@ const testData = [
 describe('data_window_to_array', () => {
     let harness: WorkerTestHarness;
 
-    async function makeTest(config: AnyObject = {}) {
-        const opConfig = Object.assign({}, defaultConfig, config);
+    async function makeTest(config: Partial<OpConfig> = {}) {
+        const opConfig: OpConfig = Object.assign({}, defaultConfig, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();

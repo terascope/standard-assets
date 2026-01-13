@@ -1,7 +1,8 @@
-import { ConvictSchema, isString } from '@terascope/job-components';
+import { isString } from '@terascope/core-utils';
+import { BaseSchema } from '@terascope/job-components';
 import { FilterByUnknownFieldsConfig } from './interfaces.js';
 
-export default class Schema extends ConvictSchema<FilterByUnknownFieldsConfig> {
+export default class Schema extends BaseSchema<FilterByUnknownFieldsConfig> {
     build() {
         return {
             known_fields: {

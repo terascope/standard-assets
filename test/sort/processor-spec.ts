@@ -1,5 +1,6 @@
 import 'jest-extended';
-import { DataEntity, AnyObject, times } from '@terascope/job-components';
+import { DataEntity, times } from '@terascope/core-utils';
+import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import DataWindow from '../../asset/src/__lib/data-window.js';
 
@@ -47,12 +48,12 @@ const dateData = [
 describe('sort', () => {
     let harness: WorkerTestHarness;
 
-    async function makeTest(config: AnyObject = {}) {
+    async function makeTest(config: Partial<OpConfig> = {}) {
         const _op = {
             _op: 'sort',
             field: 'id'
         };
-        const opConfig = config ? Object.assign({}, _op, config) : _op;
+        const opConfig: OpConfig = config ? Object.assign({}, _op, config) : _op;
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();

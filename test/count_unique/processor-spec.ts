@@ -1,4 +1,4 @@
-import { DataEntity } from '@terascope/utils';
+import { DataEntity } from '@terascope/core-utils';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import { CountUniqueConfig } from '../../asset/src/count_unique/interfaces.js';
 

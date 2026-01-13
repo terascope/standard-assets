@@ -1,8 +1,8 @@
-import { ConvictSchema, OpConfig, APIConfig } from '@terascope/job-components';
-import { isObjectEntity } from '@terascope/utils';
+import { BaseSchema, OpConfig, APIConfig } from '@terascope/job-components';
+import { isObjectEntity } from '@terascope/core-utils';
 import { FieldValidator } from '@terascope/data-mate';
 
-export default class Schema extends ConvictSchema<OpConfig> {
+export default class Schema extends BaseSchema<OpConfig> {
     validate(config: OpConfig & APIConfig): OpConfig & APIConfig {
         const {
             regex,
@@ -64,7 +64,7 @@ export default class Schema extends ConvictSchema<OpConfig> {
             field: {
                 doc: 'Field to remove from incoming document',
                 default: null,
-                format: 'required_String'
+                format: 'required_string'
             },
             regex: {
                 doc: 'Regular Expression to compare field value with',

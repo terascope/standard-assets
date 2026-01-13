@@ -1,14 +1,14 @@
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { AnyObject } from '@terascope/job-components';
+import { OpConfig } from '@terascope/job-components';
 import { KeyRouterConfig } from '@terascope/standard-asset-apis';
 
 describe('Key Router Schema', () => {
     let harness: WorkerTestHarness;
     const name = 'key_router';
 
-    async function makeSchema(config: AnyObject = {}): Promise<KeyRouterConfig> {
-        const opConfig = Object.assign({}, { _op: name }, config);
+    async function makeSchema(config: Partial<OpConfig> = {}): Promise<KeyRouterConfig> {
+        const opConfig: OpConfig = Object.assign({}, { _op: name }, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();

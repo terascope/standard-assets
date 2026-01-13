@@ -1,15 +1,16 @@
 /* eslint-disable no-useless-escape */
 import 'jest-extended';
-import { DataEntity, cloneDeep, AnyObject } from '@terascope/job-components';
+import { DataEntity, cloneDeep } from '@terascope/core-utils';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { JobConfigParams } from '@terascope/job-components';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe('count_by_field processor', () => {
     let harness: WorkerTestHarness;
-    let data: AnyObject[];
+    let data: Record<string, any>[];
 
     beforeEach(async () => {
         data = [
@@ -31,11 +32,11 @@ describe('count_by_field processor', () => {
         ];
     });
 
-    async function makeTest(testConfig: AnyObject = {}) {
+    async function makeTest(testConfig: Partial<JobConfigParams> = {}) {
         const jobWithCollectMetrics = newTestJobConfig({
-            prom_metrics_enabled: testConfig.job_prom_metrics_enabled,
-            prom_metrics_port: testConfig.job_prom_metrics_port,
-            prom_metrics_add_default: testConfig.job_prom_metrics_add_default,
+            prom_metrics_enabled: testConfig.prom_metrics_enabled,
+            prom_metrics_port: testConfig.prom_metrics_port,
+            prom_metrics_add_default: testConfig.prom_metrics_add_default,
             operations: [
                 {
                     _op: 'test-reader',
@@ -45,13 +46,13 @@ describe('count_by_field processor', () => {
                 {
                     _op: 'count_by_field',
                     field: 'node_id',
-                    collect_metrics: testConfig.job_prom_metrics_enabled
+                    collect_metrics: testConfig.prom_metrics_enabled
 
                 },
                 {
                     _op: 'count_by_field',
                     field: 'ip',
-                    collect_metrics: testConfig.job_prom_metrics_enabled
+                    collect_metrics: testConfig.prom_metrics_enabled
 
                 },
                 {
@@ -62,7 +63,7 @@ describe('count_by_field processor', () => {
 
         harness = new WorkerTestHarness(jobWithCollectMetrics, {
             assetDir: path.join(dirname, '../../asset'),
-            cluster_manager_type: 'kubernetes'
+            cluster_manager_type: 'kubernetesV2'
         });
 
         await harness.context.apis.foundation.promMetrics.init({
@@ -72,9 +73,9 @@ describe('count_by_field processor', () => {
             tf_prom_metrics_enabled: false,
             tf_prom_metrics_port: 3333,
             tf_prom_metrics_add_default: true,
-            job_prom_metrics_enabled: testConfig.job_prom_metrics_enabled,
-            job_prom_metrics_port: testConfig.job_prom_metrics_port,
-            job_prom_metrics_add_default: testConfig.job_prom_metrics_add_default,
+            job_prom_metrics_enabled: testConfig.prom_metrics_enabled,
+            job_prom_metrics_port: testConfig.prom_metrics_port,
+            job_prom_metrics_add_default: testConfig.prom_metrics_add_default,
             prom_metrics_display_url:
                 harness.context.sysconfig.terafoundation.prom_metrics_display_url,
             labels: {
@@ -101,9 +102,9 @@ describe('count_by_field processor', () => {
 
     it('should generate an empty result if no input data', async () => {
         const testConfig = {
-            job_prom_metrics_port: 3350,
-            job_prom_metrics_enabled: false,
-            job_prom_metrics_add_default: false
+            prom_metrics_port: 3350,
+            prom_metrics_enabled: false,
+            prom_metrics_add_default: false
         };
         const test = await makeTest(testConfig);
         const results = await test.runSlice([]);
@@ -113,9 +114,9 @@ describe('count_by_field processor', () => {
 
     it('should just pass doc when collect metrics is false', async () => {
         const testConfig = {
-            job_prom_metrics_port: 3351,
-            job_prom_metrics_enabled: false,
-            job_prom_metrics_add_default: false
+            prom_metrics_port: 3351,
+            prom_metrics_enabled: false,
+            prom_metrics_add_default: false
         };
         const test = await makeTest(testConfig);
 
@@ -128,9 +129,9 @@ describe('count_by_field processor', () => {
 
     it('should include metrics when collect metrics is true', async () => {
         const testConfig = {
-            job_prom_metrics_port: 3353,
-            job_prom_metrics_enabled: true,
-            job_prom_metrics_add_default: false
+            prom_metrics_port: 3353,
+            prom_metrics_enabled: true,
+            prom_metrics_add_default: false
         };
         const test = await makeTest(testConfig);
 
@@ -210,9 +211,9 @@ describe('count_by_field processor', () => {
         ];
 
         const testConfig = {
-            job_prom_metrics_port: 3353,
-            job_prom_metrics_enabled: true,
-            job_prom_metrics_add_default: false
+            prom_metrics_port: 3353,
+            prom_metrics_enabled: true,
+            prom_metrics_add_default: false
         };
         const test = await makeTest(testConfig);
 

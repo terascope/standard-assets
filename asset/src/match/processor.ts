@@ -1,5 +1,6 @@
+import { DataEntity } from '@terascope/core-utils';
 import {
-    Context, BatchProcessor, DataEntity
+    Context, BatchProcessor
 } from '@terascope/job-components';
 import { ExecutionConfig } from '@terascope/types';
 import { Matcher } from 'ts-transforms';

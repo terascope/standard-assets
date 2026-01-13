@@ -1,7 +1,8 @@
-import { ConvictSchema, isString } from '@terascope/job-components';
+import { isString } from '@terascope/core-utils';
+import { BaseSchema } from '@terascope/job-components';
 import { CountUniqueConfig } from './interfaces.js';
 
-export default class Schema extends ConvictSchema<CountUniqueConfig> {
+export default class Schema extends BaseSchema<CountUniqueConfig> {
     build() {
         return {
             preserve_fields: {
@@ -16,7 +17,7 @@ export default class Schema extends ConvictSchema<CountUniqueConfig> {
             field: {
                 doc: 'Field that is counted, defaults to metadata _key',
                 default: '_key',
-                format: 'required_String'
+                format: 'required_string'
             },
             is_meta_field: {
                 doc: 'determines if the field to count on lives as a DataEntity meta field or on the record itself',

@@ -1,4 +1,5 @@
-import { MapProcessor, DataEntity, OpConfig } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
+import { MapProcessor, OpConfig } from '@terascope/job-components';
 import DataWindow from '../__lib/data-window.js';
 
 export default class RemoveKey extends MapProcessor<OpConfig> {

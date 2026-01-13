@@ -39,7 +39,7 @@ Example of a job using the `routed_sender` processor that only defines the conne
         },
         {
             "_op": "routed_sender",
-            "api_name": "elasticsearch_sender_api",
+            "_api_name": "elasticsearch_sender_api",
             "routing": {
                 "a": "someConnection"
             },
@@ -103,7 +103,7 @@ Example of a job that that defines the `a` `standard:route` and has a catch all 
         },
         {
             "_op": "routed_sender",
-            "api_name": "elasticsearch_sender_api",
+            "_api_name": "elasticsearch_sender_api",
             "routing": {
                 "a": "someConnection",
                 "*": "catchAllConnection"
@@ -167,7 +167,7 @@ Example of a job dynamically routing data. Since this example is paired with the
         },
         {
             "_op": "routed_sender",
-            "api_name": "elasticsearch_sender_api",
+            "_api_name": "elasticsearch_sender_api",
             "routing": {
                 "**": "dynamicRouteConnection"
             }
@@ -274,5 +274,5 @@ export default class FileSender implements RouteSenderAPI {
 | _op | Name of operation, it must reflect the exact name of the file | String | required |
 | size | the maximum number of docs it will take at a time, anything past it will be split up and sent according to the `concurrency` setting | Number | optional, defaults to 10000 |
 | concurrency | The number of inflight calls to the api.send allowed | Number | optional, defaults to 10 |
-| api_name | The name of the api that will be used | String | required |
+| _api_name | The name of the api that will be used | String | required |
 | routing | Mapping of `standard:route` metadata to connection names. Routes data whose `standard:route` metadata value matches the object key to the connection specified. The key name can be a comma separated list of prefixes that will map to the same connection | Object | required |

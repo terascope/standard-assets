@@ -1,7 +1,8 @@
-import { ConvictSchema, isString } from '@terascope/job-components';
+import { isString } from '@terascope/core-utils';
+import { BaseSchema } from '@terascope/job-components';
 import { FilterByRequiredFieldConfig } from './interfaces.js';
 
-export default class Schema extends ConvictSchema<FilterByRequiredFieldConfig> {
+export default class Schema extends BaseSchema<FilterByRequiredFieldConfig> {
     build() {
         return {
             required_fields: {

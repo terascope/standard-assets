@@ -1,13 +1,13 @@
-import { ConvictSchema } from '@terascope/job-components';
+import { BaseSchema } from '@terascope/job-components';
 import { DateRouterConfig } from '@terascope/standard-asset-apis';
 
-export default class Schema extends ConvictSchema<DateRouterConfig> {
+export default class Schema extends BaseSchema<DateRouterConfig> {
     build(): Record<string, any> {
         return {
             field: {
                 doc: 'Name of new field',
                 default: null,
-                format: 'required_String'
+                format: 'required_string'
             },
             value: {
                 doc: 'Value of new field',

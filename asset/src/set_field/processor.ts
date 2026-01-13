@@ -1,9 +1,5 @@
-import {
-    MapProcessor,
-    OpConfig,
-    DataEntity,
-} from '@terascope/job-components';
-import { set, has } from '@terascope/utils';
+import { MapProcessor, OpConfig } from '@terascope/job-components';
+import { DataEntity, set, has } from '@terascope/core-utils';
 import DataWindow from '../__lib/data-window.js';
 
 export default class SetField extends MapProcessor<OpConfig> {

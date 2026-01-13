@@ -1,13 +1,14 @@
-import { ConvictSchema, isPlainObject, isString } from '@terascope/job-components';
+import { isPlainObject, isString } from '@terascope/core-utils';
+import { BaseSchema } from '@terascope/job-components';
 import * as I from './interfaces.js';
 
-export default class Schema extends ConvictSchema<I.DedupeConfig> {
+export default class Schema extends BaseSchema<I.DedupeConfig> {
     build(): Record<string, any> {
         return {
             field: {
                 doc: 'field to dedupe records on',
                 default: undefined,
-                format: 'optional_String',
+                format: 'optional_string',
             },
             adjust_time: {
                 doc: 'Requires and array of objects with field and preference properties.  Preference should be oldest or newest.',

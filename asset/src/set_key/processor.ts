@@ -1,4 +1,5 @@
-import { MapProcessor, DataEntity } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
+import { MapProcessor } from '@terascope/job-components';
 import DataWindow from '../__lib/data-window.js';
 import { SetKeyConfig } from './interfaces.js';
 

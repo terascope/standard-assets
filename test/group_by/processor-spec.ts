@@ -1,5 +1,6 @@
 import 'jest-extended';
-import { DataEntity, AnyObject } from '@terascope/job-components';
+import { DataEntity } from '@terascope/core-utils';
+import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
 import DataWindow from '../../asset/src/__lib/data-window.js';
 
@@ -27,7 +28,7 @@ const testData = [
 describe('group_by', () => {
     let harness: WorkerTestHarness;
 
-    async function makeTest(config: AnyObject = {}) {
+    async function makeTest(config: Partial<OpConfig> = {}) {
         const _op = {
             _op: 'group_by',
             field: 'id'

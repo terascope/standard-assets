@@ -1,14 +1,14 @@
 import 'jest-extended';
+import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness } from 'teraslice-test-harness';
-import { AnyObject } from '@terascope/job-components';
 import { PhaseConfig } from '../../asset/src/transform/interfaces.js';
 
 describe('post_process Schema', () => {
     let harness: WorkerTestHarness;
     const name = 'post_process';
 
-    async function makeSchema(config: AnyObject = {}): Promise<PhaseConfig> {
-        const opConfig = Object.assign({}, { _op: name }, config);
+    async function makeSchema(config: Partial<OpConfig> = {}): Promise<PhaseConfig> {
+        const opConfig: OpConfig = Object.assign({}, { _op: name }, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();
