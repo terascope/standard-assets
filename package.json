@@ -1,7 +1,7 @@
 {
     "name": "standard-assets-bundle",
     "displayName": "Standard Assets Bundle",
-    "version": "2.0.0-rc.1",
+    "version": "2.0.0",
     "private": true,
     "description": "Teraslice standard processor asset bundle",
     "homepage": "https://github.com/terascope/standard-assets",
@@ -37,7 +37,7 @@
         "@terascope/eslint-config": "~1.1.26",
         "@terascope/job-components": "~2.0.0",
         "@terascope/scripts": "~2.0.0",
-        "@terascope/standard-asset-apis": "~2.0.0-rc.1",
+        "@terascope/standard-asset-apis": "~2.0.0",
         "@types/fs-extra": "~11.0.4",
         "@types/jest": "~30.0.0",
         "@types/json2csv": "~5.0.7",
