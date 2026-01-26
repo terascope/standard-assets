@@ -22,13 +22,13 @@
     },
     "dependencies": {
         "@faker-js/faker": "~10.2.0",
-        "@terascope/core-utils": "~2.0.0",
-        "@terascope/data-mate": "~2.0.0",
-        "@terascope/geo-utils": "~2.0.0",
-        "@terascope/job-components": "~2.0.0",
+        "@terascope/core-utils": "~2.0.3",
+        "@terascope/data-mate": "~2.0.3",
+        "@terascope/geo-utils": "~2.0.3",
+        "@terascope/job-components": "~2.0.3",
         "@terascope/standard-asset-apis": "~2.0.0",
-        "@terascope/teraslice-state-storage": "~2.0.0",
-        "@terascope/types": "~2.0.0",
+        "@terascope/teraslice-state-storage": "~2.0.3",
+        "@terascope/types": "~2.0.1",
         "@types/chance": "~1.1.7",
         "chance": "~1.1.13",
         "mocker-data-generator": "~3.0.3",
@@ -37,7 +37,7 @@
         "randexp": "~0.5.3",
         "short-unique-id": "~5.3.2",
         "timsort": "~0.3.0",
-        "ts-transforms": "~2.0.0",
+        "ts-transforms": "~2.0.3",
         "tslib": "~2.8.1"
     },
     "devDependencies": {
