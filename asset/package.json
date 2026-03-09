@@ -10,15 +10,10 @@
     },
     "license": "MIT",
     "type": "module",
-    "workspaces": {
-        "nohoist": [
-            "**"
-        ]
-    },
     "scripts": {
         "build": "tsc --project tsconfig.json",
-        "build:watch": "yarn build --watch",
-        "test": "yarn --cwd ../ test"
+        "build:watch": "tsc --project tsconfig.json --watch",
+        "test": "pnpm --dir ../ test"
     },
     "dependencies": {
         "@faker-js/faker": "~10.3.0",
@@ -45,7 +40,7 @@
     },
     "engines": {
         "node": ">=22.21.1",
-        "yarn": ">=1.22.19"
+        "pnpm": ">=10.25.0"
     },
     "terascope": {}
 }

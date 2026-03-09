@@ -9,12 +9,8 @@
         "url": "https://github.com/terascope/standard-assets/issues"
     },
     "type": "module",
-    "workspaces": [
-        "asset",
-        "packages/*"
-    ],
     "scripts": {
-        "asset:build": "yarn && yarn run build",
+        "asset:build": "pnpm install && pnpm run build",
         "asset:post-build": "./scripts/copy-links.sh",
         "build": "tsc --build",
         "build:watch": "tsc --build --watch",
@@ -27,7 +23,7 @@
         "lint": "eslint",
         "lint:fix": "yarn lint --fix",
         "publish:changed": "./scripts/publish.sh",
-        "setup": "yarn && yarn build --force",
+        "setup": "pnpm install && pnpm build --force",
         "test": "ts-scripts test asset --",
         "test:all": "ts-scripts test",
         "test:debug": "ts-scripts test --debug asset --",
@@ -56,10 +52,10 @@
         "tslib": "~2.8.1",
         "typescript": "~5.9.3"
     },
-    "packageManager": "yarn@4.6.0",
+    "packageManager": "pnpm@10.25.0",
     "engines": {
         "node": ">=22.21.1",
-        "yarn": ">=1.22.19"
+        "pnpm": ">=10.25.0"
     },
     "documentation": "https://terascope.github.io/standard-assets",
     "terascope": {
