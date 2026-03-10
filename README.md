@@ -73,9 +73,15 @@ You can find a list of releases, changes, and pre-built asset bundles [here](htt
 
 This asset bundle requires a running Teraslice cluster. [Documentation](https://terascope.github.io/teraslice/docs/overview/).
 
+This project uses [pnpm](https://pnpm.io/) as its package manager. pnpm comes bundled with Node.js via [Corepack](https://nodejs.org/api/corepack.html), so no separate installation is needed. Just enable it:
+
+```bash
+corepack enable
+```
+
 ```bash
 # Step 1: make sure you have teraslice-cli installed
-yarn global add teraslice-cli
+pnpm add -g teraslice-cli
 
 # Step 2:
 # teraslice-cli assets deploy <cluster_alias> <asset-name[@version]>
@@ -97,7 +103,7 @@ teraslice-cli assets deploy localhost --build
 Run the standard-assets tests
 
 ```bash
-yarn test
+pnpm test
 ```
 
 ### Build
@@ -107,7 +113,7 @@ Build a compiled asset bundle to deploy to a teraslice cluster.
 **Install Teraslice CLI:**
 
 ```bash
-yarn global add teraslice-cli
+pnpm add -g teraslice-cli
 ```
 
 ```bash
