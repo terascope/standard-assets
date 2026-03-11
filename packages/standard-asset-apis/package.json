@@ -1,7 +1,7 @@
 {
     "name": "@terascope/standard-asset-apis",
     "displayName": "Standard Asset Apis",
-    "version": "2.0.3",
+    "version": "2.0.4",
     "description": "A common set of tools for data processing",
     "homepage": "https://github.com/terascope/standard-assets",
     "repository": "git@github.com:terascope/standard-assets.git",
@@ -28,7 +28,7 @@
         "@terascope/scripts": "~2.3.2",
         "@types/jest": "~30.0.0",
         "@types/node": "~24.10.15",
-        "jest": "~30.2.0",
+        "jest": "~30.3.0",
         "jest-extended": "~7.0.0",
         "jest-fixtures": "~0.6.0",
         "ts-jest": "~29.4.6",
