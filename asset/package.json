@@ -18,7 +18,7 @@
     "dependencies": {
         "@faker-js/faker": "~10.3.0",
         "@terascope/core-utils": "~2.3.1",
-        "@terascope/data-mate": "~2.3.1",
+        "@terascope/data-mate": "~2.3.2",
         "@terascope/geo-utils": "~2.3.1",
         "@terascope/job-components": "~2.3.1",
         "@terascope/standard-asset-apis": "workspace:~",
@@ -33,7 +33,7 @@
         "randexp": "~0.5.3",
         "short-unique-id": "~5.3.2",
         "timsort": "~0.3.0",
-        "ts-transforms": "~2.3.1",
+        "ts-transforms": "~2.3.2",
         "tslib": "~2.8.1"
     },
     "devDependencies": {
