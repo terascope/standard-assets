@@ -27,6 +27,7 @@
         "test": "ts-scripts test asset --",
         "test:all": "ts-scripts test",
         "test:debug": "ts-scripts test --debug asset --",
+        "test:encrypted": "echo 'No encrypted tests for standard assets'",
         "test:watch": "ts-scripts test --watch asset --"
     },
     "devDependencies": {
