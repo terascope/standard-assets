@@ -6,6 +6,7 @@ import { ElasticsearchTestHelpers, Client } from '@terascope/opensearch-client';
 import TerasliceClient, { Job } from 'teraslice-client-js';
 import { DownloadExternalAsset } from 'teraslice-test-harness';
 import { ASSET_ZIP_PATH, TERASLICE_HOST } from './config';
+import { pDelay } from '@terascope/core-utils';
 
 describe('Standard Assets e2e', () => {
     jest.setTimeout(60 * 1000);
@@ -54,7 +55,7 @@ describe('Standard Assets e2e', () => {
                 operations: [
                     {
                         _op: 'data_generator',
-                        size: 400,
+                        size: 800,
                     },
                     {
                         _op: 'add_key',
@@ -96,7 +97,7 @@ describe('Standard Assets e2e', () => {
             const ex = await job.execution();
 
             expect(ex._slicer_stats).toBeDefined();
-            expect(ex._slicer_stats.processed).toBe(2);
+            expect(ex._slicer_stats.processed).toBe(4);
             expect(ex._slicer_stats.failed).toBe(0);
         });
 
@@ -106,8 +107,17 @@ describe('Standard Assets e2e', () => {
             expect(indices.length).toBe(38);
         });
 
-        it('should have added _key field dropped userAgent field', async () => {
-            const record = await searchClient.search(({ index: 'dynamic_routing-a', size: 1 }));
+        it('should have added _key field and dropped userAgent field', async () => {
+            let record;
+            let attempts = 0;
+
+            // retry search until index is populated or 5 attempts reached
+            do {
+                attempts++;
+                record = await searchClient.search(({ index: 'dynamic_routing-a', size: 1 }));
+                await pDelay(500);
+            } while (record.hits.hits.length < 1 && attempts < 5);
+
             expect(record.hits.hits[0]._source).toBeDefined();
             expect(record.hits.hits[0]._source).toContainKey('_key');
             expect(record.hits.hits[0]._source).not.toContainKey('userAgent');
