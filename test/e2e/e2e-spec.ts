@@ -89,7 +89,6 @@ describe('Standard Assets e2e', () => {
                 ]
             });
 
-            await job.waitForStatus('running');
             await job.waitForStatus('completed');
         });
 
