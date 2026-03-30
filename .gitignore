@@ -40,3 +40,6 @@ website/node_modules
 website/i18n/*
 website/.yarn/install-state.gz
 docs/packages/*/api
+
+# e2e external asset cache
+test/.cache
