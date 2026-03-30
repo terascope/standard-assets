@@ -92,16 +92,6 @@ describe('Standard Assets e2e', () => {
             await job.waitForStatus('completed');
         });
 
-        // afterAll(async () => {
-        //     if (await job.status() !== 'stopped') {
-        //         try {
-        //             await job.stop();
-        //         } catch (_err) {
-        //             // job may already be stopped
-        //         }
-        //     }
-        // });
-
         it('should be able to successfully process slices', async () => {
             const ex = await job.execution();
 
