@@ -101,9 +101,15 @@ importers:
       '@terascope/data-mate':
         specifier: ~2.4.0
         version: 2.4.0
+      '@terascope/data-types':
+        specifier: ~2.4.0
+        version: 2.4.0
       '@terascope/geo-utils':
         specifier: ~2.3.2
         version: 2.3.2
+      '@terascope/ip-utils':
+        specifier: ^2.5.0
+        version: 2.5.0
       '@terascope/job-components':
         specifier: ~2.3.2
         version: 2.3.2
@@ -116,6 +122,9 @@ importers:
       '@terascope/types':
         specifier: ~2.3.1
         version: 2.3.1
+      '@turf/random':
+        specifier: ^7.3.4
+        version: 7.3.4
       '@types/chance':
         specifier: ~1.1.7
         version: 1.1.7
@@ -697,16 +706,20 @@ packages:
     resolution: {integrity: sha512-aYhGu9byYnyfvhhnYX7TmoDpZWLe0Ry6yDA7ppRpgeByhJggBc55gEuevUT74WpPsC2E4cR6UEK+ajUoaGZ6qg==}
     engines: {node: '>=22.0.0', pnpm: '>=10.25.0'}
 
+  '@terascope/core-utils@2.4.0':
+    resolution: {integrity: sha512-GxaQ8FOz7YrDI91CTDeLHdotromZsqrqOv34/uXOEE9wZB9TsVudGlDuqkf0aW2/hUQUjU68GBmrD4pW0rX9pg==}
+    engines: {node: '>=22.0.0', pnpm: '>=10.25.0'}
+
   '@terascope/data-mate@2.4.0':
     resolution: {integrity: sha512-Y5rPTGQyP0tEl2GhSLq7fCYO65WIiHSaduOb4XmDzWDBu67hFrzbMsJZJpfj8EdyQ/5FI7Ax6udmfiLJdNH4CA==}
     engines: {node: '>=22.0.0', pnpm: '>=10.25.0'}
 
-  '@terascope/data-types@2.3.2':
-    resolution: {integrity: sha512-+R1zglK+8xdXMQ25WLGN+jVQ+6reIRolRP3GglW1+QdKkNmfzxq7faN+XmuRXKAIO8Cx+flSYP5GVPOAjW9dQQ==}
-    engines: {node: '>=22.0.0', pnpm: '>=10.25.0'}
-
   '@terascope/data-types@2.3.3':
     resolution: {integrity: sha512-ASJSch86Y869TRMM5Lz4wssWq9YozJEa+1G3Ru82JwMWnUp280LIp69nSocnnbr/IP+/06lv1W3ewSHnyfG21A==}
+    engines: {node: '>=22.0.0', pnpm: '>=10.25.0'}
+
+  '@terascope/data-types@2.4.0':
+    resolution: {integrity: sha512-4belsFoQnaiHkonHbjcpio5TQcJdCVU4zwZ03xbi1i6JPSvZRzaaXXI/IVeYMn4bFrTfDtoDtsTXP7x2SgB+gw==}
     engines: {node: '>=22.0.0', pnpm: '>=10.25.0'}
 
   '@terascope/elasticsearch-api@5.3.2':
@@ -728,6 +741,10 @@ packages:
 
   '@terascope/ip-utils@2.4.0':
     resolution: {integrity: sha512-nDww3E1ZAXUxKKOi8LCS//2sibLkkYZEub6W6KCKlI/4bGk5zBPM+XGYFfIUxbAQ4NjUDAQ8XR7z147/ABsXKg==}
+    engines: {node: '>=22.0.0', pnpm: '>=10.25.0'}
+
+  '@terascope/ip-utils@2.5.0':
+    resolution: {integrity: sha512-aezU19lJkNC34+6h0mHrQINk6wS71kkmMp2iypLVuGIiQw6I2ONyKzT9BHNQyVLPnu75TAWpKSDw3NimRx7Y6w==}
     engines: {node: '>=22.0.0', pnpm: '>=10.25.0'}
 
   '@terascope/job-components@2.3.2':
@@ -758,6 +775,10 @@ packages:
 
   '@terascope/types@2.3.2':
     resolution: {integrity: sha512-ggUR/sMC8I3fzasv9VmA+MiGmaUPmeYHhwrZ4vCvNSlxaoy/rZm2R95B4X8nnLKqKZkQq9OQRVrOb05/UKbKjw==}
+    engines: {node: '>=22.0.0', pnpm: '>=10.25.0'}
+
+  '@terascope/types@2.4.0':
+    resolution: {integrity: sha512-DiXdoRKMI+xcexUDYoPfAjbJ5LRiU4wn8NGjb+EuNYClKVxE5HqdAo4SyRPQGBhrUZMDoSy/Xj+k3kGVQNCySQ==}
     engines: {node: '>=22.0.0', pnpm: '>=10.25.0'}
 
   '@turf/bbox-polygon@7.3.4':
@@ -831,6 +852,9 @@ packages:
 
   '@turf/polygon-to-line@7.3.4':
     resolution: {integrity: sha512-xhmOZ5rHZAKLUDLeYKWMsX84ip8CCGOcGLBHtPPYOjdIDHddMV6Sxt5kVgkmlZpK6NEWEmOD6lYR4obxHcHlGA==}
+
+  '@turf/random@7.3.4':
+    resolution: {integrity: sha512-CXMS5XDoI5x0zc1aCYbn3t603k8hjaFHNsSOvGBW20z68cwP0UwMQQr0KLqFPqI4J1O7dMX+urn8IHH27RXFYg==}
 
   '@turf/truncate@7.3.4':
     resolution: {integrity: sha512-VPXdae9+RLLM19FMrJgt7QANBikm7DxPbfp/dXgzE4Ca7v+mJ4T1fYc7gCZDaqOrWMccHKbvv4iSuW7YZWdIIA==}
@@ -4697,10 +4721,32 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@terascope/core-utils@2.4.0':
+    dependencies:
+      '@terascope/types': 2.4.0
+      awesome-phonenumber: 7.8.0
+      bunyan: 1.8.15
+      date-fns: 4.1.0
+      date-fns-tz: 3.2.0(date-fns@4.1.0)
+      datemath-parser: 1.0.6
+      debug: 4.4.3
+      is-plain-object: 5.0.0
+      js-string-escape: 1.0.1
+      kind-of: 6.0.3
+      lodash-es: 4.17.23
+      mnemonist: 0.40.3
+      moment: 2.30.1
+      p-map: 7.0.4
+      shallow-clone: 3.0.1
+      validator: 13.15.26
+      zod: 4.1.13
+    transitivePeerDependencies:
+      - supports-color
+
   '@terascope/data-mate@2.4.0':
     dependencies:
       '@terascope/core-utils': 2.3.2
-      '@terascope/data-types': 2.3.2
+      '@terascope/data-types': 2.3.3
       '@terascope/geo-utils': 2.3.2
       '@terascope/ip-utils': 2.4.0
       '@terascope/types': 2.3.1
@@ -4718,18 +4764,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@terascope/data-types@2.3.2':
-    dependencies:
-      '@terascope/core-utils': 2.3.2
-      '@terascope/types': 2.3.1
-      graphql: 16.12.0
-    transitivePeerDependencies:
-      - supports-color
-
   '@terascope/data-types@2.3.3':
     dependencies:
       '@terascope/core-utils': 2.3.3
       '@terascope/types': 2.3.2
+      graphql: 16.12.0
+    transitivePeerDependencies:
+      - supports-color
+
+  '@terascope/data-types@2.4.0':
+    dependencies:
+      '@terascope/core-utils': 2.4.0
+      '@terascope/types': 2.4.0
       graphql: 16.12.0
     transitivePeerDependencies:
       - supports-color
@@ -4806,6 +4852,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@terascope/ip-utils@2.5.0':
+    dependencies:
+      '@terascope/core-utils': 2.4.0
+      '@terascope/types': 2.4.0
+    transitivePeerDependencies:
+      - supports-color
+
   '@terascope/job-components@2.3.2':
     dependencies:
       '@terascope/core-utils': 2.3.2
@@ -4878,6 +4931,10 @@ snapshots:
       prom-client: 15.1.3
 
   '@terascope/types@2.3.2':
+    dependencies:
+      prom-client: 15.1.3
+
+  '@terascope/types@2.4.0':
     dependencies:
       prom-client: 15.1.3
 
@@ -5070,6 +5127,12 @@ snapshots:
     dependencies:
       '@turf/helpers': 7.3.4
       '@turf/invariant': 7.3.4
+      '@types/geojson': 7946.0.16
+      tslib: 2.8.1
+
+  '@turf/random@7.3.4':
+    dependencies:
+      '@turf/helpers': 7.3.4
       '@types/geojson': 7946.0.16
       tslib: 2.8.1
 
