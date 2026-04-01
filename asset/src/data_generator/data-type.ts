@@ -36,7 +36,7 @@ export default function defaultDataTypeConfig(
     const config: DataTypeConfig = nativeConfig;
 
     if (opConfig.date_key !== 'created') {
-        config.fields[opConfig.date_key] = config.fields.created;
+        config.fields[opConfig.date_key] = { ...config.fields.created };
         delete config.fields.created;
     }
 
