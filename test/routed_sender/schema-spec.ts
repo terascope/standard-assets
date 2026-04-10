@@ -69,8 +69,16 @@ describe('routed_sender Schema', () => {
             await expect(makeSchema({ routing: 'hello', _api_name })).toReject();
             await expect(makeSchema({ routing: {}, _api_name })).toReject();
             await expect(makeSchema({ routing: { b: undefined }, _api_name })).toReject();
+            await expect(makeSchema({ routing, _api_name, size: 'not-a-number' })).toReject();
+            await expect(makeSchema({ routing, _api_name, size: 50, concurrency: 'not-a-number' })).toReject();
 
             await expect(makeSchema({ _api_name, routing })).toResolve();
+            await expect(makeSchema({
+                _api_name,
+                routing,
+                size: 100000,
+                concurrency: 10
+            })).toResolve();
         });
 
         it('should throw if routing has both * and **', async () => {

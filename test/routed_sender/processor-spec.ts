@@ -24,7 +24,7 @@ describe('Route Sender', () => {
         if (harness) await harness.shutdown();
     });
 
-    async function makeTest(senderConfig = {}) {
+    async function makeTest(senderConfig = {}, apiConfig = {}): Promise<WorkerTestHarness> {
         const opConfig = Object.assign({
             _op: 'routed_sender',
             _api_name: apiName
@@ -34,7 +34,7 @@ describe('Route Sender', () => {
             apis: [
                 {
                     _name: apiName,
-                    some: 'config'
+                    ...apiConfig
                 },
             ],
             operations: [
@@ -197,5 +197,37 @@ describe('Route Sender', () => {
         expect(routes).toContain('A');
 
         expect(keyValues).toEqual(['**']);
+    });
+
+    it('will not override size parameters of apis', async () => {
+        const route = '**';
+        const opSize = 10;
+        const apiSize = 100000;
+
+        const opConfig = {
+            routing: {
+                [route]: 'default',
+            },
+            size: opSize,
+            concurrency: 5
+        };
+        const data = [
+            DataEntity.make({ some: 'data' }, { _key: 'aasdfsd' }),
+            DataEntity.make({ other: 'data' }, { _key: 'ba7sd' }),
+            DataEntity.make({ last: 'data' }, { _key: 'Aasdfsd' }),
+        ];
+
+        const test = await makeTest(opConfig, { size: apiSize });
+        const results = await test.runSlice(data);
+
+        expect(results).toBeArrayOfSize(3);
+
+        // const api = test.getAPI<TestApi>(apiName);
+        // @ts-expect-error
+        const api = test.apis.test_api.opAPI.get(route);
+        const [, apiConfig] = api.configArgs;
+
+        expect(apiConfig.size).toEqual(apiSize);
+        expect(apiConfig._key).toEqual(route);
     });
 });

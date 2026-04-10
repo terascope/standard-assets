@@ -5,7 +5,9 @@ export default class TestApi extends APIFactory<RouteSenderAPI, Record<string, a
     async create(
         name: string, config: Record<string, any>
     ): Promise<{ client: RouteSenderAPI; config: Record<string, any> }> {
-        const client = new TestSender(name, config);
+        const finalConfig = Object.assign({}, this.apiConfig, config);
+
+        const client = new TestSender(name, finalConfig);
         return { client, config };
     }
 
