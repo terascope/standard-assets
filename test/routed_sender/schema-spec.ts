@@ -4,9 +4,6 @@ import { fileURLToPath } from 'node:url';
 import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { RouteSenderConfig } from '../../asset/src/routed_sender/interfaces.js';
-// This is a temp fix to get routed sender imported during testing. May not be a good idea
-await import('../../asset/src/routed_sender/processor.js');
-//
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 

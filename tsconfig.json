@@ -2,11 +2,12 @@
     "compilerOptions": {
         "baseUrl": ".",
         "outDir": "dist",
-        "module": "ESNext",
         "moduleResolution": "node",
-        "isolatedModules": true,
         "target": "ESNext",
+        "module": "ESNext",
         "skipLibCheck": true,
+        "experimentalDecorators": true,
+        "isolatedModules": true,
         "strict": true,
         "noFallthroughCasesInSwitch": true,
         "preserveConstEnums": true,
@@ -17,11 +18,13 @@
         "declaration": true,
         "declarationMap": true,
         "sourceMap": true,
+        "ignoreDeprecations": "5.0",
         "disableReferencedProjectLoad": true,
         "typeRoots": [
             "./node_modules/@types"
         ]
     },
+    "include": ["test"],
     "references": [
         {
             "path": "packages/standard-asset-apis"
