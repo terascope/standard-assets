@@ -18,29 +18,34 @@ export default {
         '!<rootDir>/**/coverage/**',
         '!<rootDir>/**/*.d.ts',
         '!<rootDir>/**/dist/**',
-        '!<rootDir>/**/coverage/**'
+        '!<rootDir>/**/coverage/**',
     ],
     testMatch: [
         '<rootDir>/test/**/*-spec.{ts,js}',
-        '<rootDir>/test/*-spec.{ts,js}'
+        '<rootDir>/test/*-spec.{ts,js}',
     ],
     moduleNameMapper: {
-        '^@terascope/standard-asset-apis$': path.join(dirname, '/packages/standard-asset-apis/src/index.ts'),
+        '^@terascope/standard-asset-apis$': path.resolve(
+            dirname,
+            'packages/standard-asset-apis/dist/src/index.js'
+        ),
         '^(\\.{1,2}/.*)\\.js$': '$1',
     },
     preset: 'ts-jest',
     extensionsToTreatAsEsm: ['.ts'],
     globals: {
         ignoreDirectories: ['dist'],
-        availableExtensions: ['.js', '.ts', '.mjs']
+        availableExtensions: ['.js', '.ts', '.mjs'],
     },
     transform: {
-        '\\.[jt]sx?$': ['ts-jest',
+        '\\.[jt]sx?$': [
+            'ts-jest',
             {
-                useESM: true
-            }]
+                tsconfig: './tsconfig.json',
+                diagnostics: true,
+                pretty: true,
+                useESM: true,
+            },
+        ],
     },
-    setupFiles: [
-        '<rootDir>/test/test.setup.js'
-    ]
 };

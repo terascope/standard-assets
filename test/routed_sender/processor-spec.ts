@@ -5,10 +5,7 @@ import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import TestApi from '../fixtures/someAssetId/test_api/api.js';
-import RoutedSender from '../../asset/src/routed_sender/processor.js';
-// This is a temp fix to get routed sender imported during testing. May not be a good idea
-await import('../../asset/src/routed_sender/processor.js');
-//
+import type RoutedSender from '../../asset/src/routed_sender/processor.js';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -24,17 +21,23 @@ describe('Route Sender', () => {
         if (harness) await harness.shutdown();
     });
 
-    async function makeTest(senderConfig = {}) {
-        const opConfig = Object.assign({
-            _op: 'routed_sender',
-            _api_name: apiName
-        }, senderConfig);
+    async function makeTest(
+        senderConfig = {},
+        apiConfig = {}
+    ): Promise<WorkerTestHarness> {
+        const opConfig = Object.assign(
+            {
+                _op: 'routed_sender',
+                _api_name: apiName,
+            },
+            senderConfig
+        );
         const job = newTestJobConfig({
             max_retries: 0,
             apis: [
                 {
                     _name: apiName,
-                    some: 'config'
+                    ...apiConfig,
                 },
             ],
             operations: [
@@ -45,9 +48,9 @@ describe('Route Sender', () => {
                 {
                     _op: 'key_router',
                     use: 1,
-                    from: 'beginning'
+                    from: 'beginning',
                 },
-                opConfig
+                opConfig,
             ],
         });
 
@@ -87,7 +90,9 @@ describe('Route Sender', () => {
         return results;
     }
 
-    function getRoutingExecution(test: WorkerTestHarness): Map<string, RouteSenderAPI> {
+    function getRoutingExecution(
+        test: WorkerTestHarness
+    ): Map<string, RouteSenderAPI> {
         const processor = test.getOperation<RoutedSender>('routed_sender');
         return processor.routedSender.senders;
     }
@@ -96,18 +101,20 @@ describe('Route Sender', () => {
         const opConfig = {
             routing: {
                 '*': 'default',
-                '**': 'default'
-            }
+                '**': 'default',
+            },
         };
 
-        await expect(makeTest(opConfig)).rejects.toThrow('routing cannot specify "*" and "**"');
+        await expect(makeTest(opConfig)).rejects.toThrow(
+            'routing cannot specify "*" and "**"'
+        );
     });
 
     it('will not throw if routing is misconfigured part 2', async () => {
         const opConfig = {
             routing: {
-                '**': 'default'
-            }
+                '**': 'default',
+            },
         };
 
         const test = await makeTest(opConfig);
@@ -116,11 +123,11 @@ describe('Route Sender', () => {
 
     it('can initialize and send to a single route', async () => {
         const opConfig = {
-            routing: { '*': 'default' }
+            routing: { '*': 'default' },
         };
         const data = [
             DataEntity.make({ some: 'data' }, { _key: 'aasdfsd' }),
-            DataEntity.make({ other: 'data' }, { _key: 'ba7sd' })
+            DataEntity.make({ other: 'data' }, { _key: 'ba7sd' }),
         ];
         const test = await makeTest(opConfig);
         const results = await test.runSlice(data);
@@ -136,8 +143,8 @@ describe('Route Sender', () => {
         const opConfig = {
             routing: {
                 '*': 'default',
-                'a,A': 'other'
-            }
+                'a,A': 'other',
+            },
         };
         const data = [
             DataEntity.make({ some: 'data' }, { _key: 'aasdfsd' }),
@@ -172,7 +179,7 @@ describe('Route Sender', () => {
         const opConfig = {
             routing: {
                 '**': 'default',
-            }
+            },
         };
         const data = [
             DataEntity.make({ some: 'data' }, { _key: 'aasdfsd' }),
@@ -197,5 +204,37 @@ describe('Route Sender', () => {
         expect(routes).toContain('A');
 
         expect(keyValues).toEqual(['**']);
+    });
+
+    it('will not override size parameters of apis', async () => {
+        const route = '**';
+        const opSize = 10;
+        const apiSize = 100000;
+
+        const opConfig = {
+            routing: {
+                [route]: 'default',
+            },
+            size: opSize,
+            concurrency: 5,
+        };
+        const data = [
+            DataEntity.make({ some: 'data' }, { _key: 'aasdfsd' }),
+            DataEntity.make({ other: 'data' }, { _key: 'ba7sd' }),
+            DataEntity.make({ last: 'data' }, { _key: 'Aasdfsd' }),
+        ];
+
+        const test = await makeTest(opConfig, { size: apiSize });
+        const results = await test.runSlice(data);
+
+        expect(results).toBeArrayOfSize(3);
+
+        // const api = test.getAPI<TestApi>(apiName);
+        // @ts-expect-error
+        const api = test.apis.test_api.opAPI.get(route);
+        const [, apiConfig] = api.configArgs;
+
+        expect(apiConfig.size).toEqual(apiSize);
+        expect(apiConfig._key).toEqual(route);
     });
 });

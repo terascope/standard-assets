@@ -16,7 +16,6 @@ export default class SampleExactESPercent extends BatchProcessor<SampleExactESPe
     }
 
     async initialize(): Promise<void> {
-        // TODO: This should probably be using this.createAPI()
         this.esClient = (await this.context.apis.foundation.createClient({
             type: 'elasticsearch-next',
             endpoint: this.opConfig.connection
