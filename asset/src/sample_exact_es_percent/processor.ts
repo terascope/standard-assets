@@ -88,7 +88,10 @@ export default class SampleExactESPercent extends BatchProcessor<SampleExactESPe
                     throw new Error(`Percent must be a number between 0 and 100, received ${percent}.`);
                 }
 
-                this.logger.info('New sample percent: ', percent);
+                if (this.percentage !== (percent / 100)) {
+                    this.logger.info('New sample percent: ', percent);
+                }
+
                 return percent / 100;
             });
         } catch (err) {
