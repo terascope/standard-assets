@@ -1,6 +1,7 @@
 import { OpConfig } from '@terascope/job-components';
 import 'jest-extended';
 import { WorkerTestHarness } from 'teraslice-test-harness';
+import { jest } from '@jest/globals';
 
 jest.setTimeout(10_000);
 

@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { DataEntity } from '@terascope/core-utils';
 import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
+import { jest } from '@jest/globals';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
