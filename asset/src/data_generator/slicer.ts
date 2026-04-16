@@ -1,4 +1,4 @@
-import { get, isKey } from '@terascope/core-utils';
+import { get } from '@terascope/core-utils';
 import { Slicer, SlicerRecoveryData } from '@terascope/job-components';
 import { DataGenerator, CounterResults } from './interfaces.js';
 import Counter from './counter.js';
@@ -18,17 +18,25 @@ export default class DataGeneratorSlicer extends Slicer<DataGenerator> {
             alreadyProcessed = get(this.recoveryData[0], 'lastSlice.processed', 0);
         }
 
-        let lastOpSize;
+        let sliceSize: undefined | number = undefined;
         const opListSize = operations.length - 1;
-        const lastOpApiName = operations[opListSize]._api_name;
-        if (lastOpApiName !== undefined) {
-            const lastOpApi = apis.filter((api) => api._name = lastOpApiName)[0];
-            if (isKey(lastOpApi, 'size')) {
-                lastOpSize = lastOpApi.size;
+        const lastOp = operations[opListSize];
+
+        if (lastOp.size) {
+            sliceSize = lastOp.size;
+        } else {
+            const lastOpApiName = lastOp._api_name;
+            if (lastOpApiName) {
+                const lastOpApi = apis.find((api) => api._name = lastOpApiName);
+                sliceSize = lastOpApi?.size;
             }
         }
 
-        const counter = new Counter(isPersistent, size, lastOpSize, alreadyProcessed);
+        if (!sliceSize) {
+            sliceSize = size;
+        }
+
+        const counter = new Counter(isPersistent, size, sliceSize, alreadyProcessed);
         this.countHandle = counter.handle;
     }
 
