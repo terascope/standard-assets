@@ -1,12 +1,21 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { SlicerRecoveryData, LifeCycle } from '@terascope/job-components';
 import { SlicerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+const testAssetPath = path.join(dirname, '../fixtures/someAssetId');
+const opPathName = path.join(dirname, '../../asset/');
+const assetDir = [testAssetPath, opPathName];
 
 interface SlicerTestArgs {
     opConfig: any;
     numOfSlicers?: number;
     recoveryData?: SlicerRecoveryData[];
     lifecycle?: LifeCycle;
-    size: number;
+    size?: number;
+    apis?: any[];
+    apiName?: string;
 }
 
 describe('data_generator slicer', () => {
@@ -22,7 +31,9 @@ describe('data_generator slicer', () => {
         numOfSlicers = 1,
         recoveryData,
         lifecycle = 'once',
-        size
+        size,
+        apis,
+        apiName
     }: SlicerTestArgs) {
         const job = newTestJobConfig({
             analytics: true,
@@ -30,13 +41,11 @@ describe('data_generator slicer', () => {
             lifecycle,
             operations: [
                 opConfig,
-                {
-                    _op: 'noop',
-                    size
-                }
+                { _op: 'noop', size, ...(apiName && { _api_name: apiName }) }
             ],
+            ...(apis && { apis }),
         });
-        harness = new SlicerTestHarness(job, { clients });
+        harness = new SlicerTestHarness(job, { clients, assetDir });
         await harness.initialize(recoveryData);
         return harness;
     }
@@ -145,6 +154,72 @@ describe('data_generator slicer', () => {
         expect(results1).toEqual([{ count: 5000, processed: 5000 }]);
         expect(results2).toEqual([{ count: 5000, processed: 10000 }]);
         expect(results3).toEqual([{ count: 5000, processed: 15000 }]);
+    });
+
+    it('slicer in "persistent" mode will prioritize lastOp.size over lastOpApis.size', async () => {
+        const opConfig = { _op: 'data_generator', size: 550 };
+        const apiName = 'test_api';
+        const apiSize = 10000;
+        const opSize = 5000;
+
+        const config: SlicerTestArgs = {
+            lifecycle: 'persistent',
+            numOfSlicers: 1,
+            opConfig,
+            size: opSize,
+            apis: [{ _name: apiName, size: apiSize }],
+            apiName
+        };
+        const testHarness = await makeSlicerTest(config);
+
+        const results1 = await testHarness.createSlices();
+        const results2 = await testHarness.createSlices();
+        const results3 = await testHarness.createSlices();
+
+        expect(results1).toEqual([{ count: 5000, processed: 5000 }]);
+        expect(results2).toEqual([{ count: 5000, processed: 10000 }]);
+        expect(results3).toEqual([{ count: 5000, processed: 15000 }]);
+    });
+
+    it('slicer in "persistent" mode will prioritize lastOpApis.size over opConfig.size', async () => {
+        const opConfig = { _op: 'data_generator', size: 550 };
+        const apiName = 'test_api';
+        const apiSize = 1000;
+
+        const config: SlicerTestArgs = {
+            lifecycle: 'persistent',
+            numOfSlicers: 1,
+            opConfig,
+            apis: [{ _name: apiName, size: apiSize }],
+            apiName
+        };
+        const testHarness = await makeSlicerTest(config);
+
+        const results1 = await testHarness.createSlices();
+        const results2 = await testHarness.createSlices();
+        const results3 = await testHarness.createSlices();
+
+        expect(results1).toEqual([{ count: 1000, processed: 1000 }]);
+        expect(results2).toEqual([{ count: 1000, processed: 2000 }]);
+        expect(results3).toEqual([{ count: 1000, processed: 3000 }]);
+    });
+
+    it('slicer in "persistent" mode will produce opConfig.size records per slice if lastOp and lastOpApi have no size', async () => {
+        const opConfig = { _op: 'data_generator', size: 550 };
+        const config: SlicerTestArgs = {
+            lifecycle: 'persistent',
+            numOfSlicers: 1,
+            opConfig
+        };
+        const testHarness = await makeSlicerTest(config);
+
+        const results1 = await testHarness.createSlices();
+        const results2 = await testHarness.createSlices();
+        const results3 = await testHarness.createSlices();
+
+        expect(results1).toEqual([{ count: 550, processed: 550 }]);
+        expect(results2).toEqual([{ count: 550, processed: 1100 }]);
+        expect(results3).toEqual([{ count: 550, processed: 1650 }]);
     });
 
     it('data generator will only return one slicer', async () => {
