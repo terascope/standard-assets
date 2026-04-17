@@ -41,7 +41,11 @@ describe('data_generator slicer', () => {
             lifecycle,
             operations: [
                 opConfig,
-                { _op: 'noop', size, ...(apiName && { _api_name: apiName }) }
+                {
+                    _op: 'noop',
+                    size,
+                    ...(apiName && { _api_name: apiName })
+                }
             ],
             ...(apis && { apis }),
         });

@@ -37,8 +37,8 @@ export default class Schema extends BaseSchema<DataGenerator> {
             },
             size: {
                 doc: 'If job `lifecycle` is set to `once`, then size is the total number of generated documents. '
-                    + 'If job `lifecycle` is set to `persistent`, if the sender operation/api does not specify a size '
-                    + 'then the generator will constantly stream data in chunks equal to the size.',
+                    + 'If job `lifecycle` is set to `persistent` and if the sender operation and api do not specify '
+                    + 'a size, then the generator will constantly stream data in chunks equal to the size.',
                 default: 5000,
                 format(val: any) {
                     if (isNaN(val)) {
