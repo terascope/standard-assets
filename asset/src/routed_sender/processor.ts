@@ -62,7 +62,6 @@ export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderCon
             client = await this.api.create(
                 route,
                 {
-                    ...this.opConfig,
                     _key: route,
                     _connection,
                     tryFn: this.tryFn,

@@ -4,9 +4,6 @@ import { fileURLToPath } from 'node:url';
 import { OpConfig } from '@terascope/job-components';
 import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { RouteSenderConfig } from '../../asset/src/routed_sender/interfaces.js';
-// This is a temp fix to get routed sender imported during testing. May not be a good idea
-await import('../../asset/src/routed_sender/processor.js');
-//
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -69,8 +66,16 @@ describe('routed_sender Schema', () => {
             await expect(makeSchema({ routing: 'hello', _api_name })).toReject();
             await expect(makeSchema({ routing: {}, _api_name })).toReject();
             await expect(makeSchema({ routing: { b: undefined }, _api_name })).toReject();
+            await expect(makeSchema({ routing, _api_name, size: 'not-a-number' })).toReject();
+            await expect(makeSchema({ routing, _api_name, size: 50, concurrency: 'not-a-number' })).toReject();
 
             await expect(makeSchema({ _api_name, routing })).toResolve();
+            await expect(makeSchema({
+                _api_name,
+                routing,
+                size: 100000,
+                concurrency: 10
+            })).toResolve();
         });
 
         it('should throw if routing has both * and **', async () => {

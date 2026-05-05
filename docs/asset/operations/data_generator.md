@@ -32,11 +32,11 @@ Example of jobs using the `data_generator` processor
 Output of the example job
 
 ```javascript
-const slice = { count: 1000 }
+const slice = { count: 10000 }
 
 const results = await fetcher.run(slice);
 
-results.length ==== 1000;
+results.length ==== 10000;
 
 results[0] === {
     "ip": "1.12.146.136",
@@ -114,7 +114,7 @@ results[0] === {
 
 ### Stress Test and persistent mode
 
-Example of a job using the `data_generator` to generate a persistent slice of 10,000 records for all 50 workers until the job is shutdown. This is useful for stress testing systems and down stream processes.
+Example of a job using the `data_generator` to generate a persistent slice of 10,000 records for all 50 workers until the job is shutdown. This is useful for stress testing systems and down stream processes. **NOTE:** If the job has a sender operation or API configuration with a size field it will override the `size` field on the `data_generator`.
 
 ```json
 {
@@ -141,11 +141,11 @@ Example of a job using the `data_generator` to generate a persistent slice of 10
 Example output from the above job:
 
 ```javascript
-const slice = { count: 1000 }
+const slice = { count: 10000 }
 
 const results = await fetcher.run(slice);
 
-results.length ==== 1000;
+results.length ==== 10000;
 
 results[0] === {
     "ip": "1.12.146.136",
@@ -161,7 +161,7 @@ results[0] === {
 
 ### Generate controlled stream of data over a period of time
 
-Example of a job using the `data_generator` processor to generate approximately 10,000 records per minute or 60,000 records per hour. Results could very as this is a loose approximation.
+Example of a job using the `data_generator` processor to generate approximately 10,000 records per minute or 60,000 records per hour. Results could vary as this is a loose approximation. **NOTE:** If  the job has a sender operation or API configuration with a size field it will override the `size` field on the `data_generator`.
 
 ```json
 {
@@ -189,7 +189,7 @@ Example of a job using the `data_generator` processor to generate approximately 
 | Configuration | Description | Type | Notes |
 | ------------- | ------------| -----| ------|
 | _op           | Name of operation, it must reflect the exact name of the file | String  | required |
-| size          | If job `lifecycle` is set to `once`, then size is the total number of generated documents. If job `lifecycle` is set to `persistent`, then the generator will constantly stream data in chunks equal to the size | Number | required |
+| size          | If job `lifecycle` is set to `once`, then size is the total number of generated documents. If job `lifecycle` is set to `persistent` and if the sender operation and api do not specify a size, then the generator will constantly stream data in chunks equal to the size. | Number | required |
 | json_schema   | File path to custom schema | String  | optional, the schema must be exported Node style `module.exports = schema` |
 | format        | Format of date in the timestamp field, options are `dateNow`, `utcDate`, `utcBetween`, `isoBetween`.  See advanced configuration section for more details | String  | optional, defaults to `dateNow` |
 | start         | Start of date range | String  | optional, only used with format `isoBetween` or `utcBetween`, defaults to Thu Jan 01 1970 00:00:00 GMT-0700 (MST) |

@@ -1,7 +1,7 @@
 {
     "name": "standard",
     "displayName": "Asset",
-    "version": "2.0.5",
+    "version": "2.1.2",
     "private": true,
     "description": "Teraslice standard processor asset bundle",
     "repository": {
@@ -16,18 +16,18 @@
         "test": "pnpm --dir ../ test"
     },
     "dependencies": {
-        "@faker-js/faker": "~10.3.0",
-        "@terascope/core-utils": "~2.3.2",
-        "@terascope/data-mate": "~2.4.0",
+        "@faker-js/faker": "~10.4.0",
+        "@terascope/core-utils": "~2.6.0",
+        "@terascope/data-mate": "~2.7.0",
         "@terascope/data-types": "~2.4.0",
-        "@terascope/geo-utils": "~2.3.2",
+        "@terascope/geo-utils": "~2.6.0",
         "@terascope/ip-utils": "^2.5.0",
-        "@terascope/job-components": "~2.3.2",
+        "@terascope/job-components": "~2.8.0",
         "@terascope/standard-asset-apis": "workspace:~",
-        "@terascope/teraslice-state-storage": "~2.3.2",
-        "@terascope/types": "~2.3.1",
+        "@terascope/teraslice-state-storage": "~2.6.0",
+        "@terascope/types": "~2.6.0",
         "@turf/random": "^7.3.4",
-        "@types/chance": "~1.1.7",
+        "@types/chance": "~1.1.8",
         "chance": "~1.1.13",
         "mocker-data-generator": "~3.0.3",
         "moment": "^2.30.1",
@@ -36,7 +36,7 @@
         "randexp": "~0.5.3",
         "short-unique-id": "~5.3.2",
         "timsort": "~0.3.0",
-        "ts-transforms": "~2.4.0",
+        "ts-transforms": "~2.7.0",
         "tslib": "~2.8.1"
     },
     "devDependencies": {

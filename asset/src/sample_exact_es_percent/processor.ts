@@ -16,7 +16,6 @@ export default class SampleExactESPercent extends BatchProcessor<SampleExactESPe
     }
 
     async initialize(): Promise<void> {
-        // TODO: This should probably be using this.createAPI()
         this.esClient = (await this.context.apis.foundation.createClient({
             type: 'elasticsearch-next',
             endpoint: this.opConfig.connection
@@ -89,7 +88,10 @@ export default class SampleExactESPercent extends BatchProcessor<SampleExactESPe
                     throw new Error(`Percent must be a number between 0 and 100, received ${percent}.`);
                 }
 
-                this.logger.info('New sample percent: ', percent);
+                if (this.percentage !== (percent / 100)) {
+                    this.logger.info('New sample percent: ', percent);
+                }
+
                 return percent / 100;
             });
         } catch (err) {

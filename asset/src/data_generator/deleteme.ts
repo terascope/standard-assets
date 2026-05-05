@@ -42,7 +42,6 @@ export function makeRandomDataFunctionForField(
             chance.bool(),
             { animal: chance.animal(), name: chance.name() }
         ]),
-        // @ts-expect-error
         [FieldType.Binary]: () => Buffer.from(chance.word()), // base64
         [FieldType.Boolean]: () => chance.bool(),
         [FieldType.Boundary]: () => {
