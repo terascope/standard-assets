@@ -5,6 +5,7 @@ import { formatDateValue, hasOwn, isEmpty } from '@terascope/core-utils';
 import { toCIDR } from '@terascope/ip-utils';
 import { Chance } from 'chance';
 import { randomPoint, randomPolygon } from '@turf/random';
+import { faker, Faker } from '@faker-js/faker';
 
 const chance = new Chance();
 
@@ -18,15 +19,26 @@ const chance = new Chance();
  * // something for temperatures maybe - c or f - looks like just float - maybe add options
  * - - - - - - - - - - - - - - - - - -
  */
+type Options = {
+    // numbers
+    min?: number;
+    max?: number;
+    precision?: number;
+    // words
+    wordType?: Faker['word'];
+    // ip
+    ipv6?: boolean;
 
+};
 /**
  * Returns a function that can be called to create a data type field
  * NOTE: implement "locale" if needed
  */
 export function makeRandomDataFunctionForField(
-    config: DataTypeFieldConfig, field: string
+    config: DataTypeFieldConfig & { options?: Options }, field: string
 ): () => any {
-    const { type, array, dimension: vectorSize = 4 } = config;
+    const { type, array, dimension: vectorSize = 4, options } = config;
+    const opts = options || {};
 
     if (config.locale) {
         console.error(`Locale may not be supported`);
@@ -42,6 +54,7 @@ export function makeRandomDataFunctionForField(
             chance.bool(),
             { animal: chance.animal(), name: chance.name() }
         ]),
+        // @ts-expect-error
         [FieldType.Binary]: () => Buffer.from(chance.word()), // base64
         [FieldType.Boolean]: () => chance.bool(),
         [FieldType.Boundary]: () => {
@@ -51,7 +64,10 @@ export function makeRandomDataFunctionForField(
                 return { lat, lon };
             });
         },
-        [FieldType.Byte]: () => chance.integer({ min: -128, max: 127 }),
+        [FieldType.Byte]: () => chance.integer({
+            min: opts.min ?? -128,
+            max: opts.max ?? 127
+        }),
         [FieldType.Date]: () => { // fix more opts
             const date = chance.birthday();
             if (config.format) {
@@ -60,8 +76,20 @@ export function makeRandomDataFunctionForField(
             return date.toISOString();
         },
         [FieldType.Domain]: () => chance.domain(),
-        [FieldType.Double]: () => chance.floating(), // 64-bit IEEE 754 finite
-        [FieldType.Float]: () => chance.floating(), // 32-bit IEEE 754 finite
+        [FieldType.Double]: () => ( // 64-bit IEEE 754 finite
+            chance.floating({
+                min: opts.min,
+                max: opts.max,
+                fixed: opts.precision
+            })
+        ),
+        [FieldType.Float]: () => ( // 32-bit IEEE 754 finite
+            chance.floating({
+                min: opts.min,
+                max: opts.max,
+                fixed: opts.precision
+            })
+        ),
         [FieldType.Geo]: () => { // fixme if distance maybe
             const [longitude, latitude] = randomPoint().features[0].geometry.coordinates;
             return { latitude, longitude };
@@ -81,7 +109,10 @@ export function makeRandomDataFunctionForField(
                 return randomPolygon().features[0].geometry;
             }
 
-            const numPolygons = chance.integer({ max: 5, min: 1 });
+            const numPolygons = chance.integer({
+                max: opts.max || 5,
+                min: opts.min || 1
+            });
             const polygons = randomPolygon(numPolygons);
 
             const multiCoords: any[][] = [];
@@ -99,37 +130,56 @@ export function makeRandomDataFunctionForField(
             return { latitude, longitude };
         },
         [FieldType.Hostname]: () => chance.word(),
-        [FieldType.IP]: () => (
-            chance.pickone([
+        [FieldType.IP]: () => {
+            if (opts.ipv6) return chance.ipv6();
+            return chance.pickone([
                 chance.ip(),
                 chance.ipv6(),
                 '::0.0.0.1',
                 '::1',
-            ])
-        ),
-        [FieldType.IPRange]: () => (
-            chance.pickone([
+            ]);
+        },
+        [FieldType.IPRange]: () => {
+            if (opts.ipv6) return chance.ipv6();
+            return chance.pickone([
                 toCIDR(chance.ip(), 32),
                 toCIDR(chance.ipv6(), 128),
                 '::1/128',
-            ])
+            ]);
+        },
+        [FieldType.Integer]: () => ( // -2^31 to 2^31 - 1
+            chance.integer({
+                min: opts.min,
+                max: opts.max
+            })
         ),
-        [FieldType.Integer]: () => chance.integer(), // -2^31 to 2^31 - 1
         [FieldType.Keyword]: () => chance.word(),
         [FieldType.KeywordCaseInsensitive]: () => chance.word(),
         [FieldType.KeywordPathAnalyzer]: () => chance.word(),
         [FieldType.KeywordTokens]: () => chance.word(),
         [FieldType.KeywordTokensCaseInsensitive]: () => chance.word(),
-        [FieldType.Long]: () => chance.integer(), // -2^63 to 2^63 - 1
+        [FieldType.Long]: () => ( // -2^63 to 2^63 - 1
+            chance.integer({
+                min: opts.min,
+                max: opts.max
+            })
+        ),
         [FieldType.NgramTokens]: () => `${chance.letter()}${chance.letter()}`,
-        [FieldType.Number]: () => chance.floating(),
+        [FieldType.Number]: () => chance.floating({
+            min: opts.min,
+            max: opts.max,
+            fixed: opts.precision
+        }),
         [FieldType.Object]: () => ({
             // look for . gather keys / etc.
             city: chance.city(),
             state: chance.state(),
             zip: chance.zip()
         }),
-        [FieldType.Short]: () => chance.integer({ min: -32768, max: 32768 }),
+        [FieldType.Short]: () => chance.integer({
+            min: opts.min || -32768,
+            max: opts.max || 32768
+        }),
         [FieldType.String]: () => chance.word(),
         [FieldType.Text]: () => chance.word(),
         [FieldType.Tuple]: () => ([
@@ -141,7 +191,11 @@ export function makeRandomDataFunctionForField(
             const vectors: number[] = [];
             for (let i = 0; i < (vectorSize as number); i++) {
                 vectors.push(
-                    chance.floating({ min: 0, max: 40, fixed: 2 })
+                    chance.floating({
+                        min: opts.min || 0,
+                        max: opts.max || 40,
+                        fixed: opts.precision || 2
+                    })
                 );
             }
             return vectors;
@@ -209,15 +263,30 @@ export function makeRandomDataFunctionForField(
             'year',
             'zip',
         ];
+        // const fakerFoods = [
+        //     'meat',
+        //     'vegetable',
+        //     'spice',
+        //     'ingredient',
+        //     'food',
+        //     'airline',
+        //     'airplane',
+        //     'airport',
+        //     'flightNumber',
+        //     'album',
+        //     'artist',
+        //     'songName',
+        //     'genre'
+        // ];
+
         const found = things.find((thing) => field.includes(thing));
         if (found) {
             fn = () => (chance[found] as (opts?: any) => any)();
         } else {
             if (field.includes('country')) {
-                const opts = field.includes('code')
+                fn = () => chance.country(field.includes('code')
                     ? undefined
-                    : { full: true };
-                fn = () => chance.country(opts);
+                    : { full: true });
             }
             if (field === 'cost' || field === 'amount') {
                 fn = () => chance.dollar();
@@ -264,7 +333,7 @@ export function makeRandomDataFunctionForField(
 
     if (array && type !== FieldType.Vector) {
         return () => {
-            const count = chance.integer({ max: 10, min: 1 });
+            const count = chance.integer({ max: opts.min || 10, min: opts.max || 1 });
             const results: any[] = [];
             for (let i = 0; i < count; i++) {
                 results.push(fn());
