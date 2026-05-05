@@ -13,6 +13,9 @@ const chance = new Chance();
  * NOTE -
  * WILL REPLACE THIS FILE W/AN IMPORT FROM
  * TERASLICE BEFORE MERGING
+ *
+ * FIXME - if is rand exp use randexp
+ * // something for temperatures maybe - c or f - looks like just float - maybe add options
  * - - - - - - - - - - - - - - - - - -
  */
 
@@ -39,14 +42,18 @@ export function makeRandomDataFunctionForField(
             chance.bool(),
             { animal: chance.animal(), name: chance.name() }
         ]),
-        [FieldType.Binary]: () => Buffer.from(chance.word()),
+        // @ts-expect-error
+        [FieldType.Binary]: () => Buffer.from(chance.word()), // base64
         [FieldType.Boolean]: () => chance.bool(),
-        [FieldType.Boundary]: () => ([ // topLeft, bottomRight
-            { lat: chance.latitude(), lon: chance.longitude() },
-            { lat: chance.latitude(), lon: chance.longitude() }
-        ]),
+        [FieldType.Boundary]: () => {
+            const polygon = randomPolygon().features[0].geometry.coordinates;
+            return polygon.map((el) => {
+                const [lon, lat] = el;
+                return { lat, lon };
+            });
+        },
         [FieldType.Byte]: () => chance.integer({ min: -128, max: 127 }),
-        [FieldType.Date]: () => {
+        [FieldType.Date]: () => { // fix more opts
             const date = chance.birthday();
             if (config.format) {
                 return formatDateValue(date, config.format);
@@ -56,11 +63,11 @@ export function makeRandomDataFunctionForField(
         [FieldType.Domain]: () => chance.domain(),
         [FieldType.Double]: () => chance.floating(), // 64-bit IEEE 754 finite
         [FieldType.Float]: () => chance.floating(), // 32-bit IEEE 754 finite
-        [FieldType.Geo]: () => {
+        [FieldType.Geo]: () => { // fixme if distance maybe
             const [longitude, latitude] = randomPoint().features[0].geometry.coordinates;
             return { latitude, longitude };
         },
-        [FieldType.GeoJSON]: () => {
+        [FieldType.GeoJSON]: () => { // fixme intersects / x% within box / x% outside
             const geoType = chance.pickone([
                 GeoShapeType.MultiPolygon,
                 GeoShapeType.Point,
@@ -88,10 +95,10 @@ export function makeRandomDataFunctionForField(
                 coordinates: multiCoords
             };
         },
-        [FieldType.GeoPoint]: () => ({
-            latitude: chance.latitude(),
-            longitude: chance.longitude()
-        }),
+        [FieldType.GeoPoint]: () => {
+            const [longitude, latitude] = randomPoint().features[0].geometry.coordinates;
+            return { latitude, longitude };
+        },
         [FieldType.Hostname]: () => chance.word(),
         [FieldType.IP]: () => (
             chance.pickone([
@@ -118,6 +125,7 @@ export function makeRandomDataFunctionForField(
         [FieldType.NgramTokens]: () => `${chance.letter()}${chance.letter()}`,
         [FieldType.Number]: () => chance.floating(),
         [FieldType.Object]: () => ({
+            // look for . gather keys / etc.
             city: chance.city(),
             state: chance.state(),
             zip: chance.zip()
@@ -164,6 +172,7 @@ export function makeRandomDataFunctionForField(
         FieldType.KeywordTokensCaseInsensitive,
     ].includes(config.type as FieldType);
 
+    // addresses see if can get match city/state/zip if theres another field
     if (isText) {
         const things: (keyof Chance.Chance)[] = [
             'first',
