@@ -1,11 +1,13 @@
 import {
-    DataTypeFields, DataTypeFieldConfig, FieldType, GeoShapeType
+    FieldType, GeoShapeType
 } from '@terascope/types';
 import { formatDateValue, hasOwn, isEmpty } from '@terascope/core-utils';
 import { toCIDR } from '@terascope/ip-utils';
 import { Chance } from 'chance';
 import { randomPoint, randomPolygon } from '@turf/random';
-import { faker, Faker } from '@faker-js/faker';
+// import { faker, Faker } from '@faker-js/faker';
+import Randexp from 'randexp';
+import { DataTypeConfigWithGeneratorOpts } from './modes/data-type';
 
 const chance = new Chance();
 
@@ -19,26 +21,30 @@ const chance = new Chance();
  * // something for temperatures maybe - c or f - looks like just float - maybe add options
  * - - - - - - - - - - - - - - - - - -
  */
-type Options = {
-    // numbers
-    min?: number;
-    max?: number;
-    precision?: number;
-    // words
-    wordType?: Faker['word'];
-    // ip
-    ipv6?: boolean;
 
-};
 /**
  * Returns a function that can be called to create a data type field
  * NOTE: implement "locale" if needed
  */
 export function makeRandomDataFunctionForField(
-    config: DataTypeFieldConfig & { options?: Options }, field: string
+    config: DataTypeConfigWithGeneratorOpts['fields']['config'], field: string
 ): () => any {
-    const { type, array, dimension: vectorSize = 4, options } = config;
-    const opts = options || {};
+    const {
+        type, array, dimension: vectorSize = 4,
+        ...opts
+    } = config;
+
+    if (opts.fn) {
+        const fn = opts.fn;
+        return () => fn();
+    }
+
+    // TODO consider throwing if not text-ish
+    if (opts.randomExpression) {
+        const randExp = opts.randomExpression;
+        const prefix = opts.prefix || '';
+        return () => `${prefix}${new Randexp(randExp).gen()}`;
+    }
 
     if (config.locale) {
         console.error(`Locale may not be supported`);
@@ -54,7 +60,6 @@ export function makeRandomDataFunctionForField(
             chance.bool(),
             { animal: chance.animal(), name: chance.name() }
         ]),
-        // @ts-expect-error
         [FieldType.Binary]: () => Buffer.from(chance.word()), // base64
         [FieldType.Boolean]: () => chance.bool(),
         [FieldType.Boundary]: () => {
@@ -349,7 +354,7 @@ export function makeRandomDataFunctionForField(
  * NOTE: "locale" not implemented
  */
 export function makeRandomDataSet(
-    fields: DataTypeFields,
+    fields: DataTypeConfigWithGeneratorOpts['fields'],
     total = 3,
     isStressTest = false
 ): Record<string, any>[] | undefined {
