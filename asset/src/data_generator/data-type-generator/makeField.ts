@@ -129,25 +129,12 @@ export function makeRandomDataFunctionForField(
                     obj[key] = makeRandomDataFunctionForField(childConfig[key], key)();
                 }
                 return obj;
-            } else {
-                return chance.pickone([
-                    {
-                        city: chance.city(),
-                        state: chance.state(),
-                        zip: chance.zip()
-                    },
-                    {
-                        first: chance.first(),
-                        last: chance.last(),
-                        age: chance.age()
-                    },
-                    {
-                        hour: chance.hour(),
-                        minute: chance.minute(),
-                        second: chance.second()
-                    }
-                ]);
             }
+            return {
+                first: chance.first(),
+                last: chance.last(),
+                age: chance.age()
+            };
         },
         [FieldType.Short]: () => chance.integer({
             min: opts.min || -32768,
@@ -155,11 +142,21 @@ export function makeRandomDataFunctionForField(
         }),
         [FieldType.String]: () => chance.word(),
         [FieldType.Text]: () => chance.word(),
-        [FieldType.Tuple]: () => ([
-            chance.name(),
-            chance.age(),
-            chance.address()
-        ]),
+        [FieldType.Tuple]: () => {
+            if (childConfig) {
+                const tuple: any[] = [];
+                for (const key in childConfig) {
+                    if (!Object.hasOwn(childConfig, key)) continue;
+                    tuple.push(makeRandomDataFunctionForField(childConfig[key], key)());
+                }
+                return tuple;
+            }
+            return [
+                chance.name(),
+                chance.age(),
+                chance.address()
+            ];
+        },
         [FieldType.Vector]: () => {
             const vectors: number[] = [];
             for (let i = 0; i < (vectorSize as number); i++) {
