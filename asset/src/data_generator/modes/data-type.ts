@@ -1,5 +1,5 @@
 import { DataGenerator } from '../interfaces.js';
-import { FieldType, DataTypeConfig, DataTypeFields } from '@terascope/types';
+import { FieldType, DataTypeConfig, DataTypeFields, GeoShapeType } from '@terascope/types';
 import { getFormatFunction, getStartEndDiff, regexID } from './utils.js';
 
 const nativeConfig: DataTypeConfig = {
@@ -38,13 +38,20 @@ export type FieldOptions = {
     precision?: number;
     // words
     // wordType?: Faker['word'];
-    // ip
-    ipv6?: boolean;
-    //
-    randomExpression?: string;
-    prefix?: string;
-    fn?: () => any;
-
+    ipType?: 'v6' | 'v4';
+    geo?: {
+        type?: GeoShapeType;
+        geometryCount?: number;
+        boundingBox?: [number, number, number, number]
+            | [number, number, number, number, number, number];
+        maxRadius?: number;
+        vertices?: number;
+    };
+    customize?: {
+        fn?: () => any;
+        randomExpression?: string;
+        randomExpressionPrefix?: string;
+    };
 };
 
 type ValueOf<T> = T[keyof T];

@@ -1,13 +1,11 @@
-import {
-    FieldType, GeoShapeType
-} from '@terascope/types';
-import { formatDateValue, hasOwn, isEmpty } from '@terascope/core-utils';
+import { DeprecatedFieldType, FieldType, GeoShapeType } from '@terascope/types';
+import { formatDateValue } from '@terascope/core-utils';
 import { toCIDR } from '@terascope/ip-utils';
 import { Chance } from 'chance';
 import { randomPoint, randomPolygon } from '@turf/random';
 // import { faker, Faker } from '@faker-js/faker';
 import Randexp from 'randexp';
-import { DataTypeConfigWithGeneratorOpts } from './modes/data-type';
+import { DataTypeConfigWithGeneratorOpts } from '../modes/data-type';
 
 const chance = new Chance();
 
@@ -16,9 +14,6 @@ const chance = new Chance();
  * NOTE -
  * WILL REPLACE THIS FILE W/AN IMPORT FROM
  * TERASLICE BEFORE MERGING
- *
- * FIXME - if is rand exp use randexp
- * // something for temperatures maybe - c or f - looks like just float - maybe add options
  * - - - - - - - - - - - - - - - - - -
  */
 
@@ -34,23 +29,26 @@ export function makeRandomDataFunctionForField(
         ...opts
     } = config;
 
-    if (opts.fn) {
-        const fn = opts.fn;
-        return () => fn();
-    }
-
-    // TODO consider throwing if not text-ish
-    if (opts.randomExpression) {
-        const randExp = opts.randomExpression;
-        const prefix = opts.prefix || '';
-        return () => `${prefix}${new Randexp(randExp).gen()}`;
-    }
-
     if (config.locale) {
         console.error(`Locale may not be supported`);
     }
     if (config.format && config.type !== FieldType.Date) {
         console.error(`Format currently only supported for date fields`);
+    }
+
+    if (opts.customize?.fn) {
+        if (opts.randomExpression) console.error('Cannot use random');
+        const fn = opts.customize.fn;
+        return () => fn();
+    }
+
+    if (opts.customize?.randomExpression) {
+        if (isNonStringFieldType(type)) {
+            console.error(`Ensure your field config should have a random expression, received non-string type "${type}" for field "${field}"`);
+        }
+        const randExp = opts.customize.randomExpression;
+        const prefix = opts.customize.randomExpressionPrefix || '';
+        return () => `${prefix}${new Randexp(randExp).gen()}`;
     }
 
     // NOTE: arrow fn to avoid losing chance binding
@@ -62,13 +60,7 @@ export function makeRandomDataFunctionForField(
         ]),
         [FieldType.Binary]: () => Buffer.from(chance.word()), // base64
         [FieldType.Boolean]: () => chance.bool(),
-        [FieldType.Boundary]: () => {
-            const polygon = randomPolygon().features[0].geometry.coordinates;
-            return polygon.map((el) => {
-                const [lon, lat] = el;
-                return { lat, lon };
-            });
-        },
+        [FieldType.Boundary]: () => createPolygon(config),
         [FieldType.Byte]: () => chance.integer({
             min: opts.min ?? -128,
             max: opts.max ?? 127
@@ -81,62 +73,15 @@ export function makeRandomDataFunctionForField(
             return date.toISOString();
         },
         [FieldType.Domain]: () => chance.domain(),
-        [FieldType.Double]: () => ( // 64-bit IEEE 754 finite
-            chance.floating({
-                min: opts.min,
-                max: opts.max,
-                fixed: opts.precision
-            })
-        ),
-        [FieldType.Float]: () => ( // 32-bit IEEE 754 finite
-            chance.floating({
-                min: opts.min,
-                max: opts.max,
-                fixed: opts.precision
-            })
-        ),
-        [FieldType.Geo]: () => { // fixme if distance maybe
-            const [longitude, latitude] = randomPoint().features[0].geometry.coordinates;
-            return { latitude, longitude };
-        },
-        [FieldType.GeoJSON]: () => { // fixme intersects / x% within box / x% outside
-            const geoType = chance.pickone([
-                GeoShapeType.MultiPolygon,
-                GeoShapeType.Point,
-                GeoShapeType.Polygon
-            ]);
-
-            if (geoType === GeoShapeType.Point) {
-                return randomPoint().features[0].geometry;
-            }
-
-            if (geoType === GeoShapeType.Polygon) {
-                return randomPolygon().features[0].geometry;
-            }
-
-            const numPolygons = chance.integer({
-                max: opts.max || 5,
-                min: opts.min || 1
-            });
-            const polygons = randomPolygon(numPolygons);
-
-            const multiCoords: any[][] = [];
-            polygons.features.forEach((feat) => {
-                multiCoords.push(feat.geometry.coordinates);
-            });
-
-            return {
-                type: GeoShapeType.MultiPolygon,
-                coordinates: multiCoords
-            };
-        },
-        [FieldType.GeoPoint]: () => {
-            const [longitude, latitude] = randomPoint().features[0].geometry.coordinates;
-            return { latitude, longitude };
-        },
+        [FieldType.Double]: () => createFloat(config), // 64-bit IEEE 754 finite
+        [FieldType.Float]: () => createFloat(config), // 32-bit IEEE 754 finite
+        [FieldType.Geo]: () => createGeoPoint(config),
+        [FieldType.GeoJSON]: () => createGeoJSON(config),
+        [FieldType.GeoPoint]: () => createGeoPoint(config),
         [FieldType.Hostname]: () => chance.word(),
         [FieldType.IP]: () => {
-            if (opts.ipv6) return chance.ipv6();
+            if (opts.ipType === 'v6') return chance.ipv6();
+            if (opts.ipType === 'v4') return chance.ip();
             return chance.pickone([
                 chance.ip(),
                 chance.ipv6(),
@@ -145,7 +90,8 @@ export function makeRandomDataFunctionForField(
             ]);
         },
         [FieldType.IPRange]: () => {
-            if (opts.ipv6) return chance.ipv6();
+            if (opts.ipType === 'v6') return toCIDR(chance.ipv6(), 128);
+            if (opts.ipType === 'v4') return toCIDR(chance.ip(), 32);
             return chance.pickone([
                 toCIDR(chance.ip(), 32),
                 toCIDR(chance.ipv6(), 128),
@@ -170,11 +116,7 @@ export function makeRandomDataFunctionForField(
             })
         ),
         [FieldType.NgramTokens]: () => `${chance.letter()}${chance.letter()}`,
-        [FieldType.Number]: () => chance.floating({
-            min: opts.min,
-            max: opts.max,
-            fixed: opts.precision
-        }),
+        [FieldType.Number]: () => createFloat(config),
         [FieldType.Object]: () => ({
             // look for . gather keys / etc.
             city: chance.city(),
@@ -210,25 +152,8 @@ export function makeRandomDataFunctionForField(
     let fn = dataFnForFieldType[type];
     if (!fn) return () => 'UNKNOWN';
 
-    const isNumber = [
-        FieldType.Short,
-        FieldType.Number,
-        FieldType.Long,
-        FieldType.Float,
-        FieldType.Integer,
-        FieldType.Double,
-        FieldType.Byte
-    ].includes(config.type as FieldType);
-
-    const isText = [
-        FieldType.Text,
-        FieldType.String,
-        FieldType.Keyword,
-        FieldType.KeywordCaseInsensitive,
-        FieldType.KeywordPathAnalyzer,
-        FieldType.KeywordTokens,
-        FieldType.KeywordTokensCaseInsensitive,
-    ].includes(config.type as FieldType);
+    const isNumber = isNumericFieldType(config.type);
+    const isText = isTextFieldType(config.type);
 
     // addresses see if can get match city/state/zip if theres another field
     if (isText) {
@@ -349,43 +274,120 @@ export function makeRandomDataFunctionForField(
     return fn;
 }
 
-/**
- * Generates an array of records based on the data type field config of count
- * NOTE: "locale" not implemented
- */
-export function makeRandomDataSet(
-    fields: DataTypeConfigWithGeneratorOpts['fields'],
-    total = 3,
-    isStressTest = false
-): Record<string, any>[] | undefined {
-    if (isEmpty(fields)) return;
+function createPolygon(opts: DataTypeConfigWithGeneratorOpts['fields']['config']) {
+    console.error('===createPoly');
+    const { geometryCount, boundingBox, maxRadius, vertices } = opts.geo || {};
 
-    const fns: Record<string, () => any> = {};
-
-    for (const field in fields) {
-        if (hasOwn(fields, field)) {
-            const config = fields[field];
-            fns[field] = makeRandomDataFunctionForField(config, field);
+    const coordinates = randomPolygon(
+        geometryCount, {
+            bbox: boundingBox,
+            max_radial_length: maxRadius,
+            num_vertices: vertices
         }
-    }
+    ).features[0].geometry.coordinates;
 
-    const makeField = () => {
-        const record: any = {};
-        for (const key in fns) {
-            if (!Object.hasOwn(fns, key)) continue;
-            record[key] = fns[key]();
-        }
-        return record;
+    return coordinates.map((el) => {
+        const [lon, lat] = el;
+        return { lat, lon };
+    });
+}
+
+function createGeoPoint(opts: DataTypeConfigWithGeneratorOpts['fields']['config']) {
+    const point = randomPoint(opts.geo?.geometryCount, { bbox: opts.geo?.boundingBox });
+    const [longitude, latitude] = point.features[0].geometry.coordinates;
+    return { latitude, longitude };
+}
+
+// fixme intersects / x% within box / x% outside
+function createGeoJSON(opts: DataTypeConfigWithGeneratorOpts['fields']['config']) {
+    const {
+        geometryCount, boundingBox, vertices, maxRadius
+    } = opts.geo || {};
+
+    const geoType = opts.geo?.type || chance.pickone(Object.values(GeoShapeType));
+
+    const polygonOpts = {
+        bbox: boundingBox,
+        max_radial_length: maxRadius,
+        num_vertices: vertices
     };
 
-    const stressTestRecord = isStressTest
-        ? makeField()
-        : undefined;
-
-    const records: Record<string, any>[] = [];
-    for (let i = 0; i < total; i++) {
-        records.push(stressTestRecord || makeField());
+    if (geoType === GeoShapeType.Point) {
+        return randomPoint(geometryCount, { bbox: boundingBox }).features[0].geometry;
     }
 
-    return records;
+    if (geoType === GeoShapeType.Polygon) {
+        return randomPolygon(geometryCount, polygonOpts).features[0].geometry;
+    }
+
+    const numPolygons = geometryCount || chance.integer({
+        max: opts.max || 5,
+        min: opts.min || 1
+    });
+    const polygons = randomPolygon(numPolygons, polygonOpts);
+
+    const multiCoords: any[][] = [];
+    polygons.features.forEach((feat) => {
+        multiCoords.push(feat.geometry.coordinates);
+    });
+
+    return {
+        type: GeoShapeType.MultiPolygon,
+        coordinates: multiCoords
+    };
+}
+
+function createFloat(opts: DataTypeConfigWithGeneratorOpts['fields']['config']) {
+    return chance.floating({
+        min: opts.min,
+        max: opts.max,
+        fixed: opts.precision
+    });
+}
+
+function isNonStringFieldType(type: FieldType | DeprecatedFieldType) {
+    const nonTextFields: (FieldType | DeprecatedFieldType)[] = [
+        FieldType.Boolean,
+        FieldType.Boundary,
+        FieldType.Byte,
+        FieldType.Double,
+        FieldType.Float,
+        FieldType.GeoJSON,
+        FieldType.GeoPoint,
+        FieldType.Geo,
+        FieldType.Integer,
+        FieldType.Long,
+        FieldType.Number,
+        FieldType.Object,
+        FieldType.Short,
+        FieldType.Tuple,
+        FieldType.Vector
+    ];
+    return nonTextFields.includes(type);
+}
+
+function isNumericFieldType(type: FieldType | DeprecatedFieldType) {
+    const numericTypes: (FieldType | DeprecatedFieldType)[] = [
+        FieldType.Short,
+        FieldType.Number,
+        FieldType.Long,
+        FieldType.Float,
+        FieldType.Integer,
+        FieldType.Double,
+        FieldType.Byte
+    ];
+    return numericTypes.includes(type);
+}
+
+function isTextFieldType(type: FieldType | DeprecatedFieldType) {
+    const numericTypes: (FieldType | DeprecatedFieldType)[] = [
+        FieldType.Text,
+        FieldType.String,
+        FieldType.Keyword,
+        FieldType.KeywordCaseInsensitive,
+        FieldType.KeywordPathAnalyzer,
+        FieldType.KeywordTokens,
+        FieldType.KeywordTokensCaseInsensitive,
+    ];
+    return numericTypes.includes(type);
 }
