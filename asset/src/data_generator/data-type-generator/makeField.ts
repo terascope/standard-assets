@@ -1,4 +1,6 @@
-import { DeprecatedFieldType, FieldType, GeoShapeType } from '@terascope/types';
+import {
+    DataTypeFields, DeprecatedFieldType, FieldType, GeoShapeType
+} from '@terascope/types';
 import { formatDateValue } from '@terascope/core-utils';
 import { toCIDR } from '@terascope/ip-utils';
 import { Chance } from 'chance';
@@ -22,7 +24,9 @@ const chance = new Chance();
  * NOTE: implement "locale" if needed
  */
 export function makeRandomDataFunctionForField(
-    config: DataTypeConfigWithGeneratorOpts['fields']['config'], field: string
+    config: DataTypeConfigWithGeneratorOpts['fields']['config'],
+    field: string,
+    childConfig?: DataTypeFields// DataTypeFieldConfig
 ): () => any {
     const {
         type, array, dimension: vectorSize = 4,
@@ -117,12 +121,34 @@ export function makeRandomDataFunctionForField(
         ),
         [FieldType.NgramTokens]: () => `${chance.letter()}${chance.letter()}`,
         [FieldType.Number]: () => createFloat(config),
-        [FieldType.Object]: () => ({
-            // look for . gather keys / etc.
-            city: chance.city(),
-            state: chance.state(),
-            zip: chance.zip()
-        }),
+        [FieldType.Object]: () => {
+            if (childConfig) {
+                const obj: Record<string, string | number> = {};
+                for (const key in childConfig) {
+                    if (!Object.hasOwn(childConfig, key)) continue;
+                    obj[key] = makeRandomDataFunctionForField(childConfig[key], key)();
+                }
+                return obj;
+            } else {
+                return chance.pickone([
+                    {
+                        city: chance.city(),
+                        state: chance.state(),
+                        zip: chance.zip()
+                    },
+                    {
+                        first: chance.first(),
+                        last: chance.last(),
+                        age: chance.age()
+                    },
+                    {
+                        hour: chance.hour(),
+                        minute: chance.minute(),
+                        second: chance.second()
+                    }
+                ]);
+            }
+        },
         [FieldType.Short]: () => chance.integer({
             min: opts.min || -32768,
             max: opts.max || 32768
