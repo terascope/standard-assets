@@ -1,6 +1,4 @@
-import {
-    DataTypeFields, DeprecatedFieldType, FieldType, GeoShapeType
-} from '@terascope/types';
+import { DeprecatedFieldType, FieldType, GeoShapeType } from '@terascope/types';
 import { formatDateValue } from '@terascope/core-utils';
 import { toCIDR } from '@terascope/ip-utils';
 import { Chance } from 'chance';
@@ -25,8 +23,7 @@ const chance = new Chance();
  */
 export function makeRandomDataFunctionForField(
     config: DataTypeConfigWithGeneratorOpts['fields']['config'],
-    field: string,
-    childConfig?: DataTypeFields// DataTypeFieldConfig
+    field: string
 ): () => any {
     const {
         type, array, dimension: vectorSize = 4,
@@ -122,14 +119,6 @@ export function makeRandomDataFunctionForField(
         [FieldType.NgramTokens]: () => `${chance.letter()}${chance.letter()}`,
         [FieldType.Number]: () => createFloat(config),
         [FieldType.Object]: () => {
-            if (childConfig) {
-                const obj: Record<string, string | number> = {};
-                for (const key in childConfig) {
-                    if (!Object.hasOwn(childConfig, key)) continue;
-                    obj[key] = makeRandomDataFunctionForField(childConfig[key], key)();
-                }
-                return obj;
-            }
             return {
                 first: chance.first(),
                 last: chance.last(),
@@ -143,14 +132,6 @@ export function makeRandomDataFunctionForField(
         [FieldType.String]: () => chance.word(),
         [FieldType.Text]: () => chance.word(),
         [FieldType.Tuple]: () => {
-            if (childConfig) {
-                const tuple: any[] = [];
-                for (const key in childConfig) {
-                    if (!Object.hasOwn(childConfig, key)) continue;
-                    tuple.push(makeRandomDataFunctionForField(childConfig[key], key)());
-                }
-                return tuple;
-            }
             return [
                 chance.name(),
                 chance.age(),

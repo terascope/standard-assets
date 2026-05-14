@@ -140,7 +140,14 @@ describe('data_generator fetcher', () => {
                 data_type_config: {
                     fields: {
                         foo: { type: FieldType.String },
-                        bar: { type: FieldType.Boolean }
+                        bar: { type: FieldType.Boolean },
+                        obj: { type: FieldType.Object },
+                        'obj.a': { type: FieldType.String },
+                        'obj.b': { type: FieldType.Object },
+                        'obj.b.nested': { type: FieldType.Object },
+                        tup: { type: FieldType.Tuple },
+                        'tup.0': { type: FieldType.String },
+                        'tup.1': { type: FieldType.Number },
                     }
                 }
             });
@@ -149,7 +156,17 @@ describe('data_generator fetcher', () => {
 
             expect(data).toMatchObject({
                 foo: expect.any(String),
-                bar: expect.any(Boolean)
+                bar: expect.any(Boolean),
+                obj: {
+                    a: expect.any(String),
+                    b: { nested: expect.any(Object) }
+                },
+                'obj.a': expect.any(String),
+                'obj.b': expect.any(Object),
+                'obj.b.nested': expect.any(Object),
+                tup: [expect.any(String), expect.any(Number)],
+                'tup.0': expect.any(String),
+                'tup.1': expect.any(Number),
             });
         });
 

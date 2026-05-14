@@ -1,14 +1,8 @@
 import { hasOwn, isEmpty } from '@terascope/core-utils';
-import { DataTypeConfigWithGeneratorOpts, FieldOptions } from '../modes/data-type.js';
-import { makeRandomDataFunctionForField } from './makeField.js';
 import { getChildDataTypeConfig } from '@terascope/data-mate';
-import { DataTypeFieldConfig, DataTypeFields, FieldType } from '@terascope/types';
-
-type DataTypeFieldConfigWithOpts = DataTypeConfigWithGeneratorOpts['fields']['config'];
-type FieldConfigWithChildren = {
-    config: DataTypeFieldConfig & FieldOptions;
-    childFields: DataTypeFields;
-};
+import { DeprecatedFieldType, FieldType } from '@terascope/types';
+import { DataTypeConfigWithGeneratorOpts } from '../modes/data-type.js';
+import { makeRandomDataFunctionForField } from './makeField.js';
 
 /**
  * Generates an array of records based on the data type field config of count
@@ -21,7 +15,7 @@ export function makeRandomDataSet(
 ): Record<string, any>[] | undefined {
     if (isEmpty(fields)) return;
 
-    const { fns, fieldChildren } = collectFieldFnsAndChildren(fields);
+    const { fns, parents } = collectFieldFnsAndParents(fields);
 
     const makeField = () => {
         const record: any = {};
@@ -30,16 +24,7 @@ export function makeRandomDataSet(
             record[key] = fns[key]();
         }
 
-        if (fieldChildren) {
-            for (const field in fieldChildren) {
-                if (!Object.hasOwn(fieldChildren, field)) continue;
-
-                const childFields = fieldChildren[field];
-                for (const child of childFields) {
-                    record[`${field}.${child}`] = record[field]?.[child];
-                }
-            }
-        }
+        populateParentFields(record, parents);
 
         return record;
     };
@@ -56,68 +41,122 @@ export function makeRandomDataSet(
     return records;
 }
 
-/**
- * Loops through fields, creating functions to generate data,
- * as well as children to populate via their parent
- */
-function collectFieldFnsAndChildren(fields: DataTypeConfigWithGeneratorOpts['fields']) {
-    const fns: Record<string, () => any> = {};
-    const fieldsWithChildren: Record<string, FieldConfigWithChildren> = {};
-    const possibleChild: Record<string, DataTypeFieldConfigWithOpts> = {};
-    const fieldChildren: Record<string, string[]> = {};
+const validParentTypes: Record<string, boolean> = {
+    [FieldType.Object]: true,
+    [FieldType.Tuple]: true
+};
+const parentTypesStr = Object.keys(validParentTypes).join(', ');
 
-    /**
-     * loop thru fields, collecting fn's (unless field has children)
-     */
+/**
+ * Loops through fields, creating functions to generate data, unless the field has
+ * child fields - then it will populate after the child fields have been created
+ */
+function collectFieldFnsAndParents(fields: DataTypeConfigWithGeneratorOpts['fields']) {
+    const fns: Record<string, () => any> = {};
+    const parents: { field: string; type: FieldType | DeprecatedFieldType }[] = [];
+
     for (const field in fields) {
         if (hasOwn(fields, field)) {
             const config = fields[field];
+            const children = getChildDataTypeConfig(fields, field, config.type as FieldType);
 
-            if (field.includes('.')) {
-                possibleChild[field] = config;
-            }
-
-            const childFields = getChildDataTypeConfig(fields, field, config.type as FieldType);
-            if (childFields) {
-                fieldsWithChildren[field] = { config, childFields };
+            if (children && validParentTypes[config.type]) {
+                parents.push({ field, type: config.type });
             } else {
                 fns[field] = makeRandomDataFunctionForField(config, field);
             }
         }
     }
 
-    /**
-     * Loop thru fields w/children & create fn's for them,
-     * if other field in data type has child (via dot notation)
-     * - merge child config options
-     * - delete that field's fn and denote to populate after root object is created
-     */
-    for (const field in fieldsWithChildren) {
-        if (!Object.hasOwn(fieldsWithChildren, field)) continue;
+    return { fns, parents };
+}
 
-        const config = fieldsWithChildren[field].config;
-        const childFields = fieldsWithChildren[field].childFields;
+function populateParentFields(
+    record: Record<string, any>,
+    parents: { field: string; type: FieldType | DeprecatedFieldType }[]
+) {
+    const objects: string[] = [];
+    const tuples: string[] = [];
+    const unknown: string[] = [];
+    parents.forEach(({ field, type }) => {
+        let ary = unknown;
+        if (type === 'Object') ary = objects;
+        if (type === 'Tuple') ary = tuples;
+        ary.push(field);
+    });
 
-        for (const child in childFields) {
-            if (!Object.hasOwn(childFields, child)) continue;
+    if (objects.length) {
+        expandObjects(record, objects);
+    }
+    if (tuples.length) {
+        expandTuples(record, tuples);
+    }
+    if (unknown.length) {
+        const msg = `Received fields w/children ${unknown.join(',')}. Child support currently only available for ${parentTypesStr} field types.`;
+        console.error(msg);
+    }
+}
 
-            if (possibleChild[`${field}.${child}`]) {
-                // merge found field config w/child config
-                childFields[child] = {
-                    ...childFields[child],
-                    ...possibleChild[child]
-                };
+function expandTuples(record: Record<string, any>, tupleFields: string[]) {
+    for (const tuple of tupleFields) {
+        const values = [];
 
-                // delete child fn & will assign value after parent obj is created
-                delete fns[`${field}.${child}`];
-                fieldChildren[field] ??= [];
-                fieldChildren[field].push(child);
+        for (const [key, value] of Object.entries(record)) {
+            if (!key.startsWith(tuple + '.')) continue;
+
+            const indexStr = key.slice(tuple.length + 1);
+            const index = Number(indexStr);
+
+            if (!Number.isNaN(index)) {
+                values[index] = value;
             }
         }
 
-        // fn will create the field w/child fields
-        fns[field] = makeRandomDataFunctionForField(config, field, childFields);
+        record[tuple] = values;
+    }
+}
+
+function expandObjects(record: Record<string, any>, objFields: string[]) {
+    for (const objField of objFields) {
+        record[objField] = {};
+
+        let found = false;
+        for (const [key, value] of Object.entries(record)) {
+            if (!key.startsWith(`${objField}.`)) continue;
+
+            // Remove prefix from nested object path
+            const nestedPath = key.slice(objField.length + 1);
+            setNestedField(record[objField], nestedPath, value);
+            found = true;
+        }
+
+        if (!found) {
+            ensureEmptyChild(record, objField);
+        }
+    }
+}
+
+function setNestedField(obj: Record<string, any>, path: string, value: any) {
+    const keys = path.split('.');
+    let current = obj;
+
+    for (let i = 0; i < keys.length - 1; i++) {
+        const key = keys[i];
+        current[key] ??= {};
+        current = current[key];
     }
 
-    return { fns, fieldChildren };
+    current[keys[keys.length - 1]] = value;
+}
+
+function ensureEmptyChild(record: Record<string, any>, path: string) {
+    const keys = path.split('.');
+    let current = record;
+
+    for (const key of keys) {
+        if (current[key] == null) {
+            current[key] = {};
+        }
+        current = current[key];
+    }
 }
