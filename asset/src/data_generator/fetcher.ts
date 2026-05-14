@@ -10,11 +10,7 @@ import { pDelay, TSError } from '@terascope/core-utils';
 import { DataGenerator, CounterResults } from './interfaces.js';
 import defaultSchema from './modes/data-schema.js';
 import defaultDataType from './modes/data-type.js';
-
-/**
- * FIXME - this will change to a @terascope/data-types import once updated & merged
- */
-import { makeRandomDataSet } from './data-type-generator/makeDataSet.js';
+import { makeRandomDataSet } from './data-type-generator/make-dt-data-set.js';
 
 const chance = new Chance();
 

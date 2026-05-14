@@ -1,15 +1,14 @@
 import { hasOwn, isEmpty } from '@terascope/core-utils';
 import { getChildDataTypeConfig } from '@terascope/data-mate';
 import { DeprecatedFieldType, FieldType } from '@terascope/types';
-import { DataTypeConfigWithGeneratorOpts } from '../modes/data-type.js';
-import { makeRandomDataFunctionForField } from './makeField.js';
+import { DTConfigWithDataGenOpts } from '../modes/data-type.js';
+import { makeRandomDataFunctionForField } from './make-dt-field-fn.js';
 
 /**
  * Generates an array of records based on the data type field config of count
- * NOTE: "locale" not implemented
  */
 export function makeRandomDataSet(
-    fields: DataTypeConfigWithGeneratorOpts['fields'],
+    fields: DTConfigWithDataGenOpts['fields'],
     total = 3,
     isStressTest = false
 ): Record<string, any>[] | undefined {
@@ -51,7 +50,7 @@ const parentTypesStr = Object.keys(validParentTypes).join(', ');
  * Loops through fields, creating functions to generate data, unless the field has
  * child fields - then it will populate after the child fields have been created
  */
-function collectFieldFnsAndParents(fields: DataTypeConfigWithGeneratorOpts['fields']) {
+function collectFieldFnsAndParents(fields: DTConfigWithDataGenOpts['fields']) {
     const fns: Record<string, () => any> = {};
     const parents: { field: string; type: FieldType | DeprecatedFieldType }[] = [];
 
@@ -86,10 +85,10 @@ function populateParentFields(
     });
 
     if (objects.length) {
-        expandObjects(record, objects);
+        populateParentObjects(record, objects);
     }
     if (tuples.length) {
-        expandTuples(record, tuples);
+        populateParentTuples(record, tuples);
     }
     if (unknown.length) {
         const msg = `Received fields w/children ${unknown.join(',')}. Child support currently only available for ${parentTypesStr} field types.`;
@@ -97,7 +96,7 @@ function populateParentFields(
     }
 }
 
-function expandTuples(record: Record<string, any>, tupleFields: string[]) {
+function populateParentTuples(record: Record<string, any>, tupleFields: string[]) {
     for (const tuple of tupleFields) {
         const values = [];
 
@@ -116,7 +115,7 @@ function expandTuples(record: Record<string, any>, tupleFields: string[]) {
     }
 }
 
-function expandObjects(record: Record<string, any>, objFields: string[]) {
+function populateParentObjects(record: Record<string, any>, objFields: string[]) {
     for (const objField of objFields) {
         record[objField] = {};
 
@@ -131,7 +130,7 @@ function expandObjects(record: Record<string, any>, objFields: string[]) {
         }
 
         if (!found) {
-            ensureEmptyChild(record, objField);
+            addEmptyObject(record, objField);
         }
     }
 }
@@ -149,7 +148,8 @@ function setNestedField(obj: Record<string, any>, path: string, value: any) {
     current[keys[keys.length - 1]] = value;
 }
 
-function ensureEmptyChild(record: Record<string, any>, path: string) {
+/** ensure empty objects are added to the record - i.e. a.b.c -> a: { b: { c: {} } } */
+function addEmptyObject(record: Record<string, any>, path: string) {
     const keys = path.split('.');
     let current = record;
 
