@@ -15,8 +15,8 @@ importers:
         specifier: ~2.10.0
         version: 2.10.0
       '@terascope/eslint-config':
-        specifier: ~1.2.0
-        version: 1.2.0(jest@30.4.2(@types/node@25.9.1)(node-notifier@10.0.1))
+        specifier: ~1.2.1
+        version: 1.2.1(jest@30.4.2(@types/node@25.9.1)(node-notifier@10.0.1))
       '@terascope/job-components':
         specifier: ~2.12.0
         version: 2.12.0
@@ -720,8 +720,8 @@ packages:
     resolution: {integrity: sha512-WKkSHGdv/52jNZW07qk+srX3XAQAmny6ShetVq823+uPqoarl65aVUEq2sxrCEahKK3tHkSp1EI36nWvkdQLvA==}
     engines: {node: '>=22.0.0', pnpm: '>=10.25.0'}
 
-  '@terascope/eslint-config@1.2.0':
-    resolution: {integrity: sha512-95M7fgTfOocHuREjrkYNvYuEuPeNLE+YNF2IhM6WyHOFAq6v5DCODZOVy2EVZ7/7SMpTHohPPQ3xYwR/0Qz+Ug==}
+  '@terascope/eslint-config@1.2.1':
+    resolution: {integrity: sha512-w6tQ710IlWFqjUcNv45AVqjOmZfHQvxC56FMbTik3+ogJJneNPej43N8pacxtFzjNeh4R5Ro6iCbWbJSvn9GHw==}
     engines: {node: '>=22.0.0', pnpm: '>=10.25.0'}
 
   '@terascope/fetch-github-release@2.3.1':
@@ -4779,7 +4779,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@terascope/eslint-config@1.2.0(jest@30.4.2(@types/node@25.9.1)(node-notifier@10.0.1))':
+  '@terascope/eslint-config@1.2.1(jest@30.4.2(@types/node@25.9.1)(node-notifier@10.0.1))':
     dependencies:
       '@eslint/compat': 2.0.5(eslint@9.39.4)
       '@eslint/js': 9.39.4
