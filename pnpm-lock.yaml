@@ -162,7 +162,13 @@ importers:
       '@terascope/core-utils':
         specifier: ~2.10.0
         version: 2.10.0
+      '@terascope/job-components':
+        specifier: ~2.12.0
+        version: 2.12.0
     devDependencies:
+      '@jest/globals':
+        specifier: ^30.4.1
+        version: 30.4.1
       '@terascope/scripts':
         specifier: ~2.14.0
         version: 2.14.0(typescript@5.9.3)
