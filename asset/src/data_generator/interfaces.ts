@@ -1,4 +1,4 @@
-import { OpConfig, DataTypeConfig } from '@terascope/types';
+import { OpConfig, DTConfigWithDataGenOpts } from '@terascope/types';
 
 export enum DateOptions {
     dateNow = 'dateNow',
@@ -16,7 +16,7 @@ export enum IDType {
 export interface DataGenerator extends OpConfig {
     mode?: 'json_schema' | 'data_type';
     json_schema?: string;
-    data_type_config?: DataTypeConfig;
+    data_type_config?: DTConfigWithDataGenOpts;
     size: number;
     start?: string | number;
     end?: string | number;

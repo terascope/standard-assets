@@ -1,5 +1,5 @@
 import { Fetcher, Context } from '@terascope/job-components';
-import { DataTypeConfig, ExecutionConfig } from '@terascope/types';
+import { DTConfigWithDataGenOpts, ExecutionConfig } from '@terascope/types';
 import { makeRandomDataSet } from '@terascope/data-mate';
 import { Mocker } from 'mocker-data-generator';
 import { faker } from '@faker-js/faker';
@@ -16,7 +16,7 @@ const chance = new Chance();
 
 export default class DataGeneratorFetcher extends Fetcher<DataGenerator> {
     dataSchema: Record<string, any> | undefined;
-    dataTypeConfig: DataTypeConfig | undefined;
+    dataTypeConfig: DTConfigWithDataGenOpts | undefined;
     private fetchFn: (count: number) => Promise<Record<string, any>[]>;
 
     constructor(context: Context, opConfig: DataGenerator, exConfig: ExecutionConfig) {
@@ -105,7 +105,7 @@ function parsedSchema(opConfig: DataGenerator) {
     }
 }
 
-function parsedDataTypeConfig(opConfig: DataGenerator): DataTypeConfig {
+function parsedDataTypeConfig(opConfig: DataGenerator): DTConfigWithDataGenOpts {
     if (opConfig.data_type_config) {
         return opConfig.data_type_config;
     } else {
