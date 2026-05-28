@@ -1,5 +1,6 @@
 import { Fetcher, Context } from '@terascope/job-components';
 import { DataTypeConfig, ExecutionConfig } from '@terascope/types';
+import { makeRandomDataSet } from '@terascope/data-mate';
 import { Mocker } from 'mocker-data-generator';
 import { faker } from '@faker-js/faker';
 import Randexp from 'randexp';
@@ -10,7 +11,6 @@ import { pDelay, TSError } from '@terascope/core-utils';
 import { DataGenerator, CounterResults } from './interfaces.js';
 import defaultSchema from './modes/data-schema.js';
 import defaultDataType from './modes/data-type.js';
-import { makeRandomDataSet } from './data-type-generator/make-dt-data-set.js';
 
 const chance = new Chance();
 

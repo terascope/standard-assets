@@ -1,7 +1,8 @@
 import { getTypeOf, isNotNil, isSimpleObject, isString } from '@terascope/core-utils';
 import { BaseSchema, ValidatedJobConfig, getOpConfig } from '@terascope/job-components';
+import { DTFieldConfigWithDataGenOpts, FieldType, Terafoundation } from '@terascope/types';
+import { getDTFieldOptions } from './modes/data-type.js';
 import { DataGenerator, IDType, DateOptions } from './interfaces.js';
-import { DataTypeFieldConfig, FieldType, Terafoundation } from '@terascope/types';
 
 export default class Schema extends BaseSchema<DataGenerator> {
     validateJob(job: ValidatedJobConfig): void {
@@ -26,13 +27,19 @@ export default class Schema extends BaseSchema<DataGenerator> {
 
     build(): Terafoundation.Schema<Omit<DataGenerator, '_op'>> {
         return {
+            mode: {
+                doc: 'Whether to use the traditional json_schema or data_type mode',
+                default: 'json_schema',
+                format: 'optional_string'
+            },
             json_schema: {
                 doc: 'File path to custom data schema',
                 default: null,
                 format: 'optional_string'
             },
             data_type_fields: {
-                doc: 'Data type fields to use instead of a json schema ({ field1: { type, etc. }, field2: { type, etc. } })',
+                doc: 'Enhanced data type config to use instead of a json schema ({ field1: { type, etc. }, field2: { type, etc. } })'
+                    + `Each field config can include these additional options to constrain the generated data.... ${getDTFieldOptions()}`,
                 default: null,
                 format(val: any) {
                     if (val) {
@@ -42,7 +49,7 @@ export default class Schema extends BaseSchema<DataGenerator> {
                         for (const field in val) {
                             if (!Object.hasOwn(val, field)) continue;
 
-                            const config = val[field] as DataTypeFieldConfig;
+                            const config = val[field] as DTFieldConfigWithDataGenOpts;
 
                             if (!config.type || !FieldType[config.type]) {
                                 throw new Error(`Field "${field}" must have a valid field type`);
@@ -50,11 +57,6 @@ export default class Schema extends BaseSchema<DataGenerator> {
                         }
                     }
                 }
-            },
-            mode: {
-                doc: 'Whether to use the traditional json_schema or data_type mode',
-                default: 'json_schema',
-                format: 'optional_string'
             },
             size: {
                 doc: 'If job `lifecycle` is set to `once`, then size is the total number of generated documents. '

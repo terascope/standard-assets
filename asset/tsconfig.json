@@ -5,8 +5,7 @@
         "module": "ESNext",
         "outDir": "dist",
         "rootDir": "src",
-        "esModuleInterop": true,
-        "types": ["node"]
+        "esModuleInterop": true
     },
     "include": ["src", "test"]
 }
