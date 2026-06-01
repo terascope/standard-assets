@@ -4,3 +4,9 @@ packages:
 allowBuilds:
   # Used by a package within @docusaurus/core
   core-js: true
+
+blockExoticSubdeps: true
+
+minimumReleaseAge: 1440 # 1 day
+
+trustPolicy: no-downgrade
