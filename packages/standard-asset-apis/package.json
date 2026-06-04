@@ -18,7 +18,8 @@
         "build:watch": "tsc --project tsconfig.json --watch",
         "test": "ts-scripts test . --",
         "test:debug": "ts-scripts test --debug . --",
-        "test:watch": "ts-scripts test --watch . --"
+        "test:watch": "ts-scripts test --watch . --",
+        "test:encrypted": "echo 'No encrypted tests for standard assets'"
     },
     "dependencies": {
         "@sindresorhus/fnv1a": "~3.1.0",
