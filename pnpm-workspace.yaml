@@ -1,3 +1,6 @@
 packages:
   - 'asset'
   - 'packages/*'
+
+onlyBuiltDependencies:
+  - "@confluentinc/kafka-javascript"

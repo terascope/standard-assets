@@ -54,10 +54,6 @@ export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderCon
     private async createRouteSenderAPI(route: string, _connection: string) {
         let client = this.api.get(route);
 
-        this.logger.info('debugging sender route: client in api', client);
-
-        this.logger.info('debugging get client', client);
-
         if (client == null) {
             client = await this.api.create(
                 route,
