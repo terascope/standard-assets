@@ -170,6 +170,7 @@ export class RoutedSender {
             }
 
             this.logger.info(`Creating sender api for route:${route}, _connection:${_connection}`);
+
             const sender = await this.createRouteSenderAPI(route, _connection);
             this.senders.set(route, sender);
         } finally {
@@ -328,7 +329,6 @@ export class RoutedSender {
                 if (!batches.length) return;
 
                 this.allBatches.set(route, []);
-
                 try {
                     await pMap(batches, async (batch) => {
                         if (batch.length <= minPerBatch) {
@@ -350,6 +350,7 @@ export class RoutedSender {
                         this.logger.debug(`Sending ${batch.length} records to route ${route}`);
 
                         const sender = this.senders.get(route);
+
                         if (!sender) throw new Error('No sender registered for route');
 
                         const result: unknown = await sender.send(batch);
@@ -360,6 +361,7 @@ export class RoutedSender {
                             // we do this for backwards compatibility
                             affectedBatchCount = batch.length;
                         }
+
                         affectedRows += affectedBatchCount;
 
                         this.batchEndHook

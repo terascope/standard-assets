@@ -3,6 +3,7 @@ packages:
   - 'packages/*'
 
 allowBuilds:
+  '@confluentinc/kafka-javascript': true
   dtrace-provider: true
   unrs-resolver: true
 
