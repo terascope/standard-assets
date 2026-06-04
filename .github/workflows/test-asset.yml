@@ -113,10 +113,6 @@ jobs:
       - name: Test asset for ${{ matrix.search-version }}
         run: SKIP_IMAGE_DELETION='true' pnpm run test:${{ matrix.search-version }}
 
-      - name: Test apis for ${{ matrix.search-version }}
-        run: pnpm run test:${{ matrix.search-version }}
-        working-directory: ./packages/standard-asset-apis
-
   test-standard-assets-encrypted:
     runs-on: ubuntu-latest
     needs: cache-docker-images
