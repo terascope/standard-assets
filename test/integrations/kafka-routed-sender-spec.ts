@@ -8,6 +8,7 @@ import { JobConfigParams, Logger } from '@terascope/types';
 import { TestClientConfig } from '@terascope/job-components';
 import {
     createClient as createKafkaClient, makeAdminClient, KafkaAdminResult,
+    connectorConfig
 } from 'terafoundation_kafka_connector';
 // @ts-expect-error
 import decompress from 'decompress';
@@ -28,31 +29,6 @@ describe('job regression tests', () => {
 
     let harness: JobTestHarness;
     let kafkaAssetPath = '';
-
-    // kafka should be in charge of this but does not export this
-    const {
-        KAFKA_HOSTNAME = 'localhost',
-        KAFKA_PORT = '49094',
-        KAFKA_BROKER,
-        KAFKA_BROKERS = KAFKA_BROKER ?? `${KAFKA_HOSTNAME}:${KAFKA_PORT}`,
-        ENCRYPT_KAFKA,
-        CERT_PATH = '',
-    } = process.env;
-
-    const kafkaBrokers: string[] = KAFKA_BROKERS.split(',').map((s) => s.trim());
-    const encryptKafka = ENCRYPT_KAFKA === 'true';
-
-    const connectorConfig = {
-        brokers: kafkaBrokers,
-        ...(encryptKafka
-            ? {
-                security_protocol: 'ssl' as const,
-                ssl_ca_location: path.join(CERT_PATH, 'CAs/rootCA.pem'),
-                ssl_certificate_location: path.join(CERT_PATH, 'kafka-keypair.pem'),
-                ssl_key_location: path.join(CERT_PATH, 'kafka-keypair.pem'),
-            }
-            : {})
-    };
 
     const clientConfig: TestClientConfig = {
         type: 'kafka',
@@ -101,15 +77,15 @@ describe('job regression tests', () => {
         assetDir.push(kafkaAssetPath);
 
         const config = {
+            ...connectorConfig,
             type: 'kafka',
             endpoint: 'default',
-            brokers: kafkaBrokers,
             rdkafka_options: {
                 'log.connection.close': false,
                 'socket.timeout.ms': 10000,
                 'metadata.request.timeout.ms': 15000,
                 'socket.connection.setup.timeout.ms': 10000,
-            }
+            },
         } as any;
         const { client } = await makeAdminClient(config, logger);
 
@@ -125,7 +101,6 @@ describe('job regression tests', () => {
 
         const stuff = await createKafkaClient(consumerConfig, logger, { options: { type: 'consumer', group: 'test-group' } });
         consumerClient = stuff.client;
-        // await connectClient(consumerClient);
 
         await Promise.all(topicList.map(
             (topic) => {
