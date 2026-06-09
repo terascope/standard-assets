@@ -1,7 +1,7 @@
 {
     "name": "@terascope/standard-asset-apis",
     "displayName": "Standard Asset Apis",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "description": "A common set of tools for data processing",
     "homepage": "https://github.com/terascope/standard-assets",
     "repository": "git@github.com:terascope/standard-assets.git",
@@ -18,8 +18,8 @@
         "build:watch": "tsc --project tsconfig.json --watch",
         "test": "ts-scripts test . --",
         "test:debug": "ts-scripts test --debug . --",
-        "test:watch": "ts-scripts test --watch . --",
-        "test:encrypted": "echo 'No encrypted tests for standard assets'"
+        "test:encrypted": "echo 'No encrypted tests for standard assets'",
+        "test:watch": "ts-scripts test --watch . --"
     },
     "dependencies": {
         "@sindresorhus/fnv1a": "~3.1.0",
