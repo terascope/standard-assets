@@ -28,9 +28,9 @@
     },
     "devDependencies": {
         "@jest/globals": "^30.4.1",
-        "@terascope/scripts": "~2.17.2",
+        "@terascope/scripts": "~2.19.0",
         "@types/jest": "~30.0.0",
-        "@types/node": "~25.9.3",
+        "@types/node": "~26.0.0",
         "jest": "~30.4.2",
         "jest-extended": "~7.0.0",
         "jest-fixtures": "~0.6.0",
