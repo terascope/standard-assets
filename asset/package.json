@@ -16,7 +16,7 @@
         "test": "pnpm --dir ../ test"
     },
     "dependencies": {
-        "@faker-js/faker": "~10.4.0",
+        "@faker-js/faker": "~10.5.0",
         "@terascope/core-utils": "~2.12.1",
         "@terascope/data-mate": "~2.13.1",
         "@terascope/geo-utils": "~2.12.1",
