@@ -24,13 +24,13 @@
     "dependencies": {
         "@sindresorhus/fnv1a": "~3.1.0",
         "@terascope/core-utils": "~2.12.1",
-        "@terascope/job-components": "~2.14.1"
+        "@terascope/job-components": "~2.14.2"
     },
     "devDependencies": {
         "@jest/globals": "^30.4.1",
-        "@terascope/scripts": "~2.19.0",
+        "@terascope/scripts": "~2.19.1",
         "@types/jest": "~30.0.0",
-        "@types/node": "~26.0.0",
+        "@types/node": "~26.0.1",
         "jest": "~30.4.2",
         "jest-extended": "~7.0.0",
         "jest-fixtures": "~0.6.0",
