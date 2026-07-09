@@ -209,7 +209,7 @@ describe('filter_by_date', () => {
     });
 });
 
-describe('with prom metrics enables', () => {
+describe('with metrics enabled', () => {
     it('should track metrics for rejected records', async () => {
         const promEnabled = true;
         const promDefault = false;

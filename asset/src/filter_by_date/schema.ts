@@ -38,6 +38,16 @@ export default class Schema extends BaseSchema<FilterByDateConfig> {
                 doc: 'limit on dates after',
                 format: this._limitsSchema,
                 default: '1day'
+            },
+            _dead_letter_action: {
+                doc: 'dlq action for filtered records - see https://github.com/terascope/kafka-assets/blob/master/docs/asset/apis/kafka_dead_letter.md and https://terascope.github.io/teraslice/docs/jobs/dead-letter-queue/#docsNav',
+                format: 'required_string',
+                default: 'none'
+            },
+            collect_metrics: {
+                doc: 'enable metric collection for number of rejected records',
+                format: 'Boolean',
+                default: false
             }
         };
     }
