@@ -76,7 +76,7 @@ export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
         if (!valid) {
             this.rejectRecord(record, new Error('record timestamp does not meet date guard criteria'));
 
-            if(this.opConfig.collect_metrics) {
+            if (this.opConfig.collect_metrics) {
                 FilterByDate.rejects += 1;
             }
         }
