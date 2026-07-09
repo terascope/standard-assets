@@ -1,6 +1,10 @@
-import { subtractFromDate, addToDate, getTime } from '@terascope/core-utils';
-import { WorkerTestHarness } from 'teraslice-test-harness';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { subtractFromDate, addToDate, getTime, cloneDeep } from '@terascope/core-utils';
+import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { FilterByDateConfig } from '../../asset/src/filter_by_date/interfaces.js';
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const nowDate = new Date();
 const currentTimeMilliSeconds = getTime(nowDate) as number;
@@ -199,5 +203,69 @@ describe('filter_by_date', () => {
         const results = await harness.runSlice(testData);
 
         expect(results.length).toEqual(2);
+    });
+});
+
+fdescribe('with prom metrics enables', () => {
+    it('should track metrics for rejected records', async () => {
+        const promEnabled = true;
+        const promDefault = false;
+        const promPort = 3390;
+
+        const jobWithCollectMetrics = newTestJobConfig({
+            prom_metrics_enabled: promEnabled,
+            prom_metrics_port: promPort,
+            prom_metrics_add_default: promDefault,
+            operations: [
+                {
+                    _op: 'test-reader',
+                    passthrough_slice: true
+                },
+                {
+                    _op: 'filter_by_date',
+                    date_field: 'timestamp',
+                    limit_past: '2week',
+                    limit_future: '2day',
+                    collect_metrics: true
+
+                },
+                {
+                    _op: 'noop'
+                },
+            ]
+        });
+
+        const harness = new WorkerTestHarness(jobWithCollectMetrics, {
+            assetDir: path.join(dirname, '../../asset'),
+            cluster_manager_type: 'kubernetesV2'
+        });
+
+        await harness.context.apis.foundation.promMetrics.init({
+            terasliceName: 'ts-test',
+            assignment: 'worker',
+            logger: harness.context.logger,
+            tf_prom_metrics_enabled: false,
+            tf_prom_metrics_port: 3333,
+            tf_prom_metrics_add_default: true,
+            job_prom_metrics_enabled: promEnabled,
+            job_prom_metrics_port: promPort,
+            job_prom_metrics_add_default: promDefault,
+            prom_metrics_display_url:
+                harness.context.sysconfig.terafoundation.prom_metrics_display_url,
+            labels: {
+                assignment: 'worker'
+            }
+        });
+
+        await harness.initialize();
+
+        const results = await harness.runSlice(cloneDeep(jsonData));
+
+        console.log(results);
+
+        await harness.context.apis.foundation.promMetrics.deleteMetric('count_by_field_count_total');
+        await harness.context.apis.foundation.promMetrics.shutdown();
+        await harness.shutdown();
+        await harness.flush();
     });
 });

@@ -2,7 +2,7 @@ import {
     DataEntity, isValidDate, getTime, isISO8601
 } from '@terascope/core-utils';
 import {
-    FilterProcessor, Context, ExecutionConfig,
+    FilterProcessor, Context, ExecutionConfig, isPromAvailable
 } from '@terascope/job-components';
 import ms from 'ms';
 import { FilterByDateConfig } from './interfaces.js';
@@ -13,6 +13,7 @@ enum DateDirection {
 }
 
 export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
+    static rejects: number = 0;
     private limit_past: number;
     private limit_future: number;
     // a date value is a comparison against a static set date, while the
@@ -38,12 +39,46 @@ export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
         }
     }
 
+    async initialize(): Promise<void> {
+        const { opConfig, context } = this;
+
+        if (opConfig.collect_metrics && isPromAvailable(context)) {
+            const defaultLabels = context.apis.foundation.promMetrics.getDefaultLabels();
+            const name = `${this.opConfig._op}_filtered`;
+            const help = `${this.opConfig._op} filtered by date`;
+            const labelNames = [...Object.keys(defaultLabels), 'total_seen', 'rejected', 'op_name'];
+
+            await this.context.apis.foundation.promMetrics.addCounter(
+                name,
+                help,
+                labelNames,
+                function collect() {
+                    this.inc(
+                        {
+                            field: 'rejected_by_date',
+                            op_name: opConfig._op,
+                            ...defaultLabels
+                        },
+                        FilterByDate.rejects
+                    );
+                }
+            );
+        }
+    }
+
     filter(record: DataEntity) {
         const now = Date.now();
         const pastGuard = this._getGuardTime(DateDirection.past, now);
         const futureGuard = this._getGuardTime(DateDirection.future, now);
 
-        return this._checkDate(record[this.opConfig.date_field], pastGuard, futureGuard);
+        const valid = this._checkDate(record[this.opConfig.date_field], pastGuard, futureGuard);
+
+        if (!valid) {
+            FilterByDate.rejects += 1;
+            this.rejectRecord(record, new Error('record timestamp does not meet date guard criteria'))
+        }
+
+        return valid;
     }
 
     _getGuardTime(guardDirection: DateDirection, now: number) {
