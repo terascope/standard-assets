@@ -46,7 +46,7 @@ export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
             const defaultLabels = context.apis.foundation.promMetrics.getDefaultLabels();
             const name = `${this.opConfig._op}_filtered`;
             const help = `${this.opConfig._op} filtered by date`;
-            const labelNames = [...Object.keys(defaultLabels), 'total_seen', 'rejected', 'op_name'];
+            const labelNames = [...Object.keys(defaultLabels), 'field', 'op_name'];
 
             await this.context.apis.foundation.promMetrics.addCounter(
                 name,
@@ -74,8 +74,11 @@ export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
         const valid = this._checkDate(record[this.opConfig.date_field], pastGuard, futureGuard);
 
         if (!valid) {
-            FilterByDate.rejects += 1;
-            this.rejectRecord(record, new Error('record timestamp does not meet date guard criteria'))
+            this.rejectRecord(record, new Error('record timestamp does not meet date guard criteria'));
+
+            if(this.opConfig.collect_metrics) {
+                FilterByDate.rejects += 1;
+            }
         }
 
         return valid;

@@ -94,7 +94,10 @@ describe('filter_by_date', () => {
     async function makeTest(config: Partial<FilterByDateConfig> = {}) {
         const baseConfig = {
             _op: 'filter_by_date',
+            _dead_letter_action: 'none',
+            collect_metrics: false
         };
+
         const opConfig = Object.assign({}, baseConfig, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
@@ -206,7 +209,7 @@ describe('filter_by_date', () => {
     });
 });
 
-fdescribe('with prom metrics enables', () => {
+describe('with prom metrics enables', () => {
     it('should track metrics for rejected records', async () => {
         const promEnabled = true;
         const promDefault = false;
@@ -226,7 +229,8 @@ fdescribe('with prom metrics enables', () => {
                     date_field: 'timestamp',
                     limit_past: '2week',
                     limit_future: '2day',
-                    collect_metrics: true
+                    collect_metrics: true,
+                    _dead_letter_action: 'none'
 
                 },
                 {
@@ -261,9 +265,15 @@ fdescribe('with prom metrics enables', () => {
 
         const results = await harness.runSlice(cloneDeep(jsonData));
 
-        console.log(results);
+        expect(results.length).toBe(4);
 
-        await harness.context.apis.foundation.promMetrics.deleteMetric('count_by_field_count_total');
+        const metrics: string = await harness.context.apis.scrapePromMetrics();
+
+        const filteredLine = metrics.split('\n').filter((line: string) => line.includes('rejected_by_date'))[0];
+
+        expect(filteredLine.split(' ')[1]).toBe('13');
+
+        await harness.context.apis.foundation.promMetrics.deleteMetric('filter_by_date_filtered');
         await harness.context.apis.foundation.promMetrics.shutdown();
         await harness.shutdown();
         await harness.flush();
