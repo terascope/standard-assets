@@ -138,15 +138,15 @@ export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
         if (this._validTimestamp(date)) {
             const milliDate = getTime(date);
 
-            if (milliDate == null || isNaN(milliDate)) {
+            if (milliDate == null || milliDate === false || isNaN(milliDate as number)) {
                 badDate = true;
             }
 
-            if (milliDate < pastGuard) {
+            if (milliDate as number < pastGuard) {
                 failurePast = true;
             }
 
-            if (milliDate > futureGuard) {
+            if (milliDate as number > futureGuard) {
                 failureFuture = true;
             }
         } else {
