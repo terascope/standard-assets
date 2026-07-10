@@ -1,6 +1,10 @@
-import { subtractFromDate, addToDate, getTime } from '@terascope/core-utils';
-import { WorkerTestHarness } from 'teraslice-test-harness';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { subtractFromDate, addToDate, getTime, cloneDeep } from '@terascope/core-utils';
+import { WorkerTestHarness, newTestJobConfig } from 'teraslice-test-harness';
 import { FilterByDateConfig } from '../../asset/src/filter_by_date/interfaces.js';
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const nowDate = new Date();
 const currentTimeMilliSeconds = getTime(nowDate) as number;
@@ -90,7 +94,10 @@ describe('filter_by_date', () => {
     async function makeTest(config: Partial<FilterByDateConfig> = {}) {
         const baseConfig = {
             _op: 'filter_by_date',
+            _dead_letter_action: 'none',
+            collect_metrics: false
         };
+
         const opConfig = Object.assign({}, baseConfig, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
@@ -174,6 +181,7 @@ describe('filter_by_date', () => {
             limit_past: new Date(limitPast).toISOString(),
             date_field: 'date'
         });
+
         const results = await harness.runSlice(testData);
 
         expect(results.length).toEqual(3);
@@ -199,5 +207,80 @@ describe('filter_by_date', () => {
         const results = await harness.runSlice(testData);
 
         expect(results.length).toEqual(2);
+    });
+});
+
+describe('with metrics enabled', () => {
+    it('should track metrics for rejected records', async () => {
+        const promEnabled = true;
+        const promDefault = false;
+        const promPort = 3390;
+
+        const jobWithCollectMetrics = newTestJobConfig({
+            prom_metrics_enabled: promEnabled,
+            prom_metrics_port: promPort,
+            prom_metrics_add_default: promDefault,
+            operations: [
+                {
+                    _op: 'test-reader',
+                    passthrough_slice: true
+                },
+                {
+                    _op: 'filter_by_date',
+                    date_field: 'timestamp',
+                    limit_past: '2week',
+                    limit_future: '2day',
+                    collect_metrics: true,
+                    _dead_letter_action: 'none'
+
+                },
+                {
+                    _op: 'noop'
+                },
+            ]
+        });
+
+        const harness = new WorkerTestHarness(jobWithCollectMetrics, {
+            assetDir: path.join(dirname, '../../asset'),
+            cluster_manager_type: 'kubernetesV2'
+        });
+
+        await harness.context.apis.foundation.promMetrics.init({
+            terasliceName: 'ts-test',
+            assignment: 'worker',
+            logger: harness.context.logger,
+            tf_prom_metrics_enabled: false,
+            tf_prom_metrics_port: 3333,
+            tf_prom_metrics_add_default: true,
+            job_prom_metrics_enabled: promEnabled,
+            job_prom_metrics_port: promPort,
+            job_prom_metrics_add_default: promDefault,
+            prom_metrics_display_url:
+                harness.context.sysconfig.terafoundation.prom_metrics_display_url,
+            labels: {
+                assignment: 'worker'
+            }
+        });
+
+        await harness.initialize();
+
+        const results = await harness.runSlice(cloneDeep(jsonData));
+
+        expect(results.length).toBe(4);
+
+        const metrics: string = await harness.context.apis.scrapePromMetrics();
+
+        const rejectedPast = metrics.split('\n').filter((line: string) => line.includes('past_rejection'))[0];
+        const rejectedFuture = metrics.split('\n').filter((line: string) => line.includes('future_rejection'))[0];
+        const rejectedBadDate = metrics.split('\n').filter((line: string) => line.includes('bad_date_field_rejection'))[0];
+
+        expect(rejectedPast.split(' ')[1]).toBe('2');
+        expect(rejectedFuture.split(' ')[1]).toBe('1');
+        expect(rejectedBadDate.split(' ')[1]).toBe('10');
+
+        await harness.context.apis.foundation.promMetrics.deleteMetric('filter_by_date_filtered_count');
+        await harness.context.apis.foundation.promMetrics.shutdown();
+        await harness.shutdown();
+        await harness.flush();
     });
 });
