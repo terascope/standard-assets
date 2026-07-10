@@ -100,11 +100,11 @@ export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
             const [badDate, pastReject, futureReject] = dateCheck;
 
             if (this.opConfig.collect_metrics) {
-                if (badDate) FilterByDate.bad_date_field_rejects_count ++;
-                if (pastReject) FilterByDate.past_rejects_count ++;
-                if (futureReject) FilterByDate.future_rejects_count ++;
+                if (badDate) FilterByDate.bad_date_field_rejects_count += 1;
+                if (pastReject) FilterByDate.past_rejects_count += 1;
+                if (futureReject) FilterByDate.future_rejects_count += 1;
             }
-            
+
             this.rejectRecord(record, new Error('record timestamp does not meet date guard criteria'));
         }
 
@@ -138,11 +138,10 @@ export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
         if (this._validTimestamp(date)) {
             const milliDate = getTime(date);
 
-            
             if (milliDate == null || isNaN(milliDate)) {
                 badDate = true;
             }
-            
+
             if (milliDate < pastGuard) {
                 failurePast = true;
             }
