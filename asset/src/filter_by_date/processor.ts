@@ -13,7 +13,10 @@ enum DateDirection {
 }
 
 export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
-    static rejects: number = 0;
+    static past_rejects_count: number = 0;
+    static future_rejects_count: number = 0;
+    static bad_date_field_rejects_count: number = 0;
+
     private limit_past: number;
     private limit_future: number;
     // a date value is a comparison against a static set date, while the
@@ -44,8 +47,8 @@ export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
 
         if (opConfig.collect_metrics && isPromAvailable(context)) {
             const defaultLabels = context.apis.foundation.promMetrics.getDefaultLabels();
-            const name = `${this.opConfig._op}_filtered`;
-            const help = `${this.opConfig._op} filtered by date`;
+            const name = `${this.opConfig._op}_filtered_count`;
+            const help = `${this.opConfig._op} filtered count`;
             const labelNames = [...Object.keys(defaultLabels), 'field', 'op_name'];
 
             await this.context.apis.foundation.promMetrics.addCounter(
@@ -55,11 +58,29 @@ export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
                 function collect() {
                     this.inc(
                         {
-                            field: 'rejected_by_date',
+                            field: 'past_rejection',
                             op_name: opConfig._op,
                             ...defaultLabels
                         },
-                        FilterByDate.rejects
+                        FilterByDate.past_rejects_count
+                    );
+
+                    this.inc(
+                        {
+                            field: 'future_rejection',
+                            op_name: opConfig._op,
+                            ...defaultLabels
+                        },
+                        FilterByDate.future_rejects_count
+                    );
+
+                    this.inc(
+                        {
+                            field: 'bad_date_field_rejection',
+                            op_name: opConfig._op,
+                            ...defaultLabels
+                        },
+                        FilterByDate.bad_date_field_rejects_count
                     );
                 }
             );
@@ -71,14 +92,20 @@ export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
         const pastGuard = this._getGuardTime(DateDirection.past, now);
         const futureGuard = this._getGuardTime(DateDirection.future, now);
 
-        const valid = this._checkDate(record[this.opConfig.date_field], pastGuard, futureGuard);
+        const dateCheck = this._checkDate(record[this.opConfig.date_field], pastGuard, futureGuard);
+
+        const valid = dateCheck.every((v) => v === false);
 
         if (!valid) {
-            this.rejectRecord(record, new Error('record timestamp does not meet date guard criteria'));
+            const [badDate, pastReject, futureReject] = dateCheck;
 
             if (this.opConfig.collect_metrics) {
-                FilterByDate.rejects += 1;
+                if (badDate) FilterByDate.bad_date_field_rejects_count ++;
+                if (pastReject) FilterByDate.past_rejects_count ++;
+                if (futureReject) FilterByDate.future_rejects_count ++;
             }
+            
+            this.rejectRecord(record, new Error('record timestamp does not meet date guard criteria'));
         }
 
         return valid;
@@ -103,15 +130,31 @@ export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
         return now + this.limit_future;
     }
 
-    _checkDate(date: unknown, pastGuard: number, futureGuard: number): boolean {
+    _checkDate(date: unknown, pastGuard: number, futureGuard: number): [boolean, boolean, boolean] {
+        let badDate: boolean = false;
+        let failurePast: boolean = false;
+        let failureFuture: boolean = false;
+
         if (this._validTimestamp(date)) {
             const milliDate = getTime(date);
 
-            if (milliDate === false) return false;
+            
+            if (milliDate == null || isNaN(milliDate)) {
+                badDate = true;
+            }
+            
+            if (milliDate < pastGuard) {
+                failurePast = true;
+            }
 
-            return milliDate >= pastGuard && milliDate <= futureGuard;
+            if (milliDate > futureGuard) {
+                failureFuture = true;
+            }
+        } else {
+            badDate = true;
         }
-        return false;
+
+        return [badDate, failurePast, failureFuture];
     }
 
     _validTimestamp(value: unknown): value is Date {

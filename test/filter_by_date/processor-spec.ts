@@ -181,6 +181,7 @@ describe('filter_by_date', () => {
             limit_past: new Date(limitPast).toISOString(),
             date_field: 'date'
         });
+
         const results = await harness.runSlice(testData);
 
         expect(results.length).toEqual(3);
@@ -269,11 +270,15 @@ describe('with metrics enabled', () => {
 
         const metrics: string = await harness.context.apis.scrapePromMetrics();
 
-        const filteredLine = metrics.split('\n').filter((line: string) => line.includes('rejected_by_date'))[0];
+        const rejectedPast = metrics.split('\n').filter((line: string) => line.includes('past_rejection'))[0];
+        const rejectedFuture = metrics.split('\n').filter((line: string) => line.includes('future_rejection'))[0];
+        const rejectedBadDate = metrics.split('\n').filter((line: string) => line.includes('bad_date_field_rejection'))[0];
 
-        expect(filteredLine.split(' ')[1]).toBe('13');
+        expect(rejectedPast.split(' ')[1]).toBe('2');
+        expect(rejectedFuture.split(' ')[1]).toBe('1');
+        expect(rejectedBadDate.split(' ')[1]).toBe('10');
 
-        await harness.context.apis.foundation.promMetrics.deleteMetric('filter_by_date_filtered');
+        await harness.context.apis.foundation.promMetrics.deleteMetric('filter_by_date_filtered_count');
         await harness.context.apis.foundation.promMetrics.shutdown();
         await harness.shutdown();
         await harness.flush();
