@@ -278,6 +278,16 @@ describe('with metrics enabled', () => {
         expect(rejectedFuture.split(' ')[1]).toBe('1');
         expect(rejectedBadDate.split(' ')[1]).toBe('10');
 
+        const metricsB: string = await harness.context.apis.scrapePromMetrics();
+
+        const rejectedPastB = metricsB.split('\n').filter((line: string) => line.includes('past_rejection'))[0];
+        const rejectedFutureB = metricsB.split('\n').filter((line: string) => line.includes('future_rejection'))[0];
+        const rejectedBadDateB = metricsB.split('\n').filter((line: string) => line.includes('bad_date_field_rejection'))[0];
+
+        expect(rejectedPastB.split(' ')[1]).toBe('2');
+        expect(rejectedFutureB.split(' ')[1]).toBe('1');
+        expect(rejectedBadDateB.split(' ')[1]).toBe('10');
+
         // run next slice
         await harness.runSlice(cloneDeep(jsonData));
 
