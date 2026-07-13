@@ -82,6 +82,10 @@ export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
                         },
                         FilterByDate.bad_date_field_rejects_count
                     );
+
+                    FilterByDate.past_rejects_count = 0;
+                    FilterByDate.future_rejects_count = 0;
+                    FilterByDate.bad_date_field_rejects_count = 0;
                 }
             );
         }
@@ -138,7 +142,7 @@ export default class FilterByDate extends FilterProcessor<FilterByDateConfig> {
         if (this._validTimestamp(date)) {
             const milliDate = getTime(date);
 
-            if (milliDate == null || milliDate === false || isNaN(milliDate as number)) {
+            if (milliDate == null || isNaN(milliDate as number)) {
                 badDate = true;
             }
 
