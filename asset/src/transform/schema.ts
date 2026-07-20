@@ -3,9 +3,10 @@ import {
 } from '@terascope/core-utils';
 import { BaseSchema, APIConfig } from '@terascope/job-components';
 import { PhaseConfig } from './interfaces.js';
+import { JobWarning } from '@terascope/types';
 
 export default class Schema extends BaseSchema<PhaseConfig> {
-    validate(input: PhaseConfig): APIConfig & PhaseConfig {
+    validate(input: PhaseConfig): { config: APIConfig & PhaseConfig; warnings: JobWarning[] } {
         const validatedSchema = super.validate(input);
         if (!Array.isArray(input.rules) || input.rules.length === 0) throw new Error('you must specify rules path to retrieve the rules for this op');
         return validatedSchema;
