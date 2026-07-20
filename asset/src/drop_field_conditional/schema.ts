@@ -1,9 +1,12 @@
 import { BaseSchema, OpConfig, APIConfig } from '@terascope/job-components';
 import { isObjectEntity } from '@terascope/core-utils';
 import { FieldValidator } from '@terascope/data-mate';
+import { JobWarning } from '@terascope/types';
 
 export default class Schema extends BaseSchema<OpConfig> {
-    validate(config: OpConfig & APIConfig): OpConfig & APIConfig {
+    validate(config: OpConfig & APIConfig): {
+        config: APIConfig & OpConfig; warnings: JobWarning[];
+    } {
         const {
             regex,
             validation_method: validationMethod,
@@ -56,7 +59,9 @@ export default class Schema extends BaseSchema<OpConfig> {
             }
         }
 
-        return config;
+        const result = super.validate(config);
+
+        return result;
     }
 
     build(): Record<string, any> {
