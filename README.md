@@ -50,6 +50,7 @@ Any manual changes will be lost next time this gets auto-generated. -->
 - [post_process](./docs/asset/operations/post_process)
 - [remove_empty_fields](./docs/asset/operations/remove_empty_fields)
 - [remove_key](./docs/asset/operations/remove_key)
+- [rename_field](./docs/asset/operations/rename_field)
 - [routed_sender](./docs/asset/operations/routed_sender)
 - [sample_exact](./docs/asset/operations/sample_exact)
 - [sample_exact_es_percent](./docs/asset/operations/sample_exact_es_percent)

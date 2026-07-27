@@ -98,6 +98,9 @@ import RemoveEmptyFieldsSchema from '../src/remove_empty_fields/schema';
 import RemoveKey from '../src/remove_key/processor';
 import RemoveKeySchema from '../src/remove_key/schema';
 
+import RenameField from '../src/rename_field/processor';
+import RenameFieldSchema from '../src/rename_field/schema';
+
 import RoutedSender from '../src/routed_sender/processor';
 import RoutedSenderSchema from '../src/routed_sender/schema';
 
@@ -263,6 +266,10 @@ export const ASSETS = {
     remove_key: {
         Processor: RemoveKey,
         Schema: RemoveKeySchema,
+    },
+    rename_field: {
+        Processor: RenameField,
+        Schema: RenameFieldSchema,
     },
     routed_sender: {
         Processor: RoutedSender,
