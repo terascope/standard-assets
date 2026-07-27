@@ -39,6 +39,7 @@
             "asset/operations/post_process",
             "asset/operations/remove_empty_fields",
             "asset/operations/remove_key",
+            "asset/operations/rename_field",
             "asset/operations/routed_sender",
             "asset/operations/sample_exact",
             "asset/operations/sample_random",
