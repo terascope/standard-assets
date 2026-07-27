@@ -25,6 +25,9 @@ import CountByFieldSchema from '../src/count_by_field/schema';
 import CountUnique from '../src/count_unique/processor';
 import CountUniqueSchema from '../src/count_unique/schema';
 
+import CreateGeopoint from '../src/create_geopoint/processor';
+import CreateGeopointSchema from '../src/create_geopoint/schema';
+
 import DataGeneratorFetcher from '../src/data_generator/fetcher';
 import DataGeneratorSchema from '../src/data_generator/schema';
 import DataGeneratorSlicer from '../src/data_generator/slicer';
@@ -73,6 +76,9 @@ import HashRouterSchema from '../src/hash_router/schema';
 
 import JsonParser from '../src/json_parser/processor';
 import JsonParserSchema from '../src/json_parser/schema';
+
+import KeepField from '../src/keep_field/processor';
+import KeepFieldSchema from '../src/keep_field/schema';
 
 import KeyRouter from '../src/key_router/processor';
 import KeyRouterSchema from '../src/key_router/schema';
@@ -161,6 +167,10 @@ export const ASSETS = {
         Processor: CountUnique,
         Schema: CountUniqueSchema,
     },
+    create_geopoint: {
+        Processor: CreateGeopoint,
+        Schema: CreateGeopointSchema,
+    },
     data_generator: {
         Fetcher: DataGeneratorFetcher,
         Schema: DataGeneratorSchema,
@@ -225,6 +235,10 @@ export const ASSETS = {
     json_parser: {
         Processor: JsonParser,
         Schema: JsonParserSchema,
+    },
+    keep_field: {
+        Processor: KeepField,
+        Schema: KeepFieldSchema,
     },
     key_router: {
         Processor: KeyRouter,
