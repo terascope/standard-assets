@@ -1,0 +1,33 @@
+import { BaseSchema } from '@terascope/job-components';
+import { DateRouterConfig } from '@terascope/standard-asset-apis';
+import { isString } from '@terascope/core-utils';
+
+export default class Schema extends BaseSchema<DateRouterConfig> {
+    build(): Record<string, any> {
+        return {
+            field: {
+                doc: 'Field, or array of fields, to keep on the incoming document; all other fields are removed',
+                default: null,
+                format: (value: unknown) => {
+                    if (value == null) {
+                        throwError(value);
+                    }
+
+                    if (Array.isArray(value)) {
+                        if (!value.every((i) => isString(i))) {
+                            throwError(value);
+                        }
+
+                        return;
+                    }
+
+                    if (!isString(value)) throwError(value);
+                }
+            }
+        };
+    }
+}
+
+function throwError(value: unknown) {
+    throw new Error(`Field must be a string or an array of string, received ${value}`);
+}
