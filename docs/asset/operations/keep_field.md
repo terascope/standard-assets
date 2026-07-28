@@ -30,7 +30,7 @@ Example of a job using the `keep_field` processor
 
 ```
 
-Output from example job
+Here is a representation of what the processor will do with the configuration listed in the job above
 
 ```javascript
 const data = [
@@ -42,10 +42,12 @@ const data = [
 
 const results = await processor.run(data);
 
-DataEntity.make({ name: 'lilly' }),
-DataEntity.make({ name: 'willy' }),
-DataEntity.make({ name: 'billy' }),
-DataEntity.make({ }),
+results = [
+    { name: 'lilly' },
+    { name: 'willy' },
+    { name: 'billy' },
+    { },
+]
 ```
 
 ## Parameters

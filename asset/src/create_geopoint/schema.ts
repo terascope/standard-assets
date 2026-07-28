@@ -14,7 +14,7 @@ export default class Schema extends BaseSchema<CreateGeopointConfig> {
                 default: null,
                 format: 'required_string'
             },
-            destination: {
+            destination_field: {
                 doc: 'Name of the field the geo-point object ({ lat, lon }) is written to',
                 default: 'location',
                 format: 'String'

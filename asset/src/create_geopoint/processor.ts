@@ -26,7 +26,7 @@ export default class CreateGeopoint extends MapProcessor<CreateGeopointConfig> {
 
     private createGeopoint(doc: DataEntity) {
         const {
-            lat_field, lon_field, destination, delete_source
+            lat_field, lon_field, destination_field, delete_source
         } = this.opConfig;
 
         const lat = get(doc, lat_field);
@@ -39,7 +39,7 @@ export default class CreateGeopoint extends MapProcessor<CreateGeopointConfig> {
             : parseGeoPoint({ lat, lon }, false);
 
         if (geoPoint != null) {
-            set(doc, destination, geoPoint);
+            set(doc, destination_field, geoPoint);
         }
 
         // Drop the source fields whether or not a geo-point could be built.

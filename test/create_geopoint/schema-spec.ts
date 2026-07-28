@@ -28,16 +28,16 @@ describe('create_geopoint schema', () => {
         await expect(makeSchema({ lon_field: 'longitude' })).toReject();
         await expect(makeSchema({ lat_field: 'latitude', lon_field: 'longitude' })).toResolve();
         await expect(makeSchema({
-            lat_field: 'latitude', lon_field: 'longitude', destination: 'location', delete_source: true
+            lat_field: 'latitude', lon_field: 'longitude', destination_field: 'location', delete_source: true
         })).toResolve();
         await expect(makeSchema({ lat_field: 1234, lon_field: 'longitude' })).toReject();
         await expect(makeSchema({ lat_field: 'latitude', lon_field: 'longitude', delete_source: 'nope' })).toReject();
     });
 
-    it('should default destination to "location" and delete_source to true', async () => {
+    it('should default destination_field to "location" and delete_source to true', async () => {
         const config = await makeSchema({ lat_field: 'latitude', lon_field: 'longitude' });
 
-        expect(config.destination).toBe('location');
+        expect(config.destination_field).toBe('location');
         expect(config.delete_source).toBe(true);
     });
 });

@@ -24,7 +24,7 @@ export default class RenameField extends MapProcessor<RenameFieldConfig> {
     }
 
     private renameField(doc: DataEntity) {
-        Object.entries(this.opConfig.mapping).forEach(([from, to]) => {
+        Object.entries(this.opConfig.field_mapping).forEach(([from, to]) => {
             // Only move fields that are present on the record; a rename to the
             // same name is a no-op. The value is moved as-is (including falsy
             // values like 0 or "") and the original field is removed.

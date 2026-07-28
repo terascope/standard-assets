@@ -23,7 +23,7 @@ Example of a job using the `rename_field` processor
         },
         {
             "_op": "rename_field",
-            "mapping": {
+            "field_mapping": {
                 "STATION": "station",
                 "LATITUDE": "latitude",
                 "LONGITUDE": "longitude"
@@ -34,7 +34,7 @@ Example of a job using the `rename_field` processor
 
 ```
 
-Output from example job
+Here is a representation of what the processor will do with the configuration listed in the job above
 
 ```javascript
 const data = [
@@ -44,8 +44,10 @@ const data = [
 
 const results = await processor.run(data);
 
-DataEntity.make({ station: 'ACW00011647', latitude: 17.1333, longitude: -61.7833, wind_speed: 0 }),
-DataEntity.make({ station: 'ACW00011648', latitude: 40, longitude: 60, wind_speed: 1.5 }),
+results = [
+    { station: 'ACW00011647', latitude: 17.1333, longitude: -61.7833, wind_speed: 0 },
+    { station: 'ACW00011648', latitude: 40, longitude: 60, wind_speed: 1.5 },
+]
 ```
 
 Fields listed in the mapping that are not present on a record are skipped, and a field mapped to its own name is left unchanged. Values are moved as-is, including falsy values such as `0`, `""`, or `false`.
@@ -55,4 +57,4 @@ Fields listed in the mapping that are not present on a record are skipped, and a
 | Configuration | Description                                                   | Type   | Notes                        |
 | ------------- | ------------------------------------------------------------- | ------ | ---------------------------- |
 | _op           | Name of operation, it must reflect the exact name of the file | String | required |
-| mapping       | Object mapping an existing field name to the new field name it should be renamed to. The original field is removed | Object | required, no default |
+| field_mapping | Object mapping an existing field name to the new field name it should be renamed to. The original field is removed | Object | required, no default |

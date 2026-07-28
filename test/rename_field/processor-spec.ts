@@ -28,7 +28,7 @@ describe('rename_field should', () => {
     async function makeTest(config: Partial<OpConfig> = {}) {
         const _op = {
             _op: 'rename_field',
-            mapping: { STATION: 'station', LATITUDE: 'latitude', LONGITUDE: 'longitude' }
+            field_mapping: { STATION: 'station', LATITUDE: 'latitude', LONGITUDE: 'longitude' }
         };
         const opConfig: OpConfig = config ? Object.assign({}, _op, config) : _op;
         harness = WorkerTestHarness.testProcessor(opConfig);
@@ -70,21 +70,21 @@ describe('rename_field should', () => {
     });
 
     it('preserve falsy values (0, "", false) when renaming', async () => {
-        const test = await makeTest({ mapping: { a: 'x', b: 'y', c: 'z' } });
+        const test = await makeTest({ field_mapping: { a: 'x', b: 'y', c: 'z' } });
         const results = await test.runSlice([{ a: 0, b: '', c: false }]) as DataEntity[];
 
         expect(results).toEqual([{ x: 0, y: '', z: false }]);
     });
 
     it('skip fields in the mapping that are not present on the record', async () => {
-        const test = await makeTest({ mapping: { LATITUDE: 'latitude', MISSING: 'missing' } });
+        const test = await makeTest({ field_mapping: { LATITUDE: 'latitude', MISSING: 'missing' } });
         const results = await test.runSlice([{ LATITUDE: 40, other: 1 }]) as DataEntity[];
 
         expect(results).toEqual([{ latitude: 40, other: 1 }]);
     });
 
     it('leave the record unchanged when a field is mapped to its own name', async () => {
-        const test = await makeTest({ mapping: { name: 'name' } });
+        const test = await makeTest({ field_mapping: { name: 'name' } });
         const results = await test.runSlice([{ name: 'joe', age: 30 }]) as DataEntity[];
 
         expect(results).toEqual([{ name: 'joe', age: 30 }]);

@@ -85,7 +85,7 @@ describe('create_geopoint should', () => {
     });
 
     it('write to a custom destination field', async () => {
-        const test = await makeTest({ destination: 'geo' });
+        const test = await makeTest({ destination_field: 'geo' });
         const results = await test.runSlice(cloneDeep(data)) as DataEntity[];
 
         expect(results[0].geo).toEqual({ lat: 40, lon: 60 });

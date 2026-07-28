@@ -1,8 +1,8 @@
 import { BaseSchema } from '@terascope/job-components';
-import { DateRouterConfig } from '@terascope/standard-asset-apis';
 import { isString } from '@terascope/core-utils';
+import { KeepFieldConfig } from './interfaces.js';
 
-export default class Schema extends BaseSchema<DateRouterConfig> {
+export default class Schema extends BaseSchema<KeepFieldConfig> {
     build(): Record<string, any> {
         return {
             field: {
@@ -10,24 +10,24 @@ export default class Schema extends BaseSchema<DateRouterConfig> {
                 default: null,
                 format: (value: unknown) => {
                     if (value == null) {
-                        throwError(value);
+                        throw new Error('Parameter "field" is required and must be a string or an array of strings');
                     }
 
                     if (Array.isArray(value)) {
-                        if (!value.every((i) => isString(i))) {
-                            throwError(value);
+                        const invalid = value.filter((field) => !isString(field));
+
+                        if (invalid.length > 0) {
+                            throw new Error(`Parameter "field" must be an array of strings, received invalid values: ${JSON.stringify(invalid)}`);
                         }
 
                         return;
                     }
 
-                    if (!isString(value)) throwError(value);
+                    if (!isString(value)) {
+                        throw new Error(`Parameter "field" must be a string or an array of strings, received ${JSON.stringify(value)}`);
+                    }
                 }
             }
         };
     }
-}
-
-function throwError(value: unknown) {
-    throw new Error(`Field must be a string or an array of string, received ${value}`);
 }

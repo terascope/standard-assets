@@ -31,7 +31,7 @@ Example of a job using the `create_geopoint` processor
 
 ```
 
-Output from example job
+Here is a representation of what the processor will do with the configuration listed in the job above
 
 ```javascript
 const data = [
@@ -41,11 +41,13 @@ const data = [
 
 const results = await processor.run(data);
 
-DataEntity.make({ location: { lat: 17.1333, lon: -61.7833 }, otherField: 1 }),
-DataEntity.make({ otherField: 2 }),
+results = [
+    { location: { lat: 17.1333, lon: -61.7833 }, otherField: 1 },
+    { otherField: 2 },
+]
 ```
 
-When a geo-point cannot be built (a source field is missing or the value is invalid), the `destination` field is left unset. The source fields are still removed when `delete_source` is `true`, as shown by the second record above.
+When a geo-point cannot be built (a source field is missing or the value is invalid), the `destination_field` is left unset. The source fields are still removed when `delete_source` is `true`, as shown by the second record above.
 
 ## Parameters
 
@@ -54,5 +56,5 @@ When a geo-point cannot be built (a source field is missing or the value is inva
 | _op           | Name of operation, it must reflect the exact name of the file | String | required |
 | lat_field     | Name of the field containing the latitude value | String | required, no default |
 | lon_field     | Name of the field containing the longitude value | String | required, no default |
-| destination   | Name of the field the geo-point object (`{ lat, lon }`) is written to | String | optional, defaults to `location` |
+| destination_field | Name of the field the geo-point object (`{ lat, lon }`) is written to | String | optional, defaults to `location` |
 | delete_source | Delete the `lat_field` and `lon_field`, whether or not a geo-point could be built | Boolean | optional, defaults to `true` |

@@ -25,10 +25,10 @@ describe('rename_field schema', () => {
 
     it('should expect to be properly configured', async () => {
         await expect(makeSchema({})).toReject();
-        await expect(makeSchema({ mapping: {} })).toReject();
-        await expect(makeSchema({ mapping: 'name' })).toReject();
-        await expect(makeSchema({ mapping: { OLD: 'new' } })).toResolve();
-        await expect(makeSchema({ mapping: { OLD: 'new', FOO: 'bar' } })).toResolve();
-        await expect(makeSchema({ mapping: { OLD: 1234 } })).toReject();
+        await expect(makeSchema({ field_mapping: {} })).toReject();
+        await expect(makeSchema({ field_mapping: 'name' })).toReject();
+        await expect(makeSchema({ field_mapping: { OLD: 'new' } })).toResolve();
+        await expect(makeSchema({ field_mapping: { OLD: 'new', FOO: 'bar' } })).toResolve();
+        await expect(makeSchema({ field_mapping: { OLD: 1234 } })).toReject();
     });
 });
