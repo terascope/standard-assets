@@ -20,7 +20,9 @@ export default class Schema extends BaseSchema<RenameFieldConfig> {
                         throw new Error('Parameter "field_mapping" cannot be empty');
                     }
 
-                    const invalid = entries.filter(([key, val]) => !isString(key) || !isString(val));
+                    const invalid = entries.filter(([key, val]) => {
+                        return !isString(key) || !isString(val);
+                    });
 
                     if (invalid.length > 0) {
                         throw new Error(`Parameter "field_mapping" must have all string keys and values, received invalid entries: ${JSON.stringify(Object.fromEntries(invalid))}`);
