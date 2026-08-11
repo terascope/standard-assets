@@ -33,6 +33,19 @@ export default class Schema extends BaseSchema<DateRouterConfig> {
                 doc: 'determines if the date unit (year, month, day) should be included in final output',
                 default: false,
                 format: 'Boolean'
+            },
+            _dead_letter_action: {
+                doc: [
+                    'This action will specify what to do when failing to parse or transform a record.',
+                    'The following builtin actions are supported:',
+                    '  - "throw": throw the original error​​',
+                    '  - "log": log the error and the data​​',
+                    '  - "none": (default) skip the error entirely',
+                    'If none of the actions are specified it will try and use a registered Dead Letter Queue API under that name.',
+                    'The API must be already be created by a operation before it can used.'
+                ].join('\n'),
+                default: 'log',
+                format: 'optional_string'
             }
         };
     }
