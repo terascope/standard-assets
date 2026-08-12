@@ -39,10 +39,10 @@ export default class Schema extends BaseSchema<DateRouterConfig> {
                     'This action will specify what to do when failing to parse or transform a record.',
                     'The following builtin actions are supported:',
                     '  - "throw": throw the original error​​',
-                    '  - "log": log the error and the data​​',
-                    '  - "none": (default) skip the error entirely',
-                    'If none of the actions are specified it will try and use a registered Dead Letter Queue API under that name.',
-                    'The API must be already be created by a operation before it can used.'
+                    '  - "log": (default) log the error and the data​​',
+                    '  - "none": skip the error entirely',
+                    'If none of the actions are specified it will try to use a registered Dead Letter Queue API under that name.',
+                    'The API must already be created by an operation before it can be used.'
                 ].join('\n'),
                 default: 'log',
                 format: 'optional_string'
