@@ -47,10 +47,6 @@ export default class RoutedSenderProcessor extends BatchProcessor<RouteSenderCon
         await this.routedSender.initialize();
     }
 
-    onSliceFailure(): void {
-        this.routedSender.clearBatches();
-    }
-
     private async createRouteSenderAPI(route: string, _connection: string) {
         let client = this.api.get(route);
 
