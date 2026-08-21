@@ -111,6 +111,7 @@ jobs:
       contents: read
     env:
       NODE_OPTIONS: "--max-old-space-size=4096"
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     strategy:
        # opensearch is finiky, keep testing others if it fails
       fail-fast: false
@@ -250,6 +251,7 @@ jobs:
       contents: read
     env:
       NODE_OPTIONS: "--max-old-space-size=4096"
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     strategy:
        # opensearch is finiky, keep testing others if it fails
       fail-fast: false
