@@ -5,7 +5,7 @@ import path from 'node:path';
 import { ElasticsearchTestHelpers, Client } from '@terascope/opensearch-client';
 import TerasliceClient, { Job } from 'teraslice-client-js';
 import { DownloadExternalAsset } from 'teraslice-test-harness';
-import { ASSET_ZIP_PATH, TERASLICE_HOST } from './config';
+import { ASSET_ZIP_PATH, TERASLICE_HOST } from './config.js';
 import { pDelay } from '@terascope/core-utils';
 
 describe('Standard Assets e2e', () => {
