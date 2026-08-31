@@ -4,6 +4,7 @@ packages:
 
 allowBuilds:
   '@confluentinc/kafka-javascript': true
+  '@parcel/watcher': true
   dtrace-provider: true
   unrs-resolver: true
 
