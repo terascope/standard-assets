@@ -383,18 +383,6 @@ export class RoutedSender {
 
         return affectedRows;
     }
-
-    clear(): void {
-        this.initializingSender.clear();
-        this.senders.clear();
-        this.allBatches.clear();
-        this.verifiedRoutes.clear();
-        this._batchId = 0;
-    }
-
-    clearBatches(): void {
-        this.allBatches.clear();
-    }
 }
 
 function addRecordToBatch(

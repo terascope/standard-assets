@@ -34,9 +34,11 @@ export default class Schema extends BaseSchema<DateRouterConfig> {
                 default: false,
                 format: 'Boolean'
             },
+            // This overrides the default found in the job-components OpSchema
             _dead_letter_action: {
                 doc: [
                     'This action will specify what to do when failing to parse or transform a record.',
+                    'This overrides the default value of `throw` found in the job-components OpSchema.',
                     'The following builtin actions are supported:',
                     '  - "throw": throw the original error​​',
                     '  - "log": (default) log the error and the data​​',
