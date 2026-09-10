@@ -16,9 +16,10 @@ export function parsePath(field: string): string[] {
 }
 
 /**
- * Walks the segments of a path and returns every container they resolve to.
- * Without a wildcard that is at most one, a wildcard fans out across the
- * elements of an array or the values of an object.
+ * Walks the leading segments of a path and returns the containers they land on,
+ * which are the parents a flattened field gets merged into. A path with no
+ * wildcard lands on one container at most. A wildcard fans out across the
+ * elements of an array or the values of an object, so it can land on many.
  */
 export function resolveContainers(
     root: unknown,
