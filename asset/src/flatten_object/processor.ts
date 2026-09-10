@@ -1,6 +1,6 @@
 import { MapProcessor, Context } from '@terascope/job-components';
 import { ExecutionConfig } from '@terascope/types';
-import { DataEntity, get, isPlainObject } from '@terascope/core-utils';
+import { DataEntity, castArray, get, isPlainObject } from '@terascope/core-utils';
 import { FlattenObjectConfig, MissingFieldAction } from './interfaces.js';
 import DataWindow from '../__lib/data-window.js';
 
@@ -20,8 +20,8 @@ export function parsePath(field: string): string[] {
 }
 
 /**
- * A value that keys can be read from and written to. Arrays are
- * excluded, an object cannot be dissolved into one.
+ * A value that keys can be read from and written to. An object cannot be
+ * dissolved into an array, so arrays are excluded.
  */
 function isContainer(value: unknown): value is Record<string, unknown> {
     return value != null && typeof value === 'object' && !Array.isArray(value);
@@ -33,16 +33,13 @@ function isContainer(value: unknown): value is Record<string, unknown> {
  */
 
 export default class FlattenObject extends MapProcessor<FlattenObjectConfig> {
-    /** the whole record is flattened when field is "all" or includes "all" */
+    /** empty when no field was configured, which means flatten the whole record */
     private readonly fields: string[];
-    private readonly flattenAll: boolean;
 
     constructor(context: Context, opConfig: FlattenObjectConfig, exConfig: ExecutionConfig) {
         super(context, opConfig, exConfig);
 
-        const { field } = this.opConfig;
-        this.fields = Array.isArray(field) ? field : [field];
-        this.flattenAll = this.fields.includes('all');
+        this.fields = castArray(this.opConfig.field);
     }
 
     map(doc: DataEntity): DataEntity {
@@ -60,7 +57,7 @@ export default class FlattenObject extends MapProcessor<FlattenObjectConfig> {
     }
 
     private flattenRecord(doc: DataEntity): DataEntity {
-        if (this.flattenAll) {
+        if (this.fields.length === 0) {
             const flattened: Record<string, unknown> = {};
 
             this.flattenInto(doc, flattened, '', 1);
@@ -93,7 +90,8 @@ export default class FlattenObject extends MapProcessor<FlattenObjectConfig> {
         let found = false;
 
         for (const parent of parents) {
-            if (!(key in parent)) continue;
+            // hasOwn, not `in`, so an inherited DataEntity method never counts as a match
+            if (!Object.hasOwn(parent, key)) continue;
 
             // the field resolved, even if it turns out to be a leaf value
             found = true;

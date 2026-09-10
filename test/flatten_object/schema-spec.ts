@@ -35,12 +35,21 @@ describe('flatten_object schema', () => {
         await expect(makeSchema({ max_depth: -1 })).toReject();
         await expect(makeSchema({ max_depth: 1.5 })).toReject();
         await expect(makeSchema({ max_depth: 'two' })).toReject();
+    });
+
+    it('should only accept a non-empty string delimiter', async () => {
+        await expect(makeSchema({ delimiter: '_' })).toResolve();
+        await expect(makeSchema({ delimiter: '::' })).toResolve();
+
+        // these used to slip through and land in the flattened keys
+        await expect(makeSchema({ delimiter: '' })).toReject();
+        await expect(makeSchema({ delimiter: null })).toReject();
         await expect(makeSchema({ delimiter: 1234 })).toReject();
     });
 
-    it('should accept a field name, "all", or an array of field names', async () => {
-        await expect(makeSchema({ field: 'all' })).toResolve();
-        await expect(makeSchema({ field: ['all'] })).toResolve();
+    it('should accept a field name, an array of field names, or nothing', async () => {
+        await expect(makeSchema({})).toResolve();
+        await expect(makeSchema({ field: null })).toResolve();
         await expect(makeSchema({ field: 'location' })).toResolve();
         await expect(makeSchema({ field: 'location.geo' })).toResolve();
         await expect(makeSchema({ field: ['location'] })).toResolve();
@@ -51,6 +60,12 @@ describe('flatten_object schema', () => {
         await expect(makeSchema({ field: ['location', ''] })).toReject();
         await expect(makeSchema({ field: ['location', 1234] })).toReject();
         await expect(makeSchema({ field: 1234 })).toReject();
+    });
+
+    it('should treat "all" as an ordinary field name', async () => {
+        // there is no sentinel value, so a record field named "all" is reachable
+        await expect(makeSchema({ field: 'all' })).toResolve();
+        await expect(makeSchema({ field: ['all', 'location'] })).toResolve();
     });
 
     it('should accept a wildcard anywhere but the end of a path', async () => {
@@ -79,14 +94,14 @@ describe('flatten_object schema', () => {
 
     it('should set the expected defaults', async () => {
         const config = await makeSchema({}) as OpConfig & {
-            field: string;
+            field: string | string[] | null;
             delimiter: string;
             flatten_arrays: boolean;
             max_depth: number;
             missing_field_action: string;
         };
 
-        expect(config.field).toBe('all');
+        expect(config.field).toBeNull();
         expect(config.delimiter).toBe('.');
         expect(config.flatten_arrays).toBe(false);
         expect(config.max_depth).toBe(0);

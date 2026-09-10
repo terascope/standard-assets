@@ -7,7 +7,8 @@ export enum MissingFieldAction {
 }
 
 export interface FlattenObjectConfig extends OpConfig {
-    field: string | string[];
+    /** null flattens the whole record */
+    field: string | string[] | null;
     delimiter: string;
     flatten_arrays: boolean;
     max_depth: number;

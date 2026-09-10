@@ -23,8 +23,7 @@ describe('flatten_object should', () => {
     });
 
     async function makeTest(config: Partial<OpConfig> = {}) {
-        const _op = { _op: 'flatten_object' };
-        const opConfig: OpConfig = config ? Object.assign({}, _op, config) : _op;
+        const opConfig: OpConfig = Object.assign({}, { _op: 'flatten_object' }, config);
         harness = WorkerTestHarness.testProcessor(opConfig);
 
         await harness.initialize();
@@ -43,7 +42,7 @@ describe('flatten_object should', () => {
         expect(results).toBeArrayOfSize(0);
     });
 
-    describe('with the default field of "all"', () => {
+    describe('with no field configured', () => {
         it('flatten nested objects into delimiter joined keys', async () => {
             const test = await makeTest();
             const results = await test.runSlice(cloneDeep(data)) as DataEntity[];
@@ -127,8 +126,8 @@ describe('flatten_object should', () => {
             expect(results).toEqual([{ 'a.b.c': 1 }]);
         });
 
-        it('treat ["all"] the same as "all"', async () => {
-            const test = await makeTest({ field: ['all'] });
+        it('treat an explicit null field the same as leaving it out', async () => {
+            const test = await makeTest({ field: null });
             const results = await test.runSlice(cloneDeep(data)) as DataEntity[];
 
             expect(results).toEqual([
@@ -156,6 +155,16 @@ describe('flatten_object should', () => {
             expect(results[0]).toEqual({ 'a.b': 1 });
         });
 
+        it('flatten a nested "__proto__" key without polluting the prototype', async () => {
+            const test = await makeTest();
+            // an object literal cannot hold an own "__proto__" key, JSON.parse can
+            const doc = JSON.parse('{"a": {"__proto__": {"polluted": true}}}');
+            const results = await test.runSlice([doc]) as DataEntity[];
+
+            expect(Object.keys(results[0])).toEqual(['a.__proto__.polluted']);
+            expect(({} as Record<string, unknown>).polluted).toBeUndefined();
+        });
+
         it('flatten the records of a DataWindow', async () => {
             const test = await makeTest();
             const results = await test.runSlice([
@@ -177,6 +186,17 @@ describe('flatten_object should', () => {
                     'location.geo.lon': -122.3
                 }
             ]);
+        });
+
+        it('preserve the key of a DataWindow and of the records inside it', async () => {
+            const test = await makeTest();
+            const window = DataWindow.make('window_key', [
+                DataEntity.make({ a: { b: 1 } }, { _key: 'inner' })
+            ]);
+            const results = await test.runSlice([window]) as DataWindow[];
+
+            expect(results[0].getMetadata('_key')).toBe('window_key');
+            expect(results[0].asArray()[0].getMetadata('_key')).toBe('inner');
         });
     });
 
@@ -285,6 +305,15 @@ describe('flatten_object should', () => {
             const results = await test.runSlice([{ a: 1, b: { c: 2 } }]) as DataEntity[];
 
             expect(results).toEqual([{ a: 1, b: { c: 2 } }]);
+        });
+
+        it('overwrite a key that the flattened one collides with', async () => {
+            const test = await makeTest({ field: ['a'] });
+            const results = await test.runSlice([
+                { a: { b: 1 }, 'a.b': 'existing' }
+            ]) as DataEntity[];
+
+            expect(results).toEqual([{ 'a.b': 1 }]);
         });
 
         it('flatten the listed fields of a DataWindow', async () => {
@@ -689,6 +718,44 @@ describe('flatten_object should', () => {
             });
 
             await expect(test.runSlice([{ id: 1 }])).toReject();
+        });
+
+        it('treat a field holding null as found', async () => {
+            const test = await makeTest({
+                field: ['a'],
+                missing_field_action: 'throw'
+            });
+
+            await expect(test.runSlice([{ a: null }])).toResolve();
+        });
+
+        it('not count an inherited DataEntity method as found', async () => {
+            const test = await makeTest({
+                field: ['getMetadata'],
+                missing_field_action: 'throw'
+            });
+
+            await expect(test.runSlice([{ id: 1 }])).toReject();
+        });
+
+        it('log a warning once per record for a wildcard path that matched nothing', async () => {
+            const test = await makeTest({
+                field: ['locations.*.geo'],
+                missing_field_action: 'log'
+            });
+
+            const warn = jest.spyOn(test.getOperation('flatten_object').logger, 'warn');
+            const results = await test.runSlice([
+                { locations: [{ city: 'Boise' }] },
+                { locations: [{ city: 'Portland', geo: { lat: 45.5 } }] }
+            ]) as DataEntity[];
+
+            expect(results).toEqual([
+                { locations: [{ city: 'Boise' }] },
+                { locations: [{ city: 'Portland', 'geo.lat': 45.5 }] }
+            ]);
+            expect(warn).toHaveBeenCalledTimes(1);
+            expect(warn).toHaveBeenCalledWith('Field "locations.*.geo" not found on record');
         });
     });
 });
