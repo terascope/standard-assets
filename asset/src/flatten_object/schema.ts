@@ -1,7 +1,7 @@
 import { isNumber, isString } from '@terascope/core-utils';
 import { BaseSchema } from '@terascope/job-components';
 import { FlattenObjectConfig, MissingFieldAction } from './interfaces.js';
-import { WILDCARD, parsePath } from './processor.js';
+import { WILDCARD, parsePath } from './path.js';
 
 /**
  * Throws if the path cannot be used to address an object to flatten.

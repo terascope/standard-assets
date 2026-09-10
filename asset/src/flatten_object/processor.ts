@@ -1,37 +1,23 @@
 import { MapProcessor, Context } from '@terascope/job-components';
 import { ExecutionConfig } from '@terascope/types';
-import { DataEntity, castArray, get, isPlainObject } from '@terascope/core-utils';
+import { DataEntity, castArray, isPlainObject } from '@terascope/core-utils';
 import { FlattenObjectConfig, MissingFieldAction } from './interfaces.js';
+import { parsePath, resolveContainers } from './path.js';
 import DataWindow from '../__lib/data-window.js';
 
-export const WILDCARD = '*';
+/** Swaps a record's keys for new ones in place, so a DataEntity keeps its metadata. */
+function replaceKeys(doc: DataEntity, keys: Record<string, unknown>): DataEntity {
+    for (const key of Object.keys(doc)) {
+        delete doc[key];
+    }
 
-/**
- * Splits a dot notation field path into segments, normalizing the bracket forms
- * so `locations[0]` becomes `locations.0` and both `locations[]` and
- * `locations[*]` become `locations.*`.
- */
-export function parsePath(field: string): string[] {
-    return field
-        .replace(/\[\s*\*?\s*\]/g, `.${WILDCARD}`)
-        .replace(/\[\s*(\d+)\s*\]/g, '.$1')
-        .split('.')
-        .filter((segment) => segment.length > 0);
-}
-
-/**
- * A value that keys can be read from and written to. An object cannot be
- * dissolved into an array, so arrays are excluded.
- */
-function isContainer(value: unknown): value is Record<string, unknown> {
-    return value != null && typeof value === 'object' && !Array.isArray(value);
+    return Object.assign(doc, keys);
 }
 
 /**
  * Collapses nested objects into a single level of keys joined by a delimiter.
  * Either the whole record, or just the objects at the configured fields.
  */
-
 export default class FlattenObject extends MapProcessor<FlattenObjectConfig> {
     /** empty when no field was configured, which means flatten the whole record */
     private readonly fields: string[];
@@ -57,24 +43,22 @@ export default class FlattenObject extends MapProcessor<FlattenObjectConfig> {
     }
 
     private flattenRecord(doc: DataEntity): DataEntity {
-        if (this.fields.length === 0) {
-            const flattened: Record<string, unknown> = {};
-
-            this.flattenInto(doc, flattened, '', 1);
-
-            // mutate in place so the DataEntity keeps its metadata
-            for (const key of Object.keys(doc)) {
-                delete doc[key];
-            }
-
-            return Object.assign(doc, flattened);
-        }
+        if (this.fields.length === 0) return this.flattenWholeRecord(doc);
 
         for (const field of this.fields) {
             this.flattenField(doc, field);
         }
 
         return doc;
+    }
+
+    /** Collapses every nested object in the record into a top level key. */
+    private flattenWholeRecord(doc: DataEntity): DataEntity {
+        const flattened: Record<string, unknown> = {};
+
+        this.flattenInto(doc, flattened, '', 1);
+
+        return replaceKeys(doc, flattened);
     }
 
     /**
@@ -84,8 +68,9 @@ export default class FlattenObject extends MapProcessor<FlattenObjectConfig> {
      */
     private flattenField(doc: DataEntity, field: string): void {
         const segments = parsePath(field);
+        // the schema rejects a path with no segments, so there is always a key
         const key = segments.pop() as string;
-        const parents = this.resolveContainers(doc, segments);
+        const parents = resolveContainers(doc, segments);
 
         let found = false;
 
@@ -98,56 +83,19 @@ export default class FlattenObject extends MapProcessor<FlattenObjectConfig> {
 
             const value = parent[key];
 
-            // nothing to flatten, the field is already a leaf value
-            if (!this.isFlattenable(value)) continue;
-            if (Object.keys(value as Record<string, unknown>).length === 0) continue;
+            if (!this.canFlatten(value)) continue;
 
             const flattened: Record<string, unknown> = {};
 
             // depth is counted from the field, not from the record root. It starts
             // at 2 because the field's own name already accounts for one segment.
-            this.flattenInto(value as Record<string, unknown>, flattened, key, 2);
+            this.flattenInto(value, flattened, key, 2);
 
             delete parent[key];
             Object.assign(parent, flattened);
         }
 
         if (!found) this.handleMissingField(field);
-    }
-
-    /**
-     * Walks the leading segments of a path and returns every container they
-     * resolve to. Without a wildcard that is at most one, a wildcard fans out
-     * across the elements of an array or the values of an object.
-     */
-    private resolveContainers(doc: DataEntity, segments: string[]): Record<string, unknown>[] {
-        let current: unknown[] = [doc];
-
-        for (const segment of segments) {
-            const next: unknown[] = [];
-
-            for (const node of current) {
-                if (segment === WILDCARD) {
-                    if (Array.isArray(node)) {
-                        next.push(...node);
-                    } else if (isContainer(node)) {
-                        next.push(...Object.values(node));
-                    }
-
-                    continue;
-                }
-
-                if (node == null || typeof node !== 'object') continue;
-
-                const value = get(node, segment);
-
-                if (value !== undefined) next.push(value);
-            }
-
-            current = next;
-        }
-
-        return current.filter(isContainer);
     }
 
     private handleMissingField(field: string): void {
@@ -172,18 +120,16 @@ export default class FlattenObject extends MapProcessor<FlattenObjectConfig> {
             const path = prefix === '' ? key : `${prefix}${this.opConfig.delimiter}${key}`;
 
             if (this.shouldDescend(value, depth)) {
-                this.flattenInto(value as Record<string, unknown>, target, path, depth + 1);
+                this.flattenInto(value, target, path, depth + 1);
             } else {
                 target[path] = value;
             }
         }
     }
 
-    private shouldDescend(value: unknown, depth: number): boolean {
-        if (!this.isFlattenable(value)) return false;
-
-        // an empty object or array has no leaves to flatten to, so it is kept as a value
-        if (Object.keys(value as Record<string, unknown>).length === 0) return false;
+    /** Whether to break `value` apart at this depth, or write it out as a leaf. */
+    private shouldDescend(value: unknown, depth: number): value is Record<string, unknown> {
+        if (!this.canFlatten(value)) return false;
 
         const { max_depth: maxDepth } = this.opConfig;
 
@@ -191,10 +137,20 @@ export default class FlattenObject extends MapProcessor<FlattenObjectConfig> {
     }
 
     /**
-     * Whether the value can be broken apart into keys. null and non-plain
-     * objects are always leaves, arrays only when flatten_arrays is on.
+     * Whether the value has keys to be broken apart. An empty object or
+     * array has no leaves to flatten to, so it is kept as a value.
      */
-    private isFlattenable(value: unknown): boolean {
+    private canFlatten(value: unknown): value is Record<string, unknown> {
+        if (!this.isFlattenable(value)) return false;
+
+        return Object.keys(value).length > 0;
+    }
+
+    /**
+     * Whether the value is the kind of thing that can be dissolved at all. null
+     * and non-plain objects are always leaves, arrays only when flatten_arrays is on.
+     */
+    private isFlattenable(value: unknown): value is Record<string, unknown> {
         if (Array.isArray(value)) return this.opConfig.flatten_arrays;
 
         return isPlainObject(value);
