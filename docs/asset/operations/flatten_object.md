@@ -6,6 +6,8 @@ By default the whole record is flattened. Set `field` to flatten only certain ob
 
 By default arrays are not descended into, they are copied over as a value. Set `flatten_arrays` to break them apart too. An empty object or array has no leaves to flatten to, so it is always kept as a value.
 
+Only plain objects are dissolved. Anything carrying a prototype of its own is kept whole under a single key, including a `Date`, a `Buffer`, a `Map`, a `Set`, a `RegExp`, a class instance, and a nested `DataEntity`. `null` and `undefined` are leaf values too, so their keys survive with the value intact rather than being dropped.
+
 ## Usage
 
 ### Flatten every nested object in a record

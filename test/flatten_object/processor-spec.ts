@@ -92,15 +92,37 @@ describe('flatten_object should', () => {
                 { a: null, b: { c: null, d: undefined } }
             ]) as DataEntity[];
 
+            // toEqual ignores undefined values, so assert the key survived too
+            expect(Object.keys(results[0])).toEqual(['a', 'b.c', 'b.d']);
             expect(results).toEqual([{ a: null, 'b.c': null, 'b.d': undefined }]);
         });
 
-        it('keep a date as a leaf value', async () => {
-            const date = new Date('2024-01-01T00:00:00.000Z');
-            const test = await makeTest();
-            const results = await test.runSlice([{ a: { b: date } }]) as DataEntity[];
+        it('keep anything that is not a plain object as a leaf value', async () => {
+            class Point {
+                constructor(public x = 1) {}
+            }
 
-            expect(results).toEqual([{ 'a.b': date }]);
+            const values = {
+                date: new Date('2024-01-01T00:00:00.000Z'),
+                regex: /abc/,
+                map: new Map([['k', 1]]),
+                set: new Set([1]),
+                buffer: Buffer.from('hi'),
+                instance: new Point(),
+                entity: DataEntity.make({ inner: { deep: 1 } })
+            };
+
+            const test = await makeTest();
+            const results = await test.runSlice([
+                Object.fromEntries(
+                    Object.entries(values).map(([name, value]) => [name, { v: value }])
+                )
+            ]) as DataEntity[];
+
+            expect(Object.keys(results[0])).toEqual(
+                Object.keys(values).map((name) => `${name}.v`)
+            );
+            expect(results[0]['entity.v']).toEqual({ inner: { deep: 1 } });
         });
 
         it('use a custom delimiter', async () => {
