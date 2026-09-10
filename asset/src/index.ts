@@ -68,6 +68,9 @@ import FilterByRequiredFieldsSchema from '../src/filter_by_required_fields/schem
 import FilterByUnknownFields from '../src/filter_by_unknown_fields/processor.js';
 import FilterByUnknownFieldsSchema from '../src/filter_by_unknown_fields/schema.js';
 
+import FlattenObject from '../src/flatten_object/processor.js';
+import FlattenObjectSchema from '../src/flatten_object/schema.js';
+
 import GroupBy from '../src/group_by/processor.js';
 import GroupBySchema from '../src/group_by/schema.js';
 
@@ -226,6 +229,10 @@ export const ASSETS = {
     filter_by_unknown_fields: {
         Processor: FilterByUnknownFields,
         Schema: FilterByUnknownFieldsSchema,
+    },
+    flatten_object: {
+        Processor: FlattenObject,
+        Schema: FlattenObjectSchema,
     },
     group_by: {
         Processor: GroupBy,
