@@ -40,6 +40,7 @@ Any manual changes will be lost next time this gets auto-generated. -->
 - [filter_by_date](./docs/asset/operations/filter_by_date)
 - [filter_by_required_fields](./docs/asset/operations/filter_by_required_fields)
 - [filter_by_unknown_fields](./docs/asset/operations/filter_by_unknown_fields)
+- [flatten_object](./docs/asset/operations/flatten_object)
 - [group_by](./docs/asset/operations/group_by)
 - [hash_router](./docs/asset/operations/hash_router)
 - [json_parser](./docs/asset/operations/json_parser)

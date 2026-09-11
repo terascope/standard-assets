@@ -1,6 +1,6 @@
 {
     "name": "standard",
-    "version": "2.6.0",
+    "version": "2.7.0",
     "description": "Teraslice standard processor asset bundle",
     "minimum_teraslice_version": "3.15.0"
 }
