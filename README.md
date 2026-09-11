@@ -20,6 +20,7 @@ Any manual changes will be lost next time this gets auto-generated. -->
 
 - [accumulate](./docs/asset/operations/accumulate)
 - [accumulate_by_key](./docs/asset/operations/accumulate_by_key)
+- [add_date](./docs/asset/operations/add_date)
 - [add_key](./docs/asset/operations/add_key)
 - [add_short_id](./docs/asset/operations/add_short_id)
 - [copy_field](./docs/asset/operations/copy_field)
