@@ -7,6 +7,9 @@ import AccumulateSchema from '../src/accumulate/schema.js';
 import AccumulateByKey from '../src/accumulate_by_key/processor.js';
 import AccumulateByKeySchema from '../src/accumulate_by_key/schema.js';
 
+import AddDate from '../src/add_date/processor.js';
+import AddDateSchema from '../src/add_date/schema.js';
+
 import AddKey from '../src/add_key/processor.js';
 import AddKeySchema from '../src/add_key/schema.js';
 
@@ -148,6 +151,10 @@ export const ASSETS = {
     accumulate_by_key: {
         Processor: AccumulateByKey,
         Schema: AccumulateByKeySchema,
+    },
+    add_date: {
+        Processor: AddDate,
+        Schema: AddDateSchema,
     },
     add_key: {
         Processor: AddKey,
