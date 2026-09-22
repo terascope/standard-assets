@@ -9,6 +9,7 @@
         "Operations": [
             "asset/operations/accumulate",
             "asset/operations/accumulate_by_key",
+            "asset/operations/add_date",
             "asset/operations/add_short_id",
             "asset/operations/add_key",
             "asset/operations/copy_field",
