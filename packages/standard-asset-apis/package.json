@@ -23,18 +23,18 @@
     },
     "dependencies": {
         "@sindresorhus/fnv1a": "~3.1.0",
-        "@terascope/core-utils": "~2.18.0",
-        "@terascope/job-components": "~2.20.0"
+        "@terascope/core-utils": "~2.20.0",
+        "@terascope/job-components": "~2.22.0"
     },
     "devDependencies": {
         "@jest/globals": "^30.5.2",
-        "@terascope/scripts": "~2.26.0",
+        "@terascope/scripts": "~2.28.2",
         "@types/jest": "~30.0.0",
-        "@types/node": "~26.6.2",
+        "@types/node": "~26.6.3",
         "jest": "~30.5.2",
         "jest-extended": "~7.0.0",
         "jest-fixtures": "~0.6.0",
-        "ts-jest": "~29.4.12"
+        "ts-jest": "~29.4.14"
     },
     "engines": {
         "node": ">=22.21.1",
