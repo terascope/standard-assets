@@ -56,7 +56,7 @@
         "jest-extended": "~7.0.0",
         "node-notifier": "~11.0.0",
         "semver": "~7.8.5",
-        "terafoundation_kafka_connector": "^2.6.1",
+        "terafoundation_kafka_connector": "^2.7.0",
         "teraslice-client-js": "~2.24.0",
         "teraslice-test-harness": "~2.27.0",
         "ts-jest": "~29.4.15",
