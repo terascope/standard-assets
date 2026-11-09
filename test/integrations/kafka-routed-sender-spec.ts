@@ -2,7 +2,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { jest } from '@jest/globals';
 import { fileURLToPath } from 'node:url';
-import { debugLogger, times } from '@terascope/core-utils';
+import { debugLogger, times, unzip } from '@terascope/core-utils';
 import { JobTestHarness, newTestJobConfig, DownloadExternalAsset } from 'teraslice-test-harness';
 import { JobConfigParams, Logger } from '@terascope/types';
 import { TestClientConfig } from '@terascope/job-components';
@@ -10,8 +10,6 @@ import {
     createClient as createKafkaClient, makeAdminClient, KafkaAdminResult,
     connectorConfig
 } from 'terafoundation_kafka_connector';
-// @ts-expect-error
-import decompress from 'decompress';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -72,7 +70,7 @@ describe('job regression tests', () => {
         const matchingAssets = await Array.fromAsync(fs.promises.glob(pattern));
         kafkaAssetPath = path.join(path.resolve('./test/.cache'), 'downloads');
 
-        await decompress(matchingAssets[0], kafkaAssetPath);
+        await unzip(matchingAssets[0], kafkaAssetPath);
 
         assetDir.push(kafkaAssetPath);
 

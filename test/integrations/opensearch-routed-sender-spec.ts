@@ -2,7 +2,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { jest } from '@jest/globals';
 import { fileURLToPath } from 'node:url';
-import { debugLogger, get } from '@terascope/core-utils';
+import { debugLogger, get, unzip } from '@terascope/core-utils';
 import { JobTestHarness, newTestJobConfig, DownloadExternalAsset } from 'teraslice-test-harness';
 import { JobConfigParams } from '@terascope/types';
 import { TestClientConfig } from '@terascope/job-components';
@@ -13,8 +13,6 @@ const {
     cleanupIndex,
     config: { TEST_INDEX_PREFIX },
 } = ElasticsearchTestHelpers;
-// @ts-expect-error
-import decompress from 'decompress';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -62,7 +60,7 @@ describe('job regression tests', () => {
             'downloads',
         );
 
-        await decompress(matchingAssets[0], elasticsearchAssetPath);
+        await unzip(matchingAssets[0], elasticsearchAssetPath);
 
         assetDir.push(elasticsearchAssetPath);
 
