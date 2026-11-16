@@ -257,8 +257,8 @@ importers:
         specifier: ~2.26.0
         version: 2.26.0(supports-color@8.1.1)
       '@terascope/data-mate':
-        specifier: ~2.27.0
-        version: 2.27.0(jest@30.5.2(@types/node@26.6.6)(node-notifier@10.0.1)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
+        specifier: ~2.28.0
+        version: 2.28.0(jest@30.5.2(@types/node@26.6.6)(node-notifier@10.0.1)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
       '@terascope/geo-utils':
         specifier: ~2.26.0
         version: 2.26.0(supports-color@8.1.1)
@@ -302,8 +302,8 @@ importers:
         specifier: ~0.3.0
         version: 0.3.0
       ts-transforms:
-        specifier: ~2.27.0
-        version: 2.27.0(jest@30.5.2(@types/node@26.6.6)(node-notifier@10.0.1)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
+        specifier: ~2.28.0
+        version: 2.28.0(jest@30.5.2(@types/node@26.6.6)(node-notifier@10.0.1)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
       tslib:
         specifier: ~2.9.1
         version: 2.9.1
@@ -1019,8 +1019,8 @@ packages:
     resolution: {integrity: sha512-1CEknmAhs0SFyf8K5FKDCcWwnyinmjU7XAHmPmEFX6X9GQZjytkF6BA159rok0EVrvPCTGIC3Zn5YeG0NY5h3A==}
     engines: {node: '>=22.0.0', pnpm: '>=12.3.4'}
 
-  '@terascope/data-mate@2.27.0':
-    resolution: {integrity: sha512-wmdvOsoaAAedaKvgcoiZNa29KJVPmO38t02gAJusDdyLz8I9zpfwUe8XSwxuqxa7Hg5Td218lWLM/kweohvCSg==}
+  '@terascope/data-mate@2.28.0':
+    resolution: {integrity: sha512-ZT4NjtmXEXtYe4Y5WvGK1DpHbnD2cnnzxUqWXzkmOc4+zvrwpVd42tqR908QFbSLTzQJMWCKKev5JQHP940Eig==}
     engines: {node: '>=22.0.0', pnpm: '>=12.3.4'}
     hasBin: true
 
@@ -1071,8 +1071,8 @@ packages:
       typescript:
         optional: true
 
-  '@terascope/sql-builder@0.3.0':
-    resolution: {integrity: sha512-L3pzF28BfADK705y3HCNLDF206M6Hda7RLuoFSghT2ZpZnWkDdIZjxkNIWi4HXVCV2dLXyPzWX/baX9kdGTcEg==}
+  '@terascope/sql-builder@0.4.0':
+    resolution: {integrity: sha512-gnhuXbtrI1M7HfFxf3mcMFHIVnEoJajiJ6CDFsrQkWwuURTHTe1GLw19z9wBcZGQbh8MWtusaacC+s8miRGIsw==}
     engines: {node: '>=22.0.0', pnpm: '>=12.3.4'}
 
   '@terascope/teraslice-state-storage@2.27.0':
@@ -4066,8 +4066,8 @@ packages:
       jest-util:
         optional: true
 
-  ts-transforms@2.27.0:
-    resolution: {integrity: sha512-HUxFQnMlETw8otE8pv2VgCMToJ5n2XrMyqHW36oj94lqDOq371CD7JJEwgn0HeOeBN9rb2pwKfuLrKZe7fgp7g==}
+  ts-transforms@2.28.0:
+    resolution: {integrity: sha512-BexkFvWxInaJ7Uh6Tkipo/902+FJm5E67NB4s6x8eUWiVglhwYfaAMztTfc5hoF0N8+wVe7ZMshKMBDdE0hTvQ==}
     engines: {node: '>=22.0.0', pnpm: '>=12.3.4'}
     hasBin: true
 
@@ -5280,7 +5280,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@terascope/data-mate@2.27.0(jest@30.5.2(@types/node@26.6.6)(node-notifier@10.0.1)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)':
+  '@terascope/data-mate@2.28.0(jest@30.5.2(@types/node@26.6.6)(node-notifier@10.0.1)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)':
     dependencies:
       '@duckdb/node-api': 1.5.5-r.3
       '@faker-js/faker': 10.6.0
@@ -5288,7 +5288,7 @@ snapshots:
       '@terascope/data-types': 2.26.0(jest@30.5.2(@types/node@26.6.6)(node-notifier@10.0.1)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
       '@terascope/geo-utils': 2.26.0(supports-color@8.1.1)
       '@terascope/ip-utils': 2.27.0(supports-color@8.1.1)
-      '@terascope/sql-builder': 0.3.0(supports-color@8.1.1)
+      '@terascope/sql-builder': 0.4.0(supports-color@8.1.1)
       '@terascope/types': 2.23.0
       '@turf/random': 7.4.0
       '@types/validator': 13.15.10
@@ -5470,7 +5470,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@terascope/sql-builder@0.3.0(supports-color@8.1.1)':
+  '@terascope/sql-builder@0.4.0(supports-color@8.1.1)':
     dependencies:
       '@terascope/core-utils': 2.26.0(supports-color@8.1.1)
       '@terascope/geo-utils': 2.26.0(supports-color@8.1.1)
@@ -7683,14 +7683,14 @@ snapshots:
 
   jest-extended@7.0.0(jest@30.5.2(@types/node@26.6.6)(node-notifier@10.0.1)(supports-color@8.1.1))(typescript@6.0.3):
     dependencies:
-      jest-diff: 30.4.1
+      jest-diff: 30.5.2
       typescript: 6.0.3
     optionalDependencies:
       jest: 30.5.2(@types/node@26.6.6)(node-notifier@10.0.1)(supports-color@8.1.1)
 
   jest-extended@7.0.0(jest@30.5.2(@types/node@26.6.6)(node-notifier@12.1.0)(supports-color@8.1.1))(typescript@6.0.3):
     dependencies:
-      jest-diff: 30.4.1
+      jest-diff: 30.5.2
       typescript: 6.0.3
     optionalDependencies:
       jest: 30.5.2(@types/node@26.6.6)(node-notifier@12.1.0)(supports-color@8.1.1)
@@ -9094,10 +9094,10 @@ snapshots:
       babel-jest: 30.5.1(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1)
       jest-util: 30.5.1
 
-  ts-transforms@2.27.0(jest@30.5.2(@types/node@26.6.6)(node-notifier@10.0.1)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3):
+  ts-transforms@2.28.0(jest@30.5.2(@types/node@26.6.6)(node-notifier@10.0.1)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3):
     dependencies:
       '@terascope/core-utils': 2.26.0(supports-color@8.1.1)
-      '@terascope/data-mate': 2.27.0(jest@30.5.2(@types/node@26.6.6)(node-notifier@10.0.1)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
+      '@terascope/data-mate': 2.28.0(jest@30.5.2(@types/node@26.6.6)(node-notifier@10.0.1)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
       '@terascope/ip-utils': 2.27.0(supports-color@8.1.1)
       '@terascope/types': 2.23.0
       awesome-phonenumber: 7.8.0
