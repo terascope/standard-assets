@@ -22,13 +22,13 @@
         "test:watch": "ts-scripts test --watch . --"
     },
     "dependencies": {
-        "@sindresorhus/fnv1a": "~3.1.0",
-        "@terascope/core-utils": "~2.26.0",
-        "@terascope/job-components": "~2.28.0"
+        "@sindresorhus/fnv1a": "~4.0.0",
+        "@terascope/core-utils": "~2.26.1",
+        "@terascope/job-components": "~2.28.1"
     },
     "devDependencies": {
         "@jest/globals": "^30.5.2",
-        "@terascope/scripts": "~2.34.0",
+        "@terascope/scripts": "~2.34.1",
         "@types/jest": "~30.0.0",
         "@types/node": "~26.6.6",
         "jest": "~30.5.2",
